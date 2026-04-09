@@ -187,8 +187,8 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.Headers),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, requestOptions)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())

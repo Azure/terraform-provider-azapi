@@ -61,8 +61,11 @@ func Test_NewRetryOptions(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := clients.NewRetryOptions(tc.input)
+			result, lastRetryErr := clients.NewRetryOptions(tc.input)
 			if result == nil && tc.expected == nil {
+				if lastRetryErr != nil {
+					t.Errorf("expected nil lastRetryErr for nil result, got %v", lastRetryErr)
+				}
 				return
 			}
 			if result == nil || tc.expected == nil {
@@ -108,12 +111,16 @@ func Test_NewRetryOptionsForReadAfterCreate(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := clients.NewRetryOptionsForReadAfterCreate()
+			result, lastRetryErr := clients.NewRetryOptionsForReadAfterCreate()
 			if result == nil && tc.expected == nil {
 				return
 			}
 			if result == nil || tc.expected == nil {
 				t.Errorf("expected %v, got %v", tc.expected, result)
+				return
+			}
+			if lastRetryErr == nil {
+				t.Error("expected non-nil lastRetryErr")
 				return
 			}
 			if result.MaxRetries != tc.expected.MaxRetries {
@@ -192,7 +199,7 @@ func Test_CombineRetryOptions(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := clients.CombineRetryOptions(tc.input...)
+			result, _ := clients.CombineRetryOptions(tc.input...)
 			if result == nil && tc.expected == nil {
 				return
 			}
@@ -250,7 +257,7 @@ func Test_NewRetryOptions_NilResponseHandling(t *testing.T) {
 		},
 	)
 
-	result := clients.NewRetryOptions(retryInput)
+	result, _ := clients.NewRetryOptions(retryInput)
 	if result == nil {
 		t.Fatal("expected non-nil retry options")
 	}
@@ -307,7 +314,7 @@ func Test_NewRetryOptions_NilResponseHandling(t *testing.T) {
 
 func Test_NewRetryOptionsForReadAfterCreate_NilResponseHandling(t *testing.T) {
 	// This test reproduces the panic from issue #985 for the read-after-create retry options
-	result := clients.NewRetryOptionsForReadAfterCreate()
+	result, _ := clients.NewRetryOptionsForReadAfterCreate()
 	if result == nil {
 		t.Fatal("expected non-nil retry options")
 	}
@@ -353,5 +360,217 @@ func Test_NewRetryOptionsForReadAfterCreate_NilResponseHandling(t *testing.T) {
 				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
 			}
 		})
+	}
+}
+
+// Integration tests: verify ShouldRetry closures capture the last retryable error into LastRetryError
+
+func newTestRetryValue(regexes []string) retry.RetryValue {
+	regexValues := make([]attr.Value, len(regexes))
+	for i, r := range regexes {
+		regexValues[i] = types.StringValue(r)
+	}
+	return retry.NewRetryValueMust(
+		map[string]attr.Type{
+			"interval_seconds":     types.Int64Type,
+			"max_interval_seconds": types.Int64Type,
+			"multiplier":           types.Float64Type,
+			"randomization_factor": types.Float64Type,
+			"error_message_regex":  types.ListType{ElemType: types.StringType},
+		},
+		map[string]attr.Value{
+			"interval_seconds":     types.Int64Value(1),
+			"max_interval_seconds": types.Int64Value(10),
+			"multiplier":           types.Float64Value(1.5),
+			"randomization_factor": types.Float64Value(0.5),
+			"error_message_regex":  types.ListValueMust(types.StringType, regexValues),
+		},
+	)
+}
+
+func Test_NewRetryOptions_LastRetryErrorCapture(t *testing.T) {
+	retryValue := newTestRetryValue([]string{"retryable error"})
+
+	opts, lastErr := clients.NewRetryOptions(retryValue)
+	if opts == nil {
+		t.Fatal("expected non-nil RetryOptions")
+	}
+	if lastErr == nil {
+		t.Fatal("expected non-nil LastRetryError")
+	}
+
+	// Initially, no error should be captured
+	initialErr := lastErr.Get()
+	if initialErr != nil {
+		t.Errorf("expected nil initial error, got: %v", initialErr)
+	}
+
+	// Simulate a retryable error (matching the regex)
+	retryableErr := errors.New("this is a retryable error from API")
+	shouldRetry := opts.ShouldRetry(nil, retryableErr)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true for matching error")
+	}
+	capturedErr := lastErr.Get()
+	if capturedErr == nil {
+		t.Fatal("expected captured error after retryable error")
+	}
+	if capturedErr.Error() != retryableErr.Error() {
+		t.Errorf("expected captured error %q, got %q", retryableErr.Error(), capturedErr.Error())
+	}
+
+	// Simulate a non-retryable error — should not overwrite
+	nonRetryableErr := errors.New("some other error")
+	shouldRetry = opts.ShouldRetry(nil, nonRetryableErr)
+	if shouldRetry {
+		t.Error("expected ShouldRetry to return false for non-matching error")
+	}
+	// LastRetryError should still hold the previous retryable error
+	stillCaptured := lastErr.Get()
+	if stillCaptured.Error() != retryableErr.Error() {
+		t.Errorf("expected captured error to remain %q, got %q", retryableErr.Error(), stillCaptured.Error())
+	}
+}
+
+func Test_NewRetryOptionsForReadAfterCreate_LastRetryErrorCapture(t *testing.T) {
+	opts, lastErr := clients.NewRetryOptionsForReadAfterCreate()
+	if opts == nil {
+		t.Fatal("expected non-nil RetryOptions")
+	}
+	if lastErr == nil {
+		t.Fatal("expected non-nil LastRetryError")
+	}
+
+	// Simulate a 404 response — should be retryable for read-after-create
+	resp404 := &http.Response{StatusCode: 404}
+	err404 := errors.New("resource not found")
+	shouldRetry := opts.ShouldRetry(resp404, err404)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true for 404")
+	}
+	captured404 := lastErr.Get()
+	if captured404 == nil {
+		t.Fatal("expected captured error after 404")
+	}
+
+	// Simulate a 403 response — should also be retryable for read-after-create
+	resp403 := &http.Response{StatusCode: 403}
+	err403 := errors.New("forbidden")
+	shouldRetry = opts.ShouldRetry(resp403, err403)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true for 403")
+	}
+	captured403 := lastErr.Get()
+	if captured403 == nil {
+		t.Fatal("expected captured error after 403")
+	}
+	if captured403.Error() != err403.Error() {
+		t.Errorf("expected captured error %q, got %q", err403.Error(), captured403.Error())
+	}
+}
+
+func Test_CombineRetryOptions_LastRetryErrorCapture(t *testing.T) {
+	// Create two child retry options
+	retryValue := newTestRetryValue([]string{"retryable"})
+	childOpts1, _ := clients.NewRetryOptions(retryValue)
+	childOpts2, _ := clients.NewRetryOptionsForReadAfterCreate()
+
+	combined, lastErr := clients.CombineRetryOptions(childOpts1, childOpts2)
+	if combined == nil {
+		t.Fatal("expected non-nil combined RetryOptions")
+	}
+	if lastErr == nil {
+		t.Fatal("expected non-nil LastRetryError from CombineRetryOptions")
+	}
+
+	// Trigger via error message match (child1)
+	retryableErr := errors.New("this is retryable")
+	shouldRetry := combined.ShouldRetry(nil, retryableErr)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true via error message match")
+	}
+	capturedMsg := lastErr.Get()
+	if capturedMsg == nil || capturedMsg.Error() != retryableErr.Error() {
+		t.Errorf("expected combined LastRetryError to capture %q, got %v", retryableErr.Error(), capturedMsg)
+	}
+
+	// Trigger via status code match (child2: 404)
+	resp404 := &http.Response{StatusCode: 404}
+	err404 := errors.New("not found")
+	shouldRetry = combined.ShouldRetry(resp404, err404)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true via 404 status code")
+	}
+	captured404 := lastErr.Get()
+	if captured404 == nil || captured404.Error() != err404.Error() {
+		t.Errorf("expected combined LastRetryError to capture %q, got %v", err404.Error(), captured404)
+	}
+}
+
+func Test_NewRetryOptions_NullInput_ReturnsNilLastRetryError(t *testing.T) {
+	opts, lastErr := clients.NewRetryOptions(retry.NewRetryValueNull())
+	if opts != nil {
+		t.Error("expected nil RetryOptions for null input")
+	}
+	if lastErr != nil {
+		t.Error("expected nil LastRetryError for null input")
+	}
+}
+
+func Test_CombineRetryOptions_AllNilInput_ReturnsNonNilLastRetryError(t *testing.T) {
+	// When called with nil opts, CombineRetryOptions still returns a combined result
+	// (because the slice is non-empty — it has nil elements).
+	// Only an empty variadic call returns nil.
+	combined, lastErr := clients.CombineRetryOptions(nil, nil)
+	if combined == nil {
+		t.Error("expected non-nil combined RetryOptions for nil opts (non-empty variadic)")
+	}
+	if lastErr == nil {
+		t.Error("expected non-nil LastRetryError for nil opts (non-empty variadic)")
+	}
+
+	// Empty variadic call should return nil
+	combined2, lastErr2 := clients.CombineRetryOptions()
+	if combined2 != nil {
+		t.Error("expected nil combined RetryOptions for empty variadic call")
+	}
+	if lastErr2 != nil {
+		t.Error("expected nil LastRetryError for empty variadic call")
+	}
+}
+
+func Test_NewRetryOptions_SuccessResponseNotRetried(t *testing.T) {
+	// Regression test: a 200 OK response should NOT be retried even with a catch-all regex like ".*"
+	retryValue := newTestRetryValue([]string{".*"})
+	opts, lastErr := clients.NewRetryOptions(retryValue)
+	if opts == nil {
+		t.Fatal("expected non-nil RetryOptions")
+	}
+
+	// Simulate a successful 200 OK response with no error — should NOT be retried
+	resp200 := &http.Response{StatusCode: 200}
+	shouldRetry := opts.ShouldRetry(resp200, nil)
+	if shouldRetry {
+		t.Error("expected ShouldRetry to return false for 200 OK response, but got true")
+	}
+
+	// LastRetryError should not have been set
+	capturedErr := lastErr.Get()
+	if capturedErr != nil {
+		t.Errorf("expected no captured error for 200 OK response, got: %v", capturedErr)
+	}
+
+	// But a 4xx error response with nil err should still be retried via regex
+	resp500 := &http.Response{StatusCode: 500}
+	shouldRetry = opts.ShouldRetry(resp500, nil)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true for 500 response (matches status code)")
+	}
+
+	// A 400 error response (not in default status codes) with nil err should be retried via regex on error message
+	resp400 := &http.Response{StatusCode: 400}
+	shouldRetry = opts.ShouldRetry(resp400, nil)
+	if !shouldRetry {
+		t.Error("expected ShouldRetry to return true for 400 response with .* regex")
 	}
 }

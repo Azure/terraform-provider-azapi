@@ -454,8 +454,8 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	readRequestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	readRequestOptions.RetryOptions, readRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
@@ -514,8 +514,8 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	updateRequestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.UpdateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.UpdateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	updateRequestOptions.RetryOptions, updateRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, updateRequestOptions)
 	if err != nil {
@@ -591,8 +591,8 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
