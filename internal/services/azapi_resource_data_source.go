@@ -174,7 +174,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -182,7 +182,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 

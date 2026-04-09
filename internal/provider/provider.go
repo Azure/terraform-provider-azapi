@@ -101,7 +101,7 @@ func (p Provider) Metadata(ctx context.Context, request provider.MetadataRequest
 
 func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, response *provider.SchemaResponse) {
 	response.Schema = schema.Schema{
-		Description: "The Azure API Provider",
+		Description: "The Azure API Provider.",
 		Attributes: map[string]schema.Attribute{
 			"subscription_id": schema.StringAttribute{
 				Optional:            true,
@@ -294,7 +294,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"default_location": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: " The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
+				MarkdownDescription: "The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
 			},
 
 			"default_tags": schema.MapAttribute{
@@ -303,7 +303,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
-				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.",
+				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The `tags` in each resource block can override the `default_tags`.",
 			},
 
 			"enable_preflight": schema.BoolAttribute{

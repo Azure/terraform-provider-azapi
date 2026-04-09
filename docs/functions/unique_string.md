@@ -8,7 +8,7 @@ description: |-
 
 # unique_string (Function)
 
-This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on th ARM `uniqueString` function.
+This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on the ARM `uniqueString` function.
 
 ## Example Usage
 

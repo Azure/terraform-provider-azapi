@@ -31,8 +31,8 @@ func (b *UniqueStringFunction) Definition(ctx context.Context, request function.
 		},
 		Return:              function.StringReturn{},
 		Summary:             "Creates a deterministic hash string based on the values provided as parameters.",
-		Description:         "This function constructs an Azure equivalent uniqueString value. It is useful for migrating existing resources based on th ARM uniqueString function.",
-		MarkdownDescription: "This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on th ARM `uniqueString` function.",
+		Description:         "This function constructs an Azure equivalent uniqueString value. It is useful for migrating existing resources based on the ARM uniqueString function.",
+		MarkdownDescription: "This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on the ARM `uniqueString` function.",
 	}
 }
 

@@ -70,55 +70,55 @@ output "quarantine_policy" {
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request
+- `headers` (Map of String) A map of headers to include in the request.
 - `ignore_not_found` (Boolean) If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.
 - `name` (String) Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 
 	-> String length must be at least 1.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
-  - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
+	- resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
 	- management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by azurerm_management_group.
 	- extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
 	- subscription scope: `parent_id` should be like \x60/subscriptions/00000000-0000-0000-0000-000000000000\x60
 	- tenant scope: `parent_id` should be /
 
-  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+	For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
-  For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+	For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 
 	-> Ensure this in resource ID format.
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `resource_id` (String) The ID of the Azure resource to retrieve. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 
 	-> Ensure this in resource ID format.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
