@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/querycheck"
+	"github.com/hashicorp/terraform-plugin-testing/querycheck/queryfilter"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
@@ -36,7 +37,11 @@ func TestAccAzapiResourceList_basic(t *testing.T) {
 						"type": knownvalue.StringExact("Microsoft.DataFactory/factories@2018-06-01"),
 						"id":   knownvalue.StringExact(fmt.Sprintf(`/subscriptions/%s/resourceGroups/acctestrg-%d/providers/Microsoft.DataFactory/factories/acctestdf%d`, os.Getenv("ARM_SUBSCRIPTION_ID"), data.RandomInteger, data.RandomInteger)),
 					}),
-					querycheck.ContainsResourceWithName("azapi_resource.test", fmt.Sprintf("Microsoft.DataFactory/factories@2018-06-01 - acctestdf%d", data.RandomInteger)),
+					querycheck.ExpectResourceDisplayName(
+						"azapi_resource.test",
+						nil,
+						knownvalue.StringExact(fmt.Sprintf("Microsoft.DataFactory/factories@2018-06-01 - acctestdf%d", data.RandomInteger)),
+					),
 				},
 			},
 		},
@@ -102,8 +107,16 @@ func TestAccAzapiResourceList_withoutType(t *testing.T) {
 				Config: r.queryWithoutType(data),
 				QueryResultChecks: []querycheck.QueryResultCheck{
 					querycheck.ExpectLength("azapi_resource.test", 2),
-					querycheck.ContainsResourceWithName("azapi_resource.test", fmt.Sprintf("%s - acctst%d", storageResourceType, data.RandomInteger)),
-					querycheck.ContainsResourceWithName("azapi_resource.test", fmt.Sprintf("Microsoft.DataFactory/factories@2018-06-01 - acctestdf%d", data.RandomInteger)),
+					querycheck.ExpectResourceDisplayName(
+						"azapi_resource.test",
+						queryfilter.ByDisplayName(knownvalue.StringExact(fmt.Sprintf("%s - acctst%d", storageResourceType, data.RandomInteger))),
+						knownvalue.StringExact(fmt.Sprintf("%s - acctst%d", storageResourceType, data.RandomInteger)),
+					),
+					querycheck.ExpectResourceDisplayName(
+						"azapi_resource.test",
+						queryfilter.ByDisplayName(knownvalue.StringExact(fmt.Sprintf("Microsoft.DataFactory/factories@2018-06-01 - acctestdf%d", data.RandomInteger))),
+						knownvalue.StringExact(fmt.Sprintf("Microsoft.DataFactory/factories@2018-06-01 - acctestdf%d", data.RandomInteger)),
+					),
 					querycheck.ExpectIdentity("azapi_resource.test", map[string]knownvalue.Check{
 						"type": knownvalue.StringExact(storageResourceType),
 						"id":   knownvalue.StringExact(fmt.Sprintf(`/subscriptions/%s/resourceGroups/acctestrg-%d/providers/Microsoft.Storage/storageAccounts/acctst%d`, os.Getenv("ARM_SUBSCRIPTION_ID"), data.RandomInteger, data.RandomInteger)),
