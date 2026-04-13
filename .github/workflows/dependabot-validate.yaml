@@ -4,11 +4,15 @@ on:
   pull_request:
     paths:
       - '.github/dependabot.yml'
-      - '.github/workflows/dependabot-validate.yml'
+      - '.github/workflows/dependabot-validate.yaml'
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: marocchino/validate-dependabot@v3
-        id: validate
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate dependabot.yml
+        # Not using validate-dependabot due to https://github.com/marocchino/validate-dependabot/issues/827
+        run: npx --yes @bugron/validate-dependabot-yaml@0.3.3 .github/dependabot.yml
