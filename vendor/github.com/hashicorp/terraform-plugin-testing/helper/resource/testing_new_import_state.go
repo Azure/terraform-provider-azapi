@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2014, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package resource
@@ -423,11 +423,11 @@ func appendImportBlock(config teststep.Config, resourceName string, importID str
 
 func appendImportBlockWithIdentity(config teststep.Config, resourceName string, identityValues map[string]any) teststep.Config {
 	configBuilder := strings.Builder{}
-	configBuilder.WriteString(fmt.Sprintf(``+"\n"+
+	fmt.Fprintf(&configBuilder, ``+"\n"+
 		`import {`+"\n"+
 		`	to = %s`+"\n"+
 		`	identity = {`+"\n",
-		resourceName))
+		resourceName)
 
 	for k, v := range identityValues {
 		// It's valid for identity attributes to be null, we can just omit it from config
@@ -437,20 +437,20 @@ func appendImportBlockWithIdentity(config teststep.Config, resourceName string, 
 
 		switch v := v.(type) {
 		case bool:
-			configBuilder.WriteString(fmt.Sprintf(`		%q = %t`+"\n", k, v))
+			fmt.Fprintf(&configBuilder, `		%q = %t`+"\n", k, v)
 
 		case []any:
 			var quotedV []string
 			for _, v := range v {
 				quotedV = append(quotedV, fmt.Sprintf(`%q`, v))
 			}
-			configBuilder.WriteString(fmt.Sprintf(`		%q = [%s]`+"\n", k, strings.Join(quotedV, ", ")))
+			fmt.Fprintf(&configBuilder, `		%q = [%s]`+"\n", k, strings.Join(quotedV, ", "))
 
 		case json.Number:
-			configBuilder.WriteString(fmt.Sprintf(`		%q = %s`+"\n", k, v))
+			fmt.Fprintf(&configBuilder, `		%q = %s`+"\n", k, v)
 
 		case string:
-			configBuilder.WriteString(fmt.Sprintf(`		%q = %q`+"\n", k, v))
+			fmt.Fprintf(&configBuilder, `		%q = %q`+"\n", k, v)
 
 		default:
 			panic(fmt.Sprintf("unexpected type %T for identity value %q", v, k))
