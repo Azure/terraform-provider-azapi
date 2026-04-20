@@ -11,6 +11,7 @@ default: build
 tools:
 	@echo "==> installing required tooling..."
 	@sh "$(CURDIR)/scripts/gogetcookie.sh"
+	@sh "$(CURDIR)/scripts/install-terraform.sh"
 	go install github.com/client9/misspell/cmd/misspell@latest
 	go install github.com/bflad/tfproviderlint/cmd/tfproviderlint@latest
 	go install github.com/bflad/tfproviderdocs@latest
