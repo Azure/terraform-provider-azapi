@@ -4,8 +4,18 @@ set -eu
 
 echo "==> installing Terraform CLI..."
 
+set_terraform_path() {
+	terraform_path="$1"
+	export TF_ACC_TERRAFORM_PATH="$terraform_path"
+	echo "TF_ACC_TERRAFORM_PATH=$TF_ACC_TERRAFORM_PATH"
+	if [ -n "${TF_BUILD:-}" ]; then
+		echo "##vso[task.setvariable variable=TF_ACC_TERRAFORM_PATH]$TF_ACC_TERRAFORM_PATH"
+	fi
+}
+
 if command -v terraform >/dev/null 2>&1; then
 	echo "terraform is already installed; leaving existing version in place"
+	set_terraform_path "$(command -v terraform)"
 	terraform version
 	exit 0
 fi
@@ -69,4 +79,5 @@ curl -fsSL "$download_url" -o "$zip_path"
 unzip -oq "$zip_path" -d "$tmp_dir"
 install "$tmp_dir/terraform" "$bin_dir/terraform"
 
+set_terraform_path "$bin_dir/terraform"
 "$bin_dir/terraform" version
