@@ -268,7 +268,7 @@ resource "azapi_resource" "aksCluster" {
           count  = 1
           mode   = "System"
           name   = "default"
-          vmSize = "Standard_DS2_v2"
+          vmSize = "Standard_D2s_v3"
         },
       ]
       dnsPrefix = "exampleaks"
