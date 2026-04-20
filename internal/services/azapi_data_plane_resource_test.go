@@ -711,6 +711,8 @@ resource "azapi_data_plane_resource" "test" {
 }
 
 func (r DataPlaneResource) oldConfig(data acceptance.TestData) string {
+	// Purview can only be enabled on a single location per tenant
+	location := "australiaeast"
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2021-04-01"
@@ -743,7 +745,7 @@ resource "azapi_data_plane_resource" "test" {
   })
   response_export_values = ["*"]
 }
-`, data.LocationPrimary, data.RandomString)
+`, location, data.RandomString)
 }
 
 func (r DataPlaneResource) headers(data acceptance.TestData) string {
