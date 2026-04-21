@@ -15,6 +15,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
+// Microsoft.Purview is limited to only a single location per subscription. In our test subscription this is set to
+// "australiaeast"
+const purviewLocation = "australiaeast"
+
 type DataPlaneResource struct{}
 
 func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
@@ -357,7 +361,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[3]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -396,7 +400,7 @@ resource "azapi_data_plane_resource" "test" {
     }
   }
 }
-`, data.LocationPrimary, data.RandomString)
+`, data.LocationPrimary, data.RandomString, purviewLocation)
 }
 
 func (r DataPlaneResource) purviewCollection(data acceptance.TestData) string {
@@ -411,7 +415,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[3]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -432,7 +436,7 @@ resource "azapi_data_plane_resource" "test" {
     friendlyName = "Finance"
   }
 }
-`, data.LocationPrimary, data.RandomString)
+`, data.LocationPrimary, data.RandomString, purviewLocation)
 }
 
 func (r DataPlaneResource) keyVaultIssuer(data acceptance.TestData) string {
@@ -711,8 +715,6 @@ resource "azapi_data_plane_resource" "test" {
 }
 
 func (r DataPlaneResource) oldConfig(data acceptance.TestData) string {
-	// Purview can only be enabled on a single location per tenant
-	location := "australiaeast"
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2021-04-01"
@@ -724,7 +726,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[3]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -745,7 +747,7 @@ resource "azapi_data_plane_resource" "test" {
   })
   response_export_values = ["*"]
 }
-`, location, data.RandomString)
+`, data.LocationPrimary, data.RandomString, purviewLocation)
 }
 
 func (r DataPlaneResource) headers(data acceptance.TestData) string {
