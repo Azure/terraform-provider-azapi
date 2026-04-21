@@ -11,7 +11,7 @@ This directory contains GitHub repository ruleset definitions in JSONC format (J
 3. Strip comments from the JSONC file first (the importer requires plain JSON):
 
    ```bash
-   npx strip-json-comments-cli .github/rulesets/restrict-with-acctests-branches.jsonc > /tmp/ruleset.json
+   npx strip-json-comments-cli .github/rulesets/restrict-acctests-branches.jsonc > /tmp/ruleset.json
    ```
 
 4. Upload `/tmp/ruleset.json` in the import dialog.
