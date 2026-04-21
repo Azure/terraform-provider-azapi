@@ -1,8 +1,6 @@
-// with-acctests/** branch will automatically trigger acctest
-// Restrict it to specific contributors only to avoid spamming and conserve resource usage
 {
   "id": 15332720,
-  "name": "Restrict pushes to with-acctests/** branches",
+  "name": "Restrict pushes to branches that auto-trigger acctest to avoid spamming and conserve resources (see .azdo/acctest-pipeline.yml)",
   "target": "branch",
   "source_type": "Repository",
   "source": "Azure/terraform-provider-azapi",
@@ -11,7 +9,8 @@
     "ref_name": {
       "exclude": [],
       "include": [
-        "refs/heads/with-acctests/**"
+        "refs/heads/with-acctests/**",
+        "refs/heads/dependabot/**"
       ]
     }
   },
@@ -25,7 +24,12 @@
   ],
   "bypass_actors": [
     {
-      "actor_id": 2539815,
+      "actor_id": 29110, // dependabot
+      "actor_type": "Integration",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 2539815, // terraform-azure
       "actor_type": "Team",
       "bypass_mode": "always"
     }
