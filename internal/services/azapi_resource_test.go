@@ -162,6 +162,7 @@ func TestAccGenericResource_importWithApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importWithIdentity(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -258,6 +259,7 @@ func TestAccGenericResource_identity(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultTags(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -298,6 +300,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -411,6 +414,7 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -426,6 +430,7 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreCasing(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -496,6 +501,7 @@ func TestAccGenericResource_locks(t *testing.T) {
 }
 
 func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	clientId := os.Getenv("ARM_CLIENT_ID")
 	clientSecret := os.Getenv("ARM_CLIENT_SECRET")
@@ -668,6 +674,7 @@ func TestAccGenericResource_queryParameters(t *testing.T) {
 }
 
 func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{

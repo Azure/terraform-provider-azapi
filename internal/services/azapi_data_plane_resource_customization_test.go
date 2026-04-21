@@ -30,6 +30,7 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_foundryAgent(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 

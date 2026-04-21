@@ -74,6 +74,7 @@ func TestAccActionResource_providerAction(t *testing.T) {
 }
 
 func TestAccActionResource_nonstandardLRO(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (PremiumV3 VMs quota is 0)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 

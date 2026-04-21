@@ -51,6 +51,7 @@ func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
 }
 
 func TestAccGenericUpdateResource_siteConfigSlotConfigNames(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (PremiumV3 VMs quota is 0)")
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
 

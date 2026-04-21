@@ -34,6 +34,7 @@ func TestAccAzapiResourceUpgrade_basic(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_complete(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -54,6 +55,7 @@ func TestAccAzapiResourceUpgrade_complete(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_identityNone(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -74,6 +76,7 @@ func TestAccAzapiResourceUpgrade_identityNone(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_identitySystemAssigned(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -114,6 +117,7 @@ func TestAccAzapiResourceUpgrade_identityUserAssigned(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -383,6 +387,7 @@ func TestAccAzapiResourceUpgrade_extensionScope(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_ignoreMissingProperty(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -403,6 +408,7 @@ func TestAccAzapiResourceUpgrade_ignoreMissingProperty(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_ignoreCasing(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -463,6 +469,7 @@ func TestAccAzapiResourceUpgrade_locks(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_secretsInAsterisks(t *testing.T) {
+	t.Skip("New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
