@@ -1,0 +1,33 @@
+// with-acctests/** branch will automatically trigger acctest
+// Restrict it to specific contributors only to avoid spamming and conserve resource usage
+{
+  "id": 15332720,
+  "name": "Restrict pushes to with-acctests/** branches",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "Azure/terraform-provider-azapi",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "refs/heads/with-acctests/**"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "creation"
+    },
+    {
+      "type": "update"
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 2539815,
+      "actor_type": "Team",
+      "bypass_mode": "always"
+    }
+  ]
+}
