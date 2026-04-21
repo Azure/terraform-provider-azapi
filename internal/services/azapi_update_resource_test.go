@@ -116,6 +116,7 @@ func TestAccGenericUpdateResource_listUniqueIdProperty(t *testing.T) {
 }
 
 func TestAccGenericUpdateResource_timeouts(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
 

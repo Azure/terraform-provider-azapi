@@ -32,6 +32,7 @@ var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certifica
 var testCertBase64 = base64.StdEncoding.EncodeToString(testCertRaw)
 
 func TestAccGenericResource_basic(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -940,6 +941,7 @@ func TestAccGenericResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
 }
 
 func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
