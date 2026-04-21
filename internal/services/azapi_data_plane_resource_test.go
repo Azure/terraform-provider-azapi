@@ -17,6 +17,10 @@ import (
 
 type DataPlaneResource struct{}
 
+func dataPlaneImportIgnores() []string {
+	return []string{"ignore_casing", "ignore_missing_property", "body", "locks", "output", "create_", "delete_", "update_", "read_"}
+}
+
 func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -29,6 +33,21 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
+	})
+}
+
+func TestAccDataPlaneResource_importPurviewClassification(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.purviewClassification(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, dataPlaneImportIgnores()...),
 	})
 }
 
@@ -300,6 +319,12 @@ func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, sta
 		return &b, nil
 	}
 	return nil, fmt.Errorf("checking for presence of existing %s: %+v", id, err)
+}
+
+func (DataPlaneResource) ImportIdFunc(tfState *terraform.State) (string, error) {
+	state := tfState.RootModule().Resources["azapi_data_plane_resource.test"].Primary
+	resourceType := state.Attributes["type"]
+	return fmt.Sprintf("%s|%s", state.ID, resourceType), nil
 }
 
 func (r DataPlaneResource) appConfigKeyValues(data acceptance.TestData) string {
