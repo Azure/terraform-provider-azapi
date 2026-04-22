@@ -79,7 +79,7 @@ func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
 }
 
 func TestAccGenericResource_preflightWithIdentity(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test (Standard_DS2_v2 VM size not available in westus for this subscription)")
+	t.Skip("Acctest subscription has no quota to run this test")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
