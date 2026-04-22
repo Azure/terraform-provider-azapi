@@ -11,6 +11,7 @@ import (
 type ActionEphemeral struct{}
 
 func TestAccEphemeral_basic(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "ephemeral.azapi_resource_action", "test")
 	r := ActionEphemeral{}
 
@@ -47,6 +48,7 @@ func TestAccEphemeral_providerAction(t *testing.T) {
 }
 
 func TestAccEphemeral_headers(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "ephemeral.azapi_resource_action", "test")
 	r := ActionEphemeral{}
 

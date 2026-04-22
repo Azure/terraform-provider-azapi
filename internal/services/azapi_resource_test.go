@@ -63,6 +63,7 @@ func TestAccGenericResource_resourceGroup(t *testing.T) {
 }
 
 func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -127,6 +128,7 @@ resource "azapi_resource" "test" {
 }
 
 func TestAccGenericResource_requiresImport(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -142,6 +144,7 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 }
 
 func TestAccGenericResource_importWithApiVersion(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -191,6 +194,7 @@ func TestAccGenericResource_importWithIdentity(t *testing.T) {
 }
 
 func TestAccGenericResource_complete(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -206,6 +210,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 }
 
 func TestAccGenericResource_completeBody(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -224,6 +229,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 }
 
 func TestAccGenericResource_identity(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -319,6 +325,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultLocation(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -360,6 +367,7 @@ func TestAccGenericResource_defaultParentId(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNaming(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -597,6 +605,7 @@ func TestAccGenericResource_unknownNameWithSensitiveBody(t *testing.T) {
 }
 
 func TestAccGenericResource_timeouts(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -610,6 +619,7 @@ func TestAccGenericResource_timeouts(t *testing.T) {
 }
 
 func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -635,6 +645,7 @@ func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
 }
 
 func TestAccGenericResource_withRetry(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -695,6 +706,7 @@ func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultOutput(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -861,6 +873,7 @@ func TestAccGenericResource_moveKeyVaultKey(t *testing.T) {
 }
 
 func TestAccGenericResource_SensitiveBody(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -924,6 +937,7 @@ func TestAccGenericResource_SensitiveBodyVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -964,6 +978,7 @@ func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
 }
 
 func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -995,6 +1010,7 @@ func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
 }
 
 func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -1013,6 +1029,7 @@ func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
 }
 
 func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
+	t.Skip("Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
