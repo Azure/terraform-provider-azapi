@@ -14,10 +14,7 @@ set_terraform_path() {
 }
 
 if command -v terraform >/dev/null 2>&1; then
-	echo "terraform is already installed; leaving existing version in place"
-	set_terraform_path "$(command -v terraform)"
-	terraform version
-	exit 0
+	echo "acctest will not use pre-existing terraform; will use pinned version ${TERRAFORM_VERSION:-} instead"
 fi
 
 os="$(uname -s | tr '[:upper:]' '[:lower:]')"
