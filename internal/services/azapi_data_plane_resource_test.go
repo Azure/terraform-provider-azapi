@@ -15,10 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-// Microsoft.Purview is limited to only a single location per subscription. In our test subscription this is set to
-// "australiaeast"
-const purviewLocation = "australiaeast"
-
 type DataPlaneResource struct{}
 
 func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
@@ -37,6 +33,7 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
+	t.Skip("only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -51,6 +48,7 @@ func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewCollection(t *testing.T) {
+	t.Skip("only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -361,7 +359,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = "%[3]s"
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -400,7 +398,7 @@ resource "azapi_data_plane_resource" "test" {
     }
   }
 }
-`, data.LocationPrimary, data.RandomString, purviewLocation)
+`, data.LocationPrimary, data.RandomString)
 }
 
 func (r DataPlaneResource) purviewCollection(data acceptance.TestData) string {
@@ -415,7 +413,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = "%[3]s"
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -436,7 +434,7 @@ resource "azapi_data_plane_resource" "test" {
     friendlyName = "Finance"
   }
 }
-`, data.LocationPrimary, data.RandomString, purviewLocation)
+`, data.LocationPrimary, data.RandomString)
 }
 
 func (r DataPlaneResource) keyVaultIssuer(data acceptance.TestData) string {
@@ -726,7 +724,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = "%[3]s"
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -747,7 +745,7 @@ resource "azapi_data_plane_resource" "test" {
   })
   response_export_values = ["*"]
 }
-`, data.LocationPrimary, data.RandomString, purviewLocation)
+`, data.LocationPrimary, data.RandomString)
 }
 
 func (r DataPlaneResource) headers(data acceptance.TestData) string {
