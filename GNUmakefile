@@ -2,7 +2,6 @@ TEST?=$$(go list ./... |grep -v 'vendor'|grep -v 'examples')
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 PKG_NAME=azapi
 TESTTIMEOUT=300m
-TERRAFORM_VERSION?=1.14.9
 
 .EXPORT_ALL_VARIABLES:
   TF_SCHEMA_PANIC_ON_ERROR=1
@@ -12,7 +11,6 @@ default: build
 tools:
 	@echo "==> installing required tooling..."
 	@sh "$(CURDIR)/scripts/gogetcookie.sh"
-	@TERRAFORM_VERSION=$(TERRAFORM_VERSION) sh "$(CURDIR)/scripts/install-terraform.sh"
 	go install github.com/client9/misspell/cmd/misspell@latest
 	go install github.com/bflad/tfproviderlint/cmd/tfproviderlint@latest
 	go install github.com/bflad/tfproviderdocs@latest
