@@ -42,7 +42,6 @@ func TestAccAzapiDataPlaneResourceUpgrade_appConfigKeyValues(t *testing.T) {
 }
 
 func TestAccAzapiDataPlaneResourceUpgrade_purviewClassification(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test (Microsoft.Purview only available in australiaeast for this tenant)")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -63,7 +62,6 @@ func TestAccAzapiDataPlaneResourceUpgrade_purviewClassification(t *testing.T) {
 }
 
 func TestAccAzapiDataPlaneResourceUpgrade_purviewCollection(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test (Microsoft.Purview only available in australiaeast for this tenant)")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -176,7 +174,6 @@ func TestAccAzapiDataPlaneResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 }
 
 func TestAccAzapiDataPlaneResourceUpgrade_basic_from_schema_v0(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test (Microsoft.Purview only available in australiaeast for this tenant)")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
