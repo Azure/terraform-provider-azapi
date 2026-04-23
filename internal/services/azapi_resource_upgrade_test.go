@@ -138,6 +138,7 @@ func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 

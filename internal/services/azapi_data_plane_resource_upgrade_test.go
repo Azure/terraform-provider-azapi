@@ -176,6 +176,7 @@ func TestAccAzapiDataPlaneResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 }
 
 func TestAccAzapiDataPlaneResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 

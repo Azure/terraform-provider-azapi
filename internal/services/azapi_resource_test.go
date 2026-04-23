@@ -2367,7 +2367,7 @@ func (r GenericResource) unknownName(data acceptance.TestData) string {
 data "azapi_client_config" "current" {}
 
 resource "random_string" "suffix" {
-  length  = 3
+  length  = 15
   special = false
   upper   = false
 }
@@ -2407,7 +2407,7 @@ func (r GenericResource) unknownNameWithSensitiveBody(data acceptance.TestData) 
 data "azapi_client_config" "current" {}
 
 resource "random_string" "suffix" {
-  length  = 3
+  length  = 15
   special = false
   upper   = false
 }
