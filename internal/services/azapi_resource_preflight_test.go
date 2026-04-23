@@ -79,7 +79,7 @@ func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
 }
 
 func TestAccGenericResource_preflightWithIdentity(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test")
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{

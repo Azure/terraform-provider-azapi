@@ -50,7 +50,7 @@ func TestAccAzapiUpdateResourceUpgrade_automationAccountWithNameParentId(t *test
 }
 
 func TestAccAzapiUpdateResourceUpgrade_siteConfigSlotConfigNames(t *testing.T) {
-	t.Skip("Acctest subscription has no quota to run this test")
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test")
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
 

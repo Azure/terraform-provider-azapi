@@ -52,7 +52,7 @@ jobs:
           terraform_path="$(which terraform)"
           echo "Terraform installed at: ${terraform_path}"
           echo "##vso[task.setvariable variable=TF_ACC_TERRAFORM_PATH]${terraform_path}"
-        displayName: "Export Terraform CLI path to TF_ACC_TERRAFORM_PATH"
+        displayName: "Configure Terraform CLI for acctest"
       - bash: |
           #!/usr/bin/env bash
           cd "$BUILD_SOURCESDIRECTORY"
@@ -94,3 +94,4 @@ jobs:
               ARM_TEST_AVM: $(ARM_TEST_AVM)
               TF_ACC_TERRAFORM_PATH: $(TF_ACC_TERRAFORM_PATH)
               TESTARGS: $(TESTARGS)
+              AZAPI_CORE_ACCTESTS_ONLY: "true"

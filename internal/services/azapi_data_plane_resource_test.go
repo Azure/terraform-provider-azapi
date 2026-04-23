@@ -33,7 +33,7 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
-	t.Skip("only 1 purview account is allowed per tenant")
+	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -48,7 +48,7 @@ func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewCollection(t *testing.T) {
-	t.Skip("only 1 purview account is allowed per tenant")
+	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
