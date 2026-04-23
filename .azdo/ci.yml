@@ -48,6 +48,13 @@ jobs:
           terraformVersion: "1.14.9"
       - bash: |
           #!/usr/bin/env bash
+          set -euo pipefail
+          terraform_path="$(which terraform)"
+          echo "Terraform installed at: ${terraform_path}"
+          echo "##vso[task.setvariable variable=TF_ACC_TERRAFORM_PATH]${terraform_path}"
+        displayName: "Export Terraform CLI path to TF_ACC_TERRAFORM_PATH"
+      - bash: |
+          #!/usr/bin/env bash
           cd "$BUILD_SOURCESDIRECTORY"
           make depscheck
         displayName: "Verify Vendor Dependencies"
