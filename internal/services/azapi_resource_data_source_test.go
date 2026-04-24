@@ -14,6 +14,7 @@ import (
 type GenericDataSource struct{}
 
 func TestAccGenericDataSource_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
@@ -36,6 +37,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 }
 
 func TestAccGenericDataSource_withResourceId(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
@@ -93,6 +95,7 @@ func TestAccGenericDataSource_withRetry(t *testing.T) {
 }
 
 func TestAccGenericDataSource_headers(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
@@ -105,6 +108,7 @@ func TestAccGenericDataSource_headers(t *testing.T) {
 }
 
 func TestAccGenericDataSource_queryParameter(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
@@ -117,6 +121,7 @@ func TestAccGenericDataSource_queryParameter(t *testing.T) {
 }
 
 func TestAccGenericDataSource_defaultOutput(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 

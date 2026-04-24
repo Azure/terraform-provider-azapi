@@ -1,0 +1,17 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - 'with-acctests/**'
+      - 'dependabot/**'
+
+pr: none
+
+jobs:
+  - template: ./ci.yml
+    parameters:
+      maxParallel: 1
+      accTest: true
+      vmImages:
+        - value: 'ubuntu-20.04'
+          ymlSafeName: ubuntu_20_04

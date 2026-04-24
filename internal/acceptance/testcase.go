@@ -213,6 +213,14 @@ For tests that authenticate with Azure by using a Service Principal with Certifi
 	}
 }
 
+// Use this for tests that are not part of the core acceptance test suite (e.g. quota-limited or retired resources).
+func SkipIfCoreAcctestsOnly(t *testing.T, reason string) {
+	t.Helper()
+	if os.Getenv("AZAPI_CORE_ACCTESTS_ONLY") != "" {
+		t.Skipf("AZAPI_CORE_ACCTESTS_ONLY is set, skipping non-core test. Reason: %s", reason)
+	}
+}
+
 // CheckDestroyedFunc returns a TestCheckFunc which validates the resource no longer exists
 func CheckDestroyedFunc(client *clients.Client, testResource TestResource, resourceType, resourceName string) func(state *terraform.State) error {
 	return func(state *terraform.State) error {

@@ -42,6 +42,17 @@ jobs:
           cd "$BUILD_SOURCESDIRECTORY"
           make tools
         displayName: "Install Dependencies"
+      - task: TerraformInstaller@1
+        displayName: "Install Terraform"
+        inputs:
+          terraformVersion: "1.14.9"
+      - bash: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          terraform_path="$(which terraform)"
+          echo "Terraform installed at: ${terraform_path}"
+          echo "##vso[task.setvariable variable=TF_ACC_TERRAFORM_PATH]${terraform_path}"
+        displayName: "Configure Terraform CLI for acctest"
       - bash: |
           #!/usr/bin/env bash
           cd "$BUILD_SOURCESDIRECTORY"
@@ -69,7 +80,7 @@ jobs:
               #!/usr/bin/env bash
               cd "$BUILD_SOURCESDIRECTORY"
               make testacc
-            displayName: "Run All Tests"
+            displayName: "Run core acctests"
             env:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
@@ -81,4 +92,6 @@ jobs:
               ARM_TEST_EXAMPLES: $(ARM_TEST_EXAMPLES)
               ARM_TEST_EXAMPLES_ALL: $(ARM_TEST_EXAMPLES_ALL)
               ARM_TEST_AVM: $(ARM_TEST_AVM)
+              TF_ACC_TERRAFORM_PATH: $(TF_ACC_TERRAFORM_PATH)
               TESTARGS: $(TESTARGS)
+              AZAPI_CORE_ACCTESTS_ONLY: "true"
