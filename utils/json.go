@@ -154,6 +154,13 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 			if len(oldValue) == 0 {
 				return new
 			}
+			if len(newArr) == 0 {
+				// oldValue is non-empty (checked above) but newArr is
+				// empty — a newArr[0] identifier lookup would
+				// otherwise panic with 'index out of range [0] with
+				// length 0'. Treat as an intentional clear.
+				return newArr
+			}
 
 			identifierKey := listIdentifierKeyForPath(path, option)
 			hasIdentifier := identifierOfArrayItemByKey(oldValue[0], identifierKey) != "" && identifierOfArrayItemByKey(newArr[0], identifierKey) != ""
