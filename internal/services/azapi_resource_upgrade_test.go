@@ -14,6 +14,7 @@ import (
 const PreviousVersion = "1.14.0"
 
 func TestAccAzapiResourceUpgrade_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -97,6 +98,7 @@ func TestAccAzapiResourceUpgrade_identitySystemAssigned(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_identityUserAssigned(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -159,6 +161,7 @@ func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -179,6 +182,7 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -199,6 +203,7 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -219,6 +224,7 @@ func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultLocationOverrideInHcl(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -273,6 +279,7 @@ resource "azapi_resource" "test" {
 }
 
 func TestAccAzapiResourceUpgrade_defaultNaming(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -293,6 +300,7 @@ func TestAccAzapiResourceUpgrade_defaultNaming(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultNamingOverrideInHcl(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -313,6 +321,7 @@ func TestAccAzapiResourceUpgrade_defaultNamingOverrideInHcl(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_defaultsNotApplicable(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -538,6 +547,7 @@ func TestAccAzapiResourceUpgrade_timeouts(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -558,6 +568,7 @@ func TestAccAzapiResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_completeBody_from_schema_v0(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -583,6 +594,7 @@ func TestAccAzapiResourceUpgrade_completeBody_from_schema_v0(t *testing.T) {
 }
 
 func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
