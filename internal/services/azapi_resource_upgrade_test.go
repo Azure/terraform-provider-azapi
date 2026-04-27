@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -616,4 +618,54 @@ func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			Config: updatedConfig,
 		}),
 	})
+}
+
+// TestAccAzapiResourceUpgrade_missingResourceIdentityAfterRead reproduces issue #1077:
+// When upgrading from v2.7 to v2.8+, if the resource was deleted outside of Terraform,
+// the Read function encounters a 404 and calls RemoveResource but doesn't set
+// response.Identity, causing a "Missing Resource Identity After Read" error.
+func TestAccAzapiResourceUpgrade_missingResourceIdentityAfterRead(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		// Step 1: Deploy with azapi v2.7.0 — creates a resource group
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.resourceGroup(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "2.7.0"),
+		// Step 2: Refresh state with dev provider — delete the resource externally first via PreConfig,
+		// then the Read on azapi_resource.test will get a 404.
+		// This should remove the resource from state gracefully, but with the bug
+		// it fails with "Missing Resource Identity After Read"
+		data.UpgradeTestPlanStep(
+			resource.TestStep{
+				Config:             r.resourceGroup(data),
+				ExpectNonEmptyPlan: true,
+				PreConfig: func() {
+					client, err := acceptance.BuildTestClient()
+					if err != nil {
+						t.Fatalf("building test client: %+v", err)
+					}
+					resourceId := fmt.Sprintf("/subscriptions/%s/resourceGroups/acctestRG-%d", os.Getenv("ARM_SUBSCRIPTION_ID"), data.RandomInteger)
+					_, err = client.ResourceClient.Delete(context.Background(), resourceId, "2023-07-01", clients.DefaultRequestOptions())
+					if err != nil {
+						t.Fatalf("deleting resource group: %+v", err)
+					}
+				},
+			}),
+	})
+}
+
+func (r GenericResource) resourceGroup(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+  body     = {}
+}
+`, data.RandomInteger, data.LocationPrimary)
 }
