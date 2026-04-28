@@ -86,6 +86,16 @@ func (s ProviderServer) GetMetadata(ctx context.Context, request *tfprotov6.GetM
 		},
 	}
 
+	if s.Provider.ServerCapabilities() != nil {
+		capabilities := s.Provider.ServerCapabilities()
+		resp.ServerCapabilities = &tfprotov6.ServerCapabilities{
+			GetProviderSchemaOptional: capabilities.GetProviderSchemaOptional,
+			MoveResourceState:         capabilities.MoveResourceState,
+			PlanDestroy:               capabilities.PlanDestroy,
+			GenerateResourceConfig:    capabilities.GenerateResourceConfig,
+		}
+	}
+
 	for typeName := range s.Provider.DataSourcesMap() {
 		resp.DataSources = append(resp.DataSources, tfprotov6.DataSourceMetadata{
 			TypeName: typeName,
@@ -325,6 +335,16 @@ func (s ProviderServer) GetProviderSchema(ctx context.Context, req *tfprotov6.Ge
 		ServerCapabilities: &tfprotov6.ServerCapabilities{
 			PlanDestroy: true,
 		},
+	}
+
+	if s.Provider.ServerCapabilities() != nil {
+		capabilities := s.Provider.ServerCapabilities()
+		resp.ServerCapabilities = &tfprotov6.ServerCapabilities{
+			GetProviderSchemaOptional: capabilities.GetProviderSchemaOptional,
+			MoveResourceState:         capabilities.MoveResourceState,
+			PlanDestroy:               capabilities.PlanDestroy,
+			GenerateResourceConfig:    capabilities.GenerateResourceConfig,
+		}
 	}
 
 	for typeName, d := range s.Provider.DataSourcesMap() {
@@ -1564,6 +1584,44 @@ func (s ProviderServer) WriteStateBytes(ctx context.Context, req *tfprotov6.Writ
 	return resp, nil
 }
 
-func (s ProviderServer) GenerateResourceConfig(ctx context.Context, request *tfprotov6.GenerateResourceConfigRequest) (*tfprotov6.GenerateResourceConfigResponse, error) {
-	return &tfprotov6.GenerateResourceConfigResponse{}, nil
+func (s ProviderServer) GenerateResourceConfig(ctx context.Context, req *tfprotov6.GenerateResourceConfigRequest) (*tfprotov6.GenerateResourceConfigResponse, error) {
+	resp := &tfprotov6.GenerateResourceConfigResponse{}
+
+	r, diag := ProviderResource(s.Provider, req.TypeName)
+
+	if diag != nil {
+		resp.Diagnostics = append(resp.Diagnostics, diag)
+
+		return resp, nil
+	}
+
+	schemaReq := resource.SchemaRequest{}
+	schemaResp := &resource.SchemaResponse{}
+
+	r.Schema(ctx, schemaReq, schemaResp)
+
+	resp.Diagnostics = schemaResp.Diagnostics
+
+	if len(resp.Diagnostics) > 0 {
+		return resp, nil
+	}
+
+	state, diag := DynamicValueToValue(schemaResp.Schema, req.State)
+
+	if diag != nil {
+		resp.Diagnostics = append(resp.Diagnostics, diag)
+
+		return resp, nil
+	}
+
+	generateReq := resource.GenerateConfigRequest{
+		State: state,
+	}
+	generateResp := &resource.GenerateConfigResponse{}
+
+	r.GenerateConfig(ctx, generateReq, generateResp)
+
+	resp.Diagnostics = generateResp.Diagnostics
+
+	return resp, nil
 }
