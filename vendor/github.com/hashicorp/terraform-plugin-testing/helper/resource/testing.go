@@ -861,6 +861,10 @@ type TestStep struct {
 	//   - Supports workspaces (creating and deleting)
 	StateStore bool
 
+	// DefaultWorkspaceOnly is used only for StateStore tests to enable the use of only the provider's default workspace.
+	// This should only be used in rare cases where StateStore implementations don't support multiple workspaces.
+	DefaultWorkspaceOnly bool
+
 	// VerifyStateStoreLock is used in combination with the StateStore mode and runs various Terraform CLI commands that test
 	// that a state store implementation in a provider supports locking and unlocking.
 	//
@@ -869,6 +873,10 @@ type TestStep struct {
 	//   - Prevents clients from acquiring a lock for an already locked state by returning an error message.
 	//   - Supports unlocking, by releasing a previously locked state after an operation is complete.
 	VerifyStateStoreLock bool
+
+	// GenerateConfig will generate resource blocks when set to true. This can
+	// only be used with the `ImportState` and `Query` testing modes.
+	GenerateConfig bool
 }
 
 // ConfigPlanChecks defines the different points in a Config TestStep when plan checks can be run.
