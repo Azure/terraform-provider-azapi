@@ -173,7 +173,7 @@ func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *m
 	if out == nil {
 		out = &map[string]interface{}{}
 	}
-	// make sure that there's no unknown value outside the properties bag
+	// make sure that there's no unknown value outside the properties bag, preflight API could return false negatives otherwise
 	for k, v := range *out {
 		if k == "properties" {
 			continue
