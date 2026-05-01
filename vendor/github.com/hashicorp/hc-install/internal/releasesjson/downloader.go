@@ -123,16 +123,20 @@ func (d *Downloader) DownloadAndUnpack(ctx context.Context, pv *ProductVersion, 
 
 		bytesCopied, err = io.Copy(h, r)
 		if err != nil {
-			return nil, err
+			d.Logger.Printf("failed to calculate hash of %q: %s", pb.Filename, err)
+			return up, err
 		}
 
 		calculatedSum := h.Sum(nil)
 		if !bytes.Equal(calculatedSum, verifiedChecksum) {
+			d.Logger.Printf("checksum does not match for %q (expected: %x, got: %x)",
+				pb.Filename, verifiedChecksum, calculatedSum)
 			return up, fmt.Errorf(
 				"checksum mismatch (expected: %x, got: %x)",
 				verifiedChecksum, calculatedSum,
 			)
 		}
+		d.Logger.Printf("checksum matches for %q", pb.Filename)
 	} else {
 		bytesCopied, err = io.Copy(pkgFile, pkgReader)
 		if err != nil {

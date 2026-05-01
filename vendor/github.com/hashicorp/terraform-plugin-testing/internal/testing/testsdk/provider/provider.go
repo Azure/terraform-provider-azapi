@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/datasource"
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/list"
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/resource"
@@ -21,6 +22,7 @@ type Provider interface {
 	ResourcesMap() map[string]resource.Resource
 	StateStoresMap() map[string]statestore.StateStore
 	Schema(context.Context, SchemaRequest, *SchemaResponse)
+	ServerCapabilities() *ServerCapabilities
 	Stop(context.Context, StopRequest, *StopResponse)
 	ValidateConfig(context.Context, ValidateConfigRequest, *ValidateConfigResponse)
 }
@@ -52,4 +54,11 @@ type ValidateConfigRequest struct {
 
 type ValidateConfigResponse struct {
 	Diagnostics []*tfprotov6.Diagnostic
+}
+
+type ServerCapabilities struct {
+	GetProviderSchemaOptional bool
+	MoveResourceState         bool
+	PlanDestroy               bool
+	GenerateResourceConfig    bool
 }

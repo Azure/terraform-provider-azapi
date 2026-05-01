@@ -30,6 +30,7 @@ type Resource struct {
 	UpdateResponse         *resource.UpdateResponse
 	UpgradeStateResponse   *resource.UpgradeStateResponse
 	ValidateConfigResponse *resource.ValidateConfigResponse
+	GenerateConfigResponse *resource.GenerateConfigResponse
 }
 
 func (r Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -104,5 +105,12 @@ func (r Resource) UpgradeState(ctx context.Context, req resource.UpgradeStateReq
 func (r Resource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	if r.ValidateConfigResponse != nil {
 		resp.Diagnostics = r.ValidateConfigResponse.Diagnostics
+	}
+}
+
+func (r Resource) GenerateConfig(ctx context.Context, req resource.GenerateConfigRequest, resp *resource.GenerateConfigResponse) {
+	if r.GenerateConfigResponse != nil {
+		resp.GeneratedConfig = r.GenerateConfigResponse.GeneratedConfig
+		resp.Diagnostics = r.GenerateConfigResponse.Diagnostics
 	}
 }

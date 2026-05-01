@@ -5,6 +5,7 @@ package resource
 
 import (
 	"context"
+
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
@@ -20,6 +21,7 @@ type Resource interface {
 	Update(context.Context, UpdateRequest, *UpdateResponse)
 	UpgradeState(context.Context, UpgradeStateRequest, *UpgradeStateResponse)
 	ValidateConfig(context.Context, ValidateConfigRequest, *ValidateConfigResponse)
+	GenerateConfig(context.Context, GenerateConfigRequest, *GenerateConfigResponse)
 }
 
 type CreateRequest struct {
@@ -123,4 +125,13 @@ type ValidateConfigRequest struct {
 
 type ValidateConfigResponse struct {
 	Diagnostics []*tfprotov6.Diagnostic
+}
+
+type GenerateConfigRequest struct {
+	State tftypes.Value
+}
+
+type GenerateConfigResponse struct {
+	GeneratedConfig tftypes.Value
+	Diagnostics     []*tfprotov6.Diagnostic
 }

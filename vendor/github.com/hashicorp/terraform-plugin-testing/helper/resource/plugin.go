@@ -132,6 +132,15 @@ func runProviderCommandCreatePlan(ctx context.Context, t testing.T, wd *pluginte
 	return runProviderCommand(ctx, t, wd, factories, fn)
 }
 
+func runProviderCommandGenerateConfigAndCreatePlan(ctx context.Context, t testing.T, wd *plugintest.WorkingDir, factories *providerFactories, opts ...tfexec.PlanOption) error {
+	t.Helper()
+
+	fn := func() error {
+		return wd.CreatePlan(ctx, opts...)
+	}
+	return runProviderCommand(ctx, t, wd, factories, fn)
+}
+
 func runProviderCommandSavedPlan(ctx context.Context, t testing.T, wd *plugintest.WorkingDir, factories *providerFactories) (*tfjson.Plan, error) {
 	t.Helper()
 

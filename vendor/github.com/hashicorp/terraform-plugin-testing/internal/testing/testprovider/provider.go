@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/datasource"
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/list"
 	"github.com/hashicorp/terraform-plugin-testing/internal/testing/testsdk/provider"
@@ -19,6 +20,7 @@ var _ provider.Provider = Provider{}
 // Provider is a declarative provider implementation for unit testing in this
 // Go module.
 type Provider struct {
+	Capabilities           *provider.ServerCapabilities
 	ConfigureResponse      *provider.ConfigureResponse
 	DataSources            map[string]DataSource
 	ListResources          map[string]ListResource
@@ -96,4 +98,11 @@ func (p Provider) ValidateConfig(ctx context.Context, req provider.ValidateConfi
 	if p.ValidateConfigResponse != nil {
 		resp.Diagnostics = p.ValidateConfigResponse.Diagnostics
 	}
+}
+
+func (p Provider) ServerCapabilities() *provider.ServerCapabilities {
+	if p.Capabilities != nil {
+		return p.Capabilities
+	}
+	return nil
 }

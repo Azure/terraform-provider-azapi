@@ -45,84 +45,99 @@ func testStepNewStateStore(ctx context.Context, t testing.T, wd *plugintest.Work
 		return fmt.Errorf("After init, expected the \"default\" workspace to be created: %w", err)
 	}
 
-	// ----- Create "foo" workspace
-	err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "foo")
-	if err != nil {
-		return fmt.Errorf("After creating a new workspace, the state should be empty: %w", err)
+	targetWorkspace := "default"
+	if !step.DefaultWorkspaceOnly {
+		// ----- Create "foo" workspace
+		err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "foo")
+		if err != nil {
+			return fmt.Errorf("After creating a new workspace, the state should be empty: %w", err)
+		}
+
+		// ----- Create "bar" workspace
+		err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "bar")
+		if err != nil {
+			return fmt.Errorf("After creating a new workspace, the state should be empty: %w", err)
+		}
+
+		targetWorkspace = "bar"
 	}
 
-	// ----- Create "bar" workspace
-	err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "bar")
-	if err != nil {
-		return fmt.Errorf("After creating a new workspace, the state should be empty: %w", err)
-	}
-
-	// ----- Apply test resources to the "bar" workspace and assert they are saved successfully in state
-	err = applyTestResources(ctx, t, wd, step, providers, cfg, "bar")
+	// ----- Apply test resources to the target workspace and assert they are saved successfully in state
+	err = applyTestResources(ctx, t, wd, step, providers, cfg, targetWorkspace)
 	if err != nil {
 		return err
 	}
 
-	// ----- Assert the "foo" workspace is still empty
-	err = assertEmptyWorkspace(ctx, t, wd, providers, "foo")
-	if err != nil {
-		return fmt.Errorf("After writing a resource to \"bar\" state, failed assertion: %s", err)
-	}
+	if !step.DefaultWorkspaceOnly {
+		// ----- Assert the "foo" workspace is still empty
+		err = assertEmptyWorkspace(ctx, t, wd, providers, "foo")
+		if err != nil {
+			return fmt.Errorf("After writing a resource to \"bar\" state, failed assertion: %s", err)
+		}
 
-	// ----- Verify workspaces are "default", "foo" (created during this test), and "bar" (created during this test)
-	err = assertWorkspaces(ctx, t, wd, providers, []string{"bar", "default", "foo"})
-	if err != nil {
-		return err
-	}
+		// ----- Verify workspaces are "default", "foo" (created during this test), and "bar" (created during this test)
+		err = assertWorkspaces(ctx, t, wd, providers, []string{"bar", "default", "foo"})
+		if err != nil {
+			return err
+		}
 
-	// ----- Delete "bar" workspace
-	err = deleteWorkspace(ctx, t, wd, providers, "bar")
-	if err != nil {
-		return err
-	}
+		// ----- Delete "bar" workspace
+		err = deleteWorkspace(ctx, t, wd, providers, "bar")
+		if err != nil {
+			return err
+		}
 
-	// ----- Attempting to delete "default" workspace should return an error
-	err = runProviderCommand(ctx, t, wd, providers, func() error {
-		return wd.SelectWorkspace(ctx, "foo")
-	})
-	if err != nil {
-		return fmt.Errorf("Error selecting \"foo\" workspace: %w", err)
-	}
-	err = runProviderCommand(ctx, t, wd, providers, func() error {
-		return wd.DeleteWorkspace(ctx, "default", tfexec.Force(true))
-	})
-	if err == nil {
-		return errors.New("Expected error when deleting \"default\" workspace")
-	}
+		// ----- Attempting to delete "default" workspace should return an error
+		err = runProviderCommand(ctx, t, wd, providers, func() error {
+			return wd.SelectWorkspace(ctx, "foo")
+		})
+		if err != nil {
+			return fmt.Errorf("Error selecting \"foo\" workspace: %w", err)
+		}
+		err = runProviderCommand(ctx, t, wd, providers, func() error {
+			return wd.DeleteWorkspace(ctx, "default", tfexec.Force(true))
+		})
+		if err == nil {
+			return errors.New("Expected error when deleting \"default\" workspace")
+		}
 
-	// ----- Recreate the "bar" workspace and assert it is empty (i.e. no left over artifacts)
-	err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "bar")
-	if err != nil {
-		return fmt.Errorf("After deleting, then recreating a new workspace, the state should be empty: %w", err)
-	}
+		// ----- Recreate the "bar" workspace and assert it is empty (i.e. no left over artifacts)
+		err = createAndAssertEmptyWorkspace(ctx, t, wd, providers, "bar")
+		if err != nil {
+			return fmt.Errorf("After deleting, then recreating a new workspace, the state should be empty: %w", err)
+		}
 
-	// ----- Delete "bar" workspace
-	err = deleteWorkspace(ctx, t, wd, providers, "bar")
-	if err != nil {
-		return err
-	}
+		// ----- Delete "bar" workspace
+		err = deleteWorkspace(ctx, t, wd, providers, "bar")
+		if err != nil {
+			return err
+		}
 
-	// ----- List workspaces and verify it's just "foo" and "default"
-	err = assertWorkspaces(ctx, t, wd, providers, []string{"default", "foo"})
-	if err != nil {
-		return err
-	}
+		// ----- List workspaces and verify it's just "foo" and "default"
+		err = assertWorkspaces(ctx, t, wd, providers, []string{"default", "foo"})
+		if err != nil {
+			return err
+		}
 
-	// ----- Delete "foo" workspace
-	err = deleteWorkspace(ctx, t, wd, providers, "foo")
-	if err != nil {
-		return err
-	}
+		// ----- Delete "foo" workspace
+		err = deleteWorkspace(ctx, t, wd, providers, "foo")
+		if err != nil {
+			return err
+		}
 
-	// ----- List workspaces and verify it's just "default" (which we did not modify)
-	err = assertWorkspaces(ctx, t, wd, providers, []string{"default"})
-	if err != nil {
-		return err
+		// ----- List workspaces and verify it's just "default" (which we did not modify)
+		err = assertWorkspaces(ctx, t, wd, providers, []string{"default"})
+		if err != nil {
+			return err
+		}
+	} else {
+		// Clean up the default workspace since we can't delete the workspace
+		err = runProviderCommand(ctx, t, wd, providers, func() error {
+			return wd.Destroy(ctx)
+		})
+		if err != nil {
+			return fmt.Errorf("Error cleaning up \"default\" workspace with terraform destroy: %w", err)
+		}
 	}
 
 	return nil
