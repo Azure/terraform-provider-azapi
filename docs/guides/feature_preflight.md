@@ -8,6 +8,8 @@ description: |-
 
 Preflight validation is a feature of the AzAPI provider that allows you to validate the configuration of your resources before applying changes. This feature is useful for catching errors early in the development process and ensuring that your resources are configured correctly.
 
+Validation is performed by sending a request to the [Azure Resource Manager (ARM) Resource Validator API](https://learn.microsoft.com/rest/api/resources/resource-validator/validate-resources?view=rest-resources-2020-10-01), which checks the configuration of your resources against the Azure Resource Manager's rules and policies. If there are any errors, Terraform will display an error message with details about the issue.
+
 This guide will cover how to use the Preflight Validation feature in the AzAPI provider.
 
 ## Prerequisites
@@ -194,3 +196,56 @@ When you run `terraform plan`, you will see an error message like this:
 │ 
 ```
 
+### Unknown Values
+
+During a `terraform plan`, some values may not yet be known — for example, when a field references an attribute of a resource that has not been created yet. The preflight validation handles unknown values differently depending on where they appear in the resource body.
+
+**Unknown values inside the `properties` object** are replaced with a placeholder expression (`[length('foo')]`) before the request is sent to the preflight API. This allows validation to proceed even when some property values are not yet known.
+
+**Unknown values outside the `properties` object** (for example, in top-level fields such as `kind`, `sku`, or `location`) cannot be safely substituted without risking false validation results. When the provider detects an unknown value in any top-level field other than `properties`, it skips preflight validation entirely for that resource and emits a warning instead.
+
+For example, the following configuration references `azapi_resource.resourceGroup.id` as the value of `kind`, which is an unknown value outside the `properties` bag at plan time. Preflight validation will be skipped for this resource:
+
+```hcl
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = azapi_resource.resourceGroup.id
+  location  = "westus"
+  body = {
+    kind = azapi_resource.resourceGroup.id  # unknown value outside properties — validation skipped
+    properties = {
+      accessTier = "Cold"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+}
+```
+
+In contrast, an unknown value inside `properties` (such as `accessTier = azapi_resource.resourceGroup.id`) will be replaced with a placeholder and validation will still run:
+
+```hcl
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = azapi_resource.resourceGroup.id
+  location  = "westus"
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = azapi_resource.resourceGroup.id  # unknown value inside properties — replaced with placeholder
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+}
+```
+
+To determine if preflight validation was skipped due to unknown values, look for a warning message in the Terraform plan output similar to the following:
+
+```shell
+[WARN]  azapi: Skipping preflight validation for resource Microsoft.Storage/storageAccounts@2023-05-01 because the body is invalid: unknown value found outside the properties bag
+```
