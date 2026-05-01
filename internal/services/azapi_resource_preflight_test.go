@@ -163,6 +163,21 @@ func TestAccGenericResource_preflightResourceGroupScopedNestedResource(t *testin
 	})
 }
 
+func TestAccGenericResource_preflightReadOnlyPermission(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	if data.ReaderClientID == "" || data.ReaderClientSecret == "" {
+		t.Fatal("ARM_READER_CLIENT_ID and ARM_READER_CLIENT_SECRET must be set for this test")
+	}
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             r.preflightReadOnlyPermission(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func (r GenericResource) preflightMockPropertyValue(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azapi" {
@@ -423,4 +438,27 @@ resource "azapi_resource" "billingAccount" {
   }
 }
 `
+}
+
+func (r GenericResource) preflightReadOnlyPermission(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+  client_id        = %[1]q
+  client_secret    = %[2]q
+}
+
+%[3]s
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[4]s"
+  location  = "%[5]s"
+  body = {
+    kind = "StorageV2"
+    sku  = { name = "Standard_LRS" }
+  }
+}
+`, data.ReaderClientID, data.ReaderClientSecret, r.template(data), data.RandomString, data.LocationPrimary)
 }
