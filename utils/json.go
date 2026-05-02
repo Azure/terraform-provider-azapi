@@ -154,6 +154,9 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 			if len(oldValue) == 0 {
 				return new
 			}
+			if len(newArr) == 0 {
+				return newArr
+			}
 
 			identifierKey := listIdentifierKeyForPath(path, option)
 			hasIdentifier := identifierOfArrayItemByKey(oldValue[0], identifierKey) != "" && identifierOfArrayItemByKey(newArr[0], identifierKey) != ""
