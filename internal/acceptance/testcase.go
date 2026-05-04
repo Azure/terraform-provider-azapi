@@ -3,6 +3,7 @@ package acceptance
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -58,6 +59,40 @@ type TestData struct {
 
 // BuildTestData generates some test data for the given resource
 func BuildTestData(t *testing.T, resourceType string, resourceLabel string) TestData {
+	if t != nil {
+		t.Helper()
+	}
+
+	testLocation := os.Getenv("ARM_TEST_LOCATION")
+	testLocationAlt := os.Getenv("ARM_TEST_LOCATION_ALT")
+	testLocationAlt2 := os.Getenv("ARM_TEST_LOCATION_ALT2")
+	readerClientID := os.Getenv("ARM_READER_CLIENT_ID")
+	readerClientSecret := os.Getenv("ARM_READER_CLIENT_SECRET")
+
+	missingValues := make([]string, 0)
+	requiredValues := []struct {
+		name  string
+		value string
+	}{
+		{name: "resourceType", value: resourceType},
+		{name: "resourceLabel", value: resourceLabel},
+		{name: "ARM_TEST_LOCATION", value: testLocation},
+		{name: "ARM_TEST_LOCATION_ALT", value: testLocationAlt},
+		{name: "ARM_TEST_LOCATION_ALT2", value: testLocationAlt2},
+		{name: "ARM_READER_CLIENT_ID", value: readerClientID},
+		{name: "ARM_READER_CLIENT_SECRET", value: readerClientSecret},
+	}
+	for _, requiredValue := range requiredValues {
+		name := requiredValue.name
+		value := requiredValue.value
+		if value == "" {
+			missingValues = append(missingValues, name)
+		}
+	}
+	if len(missingValues) > 0 {
+		panic(fmt.Sprintf("BuildTestData missing required values / env vars: %s", strings.Join(missingValues, ", ")))
+	}
+
 	return TestData{
 		RandomInteger: RandTimeInt(),
 		RandomString:  acctest.RandStringFromCharSet(5, charSetAlphaNum),
@@ -65,11 +100,11 @@ func BuildTestData(t *testing.T, resourceType string, resourceLabel string) Test
 
 		ResourceType:       resourceType,
 		resourceLabel:      resourceLabel,
-		LocationPrimary:    location.Normalize(os.Getenv("ARM_TEST_LOCATION")),
-		LocationSecondary:  location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT")),
-		LocationTernary:    location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT2")),
-		ReaderClientID:     os.Getenv("ARM_READER_CLIENT_ID"),
-		ReaderClientSecret: os.Getenv("ARM_READER_CLIENT_SECRET"),
+		LocationPrimary:    location.Normalize(testLocation),
+		LocationSecondary:  location.Normalize(testLocationAlt),
+		LocationTernary:    location.Normalize(testLocationAlt2),
+		ReaderClientID:     readerClientID,
+		ReaderClientSecret: readerClientSecret,
 	}
 }
 

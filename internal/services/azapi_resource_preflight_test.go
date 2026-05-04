@@ -165,9 +165,6 @@ func TestAccGenericResource_preflightResourceGroupScopedNestedResource(t *testin
 
 func TestAccGenericResource_preflightReadOnlyPermission(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	if data.ReaderClientID == "" || data.ReaderClientSecret == "" {
-		t.Fatal("ARM_READER_CLIENT_ID and ARM_READER_CLIENT_SECRET must be set for this test")
-	}
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
