@@ -24,7 +24,7 @@ provider "azapi" {
 }
 ```
 
-- The Preflight validation API requires write permissions. Make sure that the service principal or user running Terraform has the necessary permissions to perform write operations on the resources you are validating.
+- The Preflight validation API requires read permissions. Make sure that the service principal or user running Terraform has the necessary permissions to perform read operations on the resources you are validating.
 
 ## Preflight Validation
 
