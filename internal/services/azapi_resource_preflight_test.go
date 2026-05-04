@@ -178,6 +178,21 @@ func TestAccGenericResource_preflightReadOnlyPermission(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_preflightValidationInvokedForUpdates(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightValidationInvokedForUpdates(data, true),
+		},
+		{
+			Config:      r.preflightValidationInvokedForUpdates(data, false),
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile("Error: Preflight Validation: Invalid configuration"),
+		},
+	})
+}
+
 func (r GenericResource) preflightMockPropertyValue(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azapi" {
@@ -461,4 +476,34 @@ resource "azapi_resource" "storageAccount" {
   }
 }
 `, data.ReaderClientID, data.ReaderClientSecret, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) preflightValidationInvokedForUpdates(data acceptance.TestData, valid bool) string {
+	strayProp := ""
+	if !valid {
+		strayProp = `foo = "bar"`
+	}
+
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+}
+
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[2]s"
+  location  = "%[3]s"
+  
+  body = {
+    kind = "StorageV2"
+		sku	= { name = "Standard_RAGRS" }
+    %[4]s
+  }
+
+  schema_validation_enabled = false
+}
+`, r.template(data), data.RandomString, data.LocationPrimary, strayProp)
 }

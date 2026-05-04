@@ -713,7 +713,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if r.ProviderData.Features.EnablePreflight && isNewResource {
+	if r.ProviderData.Features.EnablePreflight {
 		parentId := plan.ParentID.ValueString()
 		if parentId == "" {
 			placeholder, err := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId())
