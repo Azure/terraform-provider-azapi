@@ -493,10 +493,10 @@ resource "azapi_resource" "test" {
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctestsa%[2]s"
   location  = "%[3]s"
-  
+
   body = {
     kind = "StorageV2"
-		sku	= { name = "Standard_RAGRS" }
+    sku  = { name = "Standard_RAGRS" }
     %[4]s
   }
 
