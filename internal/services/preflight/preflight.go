@@ -20,11 +20,12 @@ import (
 )
 
 type RequestBodyModel struct {
-	Provider  string                   `json:"provider"`
-	Type      string                   `json:"type"`
-	Location  string                   `json:"location"`
-	Scope     string                   `json:"scope"`
-	Resources []map[string]interface{} `json:"resources"`
+	Provider                              string                   `json:"provider"`
+	Type                                  string                   `json:"type"`
+	Location                              string                   `json:"location"`
+	Scope                                 string                   `json:"scope"`
+	Resources                             []map[string]interface{} `json:"resources"`
+	PerformPreflightWithoutRbacWriteCheck bool                     `json:"performPreflightWithoutRbacWriteCheck"`
 }
 
 // ParentIdPlaceholder generates a placeholder for the parentID based on the resource definition and subscription ID
@@ -108,6 +109,8 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 	resource["apiVersion"] = apiVersion
 
 	payload.Resources = []map[string]interface{}{resource}
+
+	payload.PerformPreflightWithoutRbacWriteCheck = true
 
 	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", payload, clients.DefaultRequestOptions())
 	return err
