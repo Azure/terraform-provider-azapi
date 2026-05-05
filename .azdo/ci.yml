@@ -1,21 +1,11 @@
-# This template will generate a list of jobs that will run. The
-# jobs created will correspond to the vmImages specified by the parameters.
-
 parameters:
-  vmImages: []
-  maxParallel: 1
+  unitTest: false
+  accTest: false
 
 jobs:
   - job: build
     timeoutInMinutes: 300
-    displayName: "Build: "
-
-    # Build on each supported OS using the Go version declared in go.mod
-    strategy:
-      maxParallel: ${{ parameters.maxParallel }}
-      matrix:
-        ${{ each vmImage in parameters.vmImages }}:
-          OS_${{ vmImage.ymlSafeName }}: {}
+    displayName: "Build"
 
     pool:
       name: pool-ubuntu-2404
