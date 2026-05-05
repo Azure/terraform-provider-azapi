@@ -92,7 +92,7 @@ test-docker:
 	docker run --rm -v $$(pwd):/go/src/github.com/Azure/terraform-provider-azapi -w /go/src/github.com/Azure/terraform-provider-azapi golang:1.13 make test
 
 test: fmtcheck
-	@TEST=$(TEST) TESTARGS="-skip=^TestAcc" ./scripts/run-test.sh
+	@TEST=$(TEST) ./scripts/run-test.sh
 
 test-compile:
 	@if [ "$(TEST)" = "./..." ]; then \
