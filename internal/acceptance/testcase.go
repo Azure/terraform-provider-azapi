@@ -89,7 +89,7 @@ func BuildTestData(t *testing.T, resourceType string, resourceLabel string) Test
 			missingValues = append(missingValues, name)
 		}
 	}
-	if len(missingValues) > 0 {
+	if len(missingValues) > 0 && os.Getenv("TF_ACC") != "" {
 		panic(fmt.Sprintf("BuildTestData missing required values / env vars: %s", strings.Join(missingValues, ", ")))
 	}
 
