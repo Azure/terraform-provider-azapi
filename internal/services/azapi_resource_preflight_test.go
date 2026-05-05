@@ -92,6 +92,7 @@ func TestAccGenericResource_preflightWithIdentity(t *testing.T) {
 }
 
 func TestAccGenericResource_preflightTenantScopedResource(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Service principal require additional permission")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -159,6 +160,33 @@ func TestAccGenericResource_preflightResourceGroupScopedNestedResource(t *testin
 			Config:             r.preflightResourceGroupScopedNestedResource(data),
 			PlanOnly:           true,
 			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
+func TestAccGenericResource_preflightReadOnlyPermission(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             r.preflightReadOnlyPermission(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
+func TestAccGenericResource_preflightValidationInvokedForUpdates(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightValidationInvokedForUpdates(data, true),
+		},
+		{
+			Config:      r.preflightValidationInvokedForUpdates(data, false),
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile("Error: Preflight Validation: Invalid configuration"),
 		},
 	})
 }
@@ -269,7 +297,7 @@ resource "azapi_resource" "aksCluster" {
           count  = 1
           mode   = "System"
           name   = "default"
-          vmSize = "Standard_DS2_v2"
+          vmSize = "Standard_D2s_v3"
         },
       ]
       dnsPrefix = "exampleaks"
@@ -423,4 +451,57 @@ resource "azapi_resource" "billingAccount" {
   }
 }
 `
+}
+
+func (r GenericResource) preflightReadOnlyPermission(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+  client_id        = %[1]q
+  client_secret    = %[2]q
+}
+
+%[3]s
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[4]s"
+  location  = "%[5]s"
+  body = {
+    kind = "StorageV2"
+    sku  = { name = "Standard_LRS" }
+  }
+}
+`, data.ReaderClientID, data.ReaderClientSecret, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) preflightValidationInvokedForUpdates(data acceptance.TestData, valid bool) string {
+	strayProp := ""
+	if !valid {
+		strayProp = `foo = "bar"`
+	}
+
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+}
+
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[2]s"
+  location  = "%[3]s"
+
+  body = {
+    kind = "StorageV2"
+    sku  = { name = "Standard_RAGRS" }
+    %[4]s
+  }
+
+  schema_validation_enabled = false
+}
+`, r.template(data), data.RandomString, data.LocationPrimary, strayProp)
 }

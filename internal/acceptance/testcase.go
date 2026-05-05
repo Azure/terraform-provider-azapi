@@ -3,6 +3,7 @@ package acceptance
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -46,20 +47,64 @@ type TestData struct {
 
 	// resourceLabel is the local used for the resource - generally "test""
 	resourceLabel string
+
+	// ReaderClientID is the client ID of a service principal with Reader-only permission,
+	// sourced from ARM_READER_CLIENT_ID. Used for testing read-only access scenarios.
+	ReaderClientID string
+
+	// ReaderClientSecret is the client secret for the Reader service principal,
+	// sourced from ARM_READER_CLIENT_SECRET.
+	ReaderClientSecret string
 }
 
 // BuildTestData generates some test data for the given resource
 func BuildTestData(t *testing.T, resourceType string, resourceLabel string) TestData {
+	if t != nil {
+		t.Helper()
+	}
+
+	testLocation := os.Getenv("ARM_TEST_LOCATION")
+	testLocationAlt := os.Getenv("ARM_TEST_LOCATION_ALT")
+	testLocationAlt2 := os.Getenv("ARM_TEST_LOCATION_ALT2")
+	readerClientID := os.Getenv("ARM_READER_CLIENT_ID")
+	readerClientSecret := os.Getenv("ARM_READER_CLIENT_SECRET")
+
+	missingValues := make([]string, 0)
+	requiredValues := []struct {
+		name  string
+		value string
+	}{
+		{name: "resourceType", value: resourceType},
+		{name: "resourceLabel", value: resourceLabel},
+		{name: "ARM_TEST_LOCATION", value: testLocation},
+		{name: "ARM_TEST_LOCATION_ALT", value: testLocationAlt},
+		{name: "ARM_TEST_LOCATION_ALT2", value: testLocationAlt2},
+		{name: "ARM_READER_CLIENT_ID", value: readerClientID},
+		{name: "ARM_READER_CLIENT_SECRET", value: readerClientSecret},
+	}
+	for _, requiredValue := range requiredValues {
+		name := requiredValue.name
+		value := requiredValue.value
+		if value == "" {
+			missingValues = append(missingValues, name)
+		}
+	}
+	if len(missingValues) > 0 && os.Getenv("TF_ACC") != "" {
+		panic(fmt.Sprintf("BuildTestData missing required values / env vars: %s", strings.Join(missingValues, ", ")))
+	}
+
 	return TestData{
 		RandomInteger: RandTimeInt(),
 		RandomString:  acctest.RandStringFromCharSet(5, charSetAlphaNum),
 		ResourceName:  fmt.Sprintf("%s.%s", resourceType, resourceLabel),
 
-		ResourceType:      resourceType,
-		resourceLabel:     resourceLabel,
-		LocationPrimary:   location.Normalize(os.Getenv("ARM_TEST_LOCATION")),
-		LocationSecondary: location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT")),
-		LocationTernary:   location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT2")),
+		ResourceType:       resourceType,
+		resourceLabel:      resourceLabel,
+		LocationPrimary:    location.Normalize(testLocation),
+		LocationSecondary:  location.Normalize(testLocationAlt),
+		LocationTernary:    location.Normalize(testLocationAlt2),
+		ReaderClientID:     readerClientID,
+		ReaderClientSecret: readerClientSecret,
 	}
 }
 
@@ -188,6 +233,8 @@ func PreCheck(t *testing.T) {
 For tests that authenticate with Azure by using a Service Principal, the following environment variables must be set:
 - ARM_CLIENT_ID
 - ARM_CLIENT_SECRET
+- ARM_READER_CLIENT_ID
+- ARM_READER_CLIENT_SECRET
 - ARM_SUBSCRIPTION_ID
 - ARM_TENANT_ID
 - ARM_TEST_LOCATION
