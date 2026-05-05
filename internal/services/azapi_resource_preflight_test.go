@@ -92,6 +92,7 @@ func TestAccGenericResource_preflightWithIdentity(t *testing.T) {
 }
 
 func TestAccGenericResource_preflightTenantScopedResource(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Service principal require additional permission")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
