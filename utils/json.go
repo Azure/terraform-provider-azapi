@@ -156,7 +156,7 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 			}
 			if len(newArr) == 0 {
 				// oldValue is non-empty (checked above) but newArr is
-				// empty — a newArr[0] identifier lookup would
+				// empty, a newArr[0] identifier lookup would
 				// otherwise panic with 'index out of range [0] with
 				// length 0'. Treat as an intentional clear.
 				return newArr
