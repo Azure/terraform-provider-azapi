@@ -1,4 +1,9 @@
-## v2.9.0 (Unreleased)
+## Unreleased
+
+BUG FIXES:
+- Fix `Missing Resource Identity After Read` error when a resource is deleted outside of Terraform and a subsequent plan is run (GH-1077).
+
+## v2.9.0
 
 ENHANCEMENTS:
 - `azapi_update_resource` resource: Support `replace_triggers_external_values` argument to trigger resource replacement based on external values.
