@@ -563,6 +563,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 			// If a read after create retry is not specified, use the default.
 			clients.NewRetryOptionsForReadAfterCreate(),
 			clients.NewRetryOptions(plan.Retry),
+			clients.NewRetryOptionsForWaitForDesiredState(plan.Retry.GetWaitForDesiredState()),
 		),
 	}
 
