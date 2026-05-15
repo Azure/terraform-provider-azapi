@@ -1,4 +1,9 @@
-## v2.9.0 (Unreleased)
+## v2.10.0 (Unreleased)
+
+ENHANCEMENTS:
+- `azapi` provider: Support `preserve_resource_id_casing` feature flag (default `false`). When enabled, if the resource ID the provider would write back to state differs from the existing state value only by casing, the existing casing is preserved. This avoids spurious `Unexpected Identity Change` errors and diffs when consumers (or upstream modules) rely on a specific casing the Azure API may not preserve. Only the `id` and `resource_id` attributes are affected. Can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` environment variable.
+
+## v2.9.0
 
 ENHANCEMENTS:
 - `azapi_update_resource` resource: Support `replace_triggers_external_values` argument to trigger resource replacement based on external values.
@@ -33,7 +38,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Support listing resources via new ListResource protocol.
 - `azapi_resource` resource: Support listing all resources in a resource group when `type` is omitted. Uses ARM API `/subscriptions/{sub}/resourceGroups/{rg}/resources` to enumerate all resources.
 - `azapi_resource` resource: Refactor import logic to support identity block and multiple import scenarios (ID only, ID with API version, ID and type).
-- `azapi_data_plane_resource` resource: Adds a customization layer which allows custom CRUD operations for resources that don't follow standard patterns. 
+- `azapi_data_plane_resource` resource: Adds a customization layer which allows custom CRUD operations for resources that don't follow standard patterns.
 - `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/keys` type.
 - `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/secrets` type.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/datasources` type.
@@ -47,7 +52,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix validation logic for properties that are both `ReadOnly` and `Required`.
-- Fix panic when using `sensitive_body_version` with empty `sensitive_body` (GH-999). 
+- Fix panic when using `sensitive_body_version` with empty `sensitive_body` (GH-999).
 - Fix `azapi_resource` resource move from `azurerm_storage_share` by converting `/fileshares/` to `/shares/` in resource ID.
 
 ## v2.7.0
@@ -153,7 +158,7 @@ ENHANCEMENTS:
 - Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/4da2e194de989ed72552add82b9a5ead5223695b
 
 BUG FIXES:
-- Fix a bug that the provider produced inconsistent result after apply when default output feature is enabled.  
+- Fix a bug that the provider produced inconsistent result after apply when default output feature is enabled.
 Notice: Terraform will detect the `output` field's changes made outside of Terraform since the last "terraform apply". You can run `terraform refresh` to update the state file with the latest values.
 - Fix a bug that the GET after PUT retry timeout doesn't work properly when the environment variable is set.
 
@@ -293,7 +298,7 @@ ENHANCEMENTS:
 - Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/4abd79ba2baa05ba3c8364919b670ab43a9bf69c
 
 BUG FIXES:
-- Fix a bug that `ignore_body_changes` incorrectly removes tags. 
+- Fix a bug that `ignore_body_changes` incorrectly removes tags.
 
 NOTICE:
 - Provider field `default_naming_prefix` and `default_naming_suffix` are deprecated. It will not work in the next minor release and will be removed in the next major release.
@@ -493,7 +498,7 @@ ENHANCEMENTS:
 - Update bicep types to https://github.com/Azure/bicep-types-az/commit/57f3ecc750648562cf170ef456ef39533872b101
 
 BUG FIXES:
-- Fix incorrect ID format in the imported `azapi_resource` resource. 
+- Fix incorrect ID format in the imported `azapi_resource` resource.
 - Fix incorrect `body` content in the imported `azapi_resource` resource.
 
 ## v0.1.1
