@@ -152,13 +152,13 @@ data "azapi_resource_action" "example" {
 	// it will output "registry1.azurecr.io"
 	output "login_server" {
 		value     = data.azapi_resource_action.example.sensitive_output.properties.loginServer
-        sensitive = true
+		sensitive = true
 	}
 
 	// it will output "disabled"
 	output "quarantine_policy" {
 		value     = data.azapi_resource_action.example.sensitive_output.properties.policies.quarantinePolicy.status
-        sensitive = true
+		sensitive = true
 	}
 	```
 
