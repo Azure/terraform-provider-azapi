@@ -196,8 +196,21 @@ In Terraform v1.12.0 and later, the [%[1]simport%[1]s block](https://developer.h
 }
 
 func (b resourceRenderBuilder) renderIdentityField(w io.Writer, field ResourceIdentityField) error {
-	if _, err := fmt.Fprintf(w, "- `%s` (%s) %s\n", field.Name, field.Traits(), field.Description); err != nil {
+	if _, err := fmt.Fprintf(w, "- `%s` (%s)", field.Name, field.Traits()); err != nil {
 		return err
+	}
+	desc := field.Description
+	if isMultilineMarkdown(desc) {
+		if _, err := fmt.Fprintf(w, " %s\n", IndentFollowingLines(desc, "\t")); err != nil {
+			return err
+		}
+	} else {
+		if desc != "" {
+			if _, err := fmt.Fprintf(w, " %s", desc); err != nil {
+				return err
+			}
+		}
+		io.WriteString(w, "\n")
 	}
 	if v := field.CustomTypeDescription(); v != "" {
 		if _, err := fmt.Fprintf(w, "\n\t-> %s\n", v); err != nil {

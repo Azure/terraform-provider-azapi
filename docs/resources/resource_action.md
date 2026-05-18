@@ -193,13 +193,13 @@ resource "azapi_resource_action" "stop" {
 	// it will output "registry1.azurecr.io"
 	output "login_server" {
 		value     = azapi_resource_action.example.sensitive_output.properties.loginServer
-        sensitive = true
+		sensitive = true
 	}
 
 	// it will output "disabled"
 	output "quarantine_policy" {
 		value     = azapi_resource_action.example.sensitive_output.properties.policies.quarantinePolicy.status
-        sensitive = true
+		sensitive = true
 	}
 	```
 

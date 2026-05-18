@@ -16,7 +16,7 @@ require (
 	github.com/hashicorp/terraform-plugin-log v0.10.0
 	github.com/hashicorp/terraform-plugin-testing v1.16.0
 	github.com/jmespath/go-jmespath v0.4.0
-	github.com/magodo/terraform-plugin-framework-docs v0.2.3
+	github.com/magodo/terraform-plugin-framework-docs v0.3.0
 	github.com/stretchr/testify v1.11.1
 	github.com/zclconf/go-cty v1.18.1
 )
