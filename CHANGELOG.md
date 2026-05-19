@@ -8,6 +8,10 @@ ENHANCEMENTS:
 - Bump `terraform-plugin-framework` from v1.16.1 to v1.19.0 (GH-1081).
 - Add example for `Microsoft.RedHatOpenShift/openShiftClusters` (GH-1083).
 
+BUG FIXES:
+
+- Fix a panic when comparing a non-empty configured list with an empty remote list during no-op change detection (GH-1125).
+
 ## v2.9.0
 
 ENHANCEMENTS:
