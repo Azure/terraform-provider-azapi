@@ -412,8 +412,8 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.Headers),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	client := r.ProviderData.ResourceClient
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, requestOptions)
