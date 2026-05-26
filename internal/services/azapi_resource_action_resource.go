@@ -44,6 +44,8 @@ type ActionResourceModel struct {
 	Action                        types.String     `tfsdk:"action"`
 	Method                        types.String     `tfsdk:"method"`
 	Body                          types.Dynamic    `tfsdk:"body"`
+	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
+	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
 	When                          types.String     `tfsdk:"when"`
 	Locks                         types.List       `tfsdk:"locks"`
 	IgnoreNotFound                types.Bool       `tfsdk:"ignore_not_found"`
@@ -171,6 +173,18 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				},
 			},
 
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
+			"sensitive_body_version": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.SensitiveBodyVersion(),
+			},
+
 			"when": schema.StringAttribute{
 				Optional: true,
 				Computed: true,
@@ -273,6 +287,15 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
+	// Validate: when=destroy is incompatible with sensitive_body (Config unavailable in DeleteRequest)
+	if !config.SensitiveBody.IsNull() && config.When.ValueString() == "destroy" {
+		response.Diagnostics.AddError(
+			"Invalid configuration",
+			`"sensitive_body" is not supported when "when" is set to "destroy", because the configuration is not available during the destroy phase.`,
+		)
+		return
+	}
+
 	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 		plan.SensitiveOutput = basetypes.NewDynamicUnknown()
@@ -285,14 +308,28 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		if !plan.SensitiveResponseExportValues.Equal(state.SensitiveResponseExportValues) {
 			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 		}
+
+		// Set output as unknown to trigger a plan diff, if sensitive_body has changed
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody, config.SensitiveBodyVersion, state.SensitiveBodyVersion)
+		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
+			return
+		}
+		if diff {
+			tflog.Info(ctx, `"sensitive_body" has changed`)
+			plan.Output = types.DynamicUnknown()
+			plan.SensitiveOutput = types.DynamicUnknown()
+		}
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 }
 
 func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
-	var model ActionResourceModel
+	var model, config ActionResourceModel
 	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
 		return
 	}
 
@@ -304,7 +341,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 	defer cancel()
 
 	if model.When.ValueString() == "apply" {
-		r.Action(ctx, model, &response.State, &response.Diagnostics)
+		r.Action(ctx, model, config, &response.State, &response.Diagnostics, response.Private, types.MapNull(types.StringType))
 	} else {
 		id, err := parse.ResourceIDWithResourceType(model.ResourceId.ValueString(), model.Type.ValueString())
 		if err != nil {
@@ -324,11 +361,14 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 }
 
 func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
-	var state, plan ActionResourceModel
+	var state, plan, config ActionResourceModel
 	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
 		return
 	}
 	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
 		return
 	}
 
@@ -348,7 +388,7 @@ func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequ
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
 
 	if plan.When.ValueString() == "apply" {
-		r.Action(ctx, plan, &response.State, &response.Diagnostics)
+		r.Action(ctx, plan, config, &response.State, &response.Diagnostics, response.Private, state.SensitiveBodyVersion)
 	} else {
 		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
 	}
@@ -361,7 +401,7 @@ func (r *ActionResource) Delete(ctx context.Context, request resource.DeleteRequ
 	}
 
 	if model.When.ValueString() == "destroy" {
-		r.Action(ctx, model, &response.State, &response.Diagnostics)
+		r.Action(ctx, model, ActionResourceModel{}, &response.State, &response.Diagnostics, nil, types.MapNull(types.StringType))
 	}
 }
 
@@ -378,7 +418,7 @@ func (r *ActionResource) Read(ctx context.Context, request resource.ReadRequest,
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
-func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, state *tfsdk.State, diagnostics *diag.Diagnostics) {
+func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, config ActionResourceModel, state *tfsdk.State, diagnostics *diag.Diagnostics, privateData PrivateData, priorSensitiveBodyVersion types.Map) {
 	actionTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
 	diagnostics.Append(diags...)
 	if diagnostics.HasError() {
@@ -400,6 +440,22 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	if err := unmarshalBody(model.Body, &requestBody); err != nil {
 		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
+	}
+
+	// Merge sensitive_body into the request body
+	if !config.SensitiveBody.IsNull() {
+		sensitiveBody, err := unmarshalSensitiveBody(config.SensitiveBody, model.SensitiveBodyVersion, priorSensitiveBodyVersion)
+		if err != nil {
+			diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
+			return
+		}
+		if sensitiveBody != nil {
+			if requestBody == nil {
+				requestBody = sensitiveBody
+			} else {
+				requestBody = utils.MergeObject(requestBody, sensitiveBody)
+			}
+		}
 	}
 
 	lockIds := common.AsStringList(model.Locks)
@@ -449,6 +505,20 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	model.SensitiveOutput = sensitiveOutput
 
 	diagnostics.Append(state.Set(ctx, model)...)
+
+	// Store sensitive_body hash in private state for change detection
+	if privateData != nil {
+		if model.SensitiveBodyVersion.IsNull() {
+			writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+			if err != nil {
+				diagnostics.AddError("Invalid sensitive_body", err.Error())
+				return
+			}
+			diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
+		} else {
+			diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
+		}
+	}
 }
 
 func (r *ActionResource) RenderOption() tffwdocs.ResourceRenderOption {

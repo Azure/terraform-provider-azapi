@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/action"
@@ -29,6 +30,7 @@ type AzapiResourceActionModel struct {
 	Action          types.String  `tfsdk:"action"`
 	Method          types.String  `tfsdk:"method"`
 	Body            types.Dynamic `tfsdk:"body"`
+	SensitiveBody   types.Dynamic `tfsdk:"sensitive_body"`
 	Locks           types.List    `tfsdk:"locks"`
 	Headers         types.Map     `tfsdk:"headers"`
 	QueryParameters types.Map     `tfsdk:"query_parameters"`
@@ -94,6 +96,12 @@ func (a *AzapiResourceAction) Schema(ctx context.Context, req action.SchemaReque
 				},
 			},
 
+			"sensitive_body": actionschema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
 			"locks": actionschema.ListAttribute{
 				Optional:            true,
 				ElementType:         types.StringType,
@@ -142,6 +150,22 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	if err := unmarshalBody(config.Body, &requestBody); err != nil {
 		resp.Diagnostics.AddError("Invalid body", fmt.Sprintf("The argument \"body\" is invalid: %s", err.Error()))
 		return
+	}
+
+	// Merge sensitive_body into the request body
+	if !config.SensitiveBody.IsNull() {
+		sensitiveBody, err := unmarshalSensitiveBody(config.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf("The argument \"sensitive_body\" is invalid: %s", err.Error()))
+			return
+		}
+		if sensitiveBody != nil {
+			if requestBody == nil {
+				requestBody = sensitiveBody
+			} else {
+				requestBody = utils.MergeObject(requestBody, sensitiveBody)
+			}
+		}
 	}
 
 	lockIds := common.AsStringList(config.Locks)

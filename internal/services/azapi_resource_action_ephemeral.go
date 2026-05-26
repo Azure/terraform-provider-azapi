@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/ephemeral/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -32,6 +33,7 @@ type ActionEphemeralModel struct {
 	Action               types.String     `tfsdk:"action"`
 	Method               types.String     `tfsdk:"method"`
 	Body                 types.Dynamic    `tfsdk:"body"`
+	SensitiveBody        types.Dynamic    `tfsdk:"sensitive_body"`
 	Locks                types.List       `tfsdk:"locks"`
 	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
 	Output               types.Dynamic    `tfsdk:"output"`
@@ -107,6 +109,11 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				},
 			},
 
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
 				Optional:    true,
@@ -175,6 +182,22 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 	if err := unmarshalBody(model.Body, &requestBody); err != nil {
 		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
+	}
+
+	// Merge sensitive_body into the request body
+	if !model.SensitiveBody.IsNull() {
+		sensitiveBody, err := unmarshalSensitiveBody(model.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+		if err != nil {
+			response.Diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
+			return
+		}
+		if sensitiveBody != nil {
+			if requestBody == nil {
+				requestBody = sensitiveBody
+			} else {
+				requestBody = utils.MergeObject(requestBody, sensitiveBody)
+			}
+		}
 	}
 
 	method := model.Method.ValueString()
