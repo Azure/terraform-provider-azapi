@@ -86,6 +86,7 @@ type providerData struct {
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
+	PreserveResourceIDCasing     types.Bool   `tfsdk:"preserve_resource_id_casing"`
 	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
@@ -319,6 +320,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"disable_default_output": schema.BoolAttribute{
 				Optional:    true,
 				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
+			},
+
+			"preserve_resource_id_casing": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Preserve the existing casing of the resource ID in state. The default is false. When set to true, if the resource ID the provider would write back to state differs from the value already in state only by casing, the existing casing is kept. This is useful when consumers of the resource ID (or the `azapi_resource` identity) require a specific casing that the Azure API may not preserve. This only affects the `id` (and `resource_id`) attributes; other properties are unaffected. This can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` Environment Variable.",
 			},
 
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
@@ -584,6 +590,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.PreserveResourceIDCasing.IsNull() {
+		if v := os.Getenv("ARM_PRESERVE_RESOURCE_ID_CASING"); v != "" {
+			model.PreserveResourceIDCasing = types.BoolValue(v == "true")
+		} else {
+			model.PreserveResourceIDCasing = types.BoolValue(false)
+		}
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -677,12 +691,13 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
-			DefaultTags:          tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:        model.DefaultName.ValueString(),
-			EnablePreflight:      model.EnablePreflight.ValueBool(),
-			IgnoreNoOpChanges:    model.IgnoreNoOpChanges.ValueBool(),
-			DisableDefaultOutput: model.DisableDefaultOutput.ValueBool(),
+			DefaultTags:              tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:          location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:            model.DefaultName.ValueString(),
+			EnablePreflight:          model.EnablePreflight.ValueBool(),
+			IgnoreNoOpChanges:        model.IgnoreNoOpChanges.ValueBool(),
+			DisableDefaultOutput:     model.DisableDefaultOutput.ValueBool(),
+			PreserveResourceIDCasing: model.PreserveResourceIDCasing.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),

@@ -902,7 +902,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			}
 			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
 				// generate the computed fields
-				plan.ID = types.StringValue(id.ID())
+				stateID := ""
+				if state != nil {
+					stateID = state.ID.ValueString()
+				}
+				plan.ID = types.StringValue(preserveCasing(stateID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 
 				var defaultOutput interface{}
 				if !r.ProviderData.Features.DisableDefaultOutput {
@@ -957,7 +961,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	// generate the computed fields
-	plan.ID = types.StringValue(id.ID())
+	stateID := ""
+	if state != nil {
+		stateID = state.ID.ValueString()
+	}
+	plan.ID = types.StringValue(preserveCasing(stateID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
