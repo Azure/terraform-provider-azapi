@@ -10,6 +10,7 @@ const (
 	IoTCentral       cloud.ServiceName = "IoTCentral"
 	KeyVault         cloud.ServiceName = "KeyVault"
 	Purview          cloud.ServiceName = "Purview"
+	Storage          cloud.ServiceName = "Storage"
 	Synapse          cloud.ServiceName = "Synapse"
 	Search           cloud.ServiceName = "Search"
 )
@@ -46,6 +47,17 @@ func init() {
 	cloud.AzurePublic.Services[Purview] = cloud.ServiceConfiguration{
 		Audience: "https://purview.azure.net",
 		Endpoint: "https://purview.azure.com",
+	}
+	// Storage covers all Azure Storage service types (Blob, Table, Queue, File)
+	// which share the audience https://storage.azure.com. The endpoint suffix
+	// .core.windows.net matches <account>.<service>.core.windows.net hostnames.
+	cloud.AzurePublic.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.windows.net",
+	}
+	cloud.AzureGovernment.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.usgovcloudapi.net",
 	}
 	cloud.AzurePublic.Services[Synapse] = cloud.ServiceConfiguration{
 		Audience: "https://dev.azuresynapse.net",
