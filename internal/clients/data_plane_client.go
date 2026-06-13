@@ -81,7 +81,8 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -136,7 +137,8 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -178,7 +180,8 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -232,7 +235,8 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
+	applyAPIVersion(req, apiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -257,7 +261,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	if err != nil {
 		return nil, WrapContextError(err, options.LastRetryError)
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 
@@ -287,4 +291,15 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	default:
 	}
 	return responseBody, nil
+}
+
+func applyAPIVersion(req *policy.Request, apiVersion string, options RequestOptions) {
+	reqQP := req.Raw().URL.Query()
+	if !options.DisableAPIVersionQueryParameter {
+		reqQP.Set("api-version", apiVersion)
+		req.Raw().URL.RawQuery = reqQP.Encode()
+	}
+	if options.APIVersionHeaderName != "" {
+		req.Raw().Header.Set(options.APIVersionHeaderName, apiVersion)
+	}
 }

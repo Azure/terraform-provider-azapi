@@ -26,10 +26,12 @@ var DefaultRetryableReadAfterCreateStatusCodes = []int{
 }
 
 type RequestOptions struct {
-	Headers         map[string]string
-	QueryParameters map[string]string
-	RetryOptions    *policy.RetryOptions
-	LastRetryError  *LastRetryError
+	Headers                         map[string]string
+	QueryParameters                 map[string]string
+	RetryOptions                    *policy.RetryOptions
+	LastRetryError                  *LastRetryError
+	DisableAPIVersionQueryParameter bool
+	APIVersionHeaderName            string
 }
 
 // CombineRetryOptions combines multiple RequestOptions into a single policy.RetryOptions.

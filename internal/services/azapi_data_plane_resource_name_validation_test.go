@@ -4,17 +4,18 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func TestValidateDataPlaneResourceName(t *testing.T) {
+func TestValidateDataPlaneResourceAddress(t *testing.T) {
 	t.Run("agent requires name", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
 			Type: types.StringValue("Microsoft.Foundry/agents@v1"),
 			Name: types.StringNull(),
 		}
 
-		err := validateDataPlaneResourceName(config)
+		err := validateDataPlaneResourceAddress(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
@@ -29,7 +30,7 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 			Name: types.StringValue("terraform-agent"),
 		}
 
-		if err := validateDataPlaneResourceName(config); err != nil {
+		if err := validateDataPlaneResourceAddress(config); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
@@ -40,7 +41,7 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 			Name: types.StringNull(),
 		}
 
-		err := validateDataPlaneResourceName(config)
+		err := validateDataPlaneResourceAddress(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
@@ -55,8 +56,39 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 			Name: types.StringValue("secret-name"),
 		}
 
-		if err := validateDataPlaneResourceName(config); err != nil {
+		if err := validateDataPlaneResourceAddress(config); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)
+		}
+	})
+
+	t.Run("table entity requires identifiers instead of name", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type: types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
+			Name: types.StringNull(),
+			Identifiers: types.MapValueMust(types.StringType, map[string]attr.Value{
+				"partitionKey": types.StringValue("pk"),
+				"rowKey":       types.StringValue("rk"),
+			}),
+		}
+
+		if err := validateDataPlaneResourceAddress(config); err != nil {
+			t.Fatalf("expected nil error, got: %v", err)
+		}
+	})
+
+	t.Run("table entity rejects missing identifiers", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type:        types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
+			Name:        types.StringNull(),
+			Identifiers: types.MapNull(types.StringType),
+		}
+
+		err := validateDataPlaneResourceAddress(config)
+		if err == nil {
+			t.Fatalf("expected validation error")
+		}
+		if !strings.Contains(err.Error(), "identifiers") {
+			t.Fatalf("expected identifiers error, got: %v", err)
 		}
 	})
 }
