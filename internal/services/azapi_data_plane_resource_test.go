@@ -182,6 +182,40 @@ func TestAccDataPlaneResource_searchServiceSynonymMap(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_storageTable(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.storageTable(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_storageTableEntity(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.storageTableEntity(data, "value1"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.storageTableEntity(data, "value2"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_headers(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -1320,6 +1354,161 @@ resource "azapi_data_plane_resource" "test" {
   ]
 }
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) storageTable(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    storageTableDataContributorRoleId = "value[?properties.roleName == 'Storage Table Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.storageAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.storageTableDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net"
+  name      = "acctest%[2]s"
+  body = {
+    TableName = "acctest%[2]s"
+  }
+
+  retry = {
+    error_message_regex  = ["AuthorizationPermissionMismatch", "AuthorizationFailure", "Forbidden", "Unauthorized", "authorization"]
+    interval_seconds     = 20
+    max_interval_seconds = 120
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) storageTableEntity(data acceptance.TestData, outputValue string) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "table" {
+  type      = "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net"
+  name      = "acctest%[2]s"
+  body = {
+    TableName = "acctest%[2]s"
+  }
+}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    storageTableDataContributorRoleId = "value[?properties.roleName == 'Storage Table Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.storageAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.storageTableDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
+  identifiers = {
+    partitionKey = "example"
+    rowKey       = "state"
+  }
+  body = {
+    outputs = "%[3]s"
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+
+data "azapi_data_plane_resource" "read" {
+  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
+  parent_id = azapi_data_plane_resource.test.parent_id
+  identifiers = {
+    partitionKey = azapi_data_plane_resource.test.identifiers.partitionKey
+    rowKey       = azapi_data_plane_resource.test.identifiers.rowKey
+  }
+}
+`, data.LocationPrimary, data.RandomString, outputValue)
 }
 
 func (r DataPlaneResource) appConfigKeyValuesSensitiveBody(data acceptance.TestData, value string) string {

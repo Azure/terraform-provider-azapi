@@ -113,12 +113,65 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 				AzureResourceType: "Microsoft.Search/searchServices/synonymmaps",
 			},
 		},
+		{
+			Name:         "acctesttable",
+			ParentId:     "mystorage.table.core.windows.net",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mystorage.table.core.windows.net/Tables('acctesttable')",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables",
+			},
+		},
+		{
+			Name:         "",
+			ParentId:     "mystorage.table.core.windows.net/mytable",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
+				Identifiers: map[string]string{
+					"partitionKey": "pk",
+					"rowKey":       "rk",
+				},
+			},
+		},
+		// {tokenId} — non-name placeholder; previously broken (silently left as literal text)
+		{
+			Name:         "",
+			ParentId:     "myapp.azureiotcentral.com",
+			ResourceType: "Microsoft.IoTCentral/iotApps/apiTokens@2022-07-31",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
+				ApiVersion:        "2022-07-31",
+				AzureResourceType: "Microsoft.IoTCentral/iotApps/apiTokens",
+				Identifiers: map[string]string{
+					"tokenId": "mytoken",
+				},
+			},
+		},
+		// {name=defaultValue} — singleton with a fixed name enforced by the service
+		{
+			Name:         "defaultResourceSetRuleConfig",
+			ParentId:     "mypurview.purview.azure.com",
+			ResourceType: "Microsoft.Purview/accounts/Account/resourceSetRuleConfigs@2021-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mypurview.purview.azure.com/resourceSetRuleConfigs/defaultResourceSetRuleConfig",
+				ApiVersion:        "2021-07-01",
+				AzureResourceType: "Microsoft.Purview/accounts/Account/resourceSetRuleConfigs",
+			},
+		},
 	}
 
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q %q %q", v.Name, v.ParentId, v.ResourceType)
 
-		actual, err := parse.NewDataPlaneResourceId(v.Name, v.ParentId, v.ResourceType)
+		actual, err := parse.NewDataPlaneResourceIdWithIdentifiers(v.Name, v.ParentId, v.ResourceType, v.Expected.Identifiers)
 		if err != nil {
 			if v.Error {
 				continue
@@ -138,6 +191,9 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 		}
 		if actual.AzureResourceType != v.Expected.AzureResourceType {
 			t.Fatalf("Expected %q but got %q for AzureResourceType", v.Expected.AzureResourceType, actual.AzureResourceType)
+		}
+		if len(actual.Identifiers) != len(v.Expected.Identifiers) {
+			t.Fatalf("Expected identifiers %#v but got %#v", v.Expected.Identifiers, actual.Identifiers)
 		}
 	}
 }
@@ -257,6 +313,62 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				Name:              "mysynonymmap",
 			},
 		},
+		{
+			ResourceId:   "mystorage.table.core.windows.net/Tables('acctesttable')",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mystorage.table.core.windows.net/Tables('acctesttable')",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables",
+				ParentId:          "mystorage.table.core.windows.net",
+				Name:              "acctesttable",
+			},
+		},
+		{
+			ResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
+				ParentId:          "mystorage.table.core.windows.net/mytable",
+				Identifiers: map[string]string{
+					"partitionKey": "pk",
+					"rowKey":       "rk",
+				},
+			},
+		},
+		// {tokenId} round-trip — verify the non-name placeholder is parsed correctly
+		{
+			ResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
+			ResourceType: "Microsoft.IoTCentral/iotApps/apiTokens@2022-07-31",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
+				ApiVersion:        "2022-07-31",
+				AzureResourceType: "Microsoft.IoTCentral/iotApps/apiTokens",
+				ParentId:          "myapp.azureiotcentral.com",
+				Name:              "",
+				Identifiers: map[string]string{
+					"tokenId": "mytoken",
+				},
+			},
+		},
+		// {name=defaultValue} round-trip — verify fixed-default singletons parse correctly
+		{
+			ResourceId:   "mypurview.purview.azure.com/resourceSetRuleConfigs/defaultResourceSetRuleConfig",
+			ResourceType: "Microsoft.Purview/accounts/Account/resourceSetRuleConfigs@2021-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mypurview.purview.azure.com/resourceSetRuleConfigs/defaultResourceSetRuleConfig",
+				ApiVersion:        "2021-07-01",
+				AzureResourceType: "Microsoft.Purview/accounts/Account/resourceSetRuleConfigs",
+				ParentId:          "mypurview.purview.azure.com",
+				Name:              "defaultResourceSetRuleConfig",
+			},
+		},
 	}
 
 	for _, v := range testData {
@@ -285,6 +397,9 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 		}
 		if actual.ParentId != v.Expected.ParentId {
 			t.Fatalf("Expected %q but got %q for ParentId", v.Expected.ParentId, actual.ParentId)
+		}
+		if len(actual.Identifiers) != len(v.Expected.Identifiers) {
+			t.Fatalf("Expected identifiers %#v but got %#v", v.Expected.Identifiers, actual.Identifiers)
 		}
 	}
 }
