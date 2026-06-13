@@ -74,6 +74,16 @@ func validateDataPlaneResourceAddress(config *DataPlaneResourceModel) error {
 	if config.Identifiers.IsUnknown() {
 		return nil
 	}
+	// ValidateConfig is called once per block before for_each is expanded.
+	// At that point each.value.pk / each.value.rk are not yet resolved and
+	// appear as unknown attribute values inside an otherwise-known map.
+	// Skip validation now; the plan walk re-invokes ValidateConfig with
+	// concrete values for each expanded instance.
+	for _, v := range config.Identifiers.Elements() {
+		if v.IsUnknown() {
+			return nil
+		}
+	}
 
 	identifiers := common.AsMapOfString(config.Identifiers)
 	missing := make([]string, 0)
