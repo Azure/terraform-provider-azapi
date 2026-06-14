@@ -605,6 +605,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	plan.Name = basetypes.NewStringValue(id.Name)
 	plan.ParentID = basetypes.NewStringValue(id.ParentId)
 	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+	plan.Identifiers = stringMapToTypesMap(id.Identifiers)
 
 	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, nil)
 	if err != nil {
