@@ -75,6 +75,18 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+	
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, urlPath)
 	if err != nil {
@@ -131,6 +143,18 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, urlPath)
 	if err != nil {
@@ -174,6 +198,18 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, urlPath)
 	if err != nil {
@@ -226,6 +262,18 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, apiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", resourceID)
 	if action != "" {
 		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
