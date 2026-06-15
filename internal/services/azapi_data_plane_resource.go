@@ -464,8 +464,15 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		resourceName = "__generated__"
 	}
 	if resourceName == "" {
-		diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
-		return
+		placeholderKeys, err := parse.DataPlaneResourcePlaceholderKeys(plan.Type.ValueString())
+		if err != nil {
+			diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+		if slices.Contains(placeholderKeys, "name") {
+			diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
+			return
+		}
 	}
 	id, err := parse.NewDataPlaneResourceIdWithIdentifiers(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString(), common.AsMapOfString(plan.Identifiers))
 	if err != nil {
