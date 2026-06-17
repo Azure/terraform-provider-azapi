@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 
@@ -81,7 +82,11 @@ func (p *acquirePolicyTokenPolicy) Do(req *policy.Request) (*http.Response, erro
 	}
 
 	details, err := missingPolicyTokenDetailsFromResponse(resp)
-	if err != nil || details == nil {
+	if err != nil {
+		log.Printf("[DEBUG] acquire policy token: failed to parse the forbidden response, returning it unchanged: %s", err)
+		return resp, nil
+	}
+	if details == nil {
 		return resp, nil
 	}
 
@@ -89,17 +94,20 @@ func (p *acquirePolicyTokenPolicy) Do(req *policy.Request) (*http.Response, erro
 		return nil, fmt.Errorf("the request was disallowed by an invoke policy that requires a change reference, but change reference is not yet supported by this provider")
 	}
 
+	log.Printf("[DEBUG] acquire policy token: %s %s was disallowed by an invoke policy that requires a policy token, attempting to acquire one", req.Raw().Method, req.Raw().URL.Path)
 	token, err := p.acquirePolicyToken(req)
 	if err != nil {
 		return nil, fmt.Errorf("the request was disallowed by an invoke policy and acquiring a policy token to satisfy it failed: %w (original policy error: %w)", err, runtime.NewResponseError(resp))
 	}
 	if token == "" {
+		log.Printf("[DEBUG] acquire policy token: no usable policy token was returned, returning the original policy denial")
 		return resp, nil
 	}
 
 	if err := req.RewindBody(); err != nil {
 		return nil, fmt.Errorf("rewinding request body: %w", err)
 	}
+	log.Printf("[DEBUG] acquire policy token: acquired a policy token, retrying the request with the %s header", HeaderPolicyExternalEvaluations)
 	req.Raw().Header.Set(HeaderPolicyExternalEvaluations, token)
 	return req.Next()
 }
@@ -197,6 +205,7 @@ func (p *acquirePolicyTokenPolicy) acquirePolicyToken(req *policy.Request) (stri
 		return "", fmt.Errorf("unmarshalling acquire policy token response: %w", err)
 	}
 	if !strings.EqualFold(responseBody.Result, "Succeeded") || responseBody.Token == "" {
+		log.Printf("[DEBUG] acquire policy token: acquirePolicyToken returned result %q (token present=%t), treating as no token", responseBody.Result, responseBody.Token != "")
 		return "", nil
 	}
 	return responseBody.Token, nil
