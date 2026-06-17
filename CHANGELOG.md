@@ -1,3 +1,9 @@
+## v2.11.0 (Not yet released)
+
+FEATURES:
+
+- Reactively acquire a policy token when a request is blocked by an invoke policy
+
 ## v2.10.0
 
 ENHANCEMENTS:
