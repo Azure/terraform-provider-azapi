@@ -93,15 +93,11 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		"$skipToken",
 	}
 
-	// Acquire a policy token when a mutating request is blocked by an invoke policy. Determine the
-	// Resource Manager endpoint for the configured cloud.
 	resourceManagerEndpoint := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := o.CloudCfg.Services[cloud.ResourceManager]; ok {
 		resourceManagerEndpoint = c.Endpoint
 	}
 
-	// Build a dedicated pipeline to call the acquirePolicyToken endpoint. It intentionally excludes
-	// the acquire policy token policy itself to avoid infinite recursion.
 	acquirePipeline, err := armruntime.NewPipeline(moduleName, moduleVersion, o.Cred, runtime.PipelineOptions{}, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Cloud: o.CloudCfg,

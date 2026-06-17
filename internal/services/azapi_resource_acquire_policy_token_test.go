@@ -66,8 +66,8 @@ resource "azapi_resource" "policy_definition" {
               in    = ["Microsoft.Storage/storageAccounts"]
             },
             {
-              value  = "[empty(claims().string)]"
-              equals = false
+              value  = "[claims().string]"
+              notEquals = "testString"
             }
           ]
         }
