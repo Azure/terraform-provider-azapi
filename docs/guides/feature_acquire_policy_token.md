@@ -42,8 +42,6 @@ sequenceDiagram
 ## Limitations
 
 - **Change references are not supported.** If the policy denial indicates that a change reference is required (`isChangeReferenceRequired` is `true`), the provider returns an error rather than acquiring a token, because change references are not yet supported by this provider.
-- **Write operations only.** `GET` requests, and requests that already carry the `x-ms-policy-external-evaluations` header, are passed through untouched.
-- If acquiring a token fails, the error returned by the provider wraps both the acquire failure and the original policy denial so that you can see why the request was blocked.
 
 ## Example
 
