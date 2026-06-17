@@ -7,9 +7,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 )
 
@@ -90,6 +92,39 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		"api-version",
 		"$skipToken",
 	}
+
+	// Acquire a policy token when a mutating request is blocked by an invoke policy. Determine the
+	// Resource Manager endpoint for the configured cloud.
+	resourceManagerEndpoint := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := o.CloudCfg.Services[cloud.ResourceManager]; ok {
+		resourceManagerEndpoint = c.Endpoint
+	}
+
+	// Build a dedicated pipeline to call the acquirePolicyToken endpoint. It intentionally excludes
+	// the acquire policy token policy itself to avoid infinite recursion.
+	acquirePipeline, err := armruntime.NewPipeline(moduleName, moduleVersion, o.Cred, runtime.PipelineOptions{}, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: o.CloudCfg,
+			// Disable the default telemetry policy, because it has a length limitation for user agent
+			Telemetry: policy.TelemetryOptions{
+				Disabled: true,
+			},
+			Logging: policy.LogOptions{
+				IncludeBody:        true,
+				AllowedHeaders:     allowedHeaders,
+				AllowedQueryParams: allowedQueryParams,
+			},
+			PerCallPolicies:  perCallPolicies,
+			PerRetryPolicies: perRetryPolicies,
+			Retry:            policy.RetryOptions{MaxRetries: o.MaxGoSdkRetries},
+		},
+		AuxiliaryTenants:      o.AuxiliaryTenants,
+		DisableRPRegistration: o.SkipProviderRegistration,
+	})
+	if err != nil {
+		return err
+	}
+	perCallPolicies = append(perCallPolicies, NewAcquirePolicyTokenPolicy(acquirePipeline, resourceManagerEndpoint, o.SubscriptionId))
 
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
