@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -14,17 +15,28 @@ import (
 
 type ResourceWithAcquirePolicyToken struct{}
 
-// CoinFlip is a reference implementation of a simple external evaluation endpoint
-func TestAccResourceWithAcquirePolicyToken_coinFlipAlwaysSucceeds(t *testing.T) {
+func TestAccResourceWithAcquirePolicyToken_allowedByPolicy(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "storage")
 	r := ResourceWithAcquirePolicyToken{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.coinFlipAlwaysSucceeds(data),
+			Config: r.basic(data, true),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
+		},
+	})
+}
+
+func TestAccResourceWithAcquirePolicyToken_disallowedByPolicy(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "storage")
+	r := ResourceWithAcquirePolicyToken{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.basic(data, false),
+			ExpectError: regexp.MustCompile("RequestDisallowedByPolicy"),
 		},
 	})
 }
@@ -34,7 +46,15 @@ func (r ResourceWithAcquirePolicyToken) Exists(ctx context.Context, client *clie
 	return &out, nil
 }
 
-func (r ResourceWithAcquirePolicyToken) coinFlipAlwaysSucceeds(data acceptance.TestData) string {
+func (r ResourceWithAcquirePolicyToken) basic(data acceptance.TestData, policyAlwaysPasses bool) string {
+	// The CoinFlip demo endpoint always returns "testString" for the claims().string value.
+	// Requiring that value makes the policy evaluation always pass; requiring any other value
+	// makes it always fail.
+	claimValue := "testString"
+	if !policyAlwaysPasses {
+		claimValue = "notTestString"
+	}
+
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
@@ -45,8 +65,6 @@ provider "azapi" {
 
 data "azurerm_client_config" "current" {}
 
-// A policy that asserts the claims.string value returned by acquirePolicyToken is not empty, otherwise it will
-// deny any operations on storageAccounts
 resource "azapi_resource" "policy_definition" {
   type      = "Microsoft.Authorization/policyDefinitions@2025-03-01"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
@@ -67,7 +85,7 @@ resource "azapi_resource" "policy_definition" {
             },
             {
               value     = "[claims().string]"
-              notEquals = "testString"
+              notEquals = "%[4]s"
             }
           ]
         }
@@ -137,5 +155,5 @@ resource "azapi_resource" "storage" {
 
   depends_on = [azurerm_resource_group_policy_assignment.test]
 }
-`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+`, data.RandomInteger, data.LocationPrimary, data.RandomString, claimValue)
 }
