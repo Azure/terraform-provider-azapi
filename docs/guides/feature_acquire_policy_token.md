@@ -16,14 +16,14 @@ This behaviour is built in and requires no configuration. It is intended to make
 
 ## How it works
 
-The provider installs a pipeline policy that inspects the responses of resource management requests. The flow is as follows:
+The provider inspects the responses of HTTP requests. The flow is as follows:
 
 1. The provider sends the original write request (`PUT`, `POST`, `PATCH`, or `DELETE`). `GET` requests are never affected by this feature.
 2. If the request succeeds, nothing else happens — the feature is completely transparent.
 3. If the request fails with `403 Forbidden`, the provider parses the response and looks for the `RequestDisallowedByPolicy` error code together with a `PolicyViolation` entry that contains `missingPolicyTokenDetails` with `shouldDeny` set to `true`. If those markers are not present, the original error is returned unchanged.
 4. When the denial indicates that a policy token is required, the provider calls the `Microsoft.Authorization/acquirePolicyToken` API (`api-version=2025-03-01`) for the request's subscription. The acquire request includes the original operation's URI, HTTP method, and request body so that the external endpoint can evaluate the operation.
 5. If a token is returned, the provider rewinds the original request body, attaches the token via the `x-ms-policy-external-evaluations` header, and retries the request.
-6. If no usable token is returned, the original policy denial is surfaced to you unchanged.
+6. If no usable token is returned, the original policy denial is surfaced unchanged.
 
 ```mermaid
 sequenceDiagram
