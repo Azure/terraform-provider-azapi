@@ -91,7 +91,7 @@ func (p *acquirePolicyTokenPolicy) Do(req *policy.Request) (*http.Response, erro
 
 	token, err := p.acquirePolicyToken(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to acquire policy token: %w", err)
+		return nil, fmt.Errorf("the request was disallowed by an invoke policy and acquiring a policy token to satisfy it failed: %w (original policy error: %w)", err, runtime.NewResponseError(resp))
 	}
 	if token == "" {
 		return resp, nil
