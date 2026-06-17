@@ -106,7 +106,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				Disabled: true,
 			},
 			Logging: policy.LogOptions{
-				IncludeBody:        true,
+				IncludeBody:        false,
 				AllowedHeaders:     allowedHeaders,
 				AllowedQueryParams: allowedQueryParams,
 			},
