@@ -25,19 +25,25 @@ The provider inspects the responses of HTTP requests. The flow is as follows:
 5. If a token is returned, the provider rewinds the original request body, attaches the token via the `x-ms-policy-external-evaluations` header, and retries the request.
 6. If no usable token is returned, the original policy denial is surfaced unchanged.
 
-```mermaid
-sequenceDiagram
-    participant TF as AzAPI provider
-    participant ARM as ARM API
-    participant POL as acquirePolicyToken API
+<!-- Source: ../images/acquire_policy_token_reactive.mmd -- regenerate the SVG with mermaid-cli after editing it. -->
+![Reactive policy token acquisition flow](../images/acquire_policy_token_reactive.svg)
 
-    TF->>ARM: PUT/POST/PATCH/DELETE resource
-    ARM-->>TF: 403 RequestDisallowedByPolicy (policy token required)
-    TF->>POL: POST acquirePolicyToken (operation details)
-    POL-->>TF: token
-    TF->>ARM: Retry request with x-ms-policy-external-evaluations header
-    ARM-->>TF: 200/201 Success
+## Always acquiring a policy token
+
+The default behaviour described above is *reactive*: the provider waits for a qualifying `403` response indicating that a policy token is required, and then retries the request with an acquired policy token. This adds an extra round-trip for every write request that is in scope of an invoke policy.
+
+When you know in advance that a large number of resources will require a policy token, you can avoid this extra round-trip by enabling the `always_acquire_policy_token` provider attribute. When set to `true`, the provider *proactively* acquires a policy token and attaches it to every write request before sending it, instead of waiting for a `403` response:
+
+```hcl
+provider "azapi" {
+  always_acquire_policy_token = true
+}
 ```
+
+This attribute defaults to `false` and can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` environment variable. Enabling it improves performance when the number of changed resources is known to be large beforehand. If a proactive acquisition does not return a usable token, the provider falls back to the reactive flow described above.
+
+<!-- Source: ../images/acquire_policy_token_proactive.mmd -- regenerate the SVG with mermaid-cli after editing it. -->
+![Proactive policy token acquisition flow](../images/acquire_policy_token_proactive.svg)
 
 ## Limitations
 

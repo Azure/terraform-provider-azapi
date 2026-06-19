@@ -51,6 +51,7 @@ provider "azapi" {
 
 ### Optional
 
+- `always_acquire_policy_token` (Boolean) Always acquire a policy token for write requests, regardless of whether one is required. The default is `false`. The default behaviour is to wait for a qualifying `403` response indicating that a policy token is required, and then retry the request with an acquired policy token. When this attribute is set to `true`, the provider proactively acquires a policy token and attaches it to every write request, avoiding the extra round-trip per request. Performance will be improved if the number of changed resources needing policy token is known to be large beforehand. This can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` Environment Variable. See [Feature: Acquire Policy Token](guides/feature_acquire_policy_token.html) to learn more.
 - `auxiliary_tenant_ids` (List of String) List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.
 
 	-> List must contain at most 3 elements.

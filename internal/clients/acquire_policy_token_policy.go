@@ -23,6 +23,7 @@ type acquirePolicyTokenPolicy struct {
 	pipeline       runtime.Pipeline
 	endpoint       string
 	subscriptionID string
+	alwaysAcquire  bool
 }
 
 var _ policy.Policy = &acquirePolicyTokenPolicy{}
@@ -79,11 +80,12 @@ func (r acquirePolicyTokenResponse) failureMessage() string {
 	return strings.Join(messages, "; ")
 }
 
-func NewAcquirePolicyTokenPolicy(pipeline runtime.Pipeline, endpoint string, subscriptionID string) policy.Policy {
+func NewAcquirePolicyTokenPolicy(pipeline runtime.Pipeline, endpoint string, subscriptionID string, alwaysAcquire bool) policy.Policy {
 	return &acquirePolicyTokenPolicy{
 		pipeline:       pipeline,
 		endpoint:       endpoint,
 		subscriptionID: subscriptionID,
+		alwaysAcquire:  alwaysAcquire,
 	}
 }
 
@@ -94,6 +96,23 @@ func (p *acquirePolicyTokenPolicy) Do(req *policy.Request) (*http.Response, erro
 
 	if req.Raw().Header.Get(HeaderPolicyExternalEvaluations) != "" {
 		return req.Next()
+	}
+
+	if p.alwaysAcquire {
+		log.Printf("[DEBUG] acquire policy token: always_acquire_policy_token is enabled, proactively acquiring a policy token for %s %s", req.Raw().Method, req.Raw().URL.Path)
+		token, err := p.acquirePolicyToken(req)
+		if err != nil {
+			return nil, fmt.Errorf("proactively acquiring a policy token failed: %w", err)
+		}
+		if token != "" {
+			if err := req.RewindBody(); err != nil {
+				return nil, fmt.Errorf("rewinding request body: %w", err)
+			}
+			log.Printf("[DEBUG] acquire policy token: proactively acquired a policy token, sending the request with the %s header", HeaderPolicyExternalEvaluations)
+			req.Raw().Header.Set(HeaderPolicyExternalEvaluations, token)
+			return req.Next()
+		}
+		log.Printf("[DEBUG] acquire policy token: no usable policy token was returned proactively, falling back to reactive acquisition")
 	}
 
 	resp, err := req.Next()

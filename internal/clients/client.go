@@ -40,6 +40,7 @@ type Option struct {
 	TenantId                    string
 	AuxiliaryTenants            []string
 	MaxGoSdkRetries             int32
+	AlwaysAcquirePolicyToken    bool
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -120,7 +121,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	if err != nil {
 		return err
 	}
-	perCallPolicies = append(perCallPolicies, NewAcquirePolicyTokenPolicy(acquirePipeline, resourceManagerEndpoint, o.SubscriptionId))
+	perCallPolicies = append(perCallPolicies, NewAcquirePolicyTokenPolicy(acquirePipeline, resourceManagerEndpoint, o.SubscriptionId, o.AlwaysAcquirePolicyToken))
 
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
