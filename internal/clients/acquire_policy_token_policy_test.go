@@ -247,3 +247,113 @@ func Test_missingPolicyTokenDetailsFromResponse(t *testing.T) {
 		})
 	}
 }
+
+func Test_policyTokenFromResponse(t *testing.T) {
+	testcases := []struct {
+		Name                  string
+		Body                  string
+		ExpectError           bool
+		ExpectedToken         string
+		ExpectedErrorContains string
+	}{
+		{
+			Name: "succeeded with token",
+			Body: `{
+				"result": "Succeeded",
+				"token": "the-policy-token"
+			}`,
+			ExpectedToken: "the-policy-token",
+		},
+		{
+			Name: "result is matched case-insensitively",
+			Body: `{
+				"result": "succeeded",
+				"token": "the-policy-token"
+			}`,
+			ExpectedToken: "the-policy-token",
+		},
+		{
+			Name: "failed result returns an error with the result messages",
+			Body: `{
+				"result": "Failed",
+				"results": [
+					{
+						"policyInfo": {
+							"policyDefinitionId": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/exampleDenyAction",
+							"policyDefinitionName": "exampleDenyAction",
+							"policyDefinitionDisplayName": "exampleDenyAction",
+							"policyDefinitionVersion": "1.0.0",
+							"policyDefinitionEffect": "deny",
+							"policyAssignmentId": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/exampleDenyAction",
+							"policyAssignmentName": "exampleDenyAction",
+							"policyAssignmentDisplayName": "exampleDenyAction",
+							"policyAssignmentScope": "/subscriptions/00000000-0000-0000-0000-000000000000",
+							"policyExemptionIds": []
+						},
+						"result": "Failed",
+						"message": "Create validation failed with resource id: '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRg/providers/Microsoft.Compute/virtualMachineScaleSets/exampleTest' and validator id: '/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ChangeSafety/validators/metricsValidator/versions/0.0.1-beta'. Error code: 'AuthorizationFailed'."
+					}
+				]
+			}`,
+			ExpectError:           true,
+			ExpectedErrorContains: "Create validation failed with resource id",
+		},
+		{
+			Name: "failed result with multiple messages are joined",
+			Body: `{
+				"result": "Failed",
+				"results": [
+					{ "result": "Failed", "message": "first failure" },
+					{ "result": "Failed", "message": "second failure" }
+				]
+			}`,
+			ExpectError:           true,
+			ExpectedErrorContains: "first failure; second failure",
+		},
+		{
+			Name: "failed result without any messages still returns an error",
+			Body: `{
+				"result": "Failed"
+			}`,
+			ExpectError:           true,
+			ExpectedErrorContains: "without any details",
+		},
+		{
+			Name: "succeeded without a token is treated as no token",
+			Body: `{
+				"result": "Succeeded"
+			}`,
+			ExpectedToken: "",
+		},
+		{
+			Name:        "invalid json returns an error",
+			Body:        `not json`,
+			ExpectError: true,
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.Name, func(t *testing.T) {
+			resp := newResponseWithBody(http.StatusOK, tc.Body)
+
+			token, err := policyTokenFromResponse(resp)
+
+			if tc.ExpectError {
+				if err == nil {
+					t.Fatalf("expected an error but got none")
+				}
+				if tc.ExpectedErrorContains != "" && !strings.Contains(err.Error(), tc.ExpectedErrorContains) {
+					t.Fatalf("expected error to contain %q, got %q", tc.ExpectedErrorContains, err.Error())
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if token != tc.ExpectedToken {
+				t.Fatalf("unexpected token: got %q, want %q", token, tc.ExpectedToken)
+			}
+		})
+	}
+}

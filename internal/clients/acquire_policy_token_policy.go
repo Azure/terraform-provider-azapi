@@ -55,6 +55,30 @@ type missingPolicyTokenDetails struct {
 	EndpointKind              string `json:"endpointKind"`
 }
 
+type acquirePolicyTokenResponse struct {
+	Result  string                     `json:"result"`
+	Token   string                     `json:"token"`
+	Results []acquirePolicyTokenResult `json:"results"`
+}
+
+type acquirePolicyTokenResult struct {
+	Result  string `json:"result"`
+	Message string `json:"message"`
+}
+
+func (r acquirePolicyTokenResponse) failureMessage() string {
+	var messages []string
+	for _, result := range r.Results {
+		if message := strings.TrimSpace(result.Message); message != "" {
+			messages = append(messages, message)
+		}
+	}
+	if len(messages) == 0 {
+		return fmt.Sprintf("acquirePolicyToken returned result %q without any details", r.Result)
+	}
+	return strings.Join(messages, "; ")
+}
+
 func NewAcquirePolicyTokenPolicy(pipeline runtime.Pipeline, endpoint string, subscriptionID string) policy.Policy {
 	return &acquirePolicyTokenPolicy{
 		pipeline:       pipeline,
@@ -197,13 +221,19 @@ func (p *acquirePolicyTokenPolicy) acquirePolicyToken(req *policy.Request) (stri
 		return "", runtime.NewResponseError(resp)
 	}
 
-	var responseBody struct {
-		Result string `json:"result"`
-		Token  string `json:"token"`
-	}
+	return policyTokenFromResponse(resp)
+}
+
+func policyTokenFromResponse(resp *http.Response) (string, error) {
+	var responseBody acquirePolicyTokenResponse
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return "", fmt.Errorf("unmarshalling acquire policy token response: %w", err)
 	}
+
+	if strings.EqualFold(responseBody.Result, "Failed") {
+		return "", fmt.Errorf("acquiring a policy token failed: %s", responseBody.failureMessage())
+	}
+
 	if !strings.EqualFold(responseBody.Result, "Succeeded") || responseBody.Token == "" {
 		log.Printf("[DEBUG] acquire policy token: acquirePolicyToken returned result %q (token present=%t), treating as no token", responseBody.Result, responseBody.Token != "")
 		return "", nil
