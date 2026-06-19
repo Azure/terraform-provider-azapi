@@ -12,8 +12,6 @@ Azure Policy supports *invoke policies* (also known as *external evaluation* pol
 
 When the AzAPI provider sends a write request that is in scope of one of these policies but does not yet carry a policy token, ARM rejects the request with `403 Forbidden` and a `RequestDisallowedByPolicy` error. The AzAPI provider detects this specific denial, **reactively acquires a policy token** on your behalf, and **automatically retries** the original request with the token attached.
 
-This behaviour is built in and requires no configuration. It is intended to make invoke policies transparent to your Terraform workflow, so that resources protected by an invoke policy can be created, updated, and deleted without manual intervention.
-
 ## How it works
 
 The provider inspects the responses of HTTP requests. The flow is as follows:
