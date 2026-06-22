@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
@@ -21,7 +22,8 @@ func TestAccResourceWithAcquirePolicyToken_allowedByPolicy(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.basic(data, true),
+			Config:            r.basic(data, true),
+			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -35,8 +37,9 @@ func TestAccResourceWithAcquirePolicyToken_disallowedByPolicy(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:      r.basic(data, false),
-			ExpectError: regexp.MustCompile("RequestDisallowedByPolicy"),
+			Config:            r.basic(data, false),
+			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
+			ExpectError:       regexp.MustCompile("RequestDisallowedByPolicy"),
 		},
 	})
 }
@@ -47,7 +50,8 @@ func TestAccResourceWithAcquirePolicyToken_alwaysAcquire(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.alwaysAcquire(data),
+			Config:            r.alwaysAcquire(data),
+			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That("azapi_resource.storage").ExistsInAzure(r),
 				check.That("azapi_resource.virtual_network").ExistsInAzure(r),
