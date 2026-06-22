@@ -75,17 +75,6 @@ func (r ResourceWithAcquirePolicyToken) basic(data acceptance.TestData, policyAl
 	}
 
 	return fmt.Sprintf(`
-terraform {
-  required_providers {
-    azapi = {
-      source = "Azure/azapi"
-    }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
 provider "azurerm" {
   features {}
 }
@@ -190,17 +179,6 @@ resource "azapi_resource" "storage" {
 
 func (r ResourceWithAcquirePolicyToken) alwaysAcquire(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-terraform {
-  required_providers {
-    azapi = {
-      source = "Azure/azapi"
-    }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
 provider "azurerm" {
   features {}
 }
