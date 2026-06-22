@@ -10,6 +10,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
@@ -61,8 +63,22 @@ func TestAccResourceWithAcquirePolicyToken_alwaysAcquire(t *testing.T) {
 }
 
 func (r ResourceWithAcquirePolicyToken) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
-	out := true
-	return &out, nil
+	resourceType := state.Attributes["type"]
+	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
+	if err == nil {
+		b := true
+		return &b, nil
+	}
+	if utils.ResponseErrorWasNotFound(err) {
+		b := false
+		return &b, nil
+	}
+	return nil, fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 }
 
 func (r ResourceWithAcquirePolicyToken) basic(data acceptance.TestData, policyAlwaysPasses bool) string {
