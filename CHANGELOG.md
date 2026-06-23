@@ -2,6 +2,7 @@
 
 ENHANCEMENTS:
 
+- `azapi_data_plane_resource` resource: Register `Microsoft.Search/searchServices/aliases` and add examples and acceptance test coverage for Azure AI Search `aliases`, `skillsets`, and `indexers` data plane resources.
 - `azapi` provider: Preflight validation is now enabled on resource update operations (previously only on create) (GH-1112).
 - `azapi` provider: Preflight validation now requires only read permission instead of write permission (GH-1112).
 - Bump Go version to 1.25.8 (GH-1082).
