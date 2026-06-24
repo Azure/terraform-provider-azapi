@@ -1203,6 +1203,19 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	}
 }
 
+func hasApiVersionParameter(id string) bool {
+	queryStart := strings.Index(id, "?")
+	if queryStart == -1 {
+		return false
+	}
+	for _, param := range strings.Split(id[queryStart+1:], "&") {
+		if key, value, found := strings.Cut(param, "="); found && strings.EqualFold(key, "api-version") && value != "" {
+			return true
+		}
+	}
+	return false
+}
+
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	var id parse.ResourceId
 	var err error
@@ -1210,6 +1223,13 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
+		if !hasApiVersionParameter(request.ID) {
+			response.Diagnostics.AddError(
+				"Invalid Resource ID",
+				fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter, which is required during import to avoid an api-version mismatch. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", request.ID),
+			)
+			return
+		}
 		id, err = parse.ResourceID(request.ID)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())

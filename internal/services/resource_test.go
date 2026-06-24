@@ -129,3 +129,55 @@ func Test_FlattenOutputJMES(t *testing.T) {
 		}
 	}
 }
+
+func Test_hasApiVersionParameter(t *testing.T) {
+	testcases := []struct {
+		Name   string
+		ID     string
+		Expect bool
+	}{
+		{
+			Name:   "azure resource id with api-version",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01",
+			Expect: true,
+		},
+		{
+			Name:   "azure resource id without query",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet",
+			Expect: false,
+		},
+		{
+			Name:   "api-version among multiple query parameters",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg?foo=bar&api-version=2023-11-01",
+			Expect: true,
+		},
+		{
+			Name:   "api-version is case insensitive",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg?Api-Version=2023-11-01",
+			Expect: true,
+		},
+		{
+			Name:   "empty api-version value",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg?api-version=",
+			Expect: false,
+		},
+		{
+			Name:   "query without api-version",
+			ID:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg?foo=bar",
+			Expect: false,
+		},
+		{
+			Name:   "empty id",
+			ID:     "",
+			Expect: false,
+		},
+	}
+
+	for _, testcase := range testcases {
+		t.Run(testcase.Name, func(t *testing.T) {
+			if got := hasApiVersionParameter(testcase.ID); got != testcase.Expect {
+				t.Fatalf("expected %v but got %v for ID %q", testcase.Expect, got, testcase.ID)
+			}
+		})
+	}
+}
