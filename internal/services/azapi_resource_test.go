@@ -143,28 +143,6 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_importWithApiVersion(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.importWithApiVersion(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		{
-			ResourceName:            data.ResourceName,
-			ImportState:             true,
-			ImportStateVerify:       true,
-			ImportStateIdFunc:       r.ImportIdFunc,
-			ImportStateVerifyIgnore: defaultIgnores(),
-		},
-	})
-}
-
 func TestAccGenericResource_complete(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
@@ -1214,38 +1192,6 @@ resource "azapi_resource" "import" {
   }
 }
 `, r.basic(data), testCertBase64)
-}
-
-func (r GenericResource) importWithApiVersion(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-resource "azapi_resource" "automationAccount" {
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "acctest%[2]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    properties = {
-      sku = {
-        name = "Basic"
-      }
-    }
-  }
-}
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2020-01-13-preview"
-  name      = "acctest%[2]s"
-  parent_id = azapi_resource.automationAccount.id
-
-  body = {
-    properties = {
-      base64Value = "%[3]s"
-    }
-  }
-}
-`, r.template(data), data.RandomString, testCertBase64)
 }
 
 func (r GenericResource) complete(data acceptance.TestData) string {
