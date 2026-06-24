@@ -338,3 +338,9 @@ Required:
 Optional:
 
 - `type` (String) The Azure resource type.
+
+### Specifying API Version in Import Expression
+
+Although it may seem redundant, it is strongly recommended to specify the API version (either via the `api-version` query parameter or the import identity `type` attribute). The AzAPI provider cannot read the API version from the target configuration when processing import requests, so if the API version is not specified, the provider implicitly uses [the latest indexed version](https://raw.githubusercontent.com/Azure/terraform-provider-azapi/refs/heads/main/internal/azure/generated/index.json), regardless of whether it is stable or preview. This can lead to a version mismatch with your configuration.
+
+In 3.0, specifying the version in the import expression will become mandatory.
