@@ -1203,19 +1203,6 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	}
 }
 
-func hasApiVersionParameter(id string) bool {
-	queryStart := strings.Index(id, "?")
-	if queryStart == -1 {
-		return false
-	}
-	for _, param := range strings.Split(id[queryStart+1:], "&") {
-		if key, value, found := strings.Cut(param, "="); found && strings.EqualFold(key, "api-version") && value != "" {
-			return true
-		}
-	}
-	return false
-}
-
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	var id parse.ResourceId
 	var err error
@@ -1223,11 +1210,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
-		if !hasApiVersionParameter(request.ID) {
-			response.Diagnostics.AddError(
-				"Invalid Resource ID",
-				fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter, which is required during import to avoid an api-version mismatch. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", request.ID),
-			)
+		if addMissingApiVersionError(&response.Diagnostics, request.ID) {
 			return
 		}
 		id, err = parse.ResourceID(request.ID)
@@ -1258,6 +1241,9 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		} else {
 			// Case 3: Only id is set - parse it to extract API version
 			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
+			if addMissingApiVersionError(&response.Diagnostics, request.ID) {
+				return
+			}
 			id, err = parse.ResourceID(resourceID)
 			if err != nil {
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", resourceID, err).Error())
@@ -1691,4 +1677,29 @@ type = "Microsoft.Network/virtualNetworks@2023-11-01"
 			},
 		},
 	}
+}
+
+func addMissingApiVersionError(diagnostics *diag.Diagnostics, id string) bool {
+	if hasApiVersionParameter(id) {
+		return false
+	}
+	// TODO only add this error on 3.0 or when provider flag is set
+	diagnostics.AddError(
+		"Invalid Resource ID",
+		fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter, which is required during import to avoid an api-version mismatch. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", id),
+	)
+	return true
+}
+
+func hasApiVersionParameter(id string) bool {
+	queryStart := strings.Index(id, "?")
+	if queryStart == -1 {
+		return false
+	}
+	for _, param := range strings.Split(id[queryStart+1:], "&") {
+		if key, value, found := strings.Cut(param, "="); found && strings.EqualFold(key, "api-version") && value != "" {
+			return true
+		}
+	}
+	return false
 }
