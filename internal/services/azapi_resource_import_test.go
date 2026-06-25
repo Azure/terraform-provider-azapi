@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"testing"
 
@@ -33,6 +34,10 @@ func TestAccGenericResource_importIdWithApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importIdWithoutApiVersion(t *testing.T) {
+	if err := os.Setenv("ARM_THREEPOINTZERO_BETA", "true"); err != nil {
+		t.Fatalf("failed to set ARM_THREEPOINTZERO_BETA: %v", err)
+	}
+	t.Cleanup(func() { _ = os.Unsetenv("ARM_THREEPOINTZERO_BETA") })
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -96,6 +101,10 @@ func TestAccGenericResource_importIdClassicWithApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importIdClassicWithoutApiVersion(t *testing.T) {
+	if err := os.Setenv("ARM_THREEPOINTZERO_BETA", "true"); err != nil {
+		t.Fatalf("failed to set ARM_THREEPOINTZERO_BETA: %v", err)
+	}
+	t.Cleanup(func() { _ = os.Unsetenv("ARM_THREEPOINTZERO_BETA") })
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 

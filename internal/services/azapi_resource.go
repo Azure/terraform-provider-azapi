@@ -17,6 +17,7 @@ import (
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
+	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
@@ -1683,7 +1684,13 @@ func addMissingApiVersionError(diagnostics *diag.Diagnostics, id string) bool {
 	if hasApiVersionParameter(id) {
 		return false
 	}
-	// TODO only add this error on 3.0 or when provider flag is set
+	if !features.ThreePointOh() {
+		diagnostics.AddWarning(
+			"Missing `api-version` query parameter",
+			fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter. The latest available api-version will be used during import, which may cause an api-version mismatch. This will become an error in v3.0 of the provider. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", id),
+		)
+		return false
+	}
 	diagnostics.AddError(
 		"Invalid Resource ID",
 		fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter, which is required during import to avoid an api-version mismatch. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", id),
