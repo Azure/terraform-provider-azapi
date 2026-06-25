@@ -294,6 +294,8 @@ Optional:
 
 ## Import
 
+~> **Note:** Providing the `api-version` query parameter (when importing by ID) or the resource `type` (when importing by identity) is strongly recommended. While processing an import request the provider cannot determine the target api-version, so if it is omitted the provider would have to fall back to the latest [indexed](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) api-version (regardless of preview / stable), which can cause an api-version mismatch. The api version will be made mandatory in 3.0.
+
 ### Import ID
 
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used with the id format:
@@ -338,9 +340,3 @@ Required:
 Optional:
 
 - `type` (String) The Azure resource type.
-
-### Specifying API Version in Import Expression
-
-Although it may seem redundant, it is strongly recommended to specify the API version (either via the `api-version` query parameter or the import identity `type` attribute). The AzAPI provider cannot read the API version from the target configuration when processing import requests, so if the API version is not specified, the provider implicitly uses [the latest indexed version](https://raw.githubusercontent.com/Azure/terraform-provider-azapi/refs/heads/main/internal/azure/generated/index.json), regardless of whether it is stable or preview. This can lead to a version mismatch with your configuration.
-
-In 3.0, specifying the version in the import expression will become mandatory.

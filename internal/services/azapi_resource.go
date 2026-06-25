@@ -1211,7 +1211,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
-		if addMissingApiVersionError(&response.Diagnostics, request.ID) {
+		if addMissingApiVersionError(&response.Diagnostics, request.ID, r.ProviderData.Features.DisableMandatoryImportApiVersion) {
 			return
 		}
 		id, err = parse.ResourceID(request.ID)
@@ -1242,7 +1242,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		} else {
 			// Case 3: Only id is set - parse it to extract API version
 			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
-			if addMissingApiVersionError(&response.Diagnostics, request.ID) {
+			if addMissingApiVersionError(&response.Diagnostics, request.ID, r.ProviderData.Features.DisableMandatoryImportApiVersion) {
 				return
 			}
 			id, err = parse.ResourceID(resourceID)
@@ -1680,11 +1680,11 @@ type = "Microsoft.Network/virtualNetworks@2023-11-01"
 	}
 }
 
-func addMissingApiVersionError(diagnostics *diag.Diagnostics, id string) bool {
+func addMissingApiVersionError(diagnostics *diag.Diagnostics, id string, disableMandatoryImportApiVersion bool) bool {
 	if hasApiVersionParameter(id) {
 		return false
 	}
-	if !features.ThreePointOh() {
+	if !features.ThreePointOh() || disableMandatoryImportApiVersion {
 		diagnostics.AddWarning(
 			"Missing `api-version` query parameter",
 			fmt.Sprintf("the resource ID %q is missing the `api-version` query parameter. The latest available api-version will be used during import, which may cause an api-version mismatch. This will become an error in v3.0 of the provider. Learn more: https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import", id),

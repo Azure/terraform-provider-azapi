@@ -53,41 +53,42 @@ type Provider struct {
 }
 
 type providerData struct {
-	SubscriptionID               types.String `tfsdk:"subscription_id"`
-	ClientID                     types.String `tfsdk:"client_id"`
-	ClientIDFilePath             types.String `tfsdk:"client_id_file_path"`
-	TenantID                     types.String `tfsdk:"tenant_id"`
-	AuxiliaryTenantIDs           types.List   `tfsdk:"auxiliary_tenant_ids"`
-	Endpoint                     types.List   `tfsdk:"endpoint"`
-	Environment                  types.String `tfsdk:"environment"`
-	ClientCertificate            types.String `tfsdk:"client_certificate"`
-	ClientCertificatePath        types.String `tfsdk:"client_certificate_path"`
-	ClientCertificatePassword    types.String `tfsdk:"client_certificate_password"`
-	ClientSecret                 types.String `tfsdk:"client_secret"`
-	ClientSecretFilePath         types.String `tfsdk:"client_secret_file_path"`
-	SkipProviderRegistration     types.Bool   `tfsdk:"skip_provider_registration"`
-	OIDCRequestToken             types.String `tfsdk:"oidc_request_token"`
-	OIDCRequestURL               types.String `tfsdk:"oidc_request_url"`
-	OIDCToken                    types.String `tfsdk:"oidc_token"`
-	OIDCTokenFilePath            types.String `tfsdk:"oidc_token_file_path"`
-	OIDCAzureServiceConnectionID types.String `tfsdk:"oidc_azure_service_connection_id"`
-	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
-	UseCLI                       types.Bool   `tfsdk:"use_cli"`
-	UseMSI                       types.Bool   `tfsdk:"use_msi"`
-	UseAKSWorkloadIdentity       types.Bool   `tfsdk:"use_aks_workload_identity"`
-	PartnerID                    types.String `tfsdk:"partner_id"`
-	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
-	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
-	DisableInstanceDiscovery     types.Bool   `tfsdk:"disable_instance_discovery"`
-	DisableTerraformPartnerID    types.Bool   `tfsdk:"disable_terraform_partner_id"`
-	DefaultName                  types.String `tfsdk:"default_name"`
-	DefaultLocation              types.String `tfsdk:"default_location"`
-	DefaultTags                  types.Map    `tfsdk:"default_tags"`
-	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
-	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
-	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
-	AlwaysAcquirePolicyToken     types.Bool   `tfsdk:"always_acquire_policy_token"`
-	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
+	SubscriptionID                   types.String `tfsdk:"subscription_id"`
+	ClientID                         types.String `tfsdk:"client_id"`
+	ClientIDFilePath                 types.String `tfsdk:"client_id_file_path"`
+	TenantID                         types.String `tfsdk:"tenant_id"`
+	AuxiliaryTenantIDs               types.List   `tfsdk:"auxiliary_tenant_ids"`
+	Endpoint                         types.List   `tfsdk:"endpoint"`
+	Environment                      types.String `tfsdk:"environment"`
+	ClientCertificate                types.String `tfsdk:"client_certificate"`
+	ClientCertificatePath            types.String `tfsdk:"client_certificate_path"`
+	ClientCertificatePassword        types.String `tfsdk:"client_certificate_password"`
+	ClientSecret                     types.String `tfsdk:"client_secret"`
+	ClientSecretFilePath             types.String `tfsdk:"client_secret_file_path"`
+	SkipProviderRegistration         types.Bool   `tfsdk:"skip_provider_registration"`
+	OIDCRequestToken                 types.String `tfsdk:"oidc_request_token"`
+	OIDCRequestURL                   types.String `tfsdk:"oidc_request_url"`
+	OIDCToken                        types.String `tfsdk:"oidc_token"`
+	OIDCTokenFilePath                types.String `tfsdk:"oidc_token_file_path"`
+	OIDCAzureServiceConnectionID     types.String `tfsdk:"oidc_azure_service_connection_id"`
+	UseOIDC                          types.Bool   `tfsdk:"use_oidc"`
+	UseCLI                           types.Bool   `tfsdk:"use_cli"`
+	UseMSI                           types.Bool   `tfsdk:"use_msi"`
+	UseAKSWorkloadIdentity           types.Bool   `tfsdk:"use_aks_workload_identity"`
+	PartnerID                        types.String `tfsdk:"partner_id"`
+	CustomCorrelationRequestID       types.String `tfsdk:"custom_correlation_request_id"`
+	DisableCorrelationRequestID      types.Bool   `tfsdk:"disable_correlation_request_id"`
+	DisableInstanceDiscovery         types.Bool   `tfsdk:"disable_instance_discovery"`
+	DisableTerraformPartnerID        types.Bool   `tfsdk:"disable_terraform_partner_id"`
+	DefaultName                      types.String `tfsdk:"default_name"`
+	DefaultLocation                  types.String `tfsdk:"default_location"`
+	DefaultTags                      types.Map    `tfsdk:"default_tags"`
+	EnablePreflight                  types.Bool   `tfsdk:"enable_preflight"`
+	IgnoreNoOpChanges                types.Bool   `tfsdk:"ignore_no_op_changes"`
+	DisableDefaultOutput             types.Bool   `tfsdk:"disable_default_output"`
+	DisableMandatoryImportApiVersion types.Bool   `tfsdk:"disable_mandatory_import_api_version"`
+	AlwaysAcquirePolicyToken         types.Bool   `tfsdk:"always_acquire_policy_token"`
+	MaximumBusyRetryAttempts         types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
 type providerEndpointData struct {
@@ -320,6 +321,10 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"disable_default_output": schema.BoolAttribute{
 				Optional:    true,
 				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
+			},
+			"disable_mandatory_import_api_version": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "Since v3.0, specifying the `api-version` query parameter or the identity `type` is mandatory when importing an existing resource. While processing import requests, the provider cannot determine the target api-version, so when it is missing the provider enumerates the [indexed api versions](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) and uses the latest one (regardless of preview / stable). Set this attribute to `true` to disable this behaviour and revert to the 2.x behaviour. This can also be sourced from the `ARM_DISABLE_MANDATORY_IMPORT_API_VERSION` Environment Variable. [Learn more](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import).",
 			},
 			"always_acquire_policy_token": schema.BoolAttribute{
 				Optional:            true,
@@ -588,6 +593,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.DisableMandatoryImportApiVersion.IsNull() {
+		if v := os.Getenv("ARM_DISABLE_MANDATORY_IMPORT_API_VERSION"); v != "" {
+			model.DisableMandatoryImportApiVersion = types.BoolValue(v == "true")
+		} else {
+			model.DisableMandatoryImportApiVersion = types.BoolValue(false)
+		}
+	}
+
 	if model.AlwaysAcquirePolicyToken.IsNull() {
 		if v := os.Getenv("ARM_ALWAYS_ACQUIRE_POLICY_TOKEN"); v != "" {
 			model.AlwaysAcquirePolicyToken = types.BoolValue(v == "true")
@@ -689,12 +702,13 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
-			DefaultTags:          tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:        model.DefaultName.ValueString(),
-			EnablePreflight:      model.EnablePreflight.ValueBool(),
-			IgnoreNoOpChanges:    model.IgnoreNoOpChanges.ValueBool(),
-			DisableDefaultOutput: model.DisableDefaultOutput.ValueBool(),
+			DefaultTags:                      tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:                  location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:                    model.DefaultName.ValueString(),
+			EnablePreflight:                  model.EnablePreflight.ValueBool(),
+			IgnoreNoOpChanges:                model.IgnoreNoOpChanges.ValueBool(),
+			DisableDefaultOutput:             model.DisableDefaultOutput.ValueBool(),
+			DisableMandatoryImportApiVersion: model.DisableMandatoryImportApiVersion.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
