@@ -324,7 +324,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			},
 			"disable_mandatory_import_api_version": schema.BoolAttribute{
 				Optional:            true,
-				MarkdownDescription: "Since v3.0, specifying the `api-version` query parameter or the identity `type` is mandatory when importing an existing resource. While processing import requests, the provider cannot determine the target api-version, so when it is missing the provider enumerates the [indexed api versions](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) and uses the latest one (regardless of preview / stable). Set this attribute to `true` to disable this behaviour and revert to the 2.x behaviour. This can also be sourced from the `ARM_DISABLE_MANDATORY_IMPORT_API_VERSION` Environment Variable. [Learn more](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource#import).",
+				MarkdownDescription: "Starting in v3.0 (not yet released), specifying the `api-version` query parameter or the identity `type` will be mandatory when importing an existing resource. While processing import requests, the provider cannot determine the target api-version, so when it is missing the provider enumerates the [indexed api versions](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) and uses the latest one (regardless of preview / stable) potentially causing api mismatch problems. Set this attribute to `true` to disable this and revert to the 2.x behaviour. This can also be sourced from the `ARM_DISABLE_MANDATORY_IMPORT_API_VERSION` Environment Variable.",
 			},
 			"always_acquire_policy_token": schema.BoolAttribute{
 				Optional:            true,

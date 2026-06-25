@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -1677,6 +1678,18 @@ type = "Microsoft.Network/virtualNetworks@2023-11-01"
 `,
 			},
 		},
+		Template: template.Must(template.New("resource").Parse(`{{ .Header }}
+{{ .Description }}
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}
+{{- with .Import }}
+{{ . }}
+### Providing API Version on Imports
+
+Providing the ` + "`api-version`" + ` query parameter (when importing by ID) or the resource ` + "`type`" + ` (when importing by identity) is strongly recommended. While processing an import request the provider cannot determine the target api-version, so if it is omitted the provider would have to fall back to the latest [indexed](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) api-version (regardless of preview / stable), which can cause an api-version mismatch. The api version will be made mandatory in 3.0.
+{{- end }}`)),
 	}
 }
 
