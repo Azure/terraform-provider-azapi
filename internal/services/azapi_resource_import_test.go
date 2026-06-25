@@ -20,13 +20,11 @@ func TestAccGenericResource_importIdWithApiVersion(t *testing.T) {
 			Config: r.importBasic(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.source").ExistsInAzure(r),
 			),
 		},
 		{
 			Config: r.importIdWithApiVersion(data),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That("azapi_resource.import_id_with_api_version").ExistsInAzure(r),
 			),
 		},
@@ -34,10 +32,6 @@ func TestAccGenericResource_importIdWithApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importIdWithoutApiVersion(t *testing.T) {
-	if err := os.Setenv("ARM_THREEPOINTZERO_BETA", "true"); err != nil {
-		t.Fatalf("failed to set ARM_THREEPOINTZERO_BETA: %v", err)
-	}
-	t.Cleanup(func() { _ = os.Unsetenv("ARM_THREEPOINTZERO_BETA") })
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -46,7 +40,29 @@ func TestAccGenericResource_importIdWithoutApiVersion(t *testing.T) {
 			Config: r.importBasic(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.source").ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.importIdWithoutApiVersion(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That("azapi_resource.import_id_without_api_version").ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_importIdWithoutApiVersionThreePointZero(t *testing.T) {
+	if os.Getenv("ARM_THREEPOINTZERO_BETA") == "" {
+		t.Skip("`ARM_THREEPOINTZERO_BETA` is not set, skipping test")
+	}
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.importBasic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
 		{
@@ -65,13 +81,11 @@ func TestAccGenericResource_importIdAndType(t *testing.T) {
 			Config: r.importBasic(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.source").ExistsInAzure(r),
 			),
 		},
 		{
 			Config: r.importIdAndType(data),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That("azapi_resource.import_id_and_type").ExistsInAzure(r),
 			),
 		},
@@ -87,13 +101,11 @@ func TestAccGenericResource_importIdClassicWithApiVersion(t *testing.T) {
 			Config: r.importBasic(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.source").ExistsInAzure(r),
 			),
 		},
 		{
 			Config: r.importIdClassicWithApiVersion(data),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That("azapi_resource.import_id_classic").ExistsInAzure(r),
 			),
 		},
@@ -101,10 +113,6 @@ func TestAccGenericResource_importIdClassicWithApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importIdClassicWithoutApiVersion(t *testing.T) {
-	if err := os.Setenv("ARM_THREEPOINTZERO_BETA", "true"); err != nil {
-		t.Fatalf("failed to set ARM_THREEPOINTZERO_BETA: %v", err)
-	}
-	t.Cleanup(func() { _ = os.Unsetenv("ARM_THREEPOINTZERO_BETA") })
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -113,7 +121,29 @@ func TestAccGenericResource_importIdClassicWithoutApiVersion(t *testing.T) {
 			Config: r.importBasic(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.source").ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.importIdClassicWithoutApiVersion(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That("azapi_resource.import_id_classic").ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_importIdClassicWithoutApiVersionThreePointZero(t *testing.T) {
+	if os.Getenv("ARM_THREEPOINTZERO_BETA") == "" {
+		t.Skip("`ARM_THREEPOINTZERO_BETA` is not set, skipping test")
+	}
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.importBasic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
 		{
@@ -124,7 +154,6 @@ func TestAccGenericResource_importIdClassicWithoutApiVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_importState(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -145,38 +174,6 @@ func TestAccGenericResource_importState(t *testing.T) {
 	})
 }
 
-func (r GenericResource) importState(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-resource "azapi_resource" "automationAccount" {
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "acctest%[2]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    properties = {
-      sku = {
-        name = "Basic"
-      }
-    }
-  }
-}
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2020-01-13-preview"
-  name      = "acctest%[2]s"
-  parent_id = azapi_resource.automationAccount.id
-
-  body = {
-    properties = {
-      base64Value = "%[3]s"
-    }
-  }
-}
-`, r.template(data), data.RandomString, testCertBase64)
-}
-
 func (r GenericResource) importBasic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
@@ -186,21 +183,6 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
-resource "azapi_resource" "source" {
   type      = "Microsoft.Network/virtualNetworks@2024-05-01"
   name      = "acctestsource%[1]s"
   parent_id = azapi_resource.resourceGroup.id
@@ -226,23 +208,8 @@ resource "azapi_resource" "resourceGroup" {
   location = "eastus"
 }
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
 removed {
-  from = azapi_resource.source
+  from = azapi_resource.test
   lifecycle {
     destroy = false
   }
@@ -285,23 +252,8 @@ resource "azapi_resource" "resourceGroup" {
   location = "eastus"
 }
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
 removed {
-  from = azapi_resource.source
+  from = azapi_resource.test
   lifecycle {
     destroy = false
   }
@@ -344,23 +296,8 @@ resource "azapi_resource" "resourceGroup" {
   location = "eastus"
 }
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
 removed {
-  from = azapi_resource.source
+  from = azapi_resource.test
   lifecycle {
     destroy = false
   }
@@ -404,23 +341,8 @@ resource "azapi_resource" "resourceGroup" {
   location = "eastus"
 }
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
 removed {
-  from = azapi_resource.source
+  from = azapi_resource.test
   lifecycle {
     destroy = false
   }
@@ -461,23 +383,8 @@ resource "azapi_resource" "resourceGroup" {
   location = "eastus"
 }
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
-  name      = "acctest%[1]s"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
-
-  body = {
-    properties = {
-      addressSpace = {
-        addressPrefixes = ["10.0.0.0/16"]
-      }
-    }
-  }
-}
-
 removed {
-  from = azapi_resource.source
+  from = azapi_resource.test
   lifecycle {
     destroy = false
   }
@@ -507,4 +414,36 @@ resource "azapi_resource" "import_id_classic" {
   }
 }
 `, data.RandomString)
+}
+
+func (r GenericResource) importState(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = ["10.0.0.0/16"]
+      }
+    }
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.virtualNetwork.id
+
+  body = {
+    properties = {
+      addressPrefix = "10.0.1.0/24"
+    }
+  }
+}
+`, r.template(data), data.RandomString)
 }
