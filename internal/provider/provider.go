@@ -86,6 +86,7 @@ type providerData struct {
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
+	AlwaysAcquirePolicyToken     types.Bool   `tfsdk:"always_acquire_policy_token"`
 	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
@@ -320,7 +321,10 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Optional:    true,
 				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
 			},
-
+			"always_acquire_policy_token": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "Always acquire a policy token for write requests, regardless of whether one is required. The default is `false`. The default behaviour is to wait for a qualifying `403` response indicating that a policy token is required, and then retry the request with an acquired policy token. When this attribute is set to `true`, the provider proactively acquires a policy token and attaches it to every write request, avoiding the extra round-trip per request. Performance will be improved if the number of changed resources is known to be large beforehand. This can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` Environment Variable. See [Feature: Acquire Policy Token](guides/feature_acquire_policy_token.html) to learn more.",
+			},
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
 				Optional:            true,
 				MarkdownDescription: "DEPRECATED - The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `32767`, this allows the provider to rely on the resource timeout values rather than a maximum retry count. The resource-specific retry configuration may additionally be used to retry on other errors and conditions. This property will be removed in a future version.",
@@ -584,6 +588,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.AlwaysAcquirePolicyToken.IsNull() {
+		if v := os.Getenv("ARM_ALWAYS_ACQUIRE_POLICY_TOKEN"); v != "" {
+			model.AlwaysAcquirePolicyToken = types.BoolValue(v == "true")
+		} else {
+			model.AlwaysAcquirePolicyToken = types.BoolValue(false)
+		}
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -690,6 +702,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		SubscriptionId:              model.SubscriptionID.ValueString(),
 		TenantId:                    model.TenantID.ValueString(),
 		AuxiliaryTenants:            auxTenants,
+		AlwaysAcquirePolicyToken:    model.AlwaysAcquirePolicyToken.ValueBool(),
 	}
 
 	client := &clients.Client{}

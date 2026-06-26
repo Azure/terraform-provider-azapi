@@ -11,6 +11,7 @@ import (
 type ActionDataSource struct{}
 
 func TestAccActionDataSource_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 
@@ -47,6 +48,7 @@ func TestAccActionDataSource_providerAction(t *testing.T) {
 }
 
 func TestAccActionDataSource_headers(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 
@@ -71,6 +73,7 @@ func TestAccActionDataSource_queryParameters(t *testing.T) {
 }
 
 func TestAccActionDataSource_sensitiveOutput(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 

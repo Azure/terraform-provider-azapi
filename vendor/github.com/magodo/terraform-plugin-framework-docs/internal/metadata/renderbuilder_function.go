@@ -127,13 +127,33 @@ func (b functionRenderBuilder) renderReturn(w io.Writer) error {
 }
 
 func (b functionRenderBuilder) renderArgument(w io.Writer, field FunctionField) error {
-	if _, err := fmt.Fprintf(w, "1. `%s` (%s) %s", field.Name(), field.Traits(), field.Description()); err != nil {
+	if _, err := fmt.Fprintf(w, "1. `%s` (%s)", field.Name(), field.Traits()); err != nil {
 		return err
 	}
-	if v := field.NestedLink(); v != "" {
-		fmt.Fprintf(w, " %s", v)
+	desc := field.Description()
+	nestedLink := field.NestedLink()
+
+	if isMultilineMarkdown(desc) {
+		if _, err := fmt.Fprintf(w, " %s", IndentFollowingLines(desc, "\t")); err != nil {
+			return err
+		}
+		io.WriteString(w, "\n")
+		if nestedLink != "" {
+			if _, err := fmt.Fprintf(w, "\n\t%s\n", nestedLink); err != nil {
+				return err
+			}
+		}
+	} else {
+		if desc != "" {
+			if _, err := fmt.Fprintf(w, " %s", desc); err != nil {
+				return err
+			}
+		}
+		if nestedLink != "" {
+			fmt.Fprintf(w, " %s", nestedLink)
+		}
+		io.WriteString(w, "\n")
 	}
-	io.WriteString(w, "\n")
 
 	if l := field.Validators(); len(l) != 0 {
 		for _, e := range l {
@@ -184,15 +204,29 @@ func (b functionRenderBuilder) renderObject(w io.Writer, object FunctionObject) 
 		if _, err := fmt.Fprintf(w, "- `%s` (%s)", key, field.dataType); err != nil {
 			return err
 		}
-		if v := field.Description(); v != "" {
-			if _, err := fmt.Fprintf(w, " %s", v); err != nil {
+		desc := field.Description()
+		nestedLink := field.NestedLink()
+		if isMultilineMarkdown(desc) {
+			if _, err := fmt.Fprintf(w, " %s", IndentFollowingLines(desc, "\t")); err != nil {
 				return err
 			}
+			io.WriteString(w, "\n")
+			if nestedLink != "" {
+				if _, err := fmt.Fprintf(w, "\n\t%s\n", nestedLink); err != nil {
+					return err
+				}
+			}
+		} else {
+			if desc != "" {
+				if _, err := fmt.Fprintf(w, " %s", desc); err != nil {
+					return err
+				}
+			}
+			if nestedLink != "" {
+				fmt.Fprintf(w, " %s", nestedLink)
+			}
+			io.WriteString(w, "\n")
 		}
-		if v := field.NestedLink(); v != "" {
-			fmt.Fprintf(w, " %s", v)
-		}
-		io.WriteString(w, "\n")
 	}
 
 	if v := object.CustomTypeDescription(); v != "" {

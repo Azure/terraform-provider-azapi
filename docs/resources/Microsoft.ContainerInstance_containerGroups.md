@@ -59,7 +59,7 @@ resource "azapi_resource" "containerGroup" {
             ]
             environmentVariables = [
             ]
-            image = "ubuntu:20.04"
+            image = "ubuntu:24.04"
             ports = [
               {
                 port     = 80

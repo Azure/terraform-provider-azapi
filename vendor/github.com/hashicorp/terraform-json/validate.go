@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2019, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfjson
@@ -137,6 +137,10 @@ func (vo *ValidateOutput) Validate() error {
 	return nil
 }
 
+// UnmarshalJSON implements json.Unmarshaler for ValidateOutput.
+//
+// As per established convention this method should only ever
+// be invoked *indirectly* via [encoding/json] library.
 func (vo *ValidateOutput) UnmarshalJSON(b []byte) error {
 	type rawOutput ValidateOutput
 	var schemas rawOutput
