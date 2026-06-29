@@ -37,15 +37,27 @@ func GetAzureSchema() *Schema {
 	return schema
 }
 
+// skipApiVersions contains resource type + API version combinations that are present
+// in the schema but not yet supported by Azure, causing "NoRegisteredProviderFound" errors at runtime.
+// Key: resource type (case-insensitive, stored lowercase), Value: set of API versions to skip.
+var skipApiVersions = map[string]map[string]bool{
+	"microsoft.keyvault/vaults/keys":    {"2026-02-01": true, "2026-03-01-preview": true},
+	"microsoft.keyvault/vaults/secrets": {"2026-02-01": true, "2026-03-01-preview": true},
+}
+
 func GetApiVersions(resourceType string) []string {
 	azureSchema := GetAzureSchema()
 	if azureSchema == nil {
 		return []string{}
 	}
+	skipped := skipApiVersions[strings.ToLower(resourceType)]
 	res := make([]string, 0)
 	for key, value := range azureSchema.Resources {
 		if strings.EqualFold(key, resourceType) {
 			for _, v := range value.Definitions {
+				if skipped[v.ApiVersion] {
+					continue
+				}
 				res = append(res, v.ApiVersion)
 			}
 		}
