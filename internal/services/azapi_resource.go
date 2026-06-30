@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"reflect"
 	"slices"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -1206,11 +1208,14 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	var id parse.ResourceId
 	var err error
+	var explicitApiVersion string
+	var candidateApiVersions []string
+	var responseBody interface{}
 
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
-		id, err = parse.ResourceID(request.ID)
+		id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(request.ID)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())
 			return
@@ -1235,10 +1240,11 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q with type %q: %+v", resourceID, identityData.Type.ValueString(), err).Error())
 				return
 			}
+			explicitApiVersion = id.ApiVersion
 		} else {
 			// Case 3: Only id is set - parse it to extract API version
 			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
-			id, err = parse.ResourceID(resourceID)
+			id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(resourceID)
 			if err != nil {
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", resourceID, err).Error())
 				return
@@ -1254,7 +1260,10 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	responseBody, err = withApiVersionFallback(ctx, func(apiVersion string) (interface{}, error) {
+		return client.Get(ctx, id.AzureResourceId, apiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	}, explicitApiVersion, candidateApiVersions)
+
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -1304,6 +1313,36 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Type: state.Type,
 	}
 	response.Diagnostics.Append(response.Identity.Set(ctx, resourceIdentity)...)
+}
+
+func withApiVersionFallback(ctx context.Context, operation func(apiVersion string) (result interface{}, err error), explicitApiVersion string, candidateApiVersions []string) (result interface{}, err error) {
+	if explicitApiVersion == "" && len(candidateApiVersions) == 0 {
+		return nil, fmt.Errorf("have to specify either an explicit api-version or provide candidate api-versions")
+	}
+
+	if explicitApiVersion != "" {
+		return operation(explicitApiVersion)
+	}
+
+	const maxAttempts = 3
+	attempts := maxAttempts
+	if len(candidateApiVersions) < attempts {
+		attempts = len(candidateApiVersions)
+	}
+	for attempt := 0; attempt < attempts; attempt++ {
+		apiVersion := candidateApiVersions[len(candidateApiVersions)-1-attempt]
+		result, err = operation(apiVersion)
+		if err == nil {
+			return result, nil
+		}
+		if !utils.ResponseErrorWasStatusCode(err, http.StatusBadRequest) && !utils.ResponseErrorWasNotFound(err) {
+			return result, err
+		}
+		if attempt < attempts-1 {
+			tflog.Info(ctx, fmt.Sprintf("api-version %q failed with error: %+v, retrying with an older api-version", apiVersion, err))
+		}
+	}
+	return result, err
 }
 
 func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
@@ -1670,5 +1709,18 @@ type = "Microsoft.Network/virtualNetworks@2023-11-01"
 `,
 			},
 		},
+		Template: template.Must(template.New("resource").Parse(`{{ .Header }}
+{{ .Description }}
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}
+{{- with .Import }}
+{{ . }}
+### API Version for Initial Import Call
+
+While processing an import request, the provider cannot determine which api-version to use for the initial import GET call. To work around this, the provider falls back to the 3 most recent [indexed](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) api-versions (regardless of preview / stable), trying each in turn. The provider treats any 400 or 404 response as a signal to attempt the next older version. This fallback can result in an api-version mismatch; to avoid it, specify an explicit api-version using the ` + "`api-version`" + ` query parameter or the resource ` + "`type`" + ` attribute.
+
+{{- end }}`)),
 	}
 }

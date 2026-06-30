@@ -206,22 +206,28 @@ func ResourceIDContainsApiVersion(input string) (ResourceId, error) {
 
 // ResourceID parses a Resource ID which might not contain api-version into an ResourceId struct, it will append the latest api-version if not provided
 func ResourceID(input string) (ResourceId, error) {
+	id, _, _, err := ResourceIDWithApiVersionInfo(input)
+	return id, err
+}
+
+func ResourceIDWithApiVersionInfo(input string) (id ResourceId, explicitApiVersion string, candidateApiVersions []string, err error) {
 	idUrl, err := url.Parse(input)
 	if err != nil {
-		return ResourceId{}, err
+		return ResourceId{}, "", candidateApiVersions, err
 	}
-	apiVersion := idUrl.Query().Get("api-version")
-	if apiVersion == "" {
+	explicitApiVersion = idUrl.Query().Get("api-version")
+	if explicitApiVersion == "" {
 		resourceType := utils.GetResourceType(input)
-		apiVersions := azure.GetApiVersions(resourceType)
-		if len(apiVersions) != 0 {
-			input = fmt.Sprintf("%s?api-version=%s", input, apiVersions[len(apiVersions)-1])
+		candidateApiVersions = azure.GetApiVersions(resourceType)
+		if len(candidateApiVersions) != 0 {
+			input = fmt.Sprintf("%s?api-version=%s", input, candidateApiVersions[len(candidateApiVersions)-1])
 		} else {
-			return ResourceId{}, fmt.Errorf("ID was missing the `api-version` element")
+			return ResourceId{}, "", candidateApiVersions, fmt.Errorf("ID was missing the `api-version` element")
 		}
 	}
 
-	return ResourceIDContainsApiVersion(input)
+	id, err = ResourceIDContainsApiVersion(input)
+	return id, explicitApiVersion, candidateApiVersions, err
 }
 
 func (id ResourceId) String() string {
