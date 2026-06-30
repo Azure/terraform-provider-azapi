@@ -75,13 +75,26 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+	
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, urlPath)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -130,13 +143,26 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, urlPath)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -172,13 +198,26 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, id.ApiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, urlPath)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", id.ApiVersion)
+	applyAPIVersion(req, id.ApiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -223,6 +262,18 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, apiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	urlPath := fmt.Sprintf("https://%s", resourceID)
 	if action != "" {
 		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
@@ -232,7 +283,8 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
+	applyAPIVersion(req, apiVersion, options)
+	reqQP = req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -257,7 +309,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 
@@ -287,4 +339,15 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	default:
 	}
 	return responseBody, nil
+}
+
+func applyAPIVersion(req *policy.Request, apiVersion string, options RequestOptions) {
+	reqQP := req.Raw().URL.Query()
+	if !options.DisableAPIVersionQueryParameter {
+		reqQP.Set("api-version", apiVersion)
+		req.Raw().URL.RawQuery = reqQP.Encode()
+	}
+	if options.APIVersionHeaderName != "" {
+		req.Raw().Header.Set(options.APIVersionHeaderName, apiVersion)
+	}
 }

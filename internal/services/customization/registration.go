@@ -8,6 +8,15 @@ func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
 
+	var storageTableCustomization DataPlaneResource = StorageTableCustomization{}
+	customizations[strings.ToLower(storageTableCustomization.GetResourceType())] = storageTableCustomization
+
+	var storageTableEntityCustomization DataPlaneResource = StorageTableEntityCustomization{}
+	customizations[strings.ToLower(storageTableEntityCustomization.GetResourceType())] = storageTableEntityCustomization
+
+	var storageTableEntitiesCustomization DataPlaneResource = StorageTableEntitiesCustomization{}
+	customizations[strings.ToLower(storageTableEntitiesCustomization.GetResourceType())] = storageTableEntitiesCustomization
+
 	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
 	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
 }
