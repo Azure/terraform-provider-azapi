@@ -1075,6 +1075,49 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 	}
 }
 
+func Test_UpdateObjectNonEmptyOldArrayWithEmptyNewArray(t *testing.T) {
+	OldJson := `
+{
+  "properties": {
+    "subnets": [
+      {
+        "name": "default",
+        "properties": {
+          "addressPrefix": "10.0.3.0/24"
+        }
+      }
+    ]
+  }
+}
+`
+	NewJson := `
+{
+  "properties": {
+    "subnets": []
+  }
+}
+`
+	ExpectJson := `
+{
+  "properties": {
+    "subnets": []
+  }
+}
+`
+
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(NewJson), &new)
+	_ = json.Unmarshal([]byte(ExpectJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
+
 func Test_UpdateObject_ListUniqueIdProperty_IgnoreOtherItemsInList(t *testing.T) {
 	testcases := []struct {
 		Name                   string

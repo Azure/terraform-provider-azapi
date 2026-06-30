@@ -5,6 +5,7 @@ import (
 	"io"
 	"maps"
 	"slices"
+	"strings"
 )
 
 func renderSchema(w io.Writer, fields Fields, nested NestedFields) error {
@@ -127,17 +128,37 @@ func renderField(w io.Writer, field Field) error {
 		return err
 	}
 
-	if v := field.Description(); v != "" {
-		fmt.Fprintf(w, " %s", v)
-	}
+	desc := field.Description()
+	def := field.Default()
+	nestedLink := field.NestedLink()
 
-	if v := field.Default(); v != "" {
-		fmt.Fprintf(w, " %s", v)
+	if isMultilineMarkdown(desc) {
+		fmt.Fprintf(w, " %s", IndentFollowingLines(desc, "\t"))
+		io.WriteString(w, "\n")
+		var extras []string
+		if def != "" {
+			extras = append(extras, def)
+		}
+		if nestedLink != "" {
+			extras = append(extras, nestedLink)
+		}
+		if len(extras) > 0 {
+			if _, err := fmt.Fprintf(w, "\n\t%s\n", strings.Join(extras, " ")); err != nil {
+				return err
+			}
+		}
+	} else {
+		if desc != "" {
+			fmt.Fprintf(w, " %s", desc)
+		}
+		if def != "" {
+			fmt.Fprintf(w, " %s", def)
+		}
+		if nestedLink != "" {
+			fmt.Fprintf(w, " %s", nestedLink)
+		}
+		io.WriteString(w, "\n")
 	}
-	if v := field.NestedLink(); v != "" {
-		fmt.Fprintf(w, " %s", v)
-	}
-	io.WriteString(w, "\n")
 
 	if l := field.PlanModifiers(); len(l) != 0 {
 		for _, e := range l {

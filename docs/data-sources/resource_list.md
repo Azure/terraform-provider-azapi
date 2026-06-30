@@ -76,7 +76,7 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["value"]`, it will set the following HCL object to the computed property output.
-	
+
 		```text
 		{
 		  "value" = [
@@ -96,9 +96,9 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 		  ]
 		}
 		```
-	
+
 	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"values": "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}", "names": "value[].name"}`, it will set the following HCL object to the computed property output.
-	
+
 		```text
 		{
 			"names" = [
@@ -117,7 +117,7 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 			]
 		}
 		```
-	
+
 	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).

@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2014, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package querycheck
@@ -73,10 +73,22 @@ func (e expectIdentity) CheckQuery(_ context.Context, req CheckQueryRequest, res
 	var errCollection []error
 	errCollection = append(errCollection, fmt.Errorf("an identity with the following attributes was not found"))
 
+	var keys []string
+
+	for k := range e.check {
+		keys = append(keys, k)
+	}
+
+	sort.SliceStable(keys, func(i, j int) bool {
+		return keys[i] < keys[j]
+	})
+
 	// wrap errors for each check
-	for attr, check := range e.check {
+	for _, attr := range keys {
+		check := e.check[attr]
 		errCollection = append(errCollection, fmt.Errorf("attribute %q: %s", attr, check))
 	}
+
 	errCollection = append(errCollection, fmt.Errorf("address: %s\n", e.listResourceAddress))
 	resp.Error = errors.Join(errCollection...)
 }

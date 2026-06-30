@@ -115,6 +115,28 @@ func PointerTo[T any](ptr *T) T {
 	return *ptr
 }
 
+// IndentFollowingLines returns s with every non-empty line after the first
+// prefixed by indent. Empty lines are left empty (no trailing whitespace).
+func IndentFollowingLines(s, indent string) string {
+	if s == "" {
+		return s
+	}
+	lines := strings.Split(s, "\n")
+	for i := 1; i < len(lines); i++ {
+		if lines[i] == "" {
+			continue
+		}
+		lines[i] = indent + lines[i]
+	}
+	return strings.Join(lines, "\n")
+}
+
+// isMultilineMarkdown reports whether s should be treated as multi-line
+// markdown content.
+func isMultilineMarkdown(s string) bool {
+	return strings.Contains(s, "\n\n")
+}
+
 func Sentencefy(s string) string {
 	if s == "" {
 		return s

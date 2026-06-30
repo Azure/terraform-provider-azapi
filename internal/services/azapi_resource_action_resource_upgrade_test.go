@@ -10,6 +10,7 @@ import (
 )
 
 func TestAccAzapiActionResourceUpgrade_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -29,6 +30,7 @@ func TestAccAzapiActionResourceUpgrade_basic(t *testing.T) {
 }
 
 func TestAccAzapiActionResourceUpgrade_basicWhenDestroy(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -103,6 +105,7 @@ func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 }
 
 func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (PremiumV3 VMs quota is 0)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -124,6 +127,7 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 }
 
 func TestAccAzapiActionResourceUpgrade_timeouts(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -142,6 +146,7 @@ func TestAccAzapiActionResourceUpgrade_timeouts(t *testing.T) {
 }
 
 func TestAccAzapiActionResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
