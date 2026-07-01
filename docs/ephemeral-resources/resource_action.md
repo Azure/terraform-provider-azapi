@@ -109,7 +109,7 @@ ephemeral "azapi_resource_action" "listKeys" {
 	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
-- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
 
 ### Read-Only

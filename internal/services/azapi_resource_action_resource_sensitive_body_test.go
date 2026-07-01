@@ -105,6 +105,90 @@ func TestBuildActionRequestBodyMergesSensitiveBody(t *testing.T) {
 	}`)
 }
 
+func TestAzapiResourceActionRequestBodyMergesSensitiveBody(t *testing.T) {
+	config := AzapiResourceActionModel{
+		Body: mustDynamicFromJSON(t, `{
+			"source": {
+				"registryUri": "dhi.io"
+			}
+		}`),
+		SensitiveBody: mustDynamicFromJSON(t, `{
+			"source": {
+				"credentials": {
+					"password": "secret"
+				}
+			}
+		}`),
+	}
+
+	actual, err := buildAzapiResourceActionRequestBody(config)
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+
+	assertJsonEqual(t, actual, `{
+		"source": {
+			"registryUri": "dhi.io",
+			"credentials": {
+				"password": "secret"
+			}
+		}
+	}`)
+}
+
+func TestActionEphemeralRequestBodyMergesSensitiveBody(t *testing.T) {
+	model := ActionEphemeralModel{
+		Body: mustDynamicFromJSON(t, `{
+			"properties": {
+				"mode": "test"
+			}
+		}`),
+		SensitiveBody: mustDynamicFromJSON(t, `{
+			"properties": {
+				"token": "secret"
+			}
+		}`),
+	}
+
+	actual, err := buildActionEphemeralRequestBody(model)
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+
+	assertJsonEqual(t, actual, `{
+		"properties": {
+			"mode": "test",
+			"token": "secret"
+		}
+	}`)
+}
+
+func TestBuildActionRequestBodySensitiveBodyOverridesBody(t *testing.T) {
+	body := mustDynamicFromJSON(t, `{
+		"properties": {
+			"sharedKey": "placeholder",
+			"mode": "test"
+		}
+	}`)
+	sensitiveBody := mustDynamicFromJSON(t, `{
+		"properties": {
+			"sharedKey": "secret"
+		}
+	}`)
+
+	actual, err := buildActionRequestBody(body, sensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+
+	assertJsonEqual(t, actual, `{
+		"properties": {
+			"sharedKey": "secret",
+			"mode": "test"
+		}
+	}`)
+}
+
 func TestBuildActionRequestBodySkipsUnchangedSensitiveBodyVersion(t *testing.T) {
 	body := mustDynamicFromJSON(t, `{
 		"properties": {

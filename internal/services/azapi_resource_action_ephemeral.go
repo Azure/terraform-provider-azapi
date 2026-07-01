@@ -177,7 +177,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	requestBody, err := buildActionRequestBody(model.Body, model.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+	requestBody, err := buildActionEphemeralRequestBody(model)
 	if err != nil {
 		response.Diagnostics.AddError("Invalid request body", err.Error())
 		return
@@ -221,6 +221,10 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 	model.Output = output
 
 	response.Diagnostics.Append(response.Result.Set(ctx, model)...)
+}
+
+func buildActionEphemeralRequestBody(model ActionEphemeralModel) (interface{}, error) {
+	return buildActionRequestBody(model.Body, model.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
 }
 
 func (r *ActionEphemeral) RenderOption() tffwdocs.EphemeralResourceRenderOption {

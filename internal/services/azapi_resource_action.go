@@ -145,7 +145,7 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	requestBody, err := buildActionRequestBody(config.Body, config.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+	requestBody, err := buildAzapiResourceActionRequestBody(config)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid request body", err.Error())
 		return
@@ -180,6 +180,10 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	if resp.SendProgress != nil {
 		resp.SendProgress(action.InvokeProgressEvent{Message: "Action completed"})
 	}
+}
+
+func buildAzapiResourceActionRequestBody(config AzapiResourceActionModel) (interface{}, error) {
+	return buildActionRequestBody(config.Body, config.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
 }
 
 func (a *AzapiResourceAction) RenderOption() tffwdocs.ActionRenderOption {

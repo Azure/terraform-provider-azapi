@@ -148,4 +148,4 @@ action "azapi_resource_action" "power_on" {
 
 	-> Value must be one of: ["POST" "PATCH" "PUT" "DELETE" "GET" "HEAD"].
 - `query_parameters` (Map of List of String) Query parameters to include in the request.
-- `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+- `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
