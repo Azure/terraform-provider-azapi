@@ -84,7 +84,7 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
@@ -143,7 +143,7 @@ func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVer
 
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, runtime.NewResponseError(resp)
@@ -190,7 +190,7 @@ func (client *ResourceClient) Delete(ctx context.Context, resourceID string, api
 
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
@@ -258,7 +258,7 @@ func (client *ResourceClient) Action(ctx context.Context, resourceID string, act
 
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
@@ -356,7 +356,7 @@ func (client *ResourceClient) List(ctx context.Context, url string, apiVersion s
 			request.Raw().Header.Set("Accept", "application/json")
 			resp, err := client.pl.Do(request)
 			if err != nil {
-				return nil, err
+				return nil, WrapContextError(err, options.LastRetryError)
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return nil, runtime.NewResponseError(resp)
