@@ -32,6 +32,7 @@ type ActionEphemeralModel struct {
 	Action               types.String     `tfsdk:"action"`
 	Method               types.String     `tfsdk:"method"`
 	Body                 types.Dynamic    `tfsdk:"body"`
+	SensitiveBody        types.Dynamic    `tfsdk:"sensitive_body"`
 	Locks                types.List       `tfsdk:"locks"`
 	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
 	Output               types.Dynamic    `tfsdk:"output"`
@@ -107,6 +108,11 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				},
 			},
 
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
 				Optional:    true,
@@ -171,9 +177,9 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var requestBody interface{}
-	if err := unmarshalBody(model.Body, &requestBody); err != nil {
-		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+	requestBody, err := buildActionRequestBody(model.Body, model.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
+	if err != nil {
+		response.Diagnostics.AddError("Invalid request body", err.Error())
 		return
 	}
 
