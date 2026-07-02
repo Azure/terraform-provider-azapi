@@ -1,7 +1,7 @@
 package docstrings
 
 func SensitiveBody() string {
-	return `A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.`
+	return `A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both ` + "`body`" + ` and ` + "`sensitive_body`" + `, the ` + "`sensitive_body`" + ` value takes precedence.`
 }
 
 func SensitiveBodyVersion() string {
