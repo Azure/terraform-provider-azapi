@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/entrauth"
+	pkcs12 "software.sslmate.com/src/go-pkcs12"
 )
 
 type Option struct {
@@ -114,11 +115,21 @@ func (opt Option) getClientCert() ([]*x509.Certificate, crypto.PrivateKey, error
 		return nil, nil, fmt.Errorf("no client certificate available")
 	}
 	certs, key, err := azidentity.ParseCertificates(certData, opt.ClientCertPassword)
+	if err == nil {
+		return certs, key, nil
+	}
+
+	if opt.Logger != nil {
+		opt.Logger.Printf("warning: azidentity failed to parse client certificate (%v), falling back to the pkcs12 parser", err)
+	}
+	privateKey, cert, caCerts, err := pkcs12.DecodeChain(certData, string(opt.ClientCertPassword))
 	if err != nil {
 		return nil, nil, fmt.Errorf(`failed to parse client certificate": %v`, err)
 	}
 
-	return certs, key, nil
+	parsedCerts := []*x509.Certificate{cert}
+	parsedCerts = append(parsedCerts, caCerts...)
+	return parsedCerts, privateKey, nil
 }
 
 func (opt Option) buildOIDCTokenCredOpt() (entrauth.CredentialOption, error) {
