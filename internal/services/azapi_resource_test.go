@@ -631,6 +631,20 @@ func TestAccGenericResource_withRetry(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_withRetryWaitForDesiredState(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.withRetryWaitForDesiredState(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_headers(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1155,6 +1169,43 @@ resource "azapi_resource" "test" {
 
   retry = {
     error_message_regex = ["test error"]
+  }
+
+  body = {
+    properties = {
+      base64Value = "%[3]s"
+    }
+  }
+}
+`, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) withRetryWaitForDesiredState(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.automationAccount.id
+
+  retry = {
+    error_message_regex    = ["test error"]
+    wait_for_desired_state = ["properties.isExpired == ` + "`" + `false` + "`" + `"]
   }
 
   body = {
