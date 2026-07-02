@@ -39,27 +39,30 @@ func Test_GetResourceDefinition(t *testing.T) {
 }
 
 func Test_AllBicepTypes(t *testing.T) {
-	schema := azure.GetAzureSchema()
-	if schema == nil {
+	if schema := azure.GetAzureSchema(); schema == nil {
 		t.Fatal("failed to load azure schema")
-	}
-	if len(schema.Resources) == 0 {
-		t.Fatal("expect resources are not empty")
-	}
-	for resourceName, res := range schema.Resources {
-		if len(resourceName) == 0 {
-			t.Fatal("expect resource name is not empty")
+	} else {
+		resources := schema.Resources
+		if len(resources) == 0 {
+			t.Fatal("expect resources are not empty")
 		}
-		if res == nil {
-			t.Fatalf("expect resource definition is not nil, resource name: %s", resourceName)
-		}
-		if len(res.Definitions) == 0 {
-			t.Fatalf("expect resource definitions are not empty, resource name: %s", resourceName)
-		}
-		for _, definition := range res.Definitions {
-			_, err := definition.GetDefinition()
-			if err != nil {
-				t.Fatal(err)
+		for resourceName, res := range resources {
+			if len(resourceName) == 0 {
+				t.Fatal("expect resource name is not empty")
+			}
+			if res == nil {
+				t.Fatalf("expect resource definition is not nil, resource name: %s", resourceName)
+			} else {
+				definitions := res.Definitions
+				if len(definitions) == 0 {
+					t.Fatalf("expect resource definitions are not empty, resource name: %s", resourceName)
+				}
+				for _, definition := range definitions {
+					_, err := definition.GetDefinition()
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
 			}
 		}
 	}

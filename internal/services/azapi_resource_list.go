@@ -21,6 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type AzapiResourceListModel struct {
@@ -69,6 +70,7 @@ type AzapiResourceList struct {
 var _ list.ListResource = &AzapiResourceList{}
 var _ list.ListResourceWithConfigure = &AzapiResourceList{}
 var _ list.ListResourceWithConfigValidators = &AzapiResourceList{}
+var _ tffwdocs.ListResourceWithRenderOption = &AzapiResourceList{}
 
 func (r *AzapiResourceList) Metadata(_ context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_resource"
@@ -97,7 +99,7 @@ func (r *AzapiResourceList) ListResourceConfigValidators(_ context.Context) []li
 
 func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.ListResourceSchemaRequest, response *list.ListResourceSchemaResponse) {
 	response.Schema = schema.Schema{
-		Description:         "Configuration for listing Azure Resource Manager resources",
+		Description:         "Configuration for listing Azure Resource Manager resources.",
 		MarkdownDescription: "This list resource allows you to list Azure Resource Manager resources of a specific type under a given scope.",
 		Attributes: map[string]schema.Attribute{
 			"type": schema.StringAttribute{
@@ -119,7 +121,7 @@ func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.L
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -127,7 +129,7 @@ func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.L
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 	}
@@ -318,5 +320,23 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 				return
 			}
 		}
+	}
+}
+
+func (r *AzapiResourceList) RenderOption() tffwdocs.ListResourceRenderOption {
+	return tffwdocs.ListResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+list "azapi_resource" "example" {
+  provider = azapi
+  config {
+    type      = "Microsoft.Storage/storageAccounts@2021-04-01"
+    parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg"
+  }
+}
+`,
+			},
+		},
 	}
 }

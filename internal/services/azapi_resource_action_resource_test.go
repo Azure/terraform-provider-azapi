@@ -21,6 +21,7 @@ func (r ActionResource) Exists(ctx context.Context, client *clients.Client, stat
 }
 
 func TestAccActionResource_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -33,6 +34,7 @@ func TestAccActionResource_basic(t *testing.T) {
 }
 
 func TestAccActionResource_basicWhenDestroy(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -74,6 +76,7 @@ func TestAccActionResource_providerAction(t *testing.T) {
 }
 
 func TestAccActionResource_nonstandardLRO(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (PremiumV3 VMs quota is 0)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -87,6 +90,7 @@ func TestAccActionResource_nonstandardLRO(t *testing.T) {
 }
 
 func TestAccActionResource_timeouts(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -99,6 +103,7 @@ func TestAccActionResource_timeouts(t *testing.T) {
 }
 
 func TestAccActionResource_headers(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -167,6 +172,7 @@ func TestAccActionResource_updateApiVersion(t *testing.T) {
 }
 
 func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 

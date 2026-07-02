@@ -25,7 +25,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes, map[string]attr.Value{
+				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes(false), map[string]attr.Value{
 					"id":                  types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 					"type":                types.StringValue("Microsoft.Network/virtualNetworks"),
 					"name":                types.StringValue("vnet1"),
@@ -51,7 +51,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes, map[string]attr.Value{
+				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes(false), map[string]attr.Value{
 					"id":                  types.StringValue("/providers/Microsoft.Billing/billingAccounts/ba1"),
 					"type":                types.StringValue("Microsoft.Billing/billingAccounts"),
 					"name":                types.StringValue("ba1"),
@@ -75,7 +75,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes, map[string]attr.Value{
+				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes(false), map[string]attr.Value{
 					"id":                  types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000"),
 					"type":                types.StringValue("Microsoft.Resources/subscriptions"),
 					"name":                types.StringValue("00000000-0000-0000-0000-000000000000"),
@@ -98,7 +98,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes, map[string]attr.Value{
+				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes(false), map[string]attr.Value{
 					"id":                  types.StringValue("/providers/Microsoft.Management/managementGroups/mg1"),
 					"type":                types.StringValue("Microsoft.Management/managementGroups"),
 					"name":                types.StringValue("mg1"),
@@ -122,7 +122,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes, map[string]attr.Value{
+				Result: function.NewResultData(types.ObjectValueMust(functions.ParseResourceIdResultAttrTypes(false), map[string]attr.Value{
 					"id":                  types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/providers/Microsoft.Authorization/locks/mylock"),
 					"type":                types.StringValue("Microsoft.Authorization/locks"),
 					"name":                types.StringValue("mylock"),
@@ -150,7 +150,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("failed to parse resource ID(resourceType: Microsoft.Network/virtualNetworks@latest, resourceId: ): `resource_id` and `type` are not matched, expect `type` to be , but got Microsoft.Network/virtualNetworks"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes(false))),
 			},
 		},
 	}
@@ -158,7 +158,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 	for name, testCase := range testCases {
 		t.Run(name, func(t *testing.T) {
 			got := function.RunResponse{
-				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes(false))),
 			}
 
 			parseResourceIdFunction := functions.ParseResourceIdFunction{}
