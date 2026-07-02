@@ -74,9 +74,9 @@ type DataPlaneResource struct {
 
 var _ resource.Resource = &DataPlaneResource{}
 var _ resource.ResourceWithConfigure = &DataPlaneResource{}
+var _ resource.ResourceWithImportState = &DataPlaneResource{}
 var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
 var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
-var _ resource.ResourceWithImportState = &DataPlaneResource{}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
