@@ -67,6 +67,17 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
 				Default:             float64default.StaticFloat64(DefaultRandomizationFactor),
 			},
+			"wait_for_desired_state": schema.ListAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				Description:         "A list of JMESPath expressions to evaluate against the resource body after a create or update operation. All expressions must evaluate to `true` for the operation to be considered successful. If any expression evaluates to `false`, the read-after-write will be retried until all expressions evaluate to `true` or the operation times out.",
+				MarkdownDescription: "A list of [JMESPath](https://jmespath.org/) expressions to evaluate against the resource body after a create or update operation. All expressions must evaluate to `true` for the operation to be considered successful. If any expression evaluates to `false`, the read-after-write will be retried until all expressions evaluate to `true` or the operation times out.",
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsValidJMESPath()),
+					listvalidator.UniqueValues(),
+					listvalidator.SizeAtLeast(1),
+				},
+			},
 		},
 		CustomType: RetryType{
 			ObjectType: types.ObjectType{

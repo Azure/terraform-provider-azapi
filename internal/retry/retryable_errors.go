@@ -144,6 +144,24 @@ func (t RetryType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue
 			fmt.Sprintf(`randomization_factor expected to be basetypes.Float64Value, was: %T`, randomizationFactorAttribute))
 	}
 
+	waitForDesiredStateAttribute, ok := attributes["wait_for_desired_state"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`wait_for_desired_state is missing from object`)
+
+		return nil, diags
+	}
+
+	waitForDesiredStateVal, ok := waitForDesiredStateAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`wait_for_desired_state expected to be basetypes.ListValue, was: %T`, waitForDesiredStateAttribute))
+	}
+
 	if diags.HasError() {
 		return nil, diags
 	}
@@ -154,6 +172,7 @@ func (t RetryType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
 		Multiplier:          multiplierVal,
 		RandomizationFactor: randomizationFactorVal,
+		WaitForDesiredState: waitForDesiredStateVal,
 		state:               attr.ValueStateKnown,
 	}, diags
 }
@@ -311,6 +330,24 @@ func NewRetryValue(attributeTypes map[string]attr.Type, attributes map[string]at
 			fmt.Sprintf(`randomization_factor expected to be basetypes.Float64Value, was: %T`, randomizationFactorAttribute))
 	}
 
+	waitForDesiredStateAttribute, ok := attributes["wait_for_desired_state"]
+
+	if !ok {
+		diags.AddError(
+			"Attribute Missing",
+			`wait_for_desired_state is missing from object`)
+
+		return NewRetryValueUnknown(), diags
+	}
+
+	waitForDesiredStateVal, ok := waitForDesiredStateAttribute.(basetypes.ListValue)
+
+	if !ok {
+		diags.AddError(
+			"Attribute Wrong Type",
+			fmt.Sprintf(`wait_for_desired_state expected to be basetypes.ListValue, was: %T`, waitForDesiredStateAttribute))
+	}
+
 	if diags.HasError() {
 		return NewRetryValueUnknown(), diags
 	}
@@ -321,6 +358,7 @@ func NewRetryValue(attributeTypes map[string]attr.Type, attributes map[string]at
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
 		Multiplier:          multiplierVal,
 		RandomizationFactor: randomizationFactorVal,
+		WaitForDesiredState: waitForDesiredStateVal,
 		state:               attr.ValueStateKnown,
 	}, diags
 }
@@ -398,11 +436,12 @@ type RetryValue struct {
 	MaxIntervalSeconds  basetypes.Int64Value   `tfsdk:"max_interval_seconds"`
 	Multiplier          basetypes.Float64Value `tfsdk:"multiplier"`
 	RandomizationFactor basetypes.Float64Value `tfsdk:"randomization_factor"`
+	WaitForDesiredState basetypes.ListValue    `tfsdk:"wait_for_desired_state"`
 	state               attr.ValueState
 }
 
 func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 5)
+	attrTypes := make(map[string]tftypes.Type, 6)
 
 	var val tftypes.Value
 	var err error
@@ -414,12 +453,15 @@ func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error)
 	attrTypes["max_interval_seconds"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["multiplier"] = basetypes.Float64Type{}.TerraformType(ctx)
 	attrTypes["randomization_factor"] = basetypes.Float64Type{}.TerraformType(ctx)
+	attrTypes["wait_for_desired_state"] = basetypes.ListType{
+		ElemType: types.StringType,
+	}.TerraformType(ctx)
 
 	objectType := tftypes.Object{AttributeTypes: attrTypes}
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 5)
+		vals := make(map[string]tftypes.Value, 6)
 
 		val, err = v.ErrorMessageRegex.ToTerraformValue(ctx)
 
@@ -460,6 +502,14 @@ func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error)
 		}
 
 		vals["randomization_factor"] = val
+
+		val, err = v.WaitForDesiredState.ToTerraformValue(ctx)
+
+		if err != nil {
+			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
+		}
+
+		vals["wait_for_desired_state"] = val
 
 		if err := tftypes.ValidateValue(objectType, vals); err != nil {
 			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
@@ -502,6 +552,18 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 		diags.Append(d...)
 	}
 
+	var waitForDesiredStateVal basetypes.ListValue
+	switch {
+	case v.WaitForDesiredState.IsUnknown():
+		waitForDesiredStateVal = types.ListUnknown(types.StringType)
+	case v.WaitForDesiredState.IsNull():
+		waitForDesiredStateVal = types.ListNull(types.StringType)
+	default:
+		var d diag.Diagnostics
+		waitForDesiredStateVal, d = types.ListValue(types.StringType, v.WaitForDesiredState.Elements())
+		diags.Append(d...)
+	}
+
 	if diags.HasError() {
 		return types.ObjectUnknown(map[string]attr.Type{
 			"error_message_regex": basetypes.ListType{
@@ -511,6 +573,9 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 			"max_interval_seconds": basetypes.Int64Type{},
 			"multiplier":           basetypes.Float64Type{},
 			"randomization_factor": basetypes.Float64Type{},
+			"wait_for_desired_state": basetypes.ListType{
+				ElemType: types.StringType,
+			},
 		}), diags
 	}
 
@@ -522,6 +587,9 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 		"max_interval_seconds": basetypes.Int64Type{},
 		"multiplier":           basetypes.Float64Type{},
 		"randomization_factor": basetypes.Float64Type{},
+		"wait_for_desired_state": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 	}
 
 	if v.IsNull() {
@@ -535,11 +603,12 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 	objVal, diags := types.ObjectValue(
 		attributeTypes,
 		map[string]attr.Value{
-			"error_message_regex":  errorMessageRegexVal,
-			"interval_seconds":     v.IntervalSeconds,
-			"max_interval_seconds": v.MaxIntervalSeconds,
-			"multiplier":           v.Multiplier,
-			"randomization_factor": v.RandomizationFactor,
+			"error_message_regex":    errorMessageRegexVal,
+			"interval_seconds":       v.IntervalSeconds,
+			"max_interval_seconds":   v.MaxIntervalSeconds,
+			"multiplier":             v.Multiplier,
+			"randomization_factor":   v.RandomizationFactor,
+			"wait_for_desired_state": waitForDesiredStateVal,
 		})
 
 	return objVal, diags
@@ -580,6 +649,10 @@ func (v RetryValue) Equal(o attr.Value) bool {
 		return false
 	}
 
+	if !v.WaitForDesiredState.Equal(other.WaitForDesiredState) {
+		return false
+	}
+
 	return true
 }
 
@@ -600,6 +673,9 @@ func (v RetryValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 		"max_interval_seconds": basetypes.Int64Type{},
 		"multiplier":           basetypes.Float64Type{},
 		"randomization_factor": basetypes.Float64Type{},
+		"wait_for_desired_state": basetypes.ListType{
+			ElemType: types.StringType,
+		},
 	}
 }
 
@@ -642,6 +718,9 @@ func (v RetryValue) GetErrorMessages() []string {
 	if v.IsUnknown() {
 		return nil
 	}
+	if v.ErrorMessageRegex.IsNull() || v.ErrorMessageRegex.IsUnknown() {
+		return nil
+	}
 	res := make([]string, len(v.ErrorMessageRegex.Elements()))
 	for i, elem := range v.ErrorMessageRegex.Elements() {
 		res[i] = elem.(types.String).ValueString()
@@ -657,6 +736,23 @@ func (v RetryValue) GetErrorMessagesRegex() []regexp.Regexp {
 	res := make([]regexp.Regexp, len(msgs))
 	for i, msg := range msgs {
 		res[i] = *regexp.MustCompile(msg)
+	}
+	return res
+}
+
+func (v RetryValue) GetWaitForDesiredState() []string {
+	if v.IsNull() {
+		return nil
+	}
+	if v.IsUnknown() {
+		return nil
+	}
+	if v.WaitForDesiredState.IsNull() || v.WaitForDesiredState.IsUnknown() {
+		return nil
+	}
+	res := make([]string, len(v.WaitForDesiredState.Elements()))
+	for i, elem := range v.WaitForDesiredState.Elements() {
+		res[i] = elem.(types.String).ValueString()
 	}
 	return res
 }

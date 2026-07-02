@@ -1,7 +1,9 @@
 package clients_test
 
 import (
+	"bytes"
 	"errors"
+	"io"
 	"math"
 	"net/http"
 	"testing"
@@ -36,18 +38,20 @@ func Test_NewRetryOptions(t *testing.T) {
 			name: "basic retry options",
 			input: retry.NewRetryValueMust(
 				map[string]attr.Type{
-					"interval_seconds":     types.Int64Type,
-					"max_interval_seconds": types.Int64Type,
-					"multiplier":           types.Float64Type,
-					"randomization_factor": types.Float64Type,
-					"error_message_regex":  types.ListType{ElemType: types.StringType},
+					"interval_seconds":       types.Int64Type,
+					"max_interval_seconds":   types.Int64Type,
+					"multiplier":             types.Float64Type,
+					"randomization_factor":   types.Float64Type,
+					"error_message_regex":    types.ListType{ElemType: types.StringType},
+					"wait_for_desired_state": types.ListType{ElemType: types.StringType},
 				},
 				map[string]attr.Value{
-					"interval_seconds":     types.Int64Value(retry.DefaultIntervalSeconds),
-					"max_interval_seconds": types.Int64Value(retry.DefaultMaxIntervalSeconds),
-					"multiplier":           types.Float64Value(retry.DefaultMultiplier),
-					"randomization_factor": types.Float64Value(retry.DefaultRandomizationFactor),
-					"error_message_regex":  types.ListValueMust(types.StringType, []attr.Value{types.StringValue("error")}),
+					"interval_seconds":       types.Int64Value(retry.DefaultIntervalSeconds),
+					"max_interval_seconds":   types.Int64Value(retry.DefaultMaxIntervalSeconds),
+					"multiplier":             types.Float64Value(retry.DefaultMultiplier),
+					"randomization_factor":   types.Float64Value(retry.DefaultRandomizationFactor),
+					"error_message_regex":    types.ListValueMust(types.StringType, []attr.Value{types.StringValue("error")}),
+					"wait_for_desired_state": types.ListNull(types.StringType),
 				},
 			),
 			expected: &policy.RetryOptions{
@@ -235,18 +239,20 @@ func Test_NewRetryOptions_NilResponseHandling(t *testing.T) {
 	// where resp.StatusCode is accessed when resp is nil
 	retryInput := retry.NewRetryValueMust(
 		map[string]attr.Type{
-			"interval_seconds":     types.Int64Type,
-			"max_interval_seconds": types.Int64Type,
-			"multiplier":           types.Float64Type,
-			"randomization_factor": types.Float64Type,
-			"error_message_regex":  types.ListType{ElemType: types.StringType},
+			"interval_seconds":       types.Int64Type,
+			"max_interval_seconds":   types.Int64Type,
+			"multiplier":             types.Float64Type,
+			"randomization_factor":   types.Float64Type,
+			"error_message_regex":    types.ListType{ElemType: types.StringType},
+			"wait_for_desired_state": types.ListType{ElemType: types.StringType},
 		},
 		map[string]attr.Value{
-			"interval_seconds":     types.Int64Value(retry.DefaultIntervalSeconds),
-			"max_interval_seconds": types.Int64Value(retry.DefaultMaxIntervalSeconds),
-			"multiplier":           types.Float64Value(retry.DefaultMultiplier),
-			"randomization_factor": types.Float64Value(retry.DefaultRandomizationFactor),
-			"error_message_regex":  types.ListValueMust(types.StringType, []attr.Value{types.StringValue("error")}),
+			"interval_seconds":       types.Int64Value(retry.DefaultIntervalSeconds),
+			"max_interval_seconds":   types.Int64Value(retry.DefaultMaxIntervalSeconds),
+			"multiplier":             types.Float64Value(retry.DefaultMultiplier),
+			"randomization_factor":   types.Float64Value(retry.DefaultRandomizationFactor),
+			"error_message_regex":    types.ListValueMust(types.StringType, []attr.Value{types.StringValue("error")}),
+			"wait_for_desired_state": types.ListNull(types.StringType),
 		},
 	)
 
@@ -353,5 +359,226 @@ func Test_NewRetryOptionsForReadAfterCreate_NilResponseHandling(t *testing.T) {
 				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
 			}
 		})
+	}
+}
+
+func Test_NewRetryOptionsForWaitForDesiredState(t *testing.T) {
+	testcases := []struct {
+		name     string
+		input    []string
+		expected *policy.RetryOptions
+	}{
+		{
+			name:     "nil expressions",
+			input:    nil,
+			expected: nil,
+		},
+		{
+			name:     "empty expressions",
+			input:    []string{},
+			expected: nil,
+		},
+		{
+			name:  "single expression",
+			input: []string{"properties.status == 'Running'"},
+			expected: &policy.RetryOptions{
+				MaxRetries:  math.MaxInt16,
+				StatusCodes: clients.DefaultRetryableStatusCodes,
+			},
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := clients.NewRetryOptionsForWaitForDesiredState(tc.input)
+			if result == nil && tc.expected == nil {
+				return
+			}
+			if result == nil || tc.expected == nil {
+				t.Errorf("expected %v, got %v", tc.expected, result)
+				return
+			}
+			if result.MaxRetries != tc.expected.MaxRetries {
+				t.Errorf("expected MaxRetries %d, got %d", tc.expected.MaxRetries, result.MaxRetries)
+			}
+			if len(result.StatusCodes) != len(tc.expected.StatusCodes) {
+				t.Errorf("expected %d status codes, got %d", len(tc.expected.StatusCodes), len(result.StatusCodes))
+				return
+			}
+		})
+	}
+}
+
+func Test_NewRetryOptionsForWaitForDesiredState_ShouldRetry(t *testing.T) {
+	expressions := []string{"properties.status == 'Running'"}
+	result := clients.NewRetryOptionsForWaitForDesiredState(expressions)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	testCases := []struct {
+		name        string
+		resp        *http.Response
+		err         error
+		expectRetry bool
+	}{
+		{
+			name:        "nil response",
+			resp:        nil,
+			err:         errors.New("some error"),
+			expectRetry: false,
+		},
+		{
+			name: "non-success status code",
+			resp: &http.Response{
+				StatusCode: 404,
+				Body:       io.NopCloser(bytes.NewReader([]byte(`{}`))),
+			},
+			err:         nil,
+			expectRetry: false,
+		},
+		{
+			name: "desired state reached",
+			resp: &http.Response{
+				StatusCode: 200,
+				Body:       io.NopCloser(bytes.NewReader([]byte(`{"properties":{"status":"Running"}}`))),
+			},
+			err:         nil,
+			expectRetry: false,
+		},
+		{
+			name: "desired state not reached",
+			resp: &http.Response{
+				StatusCode: 200,
+				Body:       io.NopCloser(bytes.NewReader([]byte(`{"properties":{"status":"Provisioning"}}`))),
+			},
+			err:         nil,
+			expectRetry: true,
+		},
+		{
+			name: "invalid json body",
+			resp: &http.Response{
+				StatusCode: 200,
+				Body:       io.NopCloser(bytes.NewReader([]byte(`not json`))),
+			},
+			err:         nil,
+			expectRetry: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("ShouldRetry panicked: %v", r)
+				}
+			}()
+
+			shouldRetry := result.ShouldRetry(tc.resp, tc.err)
+			if shouldRetry != tc.expectRetry {
+				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
+			}
+		})
+	}
+}
+
+func Test_NewRetryOptionsForWaitForDesiredState_MultipleExpressions(t *testing.T) {
+	expressions := []string{
+		"properties.status == 'Running'",
+		"properties.ready == `true`",
+	}
+	result := clients.NewRetryOptionsForWaitForDesiredState(expressions)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	testCases := []struct {
+		name        string
+		body        string
+		expectRetry bool
+	}{
+		{
+			name:        "all expressions true",
+			body:        `{"properties":{"status":"Running","ready":true}}`,
+			expectRetry: false,
+		},
+		{
+			name:        "first expression false",
+			body:        `{"properties":{"status":"Stopped","ready":true}}`,
+			expectRetry: true,
+		},
+		{
+			name:        "second expression false",
+			body:        `{"properties":{"status":"Running","ready":false}}`,
+			expectRetry: true,
+		},
+		{
+			name:        "both expressions false",
+			body:        `{"properties":{"status":"Stopped","ready":false}}`,
+			expectRetry: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			resp := &http.Response{
+				StatusCode: 200,
+				Body:       io.NopCloser(bytes.NewReader([]byte(tc.body))),
+			}
+
+			shouldRetry := result.ShouldRetry(resp, nil)
+			if shouldRetry != tc.expectRetry {
+				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
+			}
+		})
+	}
+}
+
+func Test_NewRetryOptionsForWaitForDesiredState_BodyPreserved(t *testing.T) {
+	expressions := []string{"properties.status == 'Running'"}
+	result := clients.NewRetryOptionsForWaitForDesiredState(expressions)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	bodyContent := `{"properties":{"status":"Running"}}`
+	resp := &http.Response{
+		StatusCode: 200,
+		Body:       io.NopCloser(bytes.NewReader([]byte(bodyContent))),
+	}
+
+	// ShouldRetry should return false (desired state reached)
+	shouldRetry := result.ShouldRetry(resp, nil)
+	if shouldRetry {
+		t.Fatal("expected ShouldRetry to return false")
+	}
+
+	// Verify the body is still readable
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read body after ShouldRetry: %v", err)
+	}
+	if string(bodyBytes) != bodyContent {
+		t.Errorf("expected body %q, got %q", bodyContent, string(bodyBytes))
+	}
+}
+
+func Test_NewRetryOptionsForWaitForDesiredState_NonBooleanResult(t *testing.T) {
+	// Use an expression that returns a string, not a boolean
+	expressions := []string{"properties.status"}
+	result := clients.NewRetryOptionsForWaitForDesiredState(expressions)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	resp := &http.Response{
+		StatusCode: 200,
+		Body:       io.NopCloser(bytes.NewReader([]byte(`{"properties":{"status":"Running"}}`))),
+	}
+
+	// ShouldRetry should return true because the expression returns a string, not a boolean
+	shouldRetry := result.ShouldRetry(resp, nil)
+	if !shouldRetry {
+		t.Fatal("expected ShouldRetry to return true for non-boolean result")
 	}
 }
