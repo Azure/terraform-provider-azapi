@@ -1205,7 +1205,7 @@ resource "azapi_resource" "test" {
 
   retry = {
     error_message_regex    = ["test error"]
-    wait_for_desired_state = ["properties.isExpired == ` + "`" + `false` + "`" + `"]
+    wait_for_desired_state = ["!properties.isExpired"]
   }
 
   body = {
