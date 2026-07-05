@@ -1,0 +1,52 @@
+---
+name: Bicep Types Update
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Checkout azure-rest-api-specs
+        uses: actions/checkout@v4
+        with:
+          repository: Azure/azure-rest-api-specs
+          path: azure-rest-api-specs
+          fetch-depth: 1
+
+      - name: Checkout bicep-types-az
+        uses: actions/checkout@v4
+        with:
+          repository: Azure/bicep-types-az
+          path: bicep-types-az
+          fetch-depth: 1
+
+      - name: List folder structure of cloned repos
+        run: |
+          echo "Folder structure of azure-rest-api-specs:"
+          ls -R azure-rest-api-specs
+          echo "Folder structure of bicep-types-az:"
+          ls -R bicep-types-az
+
+      - name: Create draft pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Placeholder PR for bicep types update'
+          branch: bicep-types-update-placeholder-pr
+          base: main
+          title: 'Bicep types update placeholder PR'
+          body: 'Placeholder PR created by the workflow.'
+          draft: true
