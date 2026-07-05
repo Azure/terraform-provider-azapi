@@ -43,10 +43,11 @@ jobs:
           submodules: recursive
 
       - name: "Apply git patches to support all actions"
+        working-directory: tools/bicep-types-update
         run: |
           set -xe
-          git -C tools/bicep-types-update/bicep-types-az apply tools/bicep-types-update/bicep-types-az-support-all-actions.patch
-          git -C tools/bicep-types-update/bicep-types-az/bicep-types apply tools/bicep-types-update/bicep-types-support-all-actions.patch
+          git -C bicep-types-az apply bicep-types-az-support-all-actions.patch
+          git -C bicep-types-az/bicep-types apply bicep-types-support-all-actions.patch
 
       - name: "Build node dependencies: bicep-types"
         working-directory: tools/bicep-types-update/bicep-types-az/bicep-types/src/bicep-types
