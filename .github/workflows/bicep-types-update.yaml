@@ -78,29 +78,41 @@ jobs:
           cp -r tools/bicep-types-update/bicep-types-az/bicep-types/generated internal/azure/generated
 
       - name: Remove *.md and *.out files
-        working-directory: internal/azure/generated"
+        working-directory: internal/azure/generated
         run: |
           set -xe
           find . -type f -name "*.md" -delete
           find . -type f -name "*.out" -delete
 
+      - name: Configure git name and email
+        run: |
+          set -xe
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Commit all diffs
+        id: commit
         run: |
           set -xe
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)" || echo "No changes to commit"
+          if git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)"; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes to commit"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Push git branch and generate PR link
+      - name: Push branch and generate PR link
+        if: steps.commit.outputs.has_changes == 'true'
         run: |
           set -xe
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git push origin HEAD:refs/heads/gh-action/bicep-types-update --force
+          revision=$(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)
+          title="Update bicep types to Azure/azure-rest-api-specs revision ${revision}"
+          encoded_title=$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$title")
           # GitHub action has no permission to create PR, so we just print the link for manual creation
-          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1"
+          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1&title=${encoded_title}"
 
-      
+# TODO:
+# 1. Remove redundant go code / config
+# 2. Print bicep-types generation summary, check any other steps not yet covered
