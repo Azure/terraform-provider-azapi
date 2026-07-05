@@ -106,12 +106,19 @@ jobs:
         if: steps.commit.outputs.has_changes == 'true'
         run: |
           set -xe
+
           git push origin HEAD:refs/heads/gh-action/bicep-types-update --force
+          
           revision=$(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           title="Update bicep types to Azure/azure-rest-api-specs revision ${revision}"
+          body="Update bicep types to Azure/azure-rest-api-specs revision ${revision}. GitHub Actions run: ${run_url}."
+          
           encoded_title=$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$title")
+          encoded_body=$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$body")
+          
           # GitHub action has no permission to create PR, so we just print the link for manual creation
-          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1&title=${encoded_title}"
+          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1&title=${encoded_title}&body=${encoded_body}"
 
 # TODO:
 # 1. Remove redundant go code / config
