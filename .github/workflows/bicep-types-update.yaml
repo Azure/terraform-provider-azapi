@@ -44,13 +44,9 @@ jobs:
           echo "Folder structure of bicep-types-az:"
           ls -R bicep-types-az
 
-      - name: Create draft pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Placeholder PR for bicep types update'
-          branch: bicep-types-update-placeholder-pr
-          base: main
-          title: 'Bicep types update placeholder PR'
-          body: 'Placeholder PR created by the workflow.'
-          draft: true
+      - name: Force push current state to update branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git push origin HEAD:refs/heads/gh-action/bicep-types-update --force
+          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1"
