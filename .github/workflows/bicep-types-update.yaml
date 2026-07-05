@@ -17,6 +17,11 @@ jobs:
   generate_bicep_types_and_push_to_a_branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Checkout current repository
         uses: actions/checkout@v4
         with:
@@ -26,27 +31,76 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Azure/azure-rest-api-specs
-          path: azure-rest-api-specs
+          path: tools/bicep-types-update/azure-rest-api-specs
           fetch-depth: 1
 
       - name: Checkout bicep-types-az
         uses: actions/checkout@v4
         with:
           repository: Azure/bicep-types-az
-          path: bicep-types-az
+          path: tools/bicep-types-update/bicep-types-az
+          ref: 0b96f29bda2fc201eebd21fc17b0eb1cdb55931c
           fetch-depth: 1
           submodules: recursive
 
-      - name: List folder structure of cloned repos
+      - name: "Apply git patches to support all actions"
         run: |
-          echo "Folder structure of azure-rest-api-specs:"
-          ls -R azure-rest-api-specs
-          echo "Folder structure of bicep-types-az:"
-          ls -R bicep-types-az
+          set -xe
+          git -C tools/bicep-types-update/bicep-types-az apply tools/bicep-types-update/bicep-types-az-support-all-actions.patch
+          git -C tools/bicep-types-update/bicep-types-az/bicep-types apply tools/bicep-types-update/bicep-types-support-all-actions.patch
 
-      - name: Force push current state to update branch
+      - name: "Build node dependencies: bicep-types"
+        working-directory: tools/bicep-types-update/bicep-types-az/bicep-types/src/bicep-types
         run: |
+          set -xe
+          npm ci
+          npm run build
+        
+      - name: "Build node dependencies: autorest.bicep"
+        working-directory: tools/bicep-types-update/bicep-types-az/src/autorest.bicep
+        run: |
+          set -xe
+          npm ci
+          npm run build
+
+      - name: "Build node dependencies: generator"
+        working-directory: tools/bicep-types-update/bicep-types-az/src/generator
+        run: npm ci
+
+      - name: Run generator
+        working-directory: tools/bicep-types-update/bicep-types-az/src/generator
+        run: npm run generate -- --specs-dir "${{ github.workspace }}/tools/bicep-types-update/azure-rest-api-specs"
+
+      - name: Replace internal/azure/generated dir
+        run: |
+          set -xe
+          rm -rf internal/azure/generated
+          cp -r tools/bicep-types-update/bicep-types-az/bicep-types/generated internal/azure/generated
+
+      - name: Remove *.md and *.out files
+        working-directory: internal/azure/generated"
+        run: |
+          set -xe
+          find . -type f -name "*.md" -delete
+          find . -type f -name "*.out" -delete
+
+      - name: Commit all diffs
+        run: |
+          set -xe
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)" || echo "No changes to commit"
+
+      - name: Push git branch and generate PR link
+        run: |
+          set -xe
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git push origin HEAD:refs/heads/gh-action/bicep-types-update --force
+          # GitHub action has no permission to create PR, so we just print the link for manual creation
           echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1"
+
+      
