@@ -8,6 +8,7 @@ import (
 	"runtime"
 
 	"github.com/Azure/terraform-provider-azapi/tools/bicep-types-update/config"
+	"github.com/Azure/terraform-provider-azapi/tools/bicep-types-update/git"
 	"github.com/Azure/terraform-provider-azapi/tools/bicep-types-update/validation"
 )
 
@@ -43,7 +44,7 @@ func main() {
 	azureRestAPISpecsURL := "https://github.com/Azure/azure-rest-api-specs.git"
 	if os.Getenv("SKIP_CLONE_AND_PATCH") != "true" {
 		fmt.Printf("➡️  Cloning %s at %s into %s\n", azureRestAPISpecsURL, cfg.AzureRestAPISpecsCommitSHA, restAPISpecsDir)
-		if err := shallowCloneAtCommit(azureRestAPISpecsURL, restAPISpecsDir, cfg.AzureRestAPISpecsCommitSHA); err != nil {
+		if err := git.ShallowCloneAtCommit(azureRestAPISpecsURL, restAPISpecsDir, cfg.AzureRestAPISpecsCommitSHA); err != nil {
 			fmt.Fprintf(os.Stderr, "clone failed: %v\n", err)
 			os.Exit(1)
 		}
@@ -52,7 +53,7 @@ func main() {
 	bicepTypesAzDir := filepath.Join(dir, "bicep-types-az")
 	if os.Getenv("SKIP_CLONE_AND_PATCH") != "true" {
 		fmt.Printf("➡️  Cloning %s at %s into %s\n", bicepTypesAzURL, cfg.BicepTypesAzCommitSHA, bicepTypesAzDir)
-		if err := shallowCloneAtCommit(bicepTypesAzURL, bicepTypesAzDir, cfg.BicepTypesAzCommitSHA); err != nil {
+		if err := git.ShallowCloneAtCommit(bicepTypesAzURL, bicepTypesAzDir, cfg.BicepTypesAzCommitSHA); err != nil {
 			fmt.Fprintf(os.Stderr, "clone failed: %v\n", err)
 			os.Exit(1)
 		}
@@ -62,7 +63,7 @@ func main() {
 	bicepTypesDir := filepath.Join(bicepTypesAzDir, "bicep-types")
 	if os.Getenv("SKIP_CLONE_AND_PATCH") != "true" {
 		fmt.Printf("➡️  Applying patch %s to %s\n", bicepTypesPatch, bicepTypesDir)
-		if err := runGit("-C", bicepTypesDir, "apply", bicepTypesPatch); err != nil {
+		if err := git.Run("-C", bicepTypesDir, "apply", bicepTypesPatch); err != nil {
 			fmt.Fprintf(os.Stderr, "apply patch failed: %v\n", err)
 			os.Exit(1)
 		}
@@ -71,7 +72,7 @@ func main() {
 	bicepTypesAzPatch := filepath.Join(dir, "bicep-types-az-support-all-actions.patch")
 	if os.Getenv("SKIP_CLONE_AND_PATCH") != "true" {
 		fmt.Printf("➡️  Applying patch %s to %s\n", bicepTypesAzPatch, bicepTypesAzDir)
-		if err := runGit("-C", bicepTypesAzDir, "apply", bicepTypesAzPatch); err != nil {
+		if err := git.Run("-C", bicepTypesAzDir, "apply", bicepTypesAzPatch); err != nil {
 			fmt.Fprintf(os.Stderr, "apply patch failed: %v\n", err)
 			os.Exit(1)
 		}
@@ -112,47 +113,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "npm ci failed: %v\n", err)
 		os.Exit(1)
 	}
-}
-
-func shallowCloneAtCommit(repoURL, dest, commitSHA string) error {
-	if dest == "" {
-		return fmt.Errorf("destination cannot be empty")
-	}
-	if commitSHA == "" {
-		return fmt.Errorf("commit SHA cannot be empty")
-	}
-
-	if err := os.RemoveAll(dest); err != nil {
-		return fmt.Errorf("failed to remove existing destination: %w", err)
-	}
-	if err := os.MkdirAll(dest, 0o755); err != nil {
-		return fmt.Errorf("failed to create destination: %w", err)
-	}
-
-	if err := runGit("-C", dest, "init", "-q"); err != nil {
-		return err
-	}
-	if err := runGit("-C", dest, "remote", "add", "origin", repoURL); err != nil {
-		return err
-	}
-	if err := runGit("-C", dest, "fetch", "--depth", "1", "origin", commitSHA); err != nil {
-		return err
-	}
-	if err := runGit("-C", dest, "checkout", "FETCH_HEAD"); err != nil {
-		return err
-	}
-	if err := runGit("-C", dest, "submodule", "update", "--init", "--recursive", "--depth", "1"); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func runGit(args ...string) error {
-	cmd := exec.Command("git", args...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
 }
 
 func runCommandInDir(dir, name string, args ...string) error {
