@@ -29,6 +29,7 @@ type AzapiResourceActionModel struct {
 	Action          types.String  `tfsdk:"action"`
 	Method          types.String  `tfsdk:"method"`
 	Body            types.Dynamic `tfsdk:"body"`
+	SensitiveBody   types.Dynamic `tfsdk:"sensitive_body"`
 	Locks           types.List    `tfsdk:"locks"`
 	Headers         types.Map     `tfsdk:"headers"`
 	QueryParameters types.Map     `tfsdk:"query_parameters"`
@@ -94,6 +95,12 @@ func (a *AzapiResourceAction) Schema(ctx context.Context, req action.SchemaReque
 				},
 			},
 
+			"sensitive_body": actionschema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
 			"locks": actionschema.ListAttribute{
 				Optional:            true,
 				ElementType:         types.StringType,
@@ -138,9 +145,9 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var requestBody interface{}
-	if err := unmarshalBody(config.Body, &requestBody); err != nil {
-		resp.Diagnostics.AddError("Invalid body", fmt.Sprintf("The argument \"body\" is invalid: %s", err.Error()))
+	requestBody, err := buildAzapiResourceActionRequestBody(config)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid request body", err.Error())
 		return
 	}
 
@@ -173,6 +180,10 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	if resp.SendProgress != nil {
 		resp.SendProgress(action.InvokeProgressEvent{Message: "Action completed"})
 	}
+}
+
+func buildAzapiResourceActionRequestBody(config AzapiResourceActionModel) (interface{}, error) {
+	return buildActionRequestBody(config.Body, config.SensitiveBody, types.MapNull(types.StringType), types.MapNull(types.StringType))
 }
 
 func (a *AzapiResourceAction) RenderOption() tffwdocs.ActionRenderOption {

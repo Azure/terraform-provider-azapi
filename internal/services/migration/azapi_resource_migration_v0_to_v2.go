@@ -219,6 +219,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				Output:                        outputVal,
 				Tags:                          oldState.Tags,
 				Timeouts:                      oldState.Timeouts,
+				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
 			}
 
