@@ -38,7 +38,7 @@ jobs:
         with:
           repository: Azure/bicep-types-az
           path: tools/bicep-types-update/bicep-types-az
-          ref: 0b96f29bda2fc201eebd21fc17b0eb1cdb55931c
+          ref: 0b96f29bda2fc201eebd21fc17b0eb1cdb55931c # TODO: also regularly update this
           fetch-depth: 1
           submodules: recursive
 
@@ -69,13 +69,17 @@ jobs:
 
       - name: Run generator
         working-directory: tools/bicep-types-update/bicep-types-az/src/generator
-        run: npm run generate -- --specs-dir "${{ github.workspace }}/tools/bicep-types-update/azure-rest-api-specs"
+        run: |
+          set -xe
+          npm run generate -- --specs-dir "${{ github.workspace }}/tools/bicep-types-update/azure-rest-api-specs"
+          echo "# Bicep Types Generation Summary" >> $GITHUB_STEP_SUMMARY
+          cat "${{ github.workspace }}/"
 
       - name: Replace internal/azure/generated dir
         run: |
           set -xe
           rm -rf internal/azure/generated
-          cp -r tools/bicep-types-update/bicep-types-az/bicep-types/generated internal/azure/generated
+          cp -r tools/bicep-types-update/bicep-types-az/generated internal/azure/generated
 
       - name: Remove *.md and *.out files
         working-directory: internal/azure/generated
