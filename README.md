@@ -76,7 +76,7 @@ Further [usage documentation is available on the Terraform website](https://regi
 ## Developer Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html) version 0.12.x + (but 1.x is recommended)
-* [Go](https://golang.org/doc/install) version 1.18.x (to build the provider plugin)
+* [Go](https://golang.org/doc/install) version 1.26.x (to build the provider plugin)
 
 ### On Windows
 
@@ -100,7 +100,7 @@ You must run `Developing the Provider` commands in `bash` because `sh` scrips ar
 
 ## Developing the Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.18+ is **required**). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.26+ is **required**). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
 First clone the repository to: `$GOPATH/src/github.com/Azure/terraform-provider-azapi`
 
@@ -145,13 +145,38 @@ The following Environment Variables must be set in your shell prior to running a
 
 * `ARM_CLIENT_ID`
 * `ARM_CLIENT_SECRET`
+* `ARM_READER_CLIENT_ID`
+* `ARM_READER_CLIENT_SECRET`
 * `ARM_SUBSCRIPTION_ID`
 * `ARM_TENANT_ID`
-* `ARM_ENVIRONMENT`
-* `ARM_METADATA_HOST`
+* `ARM_ENVIRONMENT`: set the value to `public` for Azure Public Cloud
 * `ARM_TEST_LOCATION`
 * `ARM_TEST_LOCATION_ALT`
 * `ARM_TEST_LOCATION_ALT2`
+
+To setup `ARM_CLIENT_ID` and `ARM_CLIENT_SECRET`, with Azure CLI logged in to your tenant and subscription, run the following command to setup a service principal with `Contributor` role:
+
+```sh
+az ad sp create-for-rbac \
+  --name "myname-azapi-acctest" \
+  --role "Contributor" \
+  --scopes "/subscriptions/00000000-0000-0000-0000-000000000000"
+```
+
+The resulting json will contain the following output:
+
+```json
+{
+  "appId": "00000000-0000-0000-0000-000000000000",
+  "displayName": "myname-azapi-acctest",
+  "password": "<redacted>",
+  "tenant": "00000000-0000-0000-0000-000000000000"
+}
+```
+
+Use the `appId` for `ARM_CLIENT_ID` and the `password` for `ARM_CLIENT_SECRET`.
+
+The `ARM_READER_CLIENT_ID` and `ARM_READER_CLIENT_SECRET` follow the same process but with the `Reader` role instead of `Contributor`.
 
 **Note:** Acceptance tests create real resources in Azure which often cost money to run.
 
