@@ -89,6 +89,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Action                        types.String        `tfsdk:"action"`
 				Method                        types.String        `tfsdk:"method"`
 				Body                          types.Dynamic       `tfsdk:"body"`
+				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
 				SensitiveBodyVersion          types.Map           `tfsdk:"sensitive_body_version"`
 				When                          types.String        `tfsdk:"when"`
 				Locks                         types.List          `tfsdk:"locks"`
@@ -148,6 +149,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Action:                        oldState.Action,
 				Method:                        oldState.Method,
 				Body:                          bodyVal,
+				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
 				When:                          when,
 				Locks:                         oldState.Locks,
