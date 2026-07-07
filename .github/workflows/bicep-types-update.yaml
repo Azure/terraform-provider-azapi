@@ -6,7 +6,7 @@ on:
     - cron: '0 18 * * 0'
   push:
     branches:
-      - workflow-testing/bicep-types-update
+      - manual-push/bicep-types-update
 
 permissions:
   contents: write
@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Azure/azure-rest-api-specs
+          ref: main
           path: tools/bicep-types-update/azure-rest-api-specs
           fetch-depth: 1
 
@@ -41,8 +42,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Azure/bicep-types-az
+          ref: main
           path: tools/bicep-types-update/bicep-types-az
-          ref: 0b96f29bda2fc201eebd21fc17b0eb1cdb55931c # TODO: also regularly update this
           fetch-depth: 1
           submodules: recursive
 
@@ -127,7 +128,3 @@ jobs:
           
           # GitHub action has no permission to create PR, so we just print the link for manual creation
           echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1&title=${encoded_title}&body=${encoded_body}"
-
-# TODO:
-# 1. Remove redundant go code / config
-# 2. Print bicep-types generation summary, check any other steps not yet covered
