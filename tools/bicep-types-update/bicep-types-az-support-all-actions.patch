@@ -1,0 +1,67 @@
+# The purpose is to generate Bicep function types for every POST action of a resource, removing the historical
+# restriction to list* operations and relaxing the requirement that an action must have a response body.
+
+Author: Heng Lu <henglu@microsoft.com>
+Date:   Tue Feb 27 13:04:07 2024 +0800
+
+    support all actions
+
+diff --git a/src/autorest.bicep/src/resources.ts b/src/autorest.bicep/src/resources.ts
+index 4891b6207..2ca2d0271 100644
+--- a/src/autorest.bicep/src/resources.ts
++++ b/src/autorest.bicep/src/resources.ts
+@@ -341,13 +341,6 @@ export function getProviderDefinitions(codeModel: CodeModel, host: AutorestExten
+           return false;
+         }
+ 
+-        const { routingScope: actionRoutingScope } = parseResult.value;
+-        const actionName = actionRoutingScope.substr(actionRoutingScope.lastIndexOf('/') + 1);
+-        if (!actionName.toLowerCase().startsWith('list'))
+-        {
+-          return false;
+-        }
+-
+         const parameterWarnings = [
+           ...gatherParameterWarnings(operationId, operation.parameters ?? []),
+           ...gatherParameterWarnings(`${r.httpRequest.path.toLowerCase()}::POST`, r.request.parameters ?? []),
+@@ -588,16 +581,16 @@ export function getProviderDefinitions(codeModel: CodeModel, host: AutorestExten
+     const response = getResponseSchema(operation);
+     const request = getRequestSchema(operation, validRequests);
+ 
+-    if (!request || !response) {
++    if (!request) {
+       return;
+     }
+ 
+     return {
+       request: request.request,
+-      response: response.response,
++      response: response?.response,
+       parameters: request.parameters,
+       requestSchema: request.schema,
+-      responseSchema: response.schema,
++      responseSchema: response?.schema,
+     };
+   }
+ 
+diff --git a/src/autorest.bicep/src/type-generator.ts b/src/autorest.bicep/src/type-generator.ts
+index ca50facf2..5120ef22f 100755
+--- a/src/autorest.bicep/src/type-generator.ts
++++ b/src/autorest.bicep/src/type-generator.ts
+@@ -245,15 +245,7 @@ export function generateTypes(host: AutorestExtensionHost, definition: ProviderD
+         }
+       }
+ 
+-      if (!action.responseSchema) {
+-        logWarning(`Skipping resource action ${action.actionName} under path '${action.postRequest.path}': failed to find a response schema`);
+-        continue;
+-      }
+-
+-      const response = parseType(undefined, action.responseSchema);
+-      if (response === undefined) {
+-        continue;
+-      }
++      const response = action.responseSchema ? parseType(undefined, action.responseSchema) : undefined;
+ 
+       const { actionName, descriptor } = action;
+ 

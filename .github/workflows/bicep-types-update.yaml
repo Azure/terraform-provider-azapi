@@ -1,0 +1,130 @@
+---
+name: Bicep Types Update
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'
+  push:
+    branches:
+      - manual-push/bicep-types-update
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  generate_bicep_types_and_push_to_a_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Checkout azure-rest-api-specs
+        uses: actions/checkout@v4
+        with:
+          repository: Azure/azure-rest-api-specs
+          ref: main
+          path: tools/bicep-types-update/azure-rest-api-specs
+          fetch-depth: 1
+
+      - name: Checkout bicep-types-az
+        uses: actions/checkout@v4
+        with:
+          repository: Azure/bicep-types-az
+          ref: main
+          path: tools/bicep-types-update/bicep-types-az
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: "Apply git patches to support all actions"
+        working-directory: tools/bicep-types-update
+        run: |
+          set -xe
+          git -C bicep-types-az apply "${{ github.workspace }}/tools/bicep-types-update/bicep-types-az-support-all-actions.patch"
+          git -C bicep-types-az/bicep-types apply "${{ github.workspace }}/tools/bicep-types-update/bicep-types-support-all-actions.patch"
+
+      - name: "Build node dependencies: bicep-types"
+        working-directory: tools/bicep-types-update/bicep-types-az/bicep-types/src/bicep-types
+        run: |
+          set -xe
+          npm ci
+          npm run build
+        
+      - name: "Build node dependencies: autorest.bicep"
+        working-directory: tools/bicep-types-update/bicep-types-az/src/autorest.bicep
+        run: |
+          set -xe
+          npm ci
+          npm run build
+
+      - name: "Build node dependencies: generator"
+        working-directory: tools/bicep-types-update/bicep-types-az/src/generator
+        run: npm ci
+
+      - name: Run generator
+        working-directory: tools/bicep-types-update/bicep-types-az/src/generator
+        run: |
+          set -xe
+          npm run generate -- --specs-dir "${{ github.workspace }}/tools/bicep-types-update/azure-rest-api-specs"
+          echo "# Bicep Types Generation Summary" >> $GITHUB_STEP_SUMMARY
+          cat "${{ github.workspace }}/tools/bicep-types-update/bicep-types-az/generated/summary.log" >> $GITHUB_STEP_SUMMARY
+
+      - name: Replace internal/azure/generated dir
+        run: |
+          set -xe
+          rm -rf internal/azure/generated
+          cp -r tools/bicep-types-update/bicep-types-az/generated internal/azure/generated
+
+      - name: Remove *.md and *.out files
+        working-directory: internal/azure/generated
+        run: |
+          set -xe
+          find . -type f -name "*.md" -delete
+          find . -type f -name "*.out" -delete
+
+      - name: Configure git name and email
+        run: |
+          set -xe
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit all diffs
+        id: commit
+        run: |
+          set -xe
+          git add -A
+          if git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)"; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes to commit"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push branch and generate PR link
+        if: steps.commit.outputs.has_changes == 'true'
+        run: |
+          set -xe
+
+          git push origin HEAD:refs/heads/gh-action/bicep-types-update --force
+          
+          revision=$(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          title="Update bicep types to Azure/azure-rest-api-specs revision ${revision}"
+          body="Update bicep types to Azure/azure-rest-api-specs revision ${revision}. GitHub Actions run: ${run_url}."
+          
+          encoded_title=$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$title")
+          encoded_body=$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$body")
+          
+          # GitHub action has no permission to create PR, so we just print the link for manual creation
+          echo "PR creation link: ${{ github.server_url }}/${{ github.repository }}/compare/main...gh-action/bicep-types-update?expand=1&title=${encoded_title}&body=${encoded_body}"
