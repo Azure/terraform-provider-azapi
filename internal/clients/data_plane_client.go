@@ -75,7 +75,7 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
-	
+
 	// Inject headers into context so they are preserved across poller requests
 	ctxHeaders := http.Header{}
 	ctxHeaders.Set("Accept", "application/json")
@@ -92,9 +92,8 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
 	applyAPIVersion(req, id.ApiVersion, options)
-	reqQP = req.Raw().URL.Query()
+	reqQP := req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -160,9 +159,8 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
 	applyAPIVersion(req, id.ApiVersion, options)
-	reqQP = req.Raw().URL.Query()
+	reqQP := req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -215,9 +213,8 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
 	applyAPIVersion(req, id.ApiVersion, options)
-	reqQP = req.Raw().URL.Query()
+	reqQP := req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -282,9 +279,8 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
 	applyAPIVersion(req, apiVersion, options)
-	reqQP = req.Raw().URL.Query()
+	reqQP := req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}

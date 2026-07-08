@@ -53,19 +53,22 @@ func validateDataPlaneResourceAddress(config *DataPlaneResourceModel) error {
 		}
 	}
 
-	if requiresName && hasCreateResult {
+	switch {
+	case requiresName && hasCreateResult:
 		if !config.Name.IsNull() && !config.Name.IsUnknown() && strings.TrimSpace(config.Name.ValueString()) != "" {
 			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, strings.Split(config.Type.ValueString(), "@")[0])
 		}
-	} else if requiresName {
+	case requiresName:
 		if config.Name.IsUnknown() {
 			return nil
 		}
 		if config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == "" {
 			return fmt.Errorf(`the argument "name" must be set for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
 		}
-	} else if !config.Name.IsNull() && !config.Name.IsUnknown() && strings.TrimSpace(config.Name.ValueString()) != "" {
-		return fmt.Errorf(`the argument "name" is not used for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
+	default:
+		if !config.Name.IsNull() && !config.Name.IsUnknown() && strings.TrimSpace(config.Name.ValueString()) != "" {
+			return fmt.Errorf(`the argument "name" is not used for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
+		}
 	}
 
 	if len(requiredIdentifiers) == 0 {
