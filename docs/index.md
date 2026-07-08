@@ -89,6 +89,7 @@ provider "azapi" {
 - `partner_id` (String) A GUID/UUID that is [registered](https://docs.microsoft.com/azure/marketplace/azure-partner-customer-usage-attribution#register-guids-and-offers) with Microsoft to facilitate partner resource usage attribution. This can also be sourced from the `ARM_PARTNER_ID` Environment Variable.
 
 	-> Value must satisfy at least one of the validations: ensure this in UUID format + string length must be at most 0.
+- `preserve_resource_id_casing` (Boolean) Preserve the existing casing of the resource ID in state. The default is false. When set to true, if the resource ID the provider would write back to state differs from the value already in state only by casing, the existing casing is kept. This is useful when consumers of the resource ID (or the `azapi_resource` identity) require a specific casing that the Azure API may not preserve. This only affects the `id` (and `resource_id`) attributes; other properties are unaffected. This can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` Environment Variable.
 - `skip_provider_registration` (Boolean) Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.
 - `subscription_id` (String) The Subscription ID which should be used. This can also be sourced from the `ARM_SUBSCRIPTION_ID` Environment Variable.
 - `tenant_id` (String) The Tenant ID should be used. This can also be sourced from the `ARM_TENANT_ID` Environment Variable.

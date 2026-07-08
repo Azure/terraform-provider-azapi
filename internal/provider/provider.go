@@ -87,6 +87,7 @@ type providerData struct {
 	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
 	AlwaysAcquirePolicyToken     types.Bool   `tfsdk:"always_acquire_policy_token"`
+	PreserveResourceIDCasing     types.Bool   `tfsdk:"preserve_resource_id_casing"`
 	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
@@ -324,6 +325,10 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"always_acquire_policy_token": schema.BoolAttribute{
 				Optional:            true,
 				MarkdownDescription: "Always acquire a policy token for write requests, regardless of whether one is required. The default is `false`. The default behaviour is to wait for a qualifying `403` response indicating that a policy token is required, and then retry the request with an acquired policy token. When this attribute is set to `true`, the provider proactively acquires a policy token and attaches it to every write request, avoiding the extra round-trip per request. Performance will be improved if the number of changed resources is known to be large beforehand. This can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` Environment Variable. See [Feature: Acquire Policy Token](guides/feature_acquire_policy_token.html) to learn more.",
+			},
+			"preserve_resource_id_casing": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Preserve the existing casing of the resource ID in state. The default is false. When set to true, if the resource ID the provider would write back to state differs from the value already in state only by casing, the existing casing is kept. This is useful when consumers of the resource ID (or the `azapi_resource` identity) require a specific casing that the Azure API may not preserve. This only affects the `id` (and `resource_id`) attributes; other properties are unaffected. This can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` Environment Variable.",
 			},
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
 				Optional:            true,
@@ -596,6 +601,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.PreserveResourceIDCasing.IsNull() {
+		if v := os.Getenv("ARM_PRESERVE_RESOURCE_ID_CASING"); v != "" {
+			model.PreserveResourceIDCasing = types.BoolValue(v == "true")
+		} else {
+			model.PreserveResourceIDCasing = types.BoolValue(false)
+		}
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -689,12 +702,13 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
-			DefaultTags:          tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:        model.DefaultName.ValueString(),
-			EnablePreflight:      model.EnablePreflight.ValueBool(),
-			IgnoreNoOpChanges:    model.IgnoreNoOpChanges.ValueBool(),
-			DisableDefaultOutput: model.DisableDefaultOutput.ValueBool(),
+			DefaultTags:              tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:          location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:            model.DefaultName.ValueString(),
+			EnablePreflight:          model.EnablePreflight.ValueBool(),
+			IgnoreNoOpChanges:        model.IgnoreNoOpChanges.ValueBool(),
+			DisableDefaultOutput:     model.DisableDefaultOutput.ValueBool(),
+			PreserveResourceIDCasing: model.PreserveResourceIDCasing.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
