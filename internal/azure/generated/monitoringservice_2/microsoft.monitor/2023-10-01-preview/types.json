@@ -1,0 +1,1186 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9-]{3,10}[^-]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Monitor/pipelineGroups"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Monitor/pipelineGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The extended location for given pipeline group."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PipelineGroupProperties",
+    "properties": {
+      "replicas": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Defines the amount of replicas of the pipeline group instance."
+      },
+      "receivers": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "The receivers specified for a pipeline group instance."
+      },
+      "processors": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "The processors specified for a pipeline group instance."
+      },
+      "exporters": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "The exporters specified for a pipeline group instance."
+      },
+      "service": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "The service section for a given pipeline group instance."
+      },
+      "networkingConfigurations": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Networking configurations for the pipeline group instance."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "The provisioning state of a pipeline group instance. Set to Succeeded if everything is healthy."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Receiver",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The type of receiver."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The name of receiver."
+      },
+      "syslog": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Syslog configurations. This field is mandatory for syslog type receivers."
+      },
+      "otlp": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "OTLP receiver configurations. This field is mandatory for OTLP and pipelineGroup receivers."
+      },
+      "udp": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "UDP receiver configurations. This field is mandatory for UDP receivers."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Syslog"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ama"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PipelineGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OTLP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UDP"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9-]{3,32}[^-]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SyslogReceiver",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "Syslog receiver endpoint definition. Example: 0.0.0.0:<port>."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Protocol to parse syslog messages. Default rfc3164"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-\\.]+:[0-9]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rfc3164"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rfc5424"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OtlpReceiver",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "OTLP GRPC endpoint definition. Example: 0.0.0.0:<port>."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UdpReceiver",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "TCP endpoint definition. Example: 0.0.0.0:<port>."
+      },
+      "encoding": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The encoding of the stream being received."
+      },
+      "readQueueLength": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Max read queue length."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nop"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "utf-16le"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "utf-16be"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ascii"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "big5"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 100,
+    "maxValue": 100000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/7"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Processor",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "The type of processor."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The name of processor."
+      },
+      "batch": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Batch processor configurations."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Batch"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BatchProcessor",
+    "properties": {
+      "batchSize": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Size of the batch."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Timeout in milliseconds."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 10,
+    "maxValue": 100000
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 10,
+    "maxValue": 60000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Exporter",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The type of exporter."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The name of exporter."
+      },
+      "azureMonitorWorkspaceLogs": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Azure Monitor Workspace Logs specific configurations."
+      },
+      "tcp": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "TCP based exporter. Used for pipelineGroup exporter."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureMonitorWorkspaceLogs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PipelineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMonitorWorkspaceLogsExporter",
+    "properties": {
+      "api": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "API configurations for Azure Monitor workspace exporter."
+      },
+      "concurrency": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Concurrency configuration for the exporter."
+      },
+      "cache": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Cache configurations."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMonitorWorkspaceLogsApiConfig",
+    "properties": {
+      "dataCollectionEndpointUrl": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "Data collection endpoint ingestion url."
+      },
+      "stream": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Stream name in destination. Azure Monitor stream is related to the destination table."
+      },
+      "dataCollectionRule": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Data Collection Rule (DCR) immutable id."
+      },
+      "schema": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The schema mapping for incoming data."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(https?)://[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9._-]{1,1000}[^-]$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9.-]{1,1000}[^-]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaMap",
+    "properties": {
+      "recordMap": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "Record Map."
+      },
+      "resourceMap": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Resource Map captures information about the entity for which telemetry is recorded. For example, metrics exposed by a Kubernetes container can be linked to a resource that specifies the cluster, namespace, pod, and container name.Resource may capture an entire hierarchy of entity identification. It may describe the host in the cloud and specific container or an application running in the process."
+      },
+      "scopeMap": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "A scope map is a logical unit of the application code with which the emitted telemetry can be associated."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecordMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Record Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Record Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScopeMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Scope Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Scope Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConcurrencyConfiguration",
+    "properties": {
+      "workerCount": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Number of parallel workers processing the log queues."
+      },
+      "batchQueueSize": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Size of the queue for log batches."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheConfiguration",
+    "properties": {
+      "maxStorageUsage": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Max storage usage in megabytes."
+      },
+      "retentionPeriod": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Retention period in minutes."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TcpExporter",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "TCP url to export."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/38"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Service",
+    "properties": {
+      "pipelines": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Pipelines belonging to a given pipeline group."
+      },
+      "persistence": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "Persistence options to all pipelines in the instance."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Pipeline",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Name of the pipeline."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 1,
+        "description": "The type of pipeline"
+      },
+      "receivers": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 1,
+        "description": "Reference to receivers configured for the pipeline."
+      },
+      "processors": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Reference to processors configured for the pipeline."
+      },
+      "exporters": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Reference to exporters configured for the pipeline."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "logs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PersistenceConfigurations",
+    "properties": {
+      "persistentVolumeName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the mounted persistent volume."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkingConfiguration",
+    "properties": {
+      "externalNetworkingMode": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 1,
+        "description": "External networking mode."
+      },
+      "host": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "The address exposed on the cluster. Example: azuremonitorpipeline.contoso.com."
+      },
+      "routes": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 1,
+        "description": "Networking routes configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LoadBalancerOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-\\.]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkingRoute",
+    "properties": {
+      "receiver": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The name of the previously defined receiver."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The port that will be configured externally. If not specified, it will use the port from the receiver definition."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "Route path."
+      },
+      "subdomain": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "Route subdomain."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65535
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-/\\.]+$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/71"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/67"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceManagerCommonTypesExtendedLocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the extended location."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "The type of the extended location."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EdgeZone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomLocation"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Monitor/pipelineGroups@2023-10-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  }
+]

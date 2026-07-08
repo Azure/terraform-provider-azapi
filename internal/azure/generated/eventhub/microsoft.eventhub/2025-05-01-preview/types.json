@@ -54,26 +54,26 @@
         "flags": 0,
         "description": "Event Hubs Cluster properties supplied in responses in List or Get operations."
       },
-      "tags": {
+      "sku": {
         "type": {
           "$ref": "#/21"
         },
         "flags": 0,
-        "description": "Resource tags."
+        "description": "Properties of the cluster SKU."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The geo-location where the resource lives"
+        "description": "Resource location."
       },
-      "sku": {
+      "tags": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/25"
         },
         "flags": 0,
-        "description": "Properties of the cluster SKU."
+        "description": "Resource tags."
       },
       "systemData": {
         "type": {
@@ -254,26 +254,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ClusterTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "ClusterSku",
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/23"
         },
         "flags": 1,
         "description": "Name of this SKU."
       },
       "capacity": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "The quantity of Event Hubs Cluster Capacity Units contained in this cluster."
@@ -288,7 +280,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/23"
+        "$ref": "#/22"
       },
       {
         "$ref": "#/2"
@@ -298,6 +290,14 @@
   {
     "$type": "IntegerType",
     "minValue": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
   },
   {
     "$type": "ObjectType",
@@ -481,33 +481,33 @@
         "flags": 0,
         "description": "Namespace properties supplied for create namespace operation."
       },
-      "tags": {
-        "type": {
-          "$ref": "#/82"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The geo-location where the resource lives"
-      },
       "sku": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "Properties of sku resource"
       },
       "identity": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "Properties of BYOK Identity description"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "systemData": {
         "type": {
@@ -1095,26 +1095,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "EHNamespaceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "Sku",
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/86"
         },
         "flags": 1,
         "description": "Name of this SKU."
       },
       "tier": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The billing tier of this particular SKU."
@@ -1144,13 +1136,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/83"
+      },
+      {
         "$ref": "#/84"
       },
       {
         "$ref": "#/85"
-      },
-      {
-        "$ref": "#/86"
       },
       {
         "$ref": "#/2"
@@ -1173,13 +1165,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/87"
+      },
+      {
         "$ref": "#/88"
       },
       {
         "$ref": "#/89"
-      },
-      {
-        "$ref": "#/90"
       },
       {
         "$ref": "#/2"
@@ -1206,14 +1198,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Type of managed service identity."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "Properties for User Assigned Identities"
@@ -1240,6 +1232,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/92"
+      },
+      {
         "$ref": "#/93"
       },
       {
@@ -1247,9 +1242,6 @@
       },
       {
         "$ref": "#/95"
-      },
-      {
-        "$ref": "#/96"
       }
     ]
   },
@@ -1278,7 +1270,15 @@
     "name": "IdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/98"
+      "$ref": "#/97"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EHNamespaceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
     }
   },
   {
@@ -2117,14 +2117,14 @@
       },
       "messageRetentionInDays": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Number of days to retain the events for this Event Hub, value should be 1 to 7 days"
       },
       "partitionCount": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions."

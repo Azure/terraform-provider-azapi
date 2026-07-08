@@ -1763,7 +1763,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/206"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -2007,7 +2007,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/199"
+          "$ref": "#/205"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -2837,6 +2837,13 @@
         },
         "flags": 2,
         "description": "Array of management group statuses that describe the status of each management group."
+      },
+      "healthState": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 2,
+        "description": "The details about the runtime health state of the asset."
       }
     }
   },
@@ -3153,6 +3160,83 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "HealthState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 2,
+        "description": "The high-level health status of the resource."
+      },
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp (RFC3339) when the health status last changed."
+      },
+      "lastUpdateTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp (RFC3339) when the health status was last updated, even if the status did not change."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A human-readable message describing the last transition."
+      },
+      "reasonCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique, CamelCase reason code describing the cause of the last health state transition."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "StringLiteralType",
     "value": "Succeeded"
   },
@@ -3176,19 +3260,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/194"
+        "$ref": "#/200"
       },
       {
-        "$ref": "#/195"
+        "$ref": "#/201"
       },
       {
-        "$ref": "#/196"
+        "$ref": "#/202"
       },
       {
-        "$ref": "#/197"
+        "$ref": "#/203"
       },
       {
-        "$ref": "#/198"
+        "$ref": "#/204"
       },
       {
         "$ref": "#/2"
@@ -3239,28 +3323,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/208"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/203"
+          "$ref": "#/209"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/204"
+          "$ref": "#/210"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/206"
+          "$ref": "#/212"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -3281,7 +3365,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/232"
+          "$ref": "#/238"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -3364,21 +3448,21 @@
       },
       "endpoints": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/213"
         },
         "flags": 0,
         "description": "Property bag containing the device's unassigned and assigned endpoints."
       },
       "attributes": {
         "type": {
-          "$ref": "#/221"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "A set of key-value pairs that contain custom attributes set by the customer."
       },
       "status": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/228"
         },
         "flags": 2,
         "description": "Device status updates."
@@ -3399,7 +3483,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/237"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -3412,14 +3496,14 @@
     "properties": {
       "inbound": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "Set of endpoints to connect to the device."
       },
       "outbound": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/223"
         },
         "flags": 0,
         "description": "Set of endpoints a device can connect to."
@@ -3453,14 +3537,14 @@
       },
       "authentication": {
         "type": {
-          "$ref": "#/209"
+          "$ref": "#/215"
         },
         "flags": 0,
         "description": "Defines the client authentication mechanism to the server."
       },
       "trustSettings": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/221"
         },
         "flags": 0,
         "description": "Defines server trust settings for the endpoint."
@@ -3480,7 +3564,7 @@
     "properties": {
       "method": {
         "type": {
-          "$ref": "#/213"
+          "$ref": "#/219"
         },
         "flags": 1,
         "description": "Defines the method to authenticate the user of the client at the server."
@@ -3494,7 +3578,7 @@
       },
       "x509Credentials": {
         "type": {
-          "$ref": "#/214"
+          "$ref": "#/220"
         },
         "flags": 0,
         "description": "Defines the certificate reference when Certificate user authentication mode is selected."
@@ -3517,13 +3601,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/210"
+        "$ref": "#/216"
       },
       {
-        "$ref": "#/211"
+        "$ref": "#/217"
       },
       {
-        "$ref": "#/212"
+        "$ref": "#/218"
       },
       {
         "$ref": "#/2"
@@ -3575,7 +3659,7 @@
     "name": "MessagingEndpointsInbound",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/208"
+      "$ref": "#/214"
     }
   },
   {
@@ -3584,14 +3668,14 @@
     "properties": {
       "assigned": {
         "type": {
-          "$ref": "#/219"
+          "$ref": "#/225"
         },
         "flags": 1,
         "description": "Endpoints the device can connect to."
       },
       "unassigned": {
         "type": {
-          "$ref": "#/220"
+          "$ref": "#/226"
         },
         "flags": 0,
         "description": "Set of most recently removed endpoints."
@@ -3623,7 +3707,7 @@
     "name": "OutboundEndpointsAssigned",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/218"
+      "$ref": "#/224"
     }
   },
   {
@@ -3631,7 +3715,7 @@
     "name": "OutboundEndpointsUnassigned",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/218"
+      "$ref": "#/224"
     }
   },
   {
@@ -3655,7 +3739,7 @@
       },
       "endpoints": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/229"
         },
         "flags": 2,
         "description": "Defines the device status for inbound/outbound endpoints."
@@ -3668,7 +3752,7 @@
     "properties": {
       "inbound": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/231"
         },
         "flags": 2,
         "description": "KeyValue pair representing status of inbound endpoints."
@@ -3685,6 +3769,13 @@
         },
         "flags": 2,
         "description": "Defines the error related to this endpoint."
+      },
+      "healthState": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 2,
+        "description": "Health state of the endpoint."
       }
     }
   },
@@ -3693,7 +3784,7 @@
     "name": "DeviceStatusEndpointsInbound",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/224"
+      "$ref": "#/230"
     }
   },
   {
@@ -3720,19 +3811,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/226"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/227"
+        "$ref": "#/233"
       },
       {
-        "$ref": "#/228"
+        "$ref": "#/234"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/235"
       },
       {
-        "$ref": "#/230"
+        "$ref": "#/236"
       },
       {
         "$ref": "#/2"
@@ -3751,7 +3842,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/namespaces/devices@2026-04-01",
     "body": {
-      "$ref": "#/205"
+      "$ref": "#/211"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -3784,21 +3875,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/240"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/241"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/243"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -3812,7 +3903,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/271"
+          "$ref": "#/277"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -3853,7 +3944,7 @@
       },
       "assetTypeRefs": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "URIs or type definition IDs."
@@ -3944,7 +4035,7 @@
       },
       "attributes": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/245"
         },
         "flags": 0,
         "description": "A set of key-value pairs that contain custom attributes."
@@ -3979,56 +4070,56 @@
       },
       "defaultDatasetsDestinations": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/246"
         },
         "flags": 0,
         "description": "Default destinations for a dataset."
       },
       "defaultEventsDestinations": {
         "type": {
-          "$ref": "#/241"
+          "$ref": "#/247"
         },
         "flags": 0,
         "description": "Default destinations for an event."
       },
       "defaultStreamsDestinations": {
         "type": {
-          "$ref": "#/242"
+          "$ref": "#/248"
         },
         "flags": 0,
         "description": "Default destinations for a stream."
       },
       "datasets": {
         "type": {
-          "$ref": "#/247"
+          "$ref": "#/253"
         },
         "flags": 0,
         "description": "Array of datasets that are part of the asset. Each dataset spec describes the data points that make up the set."
       },
       "eventGroups": {
         "type": {
-          "$ref": "#/253"
+          "$ref": "#/259"
         },
         "flags": 0,
         "description": "Array of event groups that are part of the asset. Each event group can have per-event group configuration."
       },
       "streams": {
         "type": {
-          "$ref": "#/256"
+          "$ref": "#/262"
         },
         "flags": 0,
         "description": "Array of streams that are part of the asset. Each stream can have a per-stream configuration."
       },
       "managementGroups": {
         "type": {
-          "$ref": "#/264"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "Array of management groups that are part of the asset. Each management group can have a per-group configuration."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/276"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -4101,14 +4192,14 @@
       },
       "destinations": {
         "type": {
-          "$ref": "#/244"
+          "$ref": "#/250"
         },
         "flags": 0,
         "description": "Destinations for a dataset."
       },
       "dataPoints": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/252"
         },
         "flags": 0,
         "description": "Array of data points that are part of the dataset. Each data point can have per-data point configuration."
@@ -4172,13 +4263,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/245"
+      "$ref": "#/251"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/243"
+      "$ref": "#/249"
     }
   },
   {
@@ -4208,7 +4299,7 @@
       },
       "defaultDestinations": {
         "type": {
-          "$ref": "#/249"
+          "$ref": "#/255"
         },
         "flags": 0,
         "description": "Destinations for events. Default destinations when destinations is not defined at the event level."
@@ -4222,7 +4313,7 @@
       },
       "events": {
         "type": {
-          "$ref": "#/252"
+          "$ref": "#/258"
         },
         "flags": 0,
         "description": "Array of events that are part of the event group."
@@ -4262,7 +4353,7 @@
       },
       "destinations": {
         "type": {
-          "$ref": "#/251"
+          "$ref": "#/257"
         },
         "flags": 0,
         "description": "Destinations for an event."
@@ -4292,13 +4383,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/250"
+      "$ref": "#/256"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/248"
+      "$ref": "#/254"
     }
   },
   {
@@ -4328,7 +4419,7 @@
       },
       "destinations": {
         "type": {
-          "$ref": "#/255"
+          "$ref": "#/261"
         },
         "flags": 0,
         "description": "Destinations for a stream."
@@ -4351,7 +4442,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/254"
+      "$ref": "#/260"
     }
   },
   {
@@ -4402,7 +4493,7 @@
       },
       "actions": {
         "type": {
-          "$ref": "#/263"
+          "$ref": "#/269"
         },
         "flags": 0,
         "description": "Array of actions that are part of the management group. Each action can have an individual configuration."
@@ -4457,7 +4548,7 @@
       },
       "actionType": {
         "type": {
-          "$ref": "#/262"
+          "$ref": "#/268"
         },
         "flags": 0,
         "description": "The type of the action."
@@ -4494,13 +4585,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/259"
+        "$ref": "#/265"
       },
       {
-        "$ref": "#/260"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/261"
+        "$ref": "#/267"
       },
       {
         "$ref": "#/2"
@@ -4510,13 +4601,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/258"
+      "$ref": "#/264"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/257"
+      "$ref": "#/263"
     }
   },
   {
@@ -4543,19 +4634,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/265"
+        "$ref": "#/271"
       },
       {
-        "$ref": "#/266"
+        "$ref": "#/272"
       },
       {
-        "$ref": "#/267"
+        "$ref": "#/273"
       },
       {
-        "$ref": "#/268"
+        "$ref": "#/274"
       },
       {
-        "$ref": "#/269"
+        "$ref": "#/275"
       },
       {
         "$ref": "#/2"
@@ -4574,7 +4665,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/namespaces/discoveredAssets@2026-04-01",
     "body": {
-      "$ref": "#/236"
+      "$ref": "#/242"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -4607,21 +4698,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/279"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/274"
+          "$ref": "#/280"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/276"
+          "$ref": "#/282"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -4635,7 +4726,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/294"
+          "$ref": "#/300"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4669,7 +4760,7 @@
       },
       "endpoints": {
         "type": {
-          "$ref": "#/277"
+          "$ref": "#/283"
         },
         "flags": 0,
         "description": "Endpoints for discovered devices."
@@ -4704,7 +4795,7 @@
       },
       "attributes": {
         "type": {
-          "$ref": "#/287"
+          "$ref": "#/293"
         },
         "flags": 0,
         "description": "A set of key-value pairs that contain custom attributes."
@@ -4725,7 +4816,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/293"
+          "$ref": "#/299"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -4738,14 +4829,14 @@
     "properties": {
       "inbound": {
         "type": {
-          "$ref": "#/284"
+          "$ref": "#/290"
         },
         "flags": 0,
         "description": "Set of endpoints to connect to the device."
       },
       "outbound": {
         "type": {
-          "$ref": "#/285"
+          "$ref": "#/291"
         },
         "flags": 0,
         "description": "Set of endpoints a device can connect to."
@@ -4779,7 +4870,7 @@
       },
       "supportedAuthenticationMethods": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/289"
         },
         "flags": 0,
         "description": "List of supported authentication methods supported by device for Inbound connections."
@@ -4816,13 +4907,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/279"
+        "$ref": "#/285"
       },
       {
-        "$ref": "#/280"
+        "$ref": "#/286"
       },
       {
-        "$ref": "#/281"
+        "$ref": "#/287"
       },
       {
         "$ref": "#/2"
@@ -4832,7 +4923,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/282"
+      "$ref": "#/288"
     }
   },
   {
@@ -4840,7 +4931,7 @@
     "name": "DiscoveredMessagingEndpointsInbound",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/278"
+      "$ref": "#/284"
     }
   },
   {
@@ -4849,7 +4940,7 @@
     "properties": {
       "assigned": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/292"
         },
         "flags": 1,
         "description": "Endpoints the device can connect to."
@@ -4861,7 +4952,7 @@
     "name": "DiscoveredOutboundEndpointsAssigned",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/218"
+      "$ref": "#/224"
     }
   },
   {
@@ -4896,19 +4987,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/288"
+        "$ref": "#/294"
       },
       {
-        "$ref": "#/289"
+        "$ref": "#/295"
       },
       {
-        "$ref": "#/290"
+        "$ref": "#/296"
       },
       {
-        "$ref": "#/291"
+        "$ref": "#/297"
       },
       {
-        "$ref": "#/292"
+        "$ref": "#/298"
       },
       {
         "$ref": "#/2"
@@ -4927,7 +5018,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/namespaces/discoveredDevices@2026-04-01",
     "body": {
-      "$ref": "#/275"
+      "$ref": "#/281"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -4960,21 +5051,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/296"
+          "$ref": "#/302"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/297"
+          "$ref": "#/303"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/299"
+          "$ref": "#/305"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -5015,28 +5106,28 @@
       },
       "format": {
         "type": {
-          "$ref": "#/302"
+          "$ref": "#/308"
         },
         "flags": 1,
         "description": "Format of the schema."
       },
       "schemaType": {
         "type": {
-          "$ref": "#/304"
+          "$ref": "#/310"
         },
         "flags": 1,
         "description": "Type of the schema."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/316"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/317"
         },
         "flags": 0,
         "description": "Schema tags."
@@ -5055,10 +5146,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/300"
+        "$ref": "#/306"
       },
       {
-        "$ref": "#/301"
+        "$ref": "#/307"
       },
       {
         "$ref": "#/2"
@@ -5073,7 +5164,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/303"
+        "$ref": "#/309"
       },
       {
         "$ref": "#/2"
@@ -5104,19 +5195,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/305"
+        "$ref": "#/311"
       },
       {
-        "$ref": "#/306"
+        "$ref": "#/312"
       },
       {
-        "$ref": "#/307"
+        "$ref": "#/313"
       },
       {
-        "$ref": "#/308"
+        "$ref": "#/314"
       },
       {
-        "$ref": "#/309"
+        "$ref": "#/315"
       },
       {
         "$ref": "#/2"
@@ -5135,7 +5226,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas@2026-04-01",
     "body": {
-      "$ref": "#/298"
+      "$ref": "#/304"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -5167,28 +5258,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/313"
+          "$ref": "#/319"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/320"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/321"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/317"
+          "$ref": "#/323"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -5236,7 +5327,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/323"
+          "$ref": "#/329"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -5267,19 +5358,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/318"
+        "$ref": "#/324"
       },
       {
-        "$ref": "#/319"
+        "$ref": "#/325"
       },
       {
-        "$ref": "#/320"
+        "$ref": "#/326"
       },
       {
-        "$ref": "#/321"
+        "$ref": "#/327"
       },
       {
-        "$ref": "#/322"
+        "$ref": "#/328"
       },
       {
         "$ref": "#/2"
@@ -5290,7 +5381,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions@2026-04-01",
     "body": {
-      "$ref": "#/316"
+      "$ref": "#/322"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -5322,28 +5413,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/325"
+          "$ref": "#/331"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/326"
+          "$ref": "#/332"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/327"
+          "$ref": "#/333"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/329"
+          "$ref": "#/335"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5370,7 +5461,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/335"
+          "$ref": "#/341"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -5401,19 +5492,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/330"
+        "$ref": "#/336"
       },
       {
-        "$ref": "#/331"
+        "$ref": "#/337"
       },
       {
-        "$ref": "#/332"
+        "$ref": "#/338"
       },
       {
-        "$ref": "#/333"
+        "$ref": "#/339"
       },
       {
-        "$ref": "#/334"
+        "$ref": "#/340"
       },
       {
         "$ref": "#/2"
@@ -5424,7 +5515,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.DeviceRegistry/billingContainers@2026-04-01",
     "body": {
-      "$ref": "#/328"
+      "$ref": "#/334"
     },
     "readableScopes": 4,
     "writableScopes": 0
@@ -5435,14 +5526,14 @@
     "properties": {
       "scope": {
         "type": {
-          "$ref": "#/339"
+          "$ref": "#/345"
         },
         "flags": 0,
         "description": "Scope of the migrate resources operation."
       },
       "resourceIds": {
         "type": {
-          "$ref": "#/340"
+          "$ref": "#/346"
         },
         "flags": 0,
         "description": "List of asset resources to be migrated."
@@ -5457,7 +5548,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/338"
+        "$ref": "#/344"
       },
       {
         "$ref": "#/2"
@@ -5476,7 +5567,7 @@
     "properties": {
       "migrateResults": {
         "type": {
-          "$ref": "#/348"
+          "$ref": "#/354"
         },
         "flags": 0,
         "description": "List of migrate results containing result of each asset migrate operation."
@@ -5496,14 +5587,14 @@
       },
       "result": {
         "type": {
-          "$ref": "#/345"
+          "$ref": "#/351"
         },
         "flags": 2,
         "description": "The result of the migrate operation."
       },
       "error": {
         "type": {
-          "$ref": "#/346"
+          "$ref": "#/352"
         },
         "flags": 0,
         "description": "The error if the migrate operation is not successful."
@@ -5522,10 +5613,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/343"
+        "$ref": "#/349"
       },
       {
-        "$ref": "#/344"
+        "$ref": "#/350"
       },
       {
         "$ref": "#/2"
@@ -5552,7 +5643,7 @@
       },
       "details": {
         "type": {
-          "$ref": "#/347"
+          "$ref": "#/353"
         },
         "flags": 2,
         "description": "Array of error details that describe the status of each error."
@@ -5568,7 +5659,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/342"
+      "$ref": "#/348"
     }
   },
   {
@@ -5577,10 +5668,10 @@
     "resourceType": "Microsoft.DeviceRegistry/namespaces",
     "apiVersion": "2026-04-01",
     "output": {
-      "$ref": "#/341"
+      "$ref": "#/347"
     },
     "input": {
-      "$ref": "#/337"
+      "$ref": "#/343"
     }
   },
   {
@@ -5603,7 +5694,7 @@
       },
       "payload": {
         "type": {
-          "$ref": "#/351"
+          "$ref": "#/357"
         },
         "flags": 0,
         "description": "Payload required for executing the management action."
@@ -5624,7 +5715,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/357"
+          "$ref": "#/363"
         },
         "flags": 3,
         "description": "Status of the management action execution."
@@ -5659,7 +5750,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/346"
+          "$ref": "#/352"
         },
         "flags": 0,
         "description": "Error if the execute action operation is not successful."
@@ -5686,16 +5777,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/353"
+        "$ref": "#/359"
       },
       {
-        "$ref": "#/354"
+        "$ref": "#/360"
       },
       {
-        "$ref": "#/355"
+        "$ref": "#/361"
       },
       {
-        "$ref": "#/356"
+        "$ref": "#/362"
       },
       {
         "$ref": "#/2"
@@ -5708,10 +5799,10 @@
     "resourceType": "Microsoft.DeviceRegistry/namespaces/assets",
     "apiVersion": "2026-04-01",
     "output": {
-      "$ref": "#/352"
+      "$ref": "#/358"
     },
     "input": {
-      "$ref": "#/350"
+      "$ref": "#/356"
     }
   }
 ]

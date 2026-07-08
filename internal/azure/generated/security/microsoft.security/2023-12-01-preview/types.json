@@ -4,340 +4,6 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "default"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/1"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Security/securityContacts"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2023-12-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Security/securityContacts",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/3"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 0,
-        "description": "Security contact data"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityContactProperties",
-    "properties": {
-      "emails": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in this security contact."
-      },
-      "phone": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The security contact's phone number"
-      },
-      "isEnabled": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "Indicates whether the security contact is enabled."
-      },
-      "notificationsSources": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 0,
-        "description": "A collection of sources types which evaluate the email notification."
-      },
-      "notificationsByRole": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 0,
-        "description": "Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription."
-      }
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "NotificationsSource",
-    "discriminator": "sourceType",
-    "baseProperties": {},
-    "elements": {
-      "Alert": {
-        "$ref": "#/9"
-      },
-      "AttackPath": {
-        "$ref": "#/15"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NotificationsSourceAlert",
-    "properties": {
-      "minimalSeverity": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 0,
-        "description": "Defines the minimal alert severity which will be sent as email notifications"
-      },
-      "sourceType": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 1,
-        "description": "The source type that will trigger the notification"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Medium"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/10"
-      },
-      {
-        "$ref": "#/11"
-      },
-      {
-        "$ref": "#/12"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Alert"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NotificationsSourceAttackPath",
-    "properties": {
-      "minimalRiskLevel": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Defines the minimal attach path risk level which will be sent as email notifications"
-      },
-      "sourceType": {
-        "type": {
-          "$ref": "#/21"
-        },
-        "flags": 1,
-        "description": "The source type that will trigger the notification"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Critical"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Medium"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/16"
-      },
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AttackPath"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/8"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityContactPropertiesNotificationsByRole",
-    "properties": {
-      "state": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 0,
-        "description": "Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the subscription."
-      },
-      "roles": {
-        "type": {
-          "$ref": "#/32"
-        },
-        "flags": 0,
-        "description": "Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "On"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Off"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/24"
-      },
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AccountAdmin"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ServiceAdmin"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Owner"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Contributor"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/31"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Security/securityContacts@2023-12-01-preview",
-    "body": {
-      "$ref": "#/5"
-    },
-    "readableScopes": 4,
-    "writableScopes": 4
-  },
-  {
-    "$type": "StringLiteralType",
     "value": "Microsoft.Security/automations"
   },
   {
@@ -364,31 +30,38 @@
       },
       "type": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/1"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/4"
         },
         "flags": 0,
         "description": "Security automation data"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Location where the resource is stored"
+        "description": "The geo-location where the resource lives"
       },
       "kind": {
         "type": {
@@ -404,12 +77,12 @@
         "flags": 0,
         "description": "Entity tag is used for comparing two or more entities from the same requested resource."
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/52"
         },
-        "flags": 0,
-        "description": "A list of key value pairs that describe the resource."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -426,33 +99,36 @@
       },
       "isEnabled": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Indicates whether the security automation is enabled."
       },
       "scopes": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes."
       },
       "sources": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "A collection of the source event types which evaluate the security automation set of rules."
       },
       "actions": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true."
       }
     }
+  },
+  {
+    "$type": "BooleanType"
   },
   {
     "$type": "ObjectType",
@@ -477,7 +153,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/38"
+      "$ref": "#/6"
     }
   },
   {
@@ -486,14 +162,14 @@
     "properties": {
       "eventSource": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "A valid event source type."
       },
       "ruleSets": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or')."
@@ -556,43 +232,43 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/41"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/12"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/13"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/15"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/18"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/20"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/21"
       },
       {
         "$ref": "#/0"
@@ -605,7 +281,7 @@
     "properties": {
       "rules": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/40"
         },
         "flags": 0
       }
@@ -624,7 +300,7 @@
       },
       "propertyType": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]"
@@ -638,7 +314,7 @@
       },
       "operator": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType."
@@ -665,16 +341,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/57"
+        "$ref": "#/25"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/26"
       },
       {
-        "$ref": "#/59"
+        "$ref": "#/27"
       },
       {
-        "$ref": "#/60"
+        "$ref": "#/28"
       },
       {
         "$ref": "#/0"
@@ -721,31 +397,31 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/62"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/63"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/64"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/65"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/66"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/68"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/69"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/38"
       },
       {
         "$ref": "#/0"
@@ -755,19 +431,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/56"
+      "$ref": "#/24"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/55"
+      "$ref": "#/23"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/40"
+      "$ref": "#/8"
     }
   },
   {
@@ -777,13 +453,13 @@
     "baseProperties": {},
     "elements": {
       "EventHub": {
-        "$ref": "#/76"
+        "$ref": "#/44"
       },
       "LogicApp": {
-        "$ref": "#/78"
+        "$ref": "#/46"
       },
       "Workspace": {
-        "$ref": "#/80"
+        "$ref": "#/48"
       }
     }
   },
@@ -814,14 +490,14 @@
       },
       "isTrustedServiceEnabled": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Indicates whether the trusted service is enabled or not."
       },
       "actionType": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The type of the action that will be triggered by the Automation"
@@ -852,7 +528,7 @@
       },
       "actionType": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/47"
         },
         "flags": 1,
         "description": "The type of the action that will be triggered by the Automation"
@@ -876,7 +552,7 @@
       },
       "actionType": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/49"
         },
         "flags": 1,
         "description": "The type of the action that will be triggered by the Automation"
@@ -890,25 +566,511 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/75"
+      "$ref": "#/43"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "Tags",
+    "name": "AutomationTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Security/automations@2023-12-01-preview",
     "body": {
-      "$ref": "#/36"
+      "$ref": "#/3"
     },
     "readableScopes": 8,
     "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/securityContacts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/securityContacts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "Security contact data"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityContactProperties",
+    "properties": {
+      "emails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in this security contact."
+      },
+      "phone": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The security contact's phone number"
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Indicates whether the security contact is enabled."
+      },
+      "notificationsSources": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "A collection of sources types which evaluate the email notification."
+      },
+      "notificationsByRole": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "NotificationsSource",
+    "discriminator": "sourceType",
+    "baseProperties": {},
+    "elements": {
+      "Alert": {
+        "$ref": "#/71"
+      },
+      "AttackPath": {
+        "$ref": "#/77"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NotificationsSourceAlert",
+    "properties": {
+      "minimalSeverity": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Defines the minimal alert severity which will be sent as email notifications"
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "The source type that will trigger the notification"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Alert"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NotificationsSourceAttackPath",
+    "properties": {
+      "minimalRiskLevel": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Defines the minimal attach path risk level which will be sent as email notifications"
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "The source type that will trigger the notification"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AttackPath"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityContactPropertiesNotificationsByRole",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the subscription."
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Passed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "On"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Off"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AccountAdmin"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceAdmin"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Owner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contributor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/97"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/securityContacts@2023-12-01-preview",
+    "body": {
+      "$ref": "#/68"
+    },
+    "readableScopes": 4,
+    "writableScopes": 4
   },
   {
     "$type": "ObjectType",
@@ -916,38 +1078,24 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/4"
         },
         "flags": 0,
         "description": "Security automation data"
       },
-      "id": {
+      "tags": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/101"
         },
-        "flags": 2,
-        "description": "Resource Id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource type"
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Location where the resource is stored"
+        "description": "The geo-location where the resource lives"
       },
       "kind": {
         "type": {
@@ -963,18 +1111,39 @@
         "flags": 0,
         "description": "Entity tag is used for comparing two or more entities from the same requested resource."
       },
-      "tags": {
+      "id": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/0"
         },
-        "flags": 0,
-        "description": "A list of key value pairs that describe the resource."
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "Tags",
+    "name": "AutomationTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -986,7 +1155,7 @@
     "properties": {
       "isValid": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Indicates whether the model is valid or not."
@@ -1006,10 +1175,10 @@
     "resourceType": "Microsoft.Security/automations",
     "apiVersion": "2023-12-01-preview",
     "output": {
-      "$ref": "#/87"
+      "$ref": "#/102"
     },
     "input": {
-      "$ref": "#/85"
+      "$ref": "#/100"
     }
   }
 ]

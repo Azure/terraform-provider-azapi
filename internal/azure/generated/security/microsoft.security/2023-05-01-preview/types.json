@@ -52,6 +52,13 @@
         },
         "flags": 2,
         "description": "Properties of a health report"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -68,49 +75,49 @@
       },
       "environmentDetails": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "The environment details of the resource"
       },
       "healthDataClassification": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The classification of the health report"
       },
       "status": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The status of the health report"
       },
       "affectedDefendersPlans": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/21"
         },
         "flags": 0,
         "description": "The affected defenders plans by unhealthy report"
       },
       "affectedDefendersSubPlans": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "The affected defenders sub plans by unhealthy report"
       },
       "reportAdditionalData": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/23"
         },
         "flags": 2,
         "description": "Additional data for the given health report, this field can include more details on the resource and the health scenario."
       },
       "issues": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "A collection of the issues in the report"
@@ -123,7 +130,7 @@
     "properties": {
       "source": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "The status of the health report"
@@ -146,6 +153,18 @@
   },
   {
     "$type": "StringLiteralType",
+    "value": "Azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnPremise"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnPremiseSql"
+  },
+  {
+    "$type": "StringLiteralType",
     "value": "Aws"
   },
   {
@@ -154,7 +173,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Azure"
+    "value": "OnPremiseResourceDetails"
   },
   {
     "$type": "UnionType",
@@ -167,6 +186,15 @@
       },
       {
         "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
       },
       {
         "$ref": "#/2"
@@ -247,7 +275,7 @@
     "properties": {
       "code": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "The status of the health report"
@@ -298,13 +326,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/14"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/18"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/19"
       },
       {
         "$ref": "#/2"
@@ -351,7 +379,7 @@
       },
       "securityValues": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "The affected security values that MDC offers that will be affected by the issue, for example: recommendations, alerts, etc"
@@ -379,7 +407,7 @@
       },
       "issueAdditionalData": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Additional data for the given issue. The additional data depends on the issue type"
@@ -403,8 +431,128 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/21"
+      "$ref": "#/24"
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",

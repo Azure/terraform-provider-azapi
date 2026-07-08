@@ -54,6 +54,13 @@
         },
         "flags": 2,
         "description": "Describes the properties of an API collection."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -63,7 +70,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Gets the provisioning state of the API collection."
@@ -91,35 +98,35 @@
       },
       "numberOfApiEndpoints": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 2,
         "description": "The number of API endpoints discovered in this API collection."
       },
       "numberOfInactiveApiEndpoints": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 2,
         "description": "The number of API endpoints in this API collection that have not received any API traffic in the last 30 days."
       },
       "numberOfUnauthenticatedApiEndpoints": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 2,
         "description": "The number of API endpoints in this API collection that are unauthenticated."
       },
       "numberOfExternalApiEndpoints": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 2,
         "description": "The number of API endpoints in this API collection for which API traffic from the internet was observed."
       },
       "numberOfApiEndpointsWithSensitiveDataExposed": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/14"
         },
         "flags": 2,
         "description": "The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or responses."
@@ -136,6 +143,18 @@
   {
     "$type": "StringLiteralType",
     "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
   },
   {
     "$type": "StringLiteralType",
@@ -165,12 +184,141 @@
         "$ref": "#/9"
       },
       {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
         "$ref": "#/2"
       }
     ]
   },
   {
     "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",
