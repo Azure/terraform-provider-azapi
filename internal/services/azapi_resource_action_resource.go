@@ -26,7 +26,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -64,11 +63,13 @@ type ActionResource struct {
 	ProviderData *clients.Client
 }
 
-var _ resource.Resource = &ActionResource{}
-var _ resource.ResourceWithConfigure = &ActionResource{}
-var _ resource.ResourceWithModifyPlan = &ActionResource{}
-var _ resource.ResourceWithUpgradeState = &ActionResource{}
-var _ tffwdocs.ResourceWithRenderOption = &ActionResource{}
+var (
+	_ resource.Resource                 = &ActionResource{}
+	_ resource.ResourceWithConfigure    = &ActionResource{}
+	_ resource.ResourceWithModifyPlan   = &ActionResource{}
+	_ resource.ResourceWithUpgradeState = &ActionResource{}
+	_ tffwdocs.ResourceWithRenderOption = &ActionResource{}
+)
 
 func (r *ActionResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -226,10 +227,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 			"exist": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
+				Computed:            true,
 				MarkdownDescription: "Indicates whether the resource action was successfully performed.",
 			},
 
@@ -296,9 +294,18 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
+	actionWillRun := plan.When.ValueString() == "apply"
+	// Preserve state by default; set unknown only when an apply-time action is expected.
+	if state != nil {
+		plan.Exist = state.Exist
+	}
+
 	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 		plan.SensitiveOutput = basetypes.NewDynamicUnknown()
+		if actionWillRun {
+			plan.Exist = basetypes.NewBoolUnknown()
+		}
 	} else {
 		plan.Output = state.Output
 		if !plan.ResponseExportValues.Equal(state.ResponseExportValues) {
@@ -309,6 +316,10 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 		}
 
+		if actionWillRun && !skip.CanSkipExternalRequest(*state, *plan, "update") {
+			plan.Exist = basetypes.NewBoolUnknown()
+		}
+
 		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody, config.SensitiveBodyVersion, state.SensitiveBodyVersion)
 		if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
 			return
@@ -317,6 +328,9 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 			tflog.Info(ctx, `"sensitive_body" has changed`)
 			plan.Output = basetypes.NewDynamicUnknown()
 			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
+			if actionWillRun {
+				plan.Exist = basetypes.NewBoolUnknown()
+			}
 		}
 	}
 
