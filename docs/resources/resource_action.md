@@ -170,8 +170,6 @@ resource "azapi_resource_action" "stop" {
 ### Read-Only
 
 - `exist` (Boolean) Indicates whether the resource action was successfully performed.
-
-	~> Once set, the value of this attribute in state will not change.
 - `id` (String) The ID of the Azure resource.
 
 	~> Once set, the value of this attribute in state will not change.
