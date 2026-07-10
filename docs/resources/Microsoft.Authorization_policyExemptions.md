@@ -138,7 +138,7 @@ resource "azapi_resource" "policyExemption" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Authorization/policyExemptions@api-version`. The available api-versions for this resource are: [`2020-07-01-preview`, `2022-07-01-preview`, `2024-12-01-preview`, `2025-12-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Authorization/policyExemptions@api-version`. The available api-versions for this resource are: [`2020-07-01-preview`, `2022-07-01-preview`, `2024-12-01-preview`, `2025-12-01-preview`, `2026-01-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/`  
@@ -160,5 +160,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example //providers/Microsoft.Authorization/policyExemptions/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example //providers/Microsoft.Authorization/policyExemptions/{resourceName}?api-version=2025-12-01-preview
+ terraform import azapi_resource.example //providers/Microsoft.Authorization/policyExemptions/{resourceName}?api-version=2026-01-01-preview
  ```

@@ -248,7 +248,7 @@ resource "azapi_resource" "configurationAssignment" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Maintenance/configurationAssignments@api-version`. The available api-versions for this resource are: [`2018-06-01-preview`, `2020-04-01`, `2020-07-01-preview`, `2021-04-01-preview`, `2021-05-01`, `2021-09-01-preview`, `2022-07-01-preview`, `2022-11-01-preview`, `2023-04-01`, `2023-09-01-preview`, `2023-10-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Maintenance/configurationAssignments@api-version`. The available api-versions for this resource are: [`2018-06-01-preview`, `2020-04-01`, `2020-07-01-preview`, `2021-04-01-preview`, `2021-05-01`, `2021-09-01-preview`, `2022-07-01-preview`, `2022-11-01-preview`, `2023-04-01`, `2023-09-01-preview`, `2023-10-01-preview`, `2025-10-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `{any azure resource id}`
@@ -266,5 +266,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Maintenance/configurationAssignments/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Maintenance/configurationAssignments/{resourceName}?api-version=2023-10-01-preview
+ terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Maintenance/configurationAssignments/{resourceName}?api-version=2025-10-01-preview
  ```
