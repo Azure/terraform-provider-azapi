@@ -82,6 +82,9 @@ func DataPlaneResourcePlaceholderKeys(resourceType string) ([]string, error) {
 		if placeholder.Key == "parentId" || placeholder.Key == "apiVersion" {
 			continue
 		}
+		if placeholder.HasDefault {
+			continue
+		}
 		if !slices.Contains(keys, placeholder.Key) {
 			keys = append(keys, placeholder.Key)
 		}

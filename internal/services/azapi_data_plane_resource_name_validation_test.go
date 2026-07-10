@@ -128,4 +128,15 @@ func TestValidateDataPlaneResourceAddress(t *testing.T) {
 			t.Fatalf("expected nil (deferred) error for mixed known/unknown identifier values, got: %v", err)
 		}
 	})
+
+	t.Run("singleton with defaulted name does not require name", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type: types.StringValue("Microsoft.Purview/accounts/Account/resourceSetRuleConfigs@2021-07-01"),
+			Name: types.StringNull(),
+		}
+
+		if err := validateDataPlaneResourceAddress(config); err != nil {
+			t.Fatalf("expected nil error for singleton resource type, got: %v", err)
+		}
+	})
 }

@@ -59,6 +59,10 @@ func init() {
 		Audience: "https://storage.azure.com",
 		Endpoint: "https://core.usgovcloudapi.net",
 	}
+	cloud.AzureChina.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.chinacloudapi.cn",
+	}
 	cloud.AzurePublic.Services[Synapse] = cloud.ServiceConfiguration{
 		Audience: "https://dev.azuresynapse.net",
 		Endpoint: "https://dev.azuresynapse.net",
