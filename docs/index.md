@@ -9,6 +9,36 @@ description: |-
 
 The AzAPI provider is a very thin layer on top of the [Azure ARM REST APIs](https://learn.microsoft.com/rest/api/azure). This provider complements the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
 
+Following example highlight the main differences between AzAPI and AzureRM for a storage account resource:
+
+```hcl
+# AzAPI
+# API version can be specified in the type attribute
+# the body attribute maps to the REST API payload
+resource "azapi_resource" "sa1" {
+  type      = "Microsoft.Storage/storageAccounts@2025-06-01"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
+  name      = "mysa1"
+  location  = "westus"
+
+  body = {
+    "kind" = "StorageV2"
+    "sku" = {
+      name = "Standard_RAGRS"
+    }
+  }
+}
+
+# AzureRM
+resource "azurerm_storage_account" "sa1" {
+  name                     = "mysa1"
+  resource_group_name      = "myResourceGroup"
+  location                 = "westus"
+  account_tier             = "Standard"
+  account_replication_type = "RAGRS"
+}
+```
+
 Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
 
 Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/main/CHANGELOG.md) for version information and release notes.
