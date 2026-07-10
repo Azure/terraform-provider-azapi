@@ -21,7 +21,6 @@ func (r ActionResource) Exists(ctx context.Context, client *clients.Client, stat
 }
 
 func TestAccActionResource_basic(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -34,7 +33,6 @@ func TestAccActionResource_basic(t *testing.T) {
 }
 
 func TestAccActionResource_basicWhenDestroy(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -90,7 +88,6 @@ func TestAccActionResource_nonstandardLRO(t *testing.T) {
 }
 
 func TestAccActionResource_timeouts(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -103,7 +100,6 @@ func TestAccActionResource_timeouts(t *testing.T) {
 }
 
 func TestAccActionResource_headers(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -172,7 +168,6 @@ func TestAccActionResource_updateApiVersion(t *testing.T) {
 }
 
 func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
-	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
@@ -188,29 +183,50 @@ func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
 	})
 }
 
+func (r ActionResource) template(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+  %[1]s
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2026-04-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = "%[3]s"
+
+  body = {
+    kind = "StorageV2"
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+  `, GenericResource{}.template(data), data.RandomString, data.LocationPrimary)
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
 data "azapi_resource_action" "list" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type                   = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id = azapi_resource.test.id
-  action      = "agentRegistrationInformation/regenerateKey"
+  action      = "regenerateKey"
   body = {
-    keyName = "primary"
+    keyName = "key1"
   }
   depends_on = [
     data.azapi_resource_action.list
   ]
 }
-`, GenericResource{}.identityNone(data))
+`, r.template(data))
 }
 
 func (r ActionResource) basicWhenDestroy(data acceptance.TestData) string {
@@ -218,26 +234,26 @@ func (r ActionResource) basicWhenDestroy(data acceptance.TestData) string {
 %[1]s
 
 data "azapi_resource_action" "list" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type                   = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id = azapi_resource.test.id
   when        = "destroy"
-  action      = "agentRegistrationInformation/regenerateKey"
+  action      = "regenerateKey"
   body = {
-    keyName = "primary"
+    keyName = "key1"
   }
   depends_on = [
     data.azapi_resource_action.list
   ]
   response_export_values = ["*"]
 }
-`, GenericResource{}.identityNone(data))
+`, r.template(data))
 }
 
 func (r ActionResource) registerResourceProvider(subscriptionId string) string {
@@ -344,18 +360,18 @@ func (r ActionResource) timeouts(data acceptance.TestData) string {
 %[1]s
 
 data "azapi_resource_action" "list" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type                   = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id = azapi_resource.test.id
-  action      = "agentRegistrationInformation/regenerateKey"
+  action      = "regenerateKey"
   body = {
-    keyName = "primary"
+    keyName = "key1"
   }
   depends_on = [
     data.azapi_resource_action.list
@@ -367,7 +383,7 @@ resource "azapi_resource_action" "test" {
     read   = "10m"
   }
 }
-`, GenericResource{}.identityNone(data))
+`, r.template(data))
 }
 
 func (r ActionResource) oldConfig(data acceptance.TestData, subscriptionId string) string {
@@ -391,18 +407,18 @@ func (r ActionResource) headers(data acceptance.TestData) string {
 %[1]s
 
 data "azapi_resource_action" "list" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type                   = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id = azapi_resource.test.id
-  action      = "agentRegistrationInformation/regenerateKey"
+  action      = "regenerateKey"
   body = {
-    keyName = "primary"
+    keyName = "key1"
   }
   headers = {
     "header1" = "value1"
@@ -411,7 +427,7 @@ resource "azapi_resource_action" "test" {
     data.azapi_resource_action.list
   ]
 }
-`, GenericResource{}.identityNone(data))
+`, r.template(data))
 }
 
 func (r ActionResource) queryParameters() string {
@@ -478,14 +494,14 @@ func (r ActionResource) updateQueryParametersWhenDestroy(data acceptance.TestDat
 %[1]s
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
   resource_id = azapi_resource.test.id
   action      = "listKeys"
   when        = "destroy"
   %[2]s
   response_export_values = ["*"]
 }
-`, GenericResource{}.identityNone(data), queryParams)
+`, r.template(data), queryParams)
 }
 
 func (r ActionResource) ignoreNotFound() string {
@@ -493,8 +509,8 @@ func (r ActionResource) ignoreNotFound() string {
 data "azapi_client_config" "current" {}
 
 resource "azapi_resource_action" "test" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
-  resource_id            = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/notexist/providers/Microsoft.Automation/automationAccounts/notexit"
+  type                   = "Microsoft.Storage/storageAccounts@2026-04-01"
+  resource_id            = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/notexist/providers/Microsoft.Storage/storageAccounts/notexit"
   action                 = "listKeys"
   ignore_not_found       = true
   response_export_values = ["*"]
