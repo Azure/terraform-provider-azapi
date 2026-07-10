@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+
       - name: Checkout current repository
         uses: actions/checkout@v4
         with:
@@ -93,7 +98,7 @@ jobs:
           find . -type f -name "*.md" -delete
           find . -type f -name "*.out" -delete
 
-      - name: Regenerate markdown doc
+      - name: go generate ./...
         run: |
           set -xe
           go version
