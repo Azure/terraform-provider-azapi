@@ -13,19 +13,16 @@ import (
 func Test_LastRetryError_SetAndGet(t *testing.T) {
 	lre := &clients.LastRetryError{}
 
-	// Initially should return nil
 	err := lre.Get()
 	if err != nil {
 		t.Fatalf("expected nil; got %v", err)
 	}
 
-	// Set with an explicit error
 	testErr := errors.New("test error")
 	testResp := &http.Response{StatusCode: http.StatusInternalServerError}
 	lre.Set(testResp, testErr)
 
 	err = lre.Get()
-	// When err is non-nil, Set stores it directly
 	if err != testErr {
 		t.Errorf("expected error %v, got %v", testErr, err)
 	}
@@ -54,11 +51,9 @@ func Test_LastRetryError_SetWithNilError_ConstructsResponseError(t *testing.T) {
 	lre.Set(testResp, nil)
 
 	err := lre.Get()
-	// When err is nil but resp is non-nil, Set constructs a ResponseError
 	if err == nil {
 		t.Fatal("expected non-nil error (ResponseError constructed from response), got nil")
 	}
-	// The ResponseError should contain the status code
 	if !strings.Contains(err.Error(), "404") {
 		t.Errorf("expected error to contain '404', got: %s", err.Error())
 	}
@@ -179,7 +174,6 @@ func Test_WrapContextError_DeadlineExceeded_ErrorTakesPrecedenceOverResponse(t *
 
 	result := clients.WrapContextError(context.DeadlineExceeded, lre)
 
-	// When err is non-nil, it takes precedence over constructing from response
 	expected := "context deadline exceeded, last retryable error: network timeout"
 	if result.Error() != expected {
 		t.Errorf("expected %q, got %q", expected, result.Error())
