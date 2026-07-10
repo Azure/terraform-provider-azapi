@@ -274,8 +274,8 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.Headers),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
