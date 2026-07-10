@@ -93,6 +93,12 @@ jobs:
           find . -type f -name "*.md" -delete
           find . -type f -name "*.out" -delete
 
+      - name: Regenerate markdown doc
+        run: |
+          set -xe
+          go version
+          go generate ./...
+
       - name: Configure git name and email
         run: |
           set -xe
