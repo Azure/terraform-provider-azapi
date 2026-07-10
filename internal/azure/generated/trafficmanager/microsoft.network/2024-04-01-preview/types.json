@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints"
+    "value": "Microsoft.Network/trafficmanagerprofiles"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints",
+    "name": "Microsoft.Network/trafficmanagerprofiles",
     "properties": {
       "id": {
         "type": {
@@ -47,458 +47,11 @@
           "$ref": "#/4"
         },
         "flags": 0,
-        "description": "The properties of the Traffic Manager endpoint."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EndpointProperties",
-    "properties": {
-      "targetResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'."
-      },
-      "target": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses to direct traffic to this endpoint."
-      },
-      "endpointStatus": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic routing method."
-      },
-      "weight": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to 1000."
-      },
-      "priority": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter.  If specified, it must be specified on all endpoints, and no two endpoints can share the same priority value."
-      },
-      "endpointLocation": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Specifies the location of the external or nested endpoints when using the 'Performance' traffic routing method."
-      },
-      "endpointMonitorStatus": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "The monitoring status of the endpoint."
-      },
-      "minChildEndpoints": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The minimum number of endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
-      },
-      "minChildEndpointsIPv4": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
-      },
-      "minChildEndpointsIPv6": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
-      },
-      "geoMapping": {
-        "type": {
-          "$ref": "#/17"
-        },
-        "flags": 0,
-        "description": "The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted values."
-      },
-      "subnets": {
-        "type": {
-          "$ref": "#/19"
-        },
-        "flags": 0,
-        "description": "The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints."
-      },
-      "customHeaders": {
-        "type": {
-          "$ref": "#/21"
-        },
-        "flags": 0,
-        "description": "List of custom headers."
-      },
-      "alwaysServe": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the traffic routing method."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/5"
-      },
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "CheckingEndpoint"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Online"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Degraded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Inactive"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Stopped"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unmonitored"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/10"
-      },
-      {
-        "$ref": "#/11"
-      },
-      {
-        "$ref": "#/12"
-      },
-      {
-        "$ref": "#/13"
-      },
-      {
-        "$ref": "#/14"
-      },
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EndpointPropertiesSubnetsItem",
-    "properties": {
-      "first": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "First address in the subnet."
-      },
-      "last": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Last address in the subnet."
-      },
-      "scope": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "Block size (number of leading bits in the subnet mask)."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/18"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EndpointPropertiesCustomHeadersItem",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Header name."
-      },
-      "value": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Header value."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/20"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/22"
-      },
-      {
-        "$ref": "#/23"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints@2024-04-01-preview",
-    "body": {
-      "$ref": "#/3"
-    },
-    "readableScopes": 8,
-    "writableScopes": 8
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-04-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/27"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 0,
-        "description": "The properties of the Traffic Manager endpoint."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints@2024-04-01-preview",
-    "body": {
-      "$ref": "#/28"
-    },
-    "readableScopes": 8,
-    "writableScopes": 8
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-04-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 0,
-        "description": "The properties of the Traffic Manager endpoint."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints@2024-04-01-preview",
-    "body": {
-      "$ref": "#/32"
-    },
-    "readableScopes": 8,
-    "writableScopes": 8
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Network/trafficmanagerprofiles"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-04-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Network/trafficmanagerprofiles",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/35"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/37"
-        },
-        "flags": 0,
         "description": "The properties of the Traffic Manager profile."
       },
       "tags": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/67"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -518,63 +71,63 @@
     "properties": {
       "profileStatus": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "The status of the Traffic Manager profile."
       },
       "trafficRoutingMethod": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "The traffic routing method of the Traffic Manager profile."
       },
       "dnsConfig": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The DNS settings of the Traffic Manager profile."
       },
       "monitorConfig": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/17"
         },
         "flags": 0,
         "description": "The endpoint monitoring settings of the Traffic Manager profile."
       },
       "endpoints": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "The list of endpoints in the Traffic Manager profile."
       },
       "trafficViewEnrollmentStatus": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile."
       },
       "allowedEndpointRecordTypes": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/62"
         },
         "flags": 0,
         "description": "The list of allowed endpoint record types."
       },
       "maxReturn": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "Maximum number of endpoints to be returned for MultiValue routing type."
       },
       "recordType": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "When record type is set, a traffic manager profile will allow only endpoints that match this type."
@@ -593,10 +146,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/38"
+        "$ref": "#/5"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/6"
       },
       {
         "$ref": "#/0"
@@ -631,22 +184,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/41"
+        "$ref": "#/8"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/12"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/13"
       },
       {
         "$ref": "#/0"
@@ -673,7 +226,7 @@
       },
       "ttl": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile."
@@ -681,26 +234,29 @@
     }
   },
   {
+    "$type": "IntegerType"
+  },
+  {
     "$type": "ObjectType",
     "name": "MonitorConfig",
     "properties": {
       "profileMonitorStatus": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "The profile-level monitoring status of the Traffic Manager profile."
       },
       "protocol": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "The protocol (HTTP, HTTPS or TCP) used to probe for endpoint health."
       },
       "port": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The TCP port used to probe for endpoint health."
@@ -714,35 +270,35 @@
       },
       "intervalInSeconds": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The monitor interval for endpoints in this profile. This is the interval at which Traffic Manager will check the health of each endpoint in this profile."
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The monitor timeout for endpoints in this profile. This is the time that Traffic Manager allows endpoints in this profile to response to the health check."
       },
       "toleratedNumberOfFailures": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in this profile Degraded after the next failed health check."
       },
       "customHeaders": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "List of custom headers."
       },
       "expectedStatusCodeRanges": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "List of expected status code ranges."
@@ -773,19 +329,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/50"
+        "$ref": "#/18"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/20"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/21"
       },
       {
-        "$ref": "#/54"
+        "$ref": "#/22"
       },
       {
         "$ref": "#/0"
@@ -808,13 +364,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/56"
+        "$ref": "#/24"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/25"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/26"
       },
       {
         "$ref": "#/0"
@@ -844,7 +400,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/60"
+      "$ref": "#/28"
     }
   },
   {
@@ -853,14 +409,14 @@
     "properties": {
       "min": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "Min status code."
       },
       "max": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "Max status code."
@@ -870,7 +426,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/62"
+      "$ref": "#/30"
     }
   },
   {
@@ -879,7 +435,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/4"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "The properties of the Traffic Manager endpoint."
@@ -908,9 +464,107 @@
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/64"
+    "$type": "ObjectType",
+    "name": "EndpointProperties",
+    "properties": {
+      "targetResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses to direct traffic to this endpoint."
+      },
+      "endpointStatus": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic routing method."
+      },
+      "weight": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to 1000."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter.  If specified, it must be specified on all endpoints, and no two endpoints can share the same priority value."
+      },
+      "endpointLocation": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the external or nested endpoints when using the 'Performance' traffic routing method."
+      },
+      "endpointMonitorStatus": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The monitoring status of the endpoint."
+      },
+      "minChildEndpoints": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The minimum number of endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
+      },
+      "minChildEndpointsIPv4": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
+      },
+      "minChildEndpointsIPv6": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'."
+      },
+      "geoMapping": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted values."
+      },
+      "subnets": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints."
+      },
+      "customHeaders": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "List of custom headers."
+      },
+      "alwaysServe": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the traffic routing method."
+      }
     }
   },
   {
@@ -925,10 +579,182 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/66"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CheckingEndpoint"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Online"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inactive"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unmonitored"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EndpointPropertiesSubnetsItem",
+    "properties": {
+      "first": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "First address in the subnet."
+      },
+      "last": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Last address in the subnet."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Block size (number of leading bits in the subnet mask)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/46"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EndpointPropertiesCustomHeadersItem",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Header name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Header value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/32"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
       },
       {
         "$ref": "#/0"
@@ -955,16 +781,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/72"
+        "$ref": "#/60"
       },
       {
         "$ref": "#/0"
@@ -974,7 +800,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/73"
+      "$ref": "#/61"
     }
   },
   {
@@ -993,13 +819,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/75"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/76"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/65"
       },
       {
         "$ref": "#/0"
@@ -1018,7 +844,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Network/trafficmanagerprofiles@2024-04-01-preview",
     "body": {
-      "$ref": "#/36"
+      "$ref": "#/3"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -1048,28 +874,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/69"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/70"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/71"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/73"
         },
         "flags": 2,
         "description": "The properties of the Traffic Manager User Metrics."
@@ -1093,10 +919,184 @@
     "$type": "ResourceType",
     "name": "Microsoft.Network/trafficManagerUserMetricsKeys@2024-04-01-preview",
     "body": {
-      "$ref": "#/84"
+      "$ref": "#/72"
     },
     "readableScopes": 4,
     "writableScopes": 4
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The properties of the Traffic Manager endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/AzureEndpoints@2024-04-01-preview",
+    "body": {
+      "$ref": "#/77"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The properties of the Traffic Manager endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/ExternalEndpoints@2024-04-01-preview",
+    "body": {
+      "$ref": "#/81"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The properties of the Traffic Manager endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/trafficmanagerprofiles/NestedEndpoints@2024-04-01-preview",
+    "body": {
+      "$ref": "#/85"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1306,7 +1306,7 @@
       },
       "endpointId": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "A number uniquely identifying this endpoint in query experiences."
@@ -1332,14 +1332,14 @@
       },
       "latitude": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The approximate latitude that these queries originated from."
       },
       "longitude": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The approximate longitude that these queries originated from."
@@ -1359,21 +1359,21 @@
     "properties": {
       "endpointId": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 1,
         "description": "The id of the endpoint from the 'endpoints' array which these queries were routed to."
       },
       "queryCount": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 1,
         "description": "The number of queries originating from this location."
       },
       "latency": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The latency experienced by queries originating from this location."

@@ -1,0 +1,265 @@
+[
+  {
+    "$type": "ObjectType",
+    "name": "DataCollectionRuleConfigurationMetadataRequest",
+    "properties": {
+      "dcrKind": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "DCR Kind for which metadata is being requested (e.g., PlatformTelemetry)."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "Optional resource type filter (e.g., Microsoft.Compute/virtualMachines). If specified, returns configuration metadata for that resource type."
+      },
+      "withStreamMetadata": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "When true, returns detailed stream metadata in the response. Defaults to false."
+      }
+    }
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataCollectionRuleConfigurationMetadataResponse",
+    "properties": {
+      "configurationMetadata": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The configuration metadata for platform telemetry."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationMetadata",
+    "properties": {
+      "platformTelemetry": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Platform telemetry configuration metadata."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformTelemetryMetadata",
+    "properties": {
+      "platformLogs": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Configuration metadata for platform logs."
+      },
+      "platformMetrics": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Configuration metadata for platform metrics."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TelemetryTypeMetadata",
+    "properties": {
+      "supportedDestinations": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "List of supported destination resource types."
+      },
+      "supportedResourceTypes": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "List of supported source resource types."
+      },
+      "supportedStreams": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Detailed stream information. Only returned when withStreamMetadata is true in the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamMetadata",
+    "properties": {
+      "streamId": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The unique identifier for the stream."
+      },
+      "metadata": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Additional metadata about the stream."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamDetailMetadata",
+    "properties": {
+      "logsSpecification": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Specification for logs stream."
+      },
+      "metricsSpecification": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Specification for metrics stream."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogsSpecification",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The name of the logs stream."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The display name of the logs stream."
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Categorization groups for the logs stream."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricsSpecification",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The name of the metric."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The display name of the metric."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "Description of the metric."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The unit of measurement for the metric.\nThis value is provided by the service and is manifest-driven; the set of possible values may evolve over time.\nExample: \"Count\"."
+      },
+      "aggregationType": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "The aggregation type for the metric.\nThis value is provided by the service and is manifest-driven; the set of possible values may evolve over time.\nExample: \"Total\"."
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Categorization groups for the metric."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "fetchDataCollectionRuleConfigurationMetadata",
+    "resourceType": "Microsoft.Insights/locations",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/3"
+    },
+    "input": {
+      "$ref": "#/0"
+    }
+  }
+]

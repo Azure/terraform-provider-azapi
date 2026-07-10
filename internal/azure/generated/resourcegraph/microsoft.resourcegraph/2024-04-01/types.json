@@ -53,12 +53,12 @@
         "flags": 0,
         "description": "Metadata describing a graph query for an Azure resource."
       },
-      "systemData": {
+      "tags": {
         "type": {
           "$ref": "#/8"
         },
-        "flags": 2,
-        "description": "The system metadata relating to this resource."
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
@@ -74,12 +74,12 @@
         "flags": 0,
         "description": "This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict."
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/9"
         },
-        "flags": 0,
-        "description": "Resource tags"
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -134,6 +134,14 @@
   },
   {
     "$type": "ObjectType",
+    "name": "GraphQueryResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
       "createdBy": {
@@ -145,7 +153,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -166,7 +174,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/19"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -200,9 +208,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/9"
-      },
-      {
         "$ref": "#/10"
       },
       {
@@ -210,6 +215,9 @@
       },
       {
         "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
       },
       {
         "$ref": "#/2"
@@ -236,9 +244,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/14"
-      },
-      {
         "$ref": "#/15"
       },
       {
@@ -248,17 +253,12 @@
         "$ref": "#/17"
       },
       {
+        "$ref": "#/18"
+      },
+      {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
   },
   {
     "$type": "ResourceType",

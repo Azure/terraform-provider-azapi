@@ -1,11 +1,11 @@
 [
   {
     "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9-]{1,127}$"
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.KeyVault/vaults/secrets"
+    "value": "Microsoft.KeyVault/vaults"
   },
   {
     "$type": "StringType"
@@ -16,7 +16,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.KeyVault/vaults/secrets",
+    "name": "Microsoft.KeyVault/vaults",
     "properties": {
       "id": {
         "type": {
@@ -46,178 +46,6 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "tags": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "The tags that will be assigned to the secret."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "Properties of the secret"
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Azure location of the key vault resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecretCreateOrUpdateParametersTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecretProperties",
-    "properties": {
-      "value": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The value of the secret. NOTE: 'value' will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets."
-      },
-      "contentType": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The content type of the secret."
-      },
-      "attributes": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "The attributes of the secret."
-      },
-      "secretUri": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The URI to retrieve the current version of the secret."
-      },
-      "secretUriWithVersion": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The URI to retrieve the specific version of the secret."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecretAttributes",
-    "properties": {
-      "enabled": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "Determines whether the object is enabled."
-      },
-      "nbf": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
-        "description": "Not before date in seconds since 1970-01-01T00:00:00Z."
-      },
-      "exp": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
-        "description": "Expiry date in seconds since 1970-01-01T00:00:00Z."
-      },
-      "created": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 2,
-        "description": "Creation time in seconds since 1970-01-01T00:00:00Z."
-      },
-      "updated": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 2,
-        "description": "Last updated time in seconds since 1970-01-01T00:00:00Z."
-      }
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.KeyVault/vaults/secrets@2019-09-01",
-    "body": {
-      "$ref": "#/4"
-    },
-    "readableScopes": 8,
-    "writableScopes": 8
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9-]{3,24}$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.KeyVault/vaults"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2019-09-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.KeyVault/vaults",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/12"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
       "location": {
         "type": {
           "$ref": "#/2"
@@ -227,14 +55,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The tags that will be assigned to the key vault."
       },
       "properties": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/6"
         },
         "flags": 1,
         "description": "Properties of the vault"
@@ -255,21 +83,21 @@
     "properties": {
       "tenantId": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/7"
         },
         "flags": 1,
         "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault."
       },
       "sku": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/8"
         },
         "flags": 1,
         "description": "SKU details"
       },
       "accessPolicies": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required."
@@ -290,77 +118,77 @@
       },
       "enabledForDeployment": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault."
       },
       "enabledForDiskEncryption": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys."
       },
       "enabledForTemplateDeployment": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault."
       },
       "enableSoftDelete": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true or false) when creating new key vault, it will be set to true by default. Once set to true, it cannot be reverted to false."
       },
       "softDeleteRetentionInDays": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "softDelete data retention days. It accepts >=7 and <=90."
       },
       "enableRbacAuthorization": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be  ignored. When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC."
       },
       "createMode": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/87"
         },
         "flags": 4,
         "description": "The vault's create mode to indicate whether the vault need to be recovered or not."
       },
       "enablePurgeProtection": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its value."
       },
       "networkAcls": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "Rules governing the accessibility of the key vault from specific network locations."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "Provisioning state of the vault."
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/118"
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with the key vault."
@@ -379,14 +207,14 @@
     "properties": {
       "family": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/10"
         },
         "flags": 1,
         "description": "SKU family name"
       },
       "name": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/13"
         },
         "flags": 1,
         "description": "SKU name to specify whether the key vault is a standard vault or a premium vault."
@@ -401,7 +229,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/19"
+        "$ref": "#/9"
       },
       {
         "$ref": "#/2"
@@ -420,10 +248,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/21"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/22"
+        "$ref": "#/12"
       }
     ]
   },
@@ -433,7 +261,7 @@
     "properties": {
       "tenantId": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/7"
         },
         "flags": 1,
         "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault."
@@ -447,14 +275,14 @@
       },
       "applicationId": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "Application ID of the client making request on behalf of a principal"
       },
       "permissions": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/15"
         },
         "flags": 1,
         "description": "Permissions the identity has for keys, secrets and certificates."
@@ -467,28 +295,28 @@
     "properties": {
       "keys": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/34"
         },
         "flags": 0,
         "description": "Permissions to keys"
       },
       "secrets": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "Permissions to secrets"
       },
       "certificates": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "Permissions to certificates"
       },
       "storage": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "Permissions to storage accounts"
@@ -567,6 +395,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
         "$ref": "#/26"
       },
       {
@@ -588,36 +446,6 @@
         "$ref": "#/32"
       },
       {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/39"
-      },
-      {
-        "$ref": "#/40"
-      },
-      {
-        "$ref": "#/41"
-      },
-      {
-        "$ref": "#/42"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -625,7 +453,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/43"
+      "$ref": "#/33"
     }
   },
   {
@@ -668,31 +496,31 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/41"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/43"
       },
       {
         "$ref": "#/2"
@@ -702,7 +530,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/54"
+      "$ref": "#/44"
     }
   },
   {
@@ -777,6 +605,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
         "$ref": "#/56"
       },
       {
@@ -798,36 +656,6 @@
         "$ref": "#/62"
       },
       {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/65"
-      },
-      {
-        "$ref": "#/66"
-      },
-      {
-        "$ref": "#/67"
-      },
-      {
-        "$ref": "#/68"
-      },
-      {
-        "$ref": "#/69"
-      },
-      {
-        "$ref": "#/70"
-      },
-      {
-        "$ref": "#/71"
-      },
-      {
-        "$ref": "#/72"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -835,7 +663,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/73"
+      "$ref": "#/63"
     }
   },
   {
@@ -902,6 +730,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
         "$ref": "#/75"
       },
       {
@@ -917,36 +775,6 @@
         "$ref": "#/79"
       },
       {
-        "$ref": "#/80"
-      },
-      {
-        "$ref": "#/81"
-      },
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/84"
-      },
-      {
-        "$ref": "#/85"
-      },
-      {
-        "$ref": "#/86"
-      },
-      {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/89"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -954,14 +782,20 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/90"
+      "$ref": "#/80"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/24"
+      "$ref": "#/14"
     }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "IntegerType"
   },
   {
     "$type": "StringLiteralType",
@@ -975,10 +809,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/93"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/86"
       }
     ]
   },
@@ -988,28 +822,28 @@
     "properties": {
       "bypass": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'.  If not specified the default is 'AzureServices'."
       },
       "defaultAction": {
         "type": {
-          "$ref": "#/102"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property has been evaluated."
       },
       "ipRules": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "The list of IP address rules."
       },
       "virtualNetworkRules": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "The list of virtual network rules."
@@ -1028,10 +862,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/97"
+        "$ref": "#/89"
       },
       {
-        "$ref": "#/98"
+        "$ref": "#/90"
       },
       {
         "$ref": "#/2"
@@ -1050,10 +884,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/100"
+        "$ref": "#/92"
       },
       {
-        "$ref": "#/101"
+        "$ref": "#/93"
       },
       {
         "$ref": "#/2"
@@ -1076,7 +910,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/103"
+      "$ref": "#/95"
     }
   },
   {
@@ -1092,7 +926,7 @@
       },
       "ignoreMissingVnetServiceEndpoint": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Property to specify whether NRP will ignore the check if parent subnet has serviceEndpoints configured."
@@ -1102,7 +936,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/105"
+      "$ref": "#/97"
     }
   },
   {
@@ -1117,10 +951,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/107"
+        "$ref": "#/99"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/100"
       },
       {
         "$ref": "#/2"
@@ -1147,7 +981,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "Private endpoint connection properties."
@@ -1160,21 +994,21 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/104"
         },
         "flags": 0,
         "description": "Properties of the private endpoint object."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/105"
         },
         "flags": 0,
         "description": "Approval state of the private link connection."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/117"
         },
         "flags": 2,
         "description": "Provisioning state of the private endpoint connection."
@@ -1200,7 +1034,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/110"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been approved, rejected or removed by the key vault owner."
@@ -1241,16 +1075,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/114"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/115"
+        "$ref": "#/107"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/108"
       },
       {
-        "$ref": "#/117"
+        "$ref": "#/109"
       },
       {
         "$ref": "#/2"
@@ -1285,22 +1119,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/119"
+        "$ref": "#/111"
       },
       {
-        "$ref": "#/120"
+        "$ref": "#/112"
       },
       {
-        "$ref": "#/121"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/122"
+        "$ref": "#/114"
       },
       {
-        "$ref": "#/123"
+        "$ref": "#/115"
       },
       {
-        "$ref": "#/124"
+        "$ref": "#/116"
       },
       {
         "$ref": "#/2"
@@ -1310,14 +1144,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/110"
+      "$ref": "#/102"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults@2019-09-01",
     "body": {
-      "$ref": "#/14"
+      "$ref": "#/4"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -1338,13 +1172,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/128"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/130"
+        "$ref": "#/122"
       }
     ]
   },
@@ -1369,21 +1203,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/123"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/124"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/133"
+          "$ref": "#/125"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -1397,7 +1231,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/127"
         },
         "flags": 1,
         "description": "Properties of the access policy"
@@ -1410,7 +1244,7 @@
     "properties": {
       "accessPolicies": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/128"
         },
         "flags": 1,
         "description": "An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID."
@@ -1420,14 +1254,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/24"
+      "$ref": "#/14"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/accessPolicies@2019-09-01",
     "body": {
-      "$ref": "#/134"
+      "$ref": "#/126"
     },
     "readableScopes": 0,
     "writableScopes": 8
@@ -1460,21 +1294,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/130"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/131"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -1495,7 +1329,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/133"
         },
         "flags": 2,
         "description": "Tags assigned to the key vault resource."
@@ -1514,10 +1348,14 @@
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnections@2019-09-01",
     "body": {
-      "$ref": "#/140"
+      "$ref": "#/132"
     },
     "readableScopes": 8,
     "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{1,127}$"
   },
   {
     "$type": "StringLiteralType",
@@ -1540,35 +1378,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/135"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/136"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/137"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "tags": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/139"
         },
         "flags": 0,
         "description": "The tags that will be assigned to the key."
       },
       "properties": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/140"
         },
         "flags": 1,
         "description": "The properties of the key to be created."
@@ -1596,34 +1434,34 @@
     "properties": {
       "attributes": {
         "type": {
-          "$ref": "#/148"
+          "$ref": "#/141"
         },
         "flags": 0,
         "description": "The attributes of the key."
       },
       "kty": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/151"
         },
         "flags": 0,
         "description": "The type of the key. For valid values, see JsonWebKeyType."
       },
       "keyOps": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/160"
         },
         "flags": 0
       },
       "keySize": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "The key size in bits. For example: 2048, 3072, or 4096 for RSA."
       },
       "curveName": {
         "type": {
-          "$ref": "#/172"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The elliptic curve name. For valid values, see JsonWebKeyCurveName."
@@ -1650,42 +1488,42 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Determines whether or not the object is enabled."
       },
       "nbf": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Not before date in seconds since 1970-01-01T00:00:00Z."
       },
       "exp": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Expiry date in seconds since 1970-01-01T00:00:00Z."
       },
       "created": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 2,
         "description": "Creation time in seconds since 1970-01-01T00:00:00Z."
       },
       "updated": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/84"
         },
         "flags": 2,
         "description": "Last updated time in seconds since 1970-01-01T00:00:00Z."
       },
       "recoveryLevel": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/146"
         },
         "flags": 2,
         "description": "The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently deleted by a privileged user; otherwise, only the system can purge the object at the end of the retention interval."
@@ -1712,16 +1550,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/149"
+        "$ref": "#/142"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/143"
       },
       {
-        "$ref": "#/151"
+        "$ref": "#/144"
       },
       {
-        "$ref": "#/152"
+        "$ref": "#/145"
       },
       {
         "$ref": "#/2"
@@ -1748,16 +1586,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/154"
+        "$ref": "#/147"
       },
       {
-        "$ref": "#/155"
+        "$ref": "#/148"
       },
       {
-        "$ref": "#/156"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/157"
+        "$ref": "#/150"
       },
       {
         "$ref": "#/2"
@@ -1796,25 +1634,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/159"
+        "$ref": "#/152"
       },
       {
-        "$ref": "#/160"
+        "$ref": "#/153"
       },
       {
-        "$ref": "#/161"
+        "$ref": "#/154"
       },
       {
-        "$ref": "#/162"
+        "$ref": "#/155"
       },
       {
-        "$ref": "#/163"
+        "$ref": "#/156"
       },
       {
-        "$ref": "#/164"
+        "$ref": "#/157"
       },
       {
-        "$ref": "#/165"
+        "$ref": "#/158"
       },
       {
         "$ref": "#/2"
@@ -1824,7 +1662,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/166"
+      "$ref": "#/159"
     }
   },
   {
@@ -1847,16 +1685,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/168"
+        "$ref": "#/161"
       },
       {
-        "$ref": "#/169"
+        "$ref": "#/162"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/163"
       },
       {
-        "$ref": "#/171"
+        "$ref": "#/164"
       },
       {
         "$ref": "#/2"
@@ -1867,7 +1705,169 @@
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/keys@2019-09-01",
     "body": {
-      "$ref": "#/145"
+      "$ref": "#/138"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KeyVault/vaults/secrets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.KeyVault/vaults/secrets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "The tags that will be assigned to the secret."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 1,
+        "description": "Properties of the secret"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure location of the key vault resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretProperties",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the secret. NOTE: 'value' will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets."
+      },
+      "contentType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The content type of the secret."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "The attributes of the secret."
+      },
+      "secretUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The URI to retrieve the current version of the secret."
+      },
+      "secretUriWithVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The URI to retrieve the specific version of the secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretAttributes",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "Determines whether the object is enabled."
+      },
+      "nbf": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Not before date in seconds since 1970-01-01T00:00:00Z."
+      },
+      "exp": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Expiry date in seconds since 1970-01-01T00:00:00Z."
+      },
+      "created": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "Creation time in seconds since 1970-01-01T00:00:00Z."
+      },
+      "updated": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "Last updated time in seconds since 1970-01-01T00:00:00Z."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.KeyVault/vaults/secrets@2019-09-01",
+    "body": {
+      "$ref": "#/169"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -1918,7 +1918,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/140"
         },
         "flags": 2,
         "description": "The properties of the key."

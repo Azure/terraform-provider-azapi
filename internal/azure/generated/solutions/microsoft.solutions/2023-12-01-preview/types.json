@@ -1201,6 +1201,9 @@
       },
       {
         "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -1504,6 +1507,11 @@
     "writableScopes": 8
   },
   {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 10
+  },
+  {
     "$type": "StringLiteralType",
     "value": "Microsoft.Solutions/jitRequests"
   },
@@ -1524,28 +1532,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/114"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/115"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/116"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/118"
         },
         "flags": 0,
         "description": "The JIT request properties."
@@ -1559,7 +1567,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/145"
         },
         "flags": 0,
         "description": "Resource tags"
@@ -1593,28 +1601,28 @@
       },
       "jitAuthorizationPolicies": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/120"
         },
         "flags": 1,
         "description": "The JIT authorization policies."
       },
       "jitSchedulingPolicy": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/121"
         },
         "flags": 1,
         "description": "The JIT request properties."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/135"
         },
         "flags": 2,
         "description": "The JIT request provisioning state."
       },
       "jitRequestState": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/144"
         },
         "flags": 2,
         "description": "The JIT request state."
@@ -1658,7 +1666,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/118"
+      "$ref": "#/119"
     }
   },
   {
@@ -1667,7 +1675,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/125"
         },
         "flags": 1,
         "description": "The type of JIT schedule."
@@ -1704,13 +1712,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/121"
-      },
-      {
         "$ref": "#/122"
       },
       {
         "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
       },
       {
         "$ref": "#/2"
@@ -1757,9 +1765,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/125"
-      },
-      {
         "$ref": "#/126"
       },
       {
@@ -1782,6 +1787,9 @@
       },
       {
         "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
       },
       {
         "$ref": "#/2"
@@ -1824,9 +1832,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/135"
-      },
-      {
         "$ref": "#/136"
       },
       {
@@ -1848,6 +1853,9 @@
         "$ref": "#/142"
       },
       {
+        "$ref": "#/143"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1864,16 +1872,10 @@
     "$type": "ResourceType",
     "name": "Microsoft.Solutions/jitRequests@2023-12-01-preview",
     "body": {
-      "$ref": "#/116"
+      "$ref": "#/117"
     },
     "readableScopes": 8,
     "writableScopes": 8
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "refreshPermissions",
-    "resourceType": "Microsoft.Solutions/applications",
-    "apiVersion": "2023-12-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -1905,162 +1907,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "UpdateAccessDefinition",
-    "properties": {
-      "approver": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The approver name."
-      },
-      "metadata": {
-        "type": {
-          "$ref": "#/151"
-        },
-        "flags": 1,
-        "description": "The JIT request metadata."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/155"
-        },
-        "flags": 1,
-        "description": "The JIT status."
-      },
-      "subStatus": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 1,
-        "description": "The JIT status."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "JitRequestMetadata",
-    "properties": {
-      "originRequestId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The origin request id."
-      },
-      "requestorId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The requestor id."
-      },
-      "tenantDisplayName": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The publisher's tenant name."
-      },
-      "subjectDisplayName": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The subject display name."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotSpecified"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Elevate"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Remove"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/152"
-      },
-      {
-        "$ref": "#/153"
-      },
-      {
-        "$ref": "#/154"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotSpecified"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Approved"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Denied"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Expired"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Timeout"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/156"
-      },
-      {
-        "$ref": "#/157"
-      },
-      {
-        "$ref": "#/158"
-      },
-      {
-        "$ref": "#/159"
-      },
-      {
-        "$ref": "#/160"
-      },
-      {
-        "$ref": "#/161"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "updateAccess",
-    "resourceType": "Microsoft.Solutions/applications",
-    "apiVersion": "2023-12-01-preview",
-    "input": {
-      "$ref": "#/150"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "ListTokenRequest",
     "properties": {
       "authorizationAudience": {
@@ -2072,7 +1918,7 @@
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/151"
         },
         "flags": 0,
         "description": "The user assigned identities."
@@ -2091,7 +1937,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "The array of managed identity tokens."
@@ -2156,7 +2002,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/167"
+      "$ref": "#/153"
     }
   },
   {
@@ -2165,10 +2011,172 @@
     "resourceType": "Microsoft.Solutions/applications",
     "apiVersion": "2023-12-01-preview",
     "output": {
-      "$ref": "#/166"
+      "$ref": "#/152"
     },
     "input": {
-      "$ref": "#/164"
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "refreshPermissions",
+    "resourceType": "Microsoft.Solutions/applications",
+    "apiVersion": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateAccessDefinition",
+    "properties": {
+      "Approver": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The approver name."
+      },
+      "Metadata": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 1,
+        "description": "The JIT request metadata."
+      },
+      "Status": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 1,
+        "description": "The JIT status."
+      },
+      "SubStatus": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 1,
+        "description": "The JIT status."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JitRequestMetadata",
+    "properties": {
+      "originRequestId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The origin request id."
+      },
+      "requestorId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The requestor id."
+      },
+      "tenantDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The publisher's tenant name."
+      },
+      "subjectDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The subject display name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Elevate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Remove"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Denied"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Timeout"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "updateAccess",
+    "resourceType": "Microsoft.Solutions/applications",
+    "apiVersion": "2023-12-01-preview",
+    "input": {
+      "$ref": "#/157"
     }
   }
 ]

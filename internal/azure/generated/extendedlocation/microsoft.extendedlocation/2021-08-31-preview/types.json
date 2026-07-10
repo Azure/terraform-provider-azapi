@@ -48,30 +48,23 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "Identity for the resource."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
         "description": "The set of properties specific to a Custom Location"
       },
-      "systemData": {
+      "identity": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/11"
         },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "flags": 0,
+        "description": "Identity for the resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -82,57 +75,15 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Identity",
-    "properties": {
-      "principalId": {
+      },
+      "systemData": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/16"
         },
         "flags": 2,
-        "description": "The principal ID of resource identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant ID of resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The identity type."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -140,14 +91,14 @@
     "properties": {
       "authentication": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "This is optional input that contains the authentication that should be used to generate the namespace."
       },
       "clusterExtensionIds": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Contains the reference to the add-on that contains charts to deploy CRDs and operators."
@@ -168,7 +119,7 @@
       },
       "hostType": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "Type of host the Custom Locations is referencing (Kubernetes, etc...)."
@@ -202,7 +153,7 @@
       },
       "value": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/7"
         },
         "flags": 4,
         "description": "The kubeconfig value."
@@ -227,12 +178,69 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
         "$ref": "#/13"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
   },
   {
     "$type": "ObjectType",
@@ -247,7 +255,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -268,7 +276,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -302,9 +310,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/16"
-      },
-      {
         "$ref": "#/17"
       },
       {
@@ -312,6 +317,9 @@
       },
       {
         "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
       },
       {
         "$ref": "#/2"
@@ -338,9 +346,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/21"
-      },
-      {
         "$ref": "#/22"
       },
       {
@@ -350,17 +355,12 @@
         "$ref": "#/24"
       },
       {
+        "$ref": "#/25"
+      },
+      {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
   },
   {
     "$type": "ResourceType",
@@ -418,13 +418,6 @@
         "flags": 0,
         "description": "The set of properties specific to a Resource Sync Rule"
       },
-      "systemData": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
-      },
       "tags": {
         "type": {
           "$ref": "#/38"
@@ -438,6 +431,13 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },

@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces"
+    "value": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces",
+    "name": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces",
     "properties": {
       "id": {
         "type": {
@@ -42,19 +42,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "extendedLocation": {
+      "properties": {
         "type": {
           "$ref": "#/4"
         },
         "flags": 2,
-        "description": "The extended location of the network interface."
+        "description": "Properties of the network interface."
       },
-      "properties": {
+      "extendedLocation": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/51"
         },
         "flags": 2,
-        "description": "Properties of the network interface."
+        "description": "The extended location of the network interface."
       },
       "etag": {
         "type": {
@@ -81,53 +81,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ExtendedLocation",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the extended location."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 0,
-        "description": "The type of the extended location."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "EdgeZone"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/5"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NetworkInterfacePropertiesFormat",
+    "name": "CommonNetworkInterfacePropertiesFormat",
     "properties": {
       "virtualMachine": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The reference to a virtual machine."
       },
       "networkSecurityGroup": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "The reference to the NetworkSecurityGroup resource."
@@ -169,42 +134,42 @@
       },
       "primary": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Whether this is a primary network interface on a virtual machine."
       },
       "vnetEncryptionSupported": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Whether the virtual machine this nic is attached to supports encryption."
       },
       "defaultOutboundConnectivityEnabled": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Whether default outbound connectivity for nic was configured or not."
       },
       "enableAcceleratedNetworking": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "If the network interface is configured for accelerated networking. Not applicable to VM sizes which require accelerated networking."
       },
       "disableTcpStateTracking": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Indicates whether to disable tcp state tracking."
       },
       "enableIPForwarding": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Indicates whether IP forwarding is enabled on this network interface."
@@ -218,7 +183,7 @@
       },
       "dscpConfiguration": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "A reference to the dscp configuration to which the network interface is linked."
@@ -283,7 +248,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SubResource",
+    "name": "CommonSubResource",
     "properties": {
       "id": {
         "type": {
@@ -296,11 +261,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkSecurityGroup",
+    "name": "CommonNetworkSecurityGroup",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "Properties of the network security group."
@@ -351,25 +316,25 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkSecurityGroupPropertiesFormat",
+    "name": "CommonNetworkSecurityGroupPropertiesFormat",
     "properties": {
       "flushConnection": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "When enabled, flows created from Network Security Group connections will be re-evaluated when rules are updates. Initial enablement will trigger re-evaluation."
       },
       "securityRules": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "A collection of security rules of the network security group."
       },
       "defaultSecurityRules": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/49"
         },
         "flags": 2,
         "description": "The default security rules of network security group."
@@ -416,21 +381,14 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SecurityRule",
+    "name": "CommonSecurityRule",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "Properties of the security rule."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
       },
       "etag": {
         "type": {
@@ -439,12 +397,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The type of the resource."
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -457,7 +422,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SecurityRulePropertiesFormat",
+    "name": "CommonSecurityRulePropertiesFormat",
     "properties": {
       "description": {
         "type": {
@@ -468,7 +433,7 @@
       },
       "protocol": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/17"
         },
         "flags": 1,
         "description": "Network protocol this rule applies to."
@@ -496,14 +461,14 @@
       },
       "sourceAddressPrefixes": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "The CIDR or source IP ranges."
       },
       "sourceApplicationSecurityGroups": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The application security group specified as source."
@@ -517,56 +482,56 @@
       },
       "destinationAddressPrefixes": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "The destination address prefixes. CIDR or destination IP ranges."
       },
       "destinationApplicationSecurityGroups": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The application security group specified as destination."
       },
       "sourcePortRanges": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The source port ranges."
       },
       "destinationPortRanges": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "The destination port ranges."
       },
       "access": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The network traffic is allowed or denied."
       },
       "priority": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 1,
         "description": "The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule."
       },
       "direction": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/40"
         },
         "flags": 1,
         "description": "The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/47"
         },
         "flags": 2,
         "description": "The provisioning state of the security rule resource."
@@ -601,6 +566,15 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
         "$ref": "#/14"
       },
       {
@@ -608,15 +582,6 @@
       },
       {
         "$ref": "#/16"
-      },
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
       },
       {
         "$ref": "#/0"
@@ -631,11 +596,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationSecurityGroup",
+    "name": "CommonApplicationSecurityGroup",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "Properties of the application security group."
@@ -677,7 +642,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -686,7 +651,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationSecurityGroupPropertiesFormat",
+    "name": "CommonApplicationSecurityGroupPropertiesFormat",
     "properties": {
       "resourceGuid": {
         "type": {
@@ -697,7 +662,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/27"
         },
         "flags": 2,
         "description": "The provisioning state of the application security group resource."
@@ -732,6 +697,15 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
         "$ref": "#/24"
       },
       {
@@ -741,22 +715,13 @@
         "$ref": "#/26"
       },
       {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
         "$ref": "#/0"
       }
     ]
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -765,7 +730,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/22"
+      "$ref": "#/19"
     }
   },
   {
@@ -777,7 +742,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/22"
+      "$ref": "#/19"
     }
   },
   {
@@ -804,10 +769,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/37"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/38"
+        "$ref": "#/35"
       },
       {
         "$ref": "#/0"
@@ -829,10 +794,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/41"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/39"
       },
       {
         "$ref": "#/0"
@@ -867,6 +832,15 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
         "$ref": "#/44"
       },
       {
@@ -876,15 +850,6 @@
         "$ref": "#/46"
       },
       {
-        "$ref": "#/47"
-      },
-      {
-        "$ref": "#/48"
-      },
-      {
-        "$ref": "#/49"
-      },
-      {
         "$ref": "#/0"
       }
     ]
@@ -892,32 +857,32 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/12"
+      "$ref": "#/9"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/12"
+      "$ref": "#/9"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterface",
+    "name": "CommonNetworkInterface",
     "properties": {
-      "extendedLocation": {
+      "properties": {
         "type": {
           "$ref": "#/4"
         },
         "flags": 0,
-        "description": "The extended location of the network interface."
+        "description": "Properties of the network interface."
       },
-      "properties": {
+      "extendedLocation": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/51"
         },
         "flags": 0,
-        "description": "Properties of the network interface."
+        "description": "The extended location of the network interface."
       },
       "etag": {
         "type": {
@@ -965,7 +930,42 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonExtendedLocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the extended location."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The type of the extended location."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EdgeZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -974,12 +974,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/53"
+      "$ref": "#/50"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "Subnet",
+    "name": "CommonSubnet",
     "properties": {
       "properties": {
         "type": {
@@ -988,13 +988,6 @@
         "flags": 0,
         "description": "Properties of the subnet."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -1002,11 +995,18 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
         "description": "Resource type."
       },
       "id": {
@@ -1020,7 +1020,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SubnetPropertiesFormat",
+    "name": "CommonSubnetPropertiesFormat",
     "properties": {
       "addressPrefix": {
         "type": {
@@ -1038,7 +1038,7 @@
       },
       "networkSecurityGroup": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "The reference to the NetworkSecurityGroup resource."
@@ -1052,7 +1052,7 @@
       },
       "natGateway": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Nat gateway associated with this subnet."
@@ -1164,7 +1164,7 @@
       },
       "defaultOutboundAccess": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Set this property to false to disable default outbound connectivity for all VMs in the subnet."
@@ -1178,7 +1178,7 @@
       },
       "serviceGateway": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to an existing service gateway."
@@ -1193,7 +1193,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "RouteTable",
+    "name": "CommonRouteTable",
     "properties": {
       "properties": {
         "type": {
@@ -1248,7 +1248,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "RouteTablePropertiesFormat",
+    "name": "CommonRouteTablePropertiesFormat",
     "properties": {
       "routes": {
         "type": {
@@ -1266,7 +1266,7 @@
       },
       "disableBgpRoutePropagation": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Whether to disable the routes learned by BGP on that route table. True means disable."
@@ -1289,7 +1289,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Route",
+    "name": "CommonRoute",
     "properties": {
       "properties": {
         "type": {
@@ -1298,13 +1298,6 @@
         "flags": 0,
         "description": "Properties of the route."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -1312,12 +1305,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The type of the resource."
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -1330,7 +1330,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "RoutePropertiesFormat",
+    "name": "CommonRoutePropertiesFormat",
     "properties": {
       "addressPrefix": {
         "type": {
@@ -1362,7 +1362,7 @@
       },
       "hasBgpOverride": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "A value indicating whether this route overrides overlapping BGP routes regardless of LPM."
@@ -1526,7 +1526,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1534,7 +1534,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceEndpointPropertiesFormat",
+    "name": "CommonServiceEndpointPropertiesFormat",
     "properties": {
       "service": {
         "type": {
@@ -1545,7 +1545,7 @@
       },
       "networkIdentifier": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "SubResource as network identifier."
@@ -1630,7 +1630,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceEndpointPolicy",
+    "name": "CommonServiceEndpointPolicy",
     "properties": {
       "properties": {
         "type": {
@@ -1692,7 +1692,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceEndpointPolicyPropertiesFormat",
+    "name": "CommonServiceEndpointPolicyPropertiesFormat",
     "properties": {
       "serviceEndpointPolicyDefinitions": {
         "type": {
@@ -1740,7 +1740,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceEndpointPolicyDefinition",
+    "name": "CommonServiceEndpointPolicyDefinition",
     "properties": {
       "properties": {
         "type": {
@@ -1749,13 +1749,6 @@
         "flags": 0,
         "description": "Properties of the service endpoint policy definition."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -1763,12 +1756,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The type of the resource."
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -1781,7 +1781,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceEndpointPolicyDefinitionPropertiesFormat",
+    "name": "CommonServiceEndpointPolicyDefinitionPropertiesFormat",
     "properties": {
       "description": {
         "type": {
@@ -1939,7 +1939,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1953,21 +1953,21 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpoint",
+    "name": "CommonPrivateEndpoint",
     "properties": {
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 0,
-        "description": "The extended location of the load balancer."
-      },
       "properties": {
         "type": {
           "$ref": "#/121"
         },
         "flags": 0,
         "description": "Properties of the private endpoint."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The extended location of the load balancer."
       },
       "etag": {
         "type": {
@@ -2015,7 +2015,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpointProperties",
+    "name": "CommonPrivateEndpointProperties",
     "properties": {
       "subnet": {
         "type": {
@@ -2092,7 +2092,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/53"
+      "$ref": "#/50"
     }
   },
   {
@@ -2176,7 +2176,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceConnection",
+    "name": "CommonPrivateLinkServiceConnection",
     "properties": {
       "properties": {
         "type": {
@@ -2217,7 +2217,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceConnectionProperties",
+    "name": "CommonPrivateLinkServiceConnectionProperties",
     "properties": {
       "provisioningState": {
         "type": {
@@ -2314,7 +2314,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceConnectionState",
+    "name": "CommonPrivateLinkServiceConnectionState",
     "properties": {
       "status": {
         "type": {
@@ -2353,7 +2353,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "CustomDnsConfigPropertiesFormat",
+    "name": "CommonCustomDnsConfigPropertiesFormat",
     "properties": {
       "fqdn": {
         "type": {
@@ -2386,12 +2386,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/22"
+      "$ref": "#/19"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpointIPConfiguration",
+    "name": "CommonPrivateEndpointIPConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -2425,7 +2425,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpointIPConfigurationProperties",
+    "name": "CommonPrivateEndpointIPConfigurationProperties",
     "properties": {
       "groupId": {
         "type": {
@@ -2458,7 +2458,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -2472,7 +2472,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IPConfiguration",
+    "name": "CommonIPConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -2506,7 +2506,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IPConfigurationPropertiesFormat",
+    "name": "CommonIPConfigurationPropertiesFormat",
     "properties": {
       "privateIPAddress": {
         "type": {
@@ -2569,28 +2569,28 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PublicIPAddress",
+    "name": "CommonPublicIPAddress",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Public IP address properties."
+      },
       "extendedLocation": {
         "type": {
-          "$ref": "#/4"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "The extended location of the public ip address."
       },
       "sku": {
         "type": {
-          "$ref": "#/162"
+          "$ref": "#/218"
         },
         "flags": 0,
         "description": "The public IP address SKU."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/170"
-        },
-        "flags": 0,
-        "description": "Public IP address properties."
       },
       "etag": {
         "type": {
@@ -2645,89 +2645,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PublicIPAddressSku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/166"
-        },
-        "flags": 0,
-        "description": "Name of a public IP address SKU."
-      },
-      "tier": {
-        "type": {
-          "$ref": "#/169"
-        },
-        "flags": 0,
-        "description": "Tier of a public IP address SKU."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Basic"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Standard"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "StandardV2"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/163"
-      },
-      {
-        "$ref": "#/164"
-      },
-      {
-        "$ref": "#/165"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Regional"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Global"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/167"
-      },
-      {
-        "$ref": "#/168"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PublicIPAddressPropertiesFormat",
+    "name": "CommonPublicIPAddressPropertiesFormat",
     "properties": {
       "publicIPAllocationMethod": {
         "type": {
-          "$ref": "#/173"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The public IP address allocation method."
       },
       "publicIPAddressVersion": {
         "type": {
-          "$ref": "#/176"
+          "$ref": "#/168"
         },
         "flags": 0,
         "description": "The public IP address version."
@@ -2741,21 +2670,21 @@
       },
       "dnsSettings": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/169"
         },
         "flags": 0,
         "description": "The FQDN of the DNS record associated with the public IP address."
       },
       "ddosSettings": {
         "type": {
-          "$ref": "#/183"
+          "$ref": "#/175"
         },
         "flags": 0,
         "description": "The DDoS protection custom policy associated with the public IP address."
       },
       "ipTags": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/181"
         },
         "flags": 0,
         "description": "The list of tags associated with the public IP address."
@@ -2769,14 +2698,14 @@
       },
       "publicIPPrefix": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The Public IP Prefix this Public IP Address should be allocated from."
       },
       "idleTimeoutInMinutes": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The idle timeout of the public IP address."
@@ -2790,7 +2719,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/188"
         },
         "flags": 2,
         "description": "The provisioning state of the public IP address resource."
@@ -2804,14 +2733,14 @@
       },
       "natGateway": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/189"
         },
         "flags": 0,
         "description": "The NatGateway for the Public IP address."
       },
       "migrationPhase": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/214"
         },
         "flags": 0,
         "description": "Migration phase of Public IP Address."
@@ -2825,7 +2754,7 @@
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/217"
         },
         "flags": 0,
         "description": "Specify what happens to the public IP address when the VM using it is deleted"
@@ -2844,10 +2773,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/171"
+        "$ref": "#/163"
       },
       {
-        "$ref": "#/172"
+        "$ref": "#/164"
       },
       {
         "$ref": "#/0"
@@ -2866,10 +2795,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/174"
+        "$ref": "#/166"
       },
       {
-        "$ref": "#/175"
+        "$ref": "#/167"
       },
       {
         "$ref": "#/0"
@@ -2878,7 +2807,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PublicIPAddressDnsSettings",
+    "name": "CommonPublicIPAddressDnsSettings",
     "properties": {
       "domainNameLabel": {
         "type": {
@@ -2889,7 +2818,7 @@
       },
       "domainNameLabelScope": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/174"
         },
         "flags": 0,
         "description": "The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
@@ -2930,33 +2859,33 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/178"
+        "$ref": "#/170"
       },
       {
-        "$ref": "#/179"
+        "$ref": "#/171"
       },
       {
-        "$ref": "#/180"
+        "$ref": "#/172"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/173"
       }
     ]
   },
   {
     "$type": "ObjectType",
-    "name": "DdosSettings",
+    "name": "CommonDdosSettings",
     "properties": {
       "protectionMode": {
         "type": {
-          "$ref": "#/187"
+          "$ref": "#/179"
         },
         "flags": 0,
         "description": "The DDoS protection mode of the public IP"
       },
       "ddosProtectionPlan": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The DDoS protection plan associated with the public IP. Can only be set if ProtectionMode is Enabled"
@@ -2979,13 +2908,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/184"
+        "$ref": "#/176"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/177"
       },
       {
-        "$ref": "#/186"
+        "$ref": "#/178"
       },
       {
         "$ref": "#/0"
@@ -2994,7 +2923,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IpTag",
+    "name": "CommonIpTag",
     "properties": {
       "ipTagType": {
         "type": {
@@ -3015,7 +2944,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/188"
+      "$ref": "#/180"
     }
   },
   {
@@ -3046,22 +2975,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/190"
+        "$ref": "#/182"
       },
       {
-        "$ref": "#/191"
+        "$ref": "#/183"
       },
       {
-        "$ref": "#/192"
+        "$ref": "#/184"
       },
       {
-        "$ref": "#/193"
+        "$ref": "#/185"
       },
       {
-        "$ref": "#/194"
+        "$ref": "#/186"
       },
       {
-        "$ref": "#/195"
+        "$ref": "#/187"
       },
       {
         "$ref": "#/0"
@@ -3070,25 +2999,25 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NatGateway",
+    "name": "CommonNatGateway",
     "properties": {
-      "sku": {
-        "type": {
-          "$ref": "#/198"
-        },
-        "flags": 0,
-        "description": "The nat gateway SKU."
-      },
       "properties": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/190"
         },
         "flags": 0,
         "description": "Nat Gateway properties."
       },
+      "sku": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 0,
+        "description": "The nat gateway SKU."
+      },
       "zones": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/207"
         },
         "flags": 0,
         "description": "A list of availability zones denoting the zone in which Nat Gateway should be deployed."
@@ -3130,7 +3059,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/208"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -3139,95 +3068,60 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NatGatewaySku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/201"
-        },
-        "flags": 0,
-        "description": "Name of Nat Gateway SKU."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Standard"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "StandardV2"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/199"
-      },
-      {
-        "$ref": "#/200"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NatGatewayPropertiesFormat",
+    "name": "CommonNatGatewayPropertiesFormat",
     "properties": {
       "idleTimeoutInMinutes": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The idle timeout of the nat gateway."
       },
       "publicIpAddresses": {
         "type": {
-          "$ref": "#/203"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "An array of public ip addresses V4 associated with the nat gateway resource."
       },
       "publicIpAddressesV6": {
         "type": {
-          "$ref": "#/204"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "An array of public ip addresses V6 associated with the nat gateway resource."
       },
       "publicIpPrefixes": {
         "type": {
-          "$ref": "#/205"
+          "$ref": "#/193"
         },
         "flags": 0,
         "description": "An array of public ip prefixes V4 associated with the nat gateway resource."
       },
       "publicIpPrefixesV6": {
         "type": {
-          "$ref": "#/206"
+          "$ref": "#/194"
         },
         "flags": 0,
         "description": "An array of public ip prefixes V6 associated with the nat gateway resource."
       },
       "subnets": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/195"
         },
         "flags": 2,
         "description": "An array of references to the subnets using this nat gateway resource."
       },
       "sourceVirtualNetwork": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "A reference to the source virtual network using this nat gateway resource."
       },
       "serviceGateway": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to an existing service gateway."
@@ -3241,7 +3135,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/214"
+          "$ref": "#/202"
         },
         "flags": 2,
         "description": "The provisioning state of the NAT gateway resource."
@@ -3251,31 +3145,31 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
@@ -3306,22 +3200,57 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/208"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/209"
+        "$ref": "#/197"
       },
       {
-        "$ref": "#/210"
+        "$ref": "#/198"
       },
       {
-        "$ref": "#/211"
+        "$ref": "#/199"
       },
       {
-        "$ref": "#/212"
+        "$ref": "#/200"
       },
       {
-        "$ref": "#/213"
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommonNatGatewaySku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 0,
+        "description": "Name of Nat Gateway SKU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardV2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
       },
       {
         "$ref": "#/0"
@@ -3336,7 +3265,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -3366,11 +3295,82 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/217"
+        "$ref": "#/209"
       },
       {
-        "$ref": "#/218"
+        "$ref": "#/210"
       },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommonPublicIPAddressSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "Name of a public IP address SKU."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 0,
+        "description": "Tier of a public IP address SKU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardV2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
       {
         "$ref": "#/219"
       },
@@ -3387,11 +3387,11 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Delete"
+    "value": "Regional"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Detach"
+    "value": "Global"
   },
   {
     "$type": "UnionType",
@@ -3415,7 +3415,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -3479,7 +3479,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IPConfigurationProfile",
+    "name": "CommonIPConfigurationProfile",
     "properties": {
       "properties": {
         "type": {
@@ -3520,7 +3520,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IPConfigurationProfilePropertiesFormat",
+    "name": "CommonIPConfigurationProfilePropertiesFormat",
     "properties": {
       "subnet": {
         "type": {
@@ -3597,12 +3597,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceNavigationLink",
+    "name": "CommonResourceNavigationLink",
     "properties": {
       "properties": {
         "type": {
@@ -3643,7 +3643,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceNavigationLinkFormat",
+    "name": "CommonResourceNavigationLinkFormat",
     "properties": {
       "linkedResourceType": {
         "type": {
@@ -3726,7 +3726,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceAssociationLink",
+    "name": "CommonServiceAssociationLink",
     "properties": {
       "properties": {
         "type": {
@@ -3767,7 +3767,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceAssociationLinkPropertiesFormat",
+    "name": "CommonServiceAssociationLinkPropertiesFormat",
     "properties": {
       "linkedResourceType": {
         "type": {
@@ -3792,7 +3792,7 @@
       },
       "allowDelete": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "If true, the resource can be deleted."
@@ -3870,7 +3870,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Delegation",
+    "name": "CommonDelegation",
     "properties": {
       "properties": {
         "type": {
@@ -3911,7 +3911,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceDelegationPropertiesFormat",
+    "name": "CommonServiceDelegationPropertiesFormat",
     "properties": {
       "serviceName": {
         "type": {
@@ -4108,7 +4108,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationGatewayIPConfiguration",
+    "name": "CommonApplicationGatewayIPConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -4149,11 +4149,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationGatewayIPConfigurationPropertiesFormat",
+    "name": "CommonApplicationGatewayIPConfigurationPropertiesFormat",
     "properties": {
       "subnet": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to the subnet resource. A subnet from where application gateway gets its private address."
@@ -4247,7 +4247,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IpamPoolPrefixAllocation",
+    "name": "CommonIpamPoolPrefixAllocation",
     "properties": {
       "pool": {
         "type": {
@@ -4273,7 +4273,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "IpamPoolPrefixAllocationPool",
+    "name": "CommonIpamPoolPrefixAllocationPool",
     "properties": {
       "id": {
         "type": {
@@ -4304,7 +4304,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "FlowLog",
+    "name": "CommonFlowLog",
     "properties": {
       "properties": {
         "type": {
@@ -4366,7 +4366,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "FlowLogPropertiesFormat",
+    "name": "CommonFlowLogPropertiesFormat",
     "properties": {
       "targetResourceId": {
         "type": {
@@ -4405,7 +4405,7 @@
       },
       "enabled": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Flag to enable/disable flow logging."
@@ -4442,18 +4442,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "RetentionPolicyParameters",
+    "name": "CommonRetentionPolicyParameters",
     "properties": {
       "days": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Number of days to retain flow log records."
       },
       "enabled": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Flag to enable/disable retention."
@@ -4462,7 +4462,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "FlowLogFormatParameters",
+    "name": "CommonFlowLogFormatParameters",
     "properties": {
       "type": {
         "type": {
@@ -4473,7 +4473,7 @@
       },
       "version": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The version (revision) of the flow log."
@@ -4497,7 +4497,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "TrafficAnalyticsProperties",
+    "name": "CommonTrafficAnalyticsProperties",
     "properties": {
       "networkWatcherFlowAnalyticsConfiguration": {
         "type": {
@@ -4510,11 +4510,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "TrafficAnalyticsConfigurationProperties",
+    "name": "CommonTrafficAnalyticsConfigurationProperties",
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Flag to enable/disable traffic analytics."
@@ -4542,7 +4542,7 @@
       },
       "trafficAnalyticsInterval": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The interval in minutes which would decide how frequently TA service should do flow analytics."
@@ -4601,7 +4601,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ManagedServiceIdentity",
+    "name": "CommonManagedServiceIdentity",
     "properties": {
       "principalId": {
         "type": {
@@ -4668,7 +4668,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
     "properties": {
       "principalId": {
         "type": {
@@ -4688,7 +4688,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "name": "CommonManagedServiceIdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/333"
@@ -4696,7 +4696,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -4760,7 +4760,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -4768,7 +4768,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceIPConfiguration",
+    "name": "CommonNetworkInterfaceIPConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -4777,13 +4777,6 @@
         "flags": 0,
         "description": "Network interface IP configuration properties."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -4791,11 +4784,18 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
         "description": "Resource type."
       },
       "id": {
@@ -4809,11 +4809,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceIPConfigurationPropertiesFormat",
+    "name": "CommonNetworkInterfaceIPConfigurationPropertiesFormat",
     "properties": {
       "gatewayLoadBalancer": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The reference to gateway load balancer frontend IP."
@@ -4883,7 +4883,7 @@
       },
       "primary": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Whether this is a primary customer address on the network interface."
@@ -4920,7 +4920,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "VirtualNetworkTap",
+    "name": "CommonVirtualNetworkTap",
     "properties": {
       "properties": {
         "type": {
@@ -4975,7 +4975,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "VirtualNetworkTapPropertiesFormat",
+    "name": "CommonVirtualNetworkTapPropertiesFormat",
     "properties": {
       "networkInterfaceTapConfigurations": {
         "type": {
@@ -5014,7 +5014,7 @@
       },
       "destinationPort": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The VXLAN destination port that will receive the tapped traffic."
@@ -5023,7 +5023,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceTapConfiguration",
+    "name": "CommonNetworkInterfaceTapConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -5032,13 +5032,6 @@
         "flags": 0,
         "description": "Properties of the Virtual Network Tap configuration."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -5046,12 +5039,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the resource."
+      },
       "type": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Sub Resource type."
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -5064,7 +5064,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceTapConfigurationPropertiesFormat",
+    "name": "CommonNetworkInterfaceTapConfigurationPropertiesFormat",
     "properties": {
       "virtualNetworkTap": {
         "type": {
@@ -5190,7 +5190,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "FrontendIPConfiguration",
+    "name": "CommonFrontendIPConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -5199,13 +5199,6 @@
         "flags": 0,
         "description": "Properties of the load balancer probe."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within the set of frontend IP configurations used by the load balancer. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -5213,19 +5206,26 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Type of the resource."
-      },
       "zones": {
         "type": {
           "$ref": "#/385"
         },
         "flags": 0,
         "description": "A list of availability zones denoting the IP allocated for the resource needs to come from."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -5238,7 +5238,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "FrontendIPConfigurationPropertiesFormat",
+    "name": "CommonFrontendIPConfigurationPropertiesFormat",
     "properties": {
       "inboundNatRules": {
         "type": {
@@ -5305,14 +5305,14 @@
       },
       "publicIPPrefix": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The reference to the Public IP Prefix resource."
       },
       "gatewayLoadBalancer": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The reference to gateway load balancer frontend IP."
@@ -5329,25 +5329,25 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
@@ -5452,7 +5452,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -5466,7 +5466,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationGatewayBackendAddressPool",
+    "name": "CommonApplicationGatewayBackendAddressPool",
     "properties": {
       "properties": {
         "type": {
@@ -5507,7 +5507,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationGatewayBackendAddressPoolPropertiesFormat",
+    "name": "CommonApplicationGatewayBackendAddressPoolPropertiesFormat",
     "properties": {
       "backendIPConfigurations": {
         "type": {
@@ -5540,7 +5540,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationGatewayBackendAddress",
+    "name": "CommonApplicationGatewayBackendAddress",
     "properties": {
       "fqdn": {
         "type": {
@@ -5622,7 +5622,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "BackendAddressPool",
+    "name": "CommonBackendAddressPool",
     "properties": {
       "properties": {
         "type": {
@@ -5631,13 +5631,6 @@
         "flags": 0,
         "description": "Properties of load balancer backend address pool."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within the set of backend address pools used by the load balancer. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -5645,12 +5638,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the resource."
+      },
       "type": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Type of the resource."
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -5663,7 +5663,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "BackendAddressPoolPropertiesFormat",
+    "name": "CommonBackendAddressPoolPropertiesFormat",
     "properties": {
       "location": {
         "type": {
@@ -5702,7 +5702,7 @@
       },
       "outboundRule": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "A reference to an outbound rule that uses this backend address pool."
@@ -5730,14 +5730,14 @@
       },
       "drainPeriodInSeconds": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Amount of seconds Load Balancer waits for before sending RESET to client and backend address."
       },
       "virtualNetwork": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "A reference to a virtual network."
@@ -5753,18 +5753,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "GatewayLoadBalancerTunnelInterface",
+    "name": "CommonGatewayLoadBalancerTunnelInterface",
     "properties": {
       "port": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Port of gateway load balancer tunnel interface."
       },
       "identifier": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Identifier of gateway load balancer tunnel interface."
@@ -5851,7 +5851,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "LoadBalancerBackendAddress",
+    "name": "CommonLoadBalancerBackendAddress",
     "properties": {
       "properties": {
         "type": {
@@ -5871,18 +5871,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "LoadBalancerBackendAddressPropertiesFormat",
+    "name": "CommonLoadBalancerBackendAddressPropertiesFormat",
     "properties": {
       "virtualNetwork": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to an existing virtual network."
       },
       "subnet": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to an existing subnet."
@@ -5896,14 +5896,14 @@
       },
       "networkInterfaceIPConfiguration": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "Reference to IP address defined in network interfaces."
       },
       "loadBalancerFrontendIPConfiguration": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Reference to the frontend ip address configuration defined in regional loadbalancer."
@@ -5926,7 +5926,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NatRulePortMapping",
+    "name": "CommonNatRulePortMapping",
     "properties": {
       "inboundNatRuleName": {
         "type": {
@@ -5937,14 +5937,14 @@
       },
       "frontendPort": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Frontend port."
       },
       "backendPort": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Backend port."
@@ -6001,19 +6001,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/8"
+      "$ref": "#/5"
     }
   },
   {
@@ -6096,7 +6096,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "InboundNatRule",
+    "name": "CommonInboundNatRule",
     "properties": {
       "properties": {
         "type": {
@@ -6105,13 +6105,6 @@
         "flags": 0,
         "description": "Properties of load balancer inbound NAT rule."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within the set of inbound NAT rules used by the load balancer. This name can be used to access the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
@@ -6119,12 +6112,19 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the resource."
+      },
       "type": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Type of the resource."
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -6137,11 +6137,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "InboundNatRulePropertiesFormat",
+    "name": "CommonInboundNatRulePropertiesFormat",
     "properties": {
       "frontendIPConfiguration": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "A reference to frontend IP addresses."
@@ -6162,56 +6162,56 @@
       },
       "frontendPort": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534."
       },
       "backendPort": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The port used for the internal endpoint. Acceptable values range from 1 to 65535."
       },
       "idleTimeoutInMinutes": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP."
       },
       "enableFloatingIP": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint."
       },
       "enableTcpReset": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP."
       },
       "frontendPortRangeStart": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The port range start for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534."
       },
       "frontendPortRangeEnd": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534."
       },
       "backendAddressPool": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "A reference to backendAddressPool resource."
@@ -6369,7 +6369,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/22"
+      "$ref": "#/19"
     }
   },
   {
@@ -6424,7 +6424,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties",
+    "name": "CommonNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties",
     "properties": {
       "groupId": {
         "type": {
@@ -6469,7 +6469,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "NetworkInterfaceDnsSettings",
+    "name": "CommonNetworkInterfaceDnsSettings",
     "properties": {
       "dnsServers": {
         "type": {
@@ -6600,21 +6600,21 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkService",
+    "name": "CommonPrivateLinkService",
     "properties": {
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 0,
-        "description": "The extended location of the load balancer."
-      },
       "properties": {
         "type": {
           "$ref": "#/486"
         },
         "flags": 0,
         "description": "Properties of the private link service."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The extended location of the load balancer."
       },
       "etag": {
         "type": {
@@ -6662,7 +6662,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceProperties",
+    "name": "CommonPrivateLinkServiceProperties",
     "properties": {
       "loadBalancerFrontendIpConfigurations": {
         "type": {
@@ -6743,7 +6743,7 @@
       },
       "enableProxyProtocol": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Whether the private link service is enabled for proxy protocol or not."
@@ -6758,7 +6758,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceIpConfiguration",
+    "name": "CommonPrivateLinkServiceIpConfiguration",
     "properties": {
       "properties": {
         "type": {
@@ -6799,7 +6799,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServiceIpConfigurationProperties",
+    "name": "CommonPrivateLinkServiceIpConfigurationProperties",
     "properties": {
       "privateIPAddress": {
         "type": {
@@ -6824,7 +6824,7 @@
       },
       "primary": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Whether the ip configuration is primary or not."
@@ -6970,7 +6970,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/53"
+      "$ref": "#/50"
     }
   },
   {
@@ -7025,7 +7025,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpointConnection",
+    "name": "CommonPrivateEndpointConnection",
     "properties": {
       "properties": {
         "type": {
@@ -7034,26 +7034,26 @@
         "flags": 0,
         "description": "Properties of the private end point connection."
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource that is unique within a resource group. This name can be used to access the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The resource type."
-      },
       "etag": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type."
       },
       "id": {
         "type": {
@@ -7066,7 +7066,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateEndpointConnectionProperties",
+    "name": "CommonPrivateEndpointConnectionProperties",
     "properties": {
       "privateEndpoint": {
         "type": {
@@ -7163,7 +7163,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServicePropertiesVisibility",
+    "name": "CommonPrivateLinkServicePropertiesVisibility",
     "properties": {
       "subscriptions": {
         "type": {
@@ -7182,7 +7182,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateLinkServicePropertiesAutoApproval",
+    "name": "CommonPrivateLinkServicePropertiesAutoApproval",
     "properties": {
       "subscriptions": {
         "type": {
@@ -7207,7 +7207,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -7337,7 +7337,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -7345,7 +7345,7 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces@2025-05-01",
+    "name": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces@2025-05-01",
     "body": {
       "$ref": "#/3"
     },
@@ -7354,7 +7354,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces"
+    "value": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses"
   },
   {
     "$type": "StringLiteralType",
@@ -7362,7 +7362,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces",
+    "name": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses",
     "properties": {
       "id": {
         "type": {
@@ -7392,19 +7392,26 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 2,
-        "description": "The extended location of the network interface."
-      },
       "properties": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/162"
         },
         "flags": 2,
-        "description": "Properties of the network interface."
+        "description": "Public IP address properties."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The extended location of the public ip address."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 2,
+        "description": "The public IP address SKU."
       },
       "etag": {
         "type": {
@@ -7413,25 +7420,38 @@
         "flags": 2,
         "description": "A unique read-only string that changes whenever the resource is updated."
       },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource location."
-      },
-      "tags": {
+      "zones": {
         "type": {
           "$ref": "#/553"
         },
         "flags": 2,
+        "description": "A list of availability zones denoting the IP allocated for the resource needs to come from."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/554"
+        },
+        "flags": 2,
         "description": "Resource tags."
       }
     }
   },
   {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "CommonResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -7439,302 +7459,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces@2025-05-01",
+    "name": "microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses@2025-05-01",
     "body": {
       "$ref": "#/552"
-    },
-    "readableScopes": 8,
-    "writableScopes": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipConfigurations"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipConfigurations",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/555"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/556"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/346"
-        },
-        "flags": 2,
-        "description": "Network interface IP configuration properties."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "A unique read-only string that changes whenever the resource is updated."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipConfigurations@2025-05-01",
-    "body": {
-      "$ref": "#/557"
-    },
-    "readableScopes": 8,
-    "writableScopes": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/559"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/560"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 2,
-        "description": "The extended location of the public ip address."
-      },
-      "sku": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 2,
-        "description": "The public IP address SKU."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/170"
-        },
-        "flags": 2,
-        "description": "Public IP address properties."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "A unique read-only string that changes whenever the resource is updated."
-      },
-      "zones": {
-        "type": {
-          "$ref": "#/562"
-        },
-        "flags": 2,
-        "description": "A list of availability zones denoting the IP allocated for the resource needs to come from."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource location."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/563"
-        },
-        "flags": 2,
-        "description": "Resource tags."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Compute/cloudServices/roleInstances/networkInterfaces/ipconfigurations/publicipaddresses@2025-05-01",
-    "body": {
-      "$ref": "#/561"
-    },
-    "readableScopes": 8,
-    "writableScopes": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipconfigurations/publicipaddresses"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipconfigurations/publicipaddresses",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/565"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/566"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/4"
-        },
-        "flags": 2,
-        "description": "The extended location of the public ip address."
-      },
-      "sku": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 2,
-        "description": "The public IP address SKU."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/170"
-        },
-        "flags": 2,
-        "description": "Public IP address properties."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "A unique read-only string that changes whenever the resource is updated."
-      },
-      "zones": {
-        "type": {
-          "$ref": "#/568"
-        },
-        "flags": 2,
-        "description": "A list of availability zones denoting the IP allocated for the resource needs to come from."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource location."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/569"
-        },
-        "flags": 2,
-        "description": "Resource tags."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/networkInterfaces/ipconfigurations/publicipaddresses@2025-05-01",
-    "body": {
-      "$ref": "#/567"
     },
     "readableScopes": 8,
     "writableScopes": 0
