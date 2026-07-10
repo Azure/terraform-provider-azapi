@@ -97,7 +97,7 @@ resource "azapi_resource" "ledger" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ConfidentialLedger/ledgers@api-version`. The available api-versions for this resource are: [`2020-12-01-preview`, `2021-05-13-preview`, `2022-05-13`, `2022-09-08-preview`, `2023-01-26-preview`, `2023-06-28-preview`, `2024-07-09-preview`, `2024-09-19-preview`, `2025-06-10-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ConfidentialLedger/ledgers@api-version`. The available api-versions for this resource are: [`2020-12-01-preview`, `2021-05-13-preview`, `2022-05-13`, `2022-09-08-preview`, `2023-01-26-preview`, `2023-06-28-preview`, `2024-07-09-preview`, `2024-09-19-preview`, `2025-06-10-preview`, `2026-02-23`, `2026-05-22-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -115,5 +115,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{resourceName}?api-version=2025-06-10-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{resourceName}?api-version=2026-05-22-preview
  ```
