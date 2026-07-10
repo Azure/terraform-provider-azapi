@@ -7,10 +7,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // SubscriptionResourceIdFunction builds resource IDs for subscription scope
 type SubscriptionResourceIdFunction struct{}
+
+var _ function.Function = &SubscriptionResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &SubscriptionResourceIdFunction{}
 
 func (f *SubscriptionResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "subscription_resource_id"
@@ -69,4 +73,23 @@ func (f *SubscriptionResourceIdFunction) Run(ctx context.Context, request functi
 	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
-var _ function.Function = &SubscriptionResourceIdFunction{}
+func (f *SubscriptionResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  subscription_id = "00000000-0000-0000-0000-000000000000"
+  resource_type   = "Microsoft.Resources/resourceGroups"
+  resource_names  = ["rg1"]
+}
+
+// it will output "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"
+output "subscription_resource_id" {
+  value = provider::azapi::subscription_resource_id(local.subscription_id, local.resource_type, local.resource_names)
+}
+`,
+			},
+		},
+	}
+}

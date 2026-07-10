@@ -190,12 +190,11 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
 					"```hcl\n" +
 					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
 					"  name = var.name\n" +

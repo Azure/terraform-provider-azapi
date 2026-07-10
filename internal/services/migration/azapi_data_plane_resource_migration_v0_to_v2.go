@@ -141,6 +141,7 @@ func AzapiDataPlaneResourceMigrationV0ToV2(ctx context.Context) resource.StateUp
 				ParentID:                      oldState.ParentID,
 				Type:                          oldState.Type,
 				Body:                          bodyVal,
+				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
 				Locks:                         oldState.Locks,
 				IgnoreCasing:                  oldState.IgnoreCasing,

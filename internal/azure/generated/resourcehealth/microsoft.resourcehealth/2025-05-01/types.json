@@ -4,7 +4,22 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.ResourceHealth/metadata"
+    "value": "default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/1"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ResourceHealth/emergingIssues"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +27,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.ResourceHealth/metadata",
+    "name": "Microsoft.ResourceHealth/emergingIssues",
     "properties": {
       "id": {
         "type": {
@@ -23,35 +38,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1"
+          "$ref": "#/3"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/4"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/4"
+          "$ref": "#/6"
         },
         "flags": 2,
-        "description": "The metadata entity properties."
+        "description": "The emerging issue entity properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -60,58 +75,64 @@
   },
   {
     "$type": "ObjectType",
-    "name": "MetadataEntityProperties",
+    "name": "EmergingIssue",
     "properties": {
-      "displayName": {
+      "refreshTimestamp": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The display name."
+        "description": "Timestamp for when last time refreshed for ongoing emerging issue."
       },
-      "dependsOn": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "The list of keys on which this entity depends on."
-      },
-      "applicableScenarios": {
+      "statusBanners": {
         "type": {
           "$ref": "#/8"
         },
         "flags": 0,
-        "description": "The list of scenarios applicable to this metadata entity."
+        "description": "The list of emerging issues of banner type."
       },
-      "supportedValues": {
+      "statusActiveEvents": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/23"
         },
         "flags": 0,
-        "description": "The list of supported values."
+        "description": "The list of emerging issues of active event type."
       }
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Alerts"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
+    "$type": "ObjectType",
+    "name": "StatusBanner",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The banner title."
       },
-      {
-        "$ref": "#/0"
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The details of banner."
+      },
+      "cloud": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The cloud type of this banner."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The last time modified on this banner."
       }
-    ]
+    }
   },
   {
     "$type": "ArrayType",
@@ -121,60 +142,199 @@
   },
   {
     "$type": "ObjectType",
-    "name": "MetadataSupportedValueDetail",
+    "name": "StatusActiveEvent",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The active event title."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The details of active event."
+      },
+      "trackingId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The tracking id of this active event."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The impact start time on this active event."
+      },
+      "cloud": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The cloud type of this active event."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The severity level of this active event."
+      },
+      "stage": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The stage of this active event."
+      },
+      "published": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The boolean value of this active event if published or not."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The last time modified on this banner."
+      },
+      "impacts": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The list of emerging issues impacts."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Information"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resolve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Archived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EmergingIssueImpact",
     "properties": {
       "id": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The id of the metadata value"
+        "description": "The impacted service id."
       },
-      "previousId": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The previous value of the id field incase the data has changed."
+        "description": "The impacted service name."
       },
-      "serviceGuid": {
+      "regions": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The list of impacted regions for corresponding emerging issues."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImpactedRegion",
+    "properties": {
+      "id": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The permanent guid for the service. Used when the id is a service name."
+        "description": "The impacted region id."
       },
-      "displayName": {
+      "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The display name."
-      },
-      "resourceTypes": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 0,
-        "description": "The list of associated resource types."
-      },
-      "priority": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 0,
-        "description": "Priority of this metadata supported value. Lower number is given higher preference."
+        "description": "The impacted region name."
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/20"
     }
   },
   {
-    "$type": "IntegerType"
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
   },
   {
     "$type": "ArrayType",
@@ -195,7 +355,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -216,7 +376,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/34"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -250,16 +410,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/14"
+        "$ref": "#/25"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/26"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/27"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/28"
       },
       {
         "$ref": "#/0"
@@ -286,16 +446,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/19"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/21"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/22"
+        "$ref": "#/33"
       },
       {
         "$ref": "#/0"
@@ -304,140 +464,11 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.ResourceHealth/metadata@2025-05-01",
+    "name": "Microsoft.ResourceHealth/emergingIssues@2025-05-01",
     "body": {
-      "$ref": "#/3"
+      "$ref": "#/5"
     },
     "readableScopes": 1,
-    "writableScopes": 0
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^[^*#&+:<>%?]+$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.ResourceHealth/events/impactedResources"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.ResourceHealth/events/impactedResources",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/25"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/27"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 2,
-        "description": "Properties of impacted resource."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EventImpactedResourceProperties",
-    "properties": {
-      "targetResourceType": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource type within Microsoft cloud."
-      },
-      "targetResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Identity for resource within Microsoft cloud."
-      },
-      "targetRegion": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Impacted resource region name."
-      },
-      "info": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 0,
-        "description": "Additional information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "KeyValueItem",
-    "properties": {
-      "key": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Key of tuple."
-      },
-      "value": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Value of tuple."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/30"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.ResourceHealth/events/impactedResources@2025-05-01",
-    "body": {
-      "$ref": "#/28"
-    },
-    "readableScopes": 5,
     "writableScopes": 0
   },
   {
@@ -468,28 +499,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/37"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/39"
         },
         "flags": 2,
         "description": "Properties of event."
       },
       "systemData": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -502,28 +533,28 @@
     "properties": {
       "eventType": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "Type of event."
       },
       "eventSubType": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "Sub-type of event."
       },
       "eventSource": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Source of event."
       },
       "status": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/62"
         },
         "flags": 0,
         "description": "Current status of event."
@@ -551,21 +582,21 @@
       },
       "level": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Level of insight."
       },
       "eventLevel": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "Level of event."
       },
       "isEventSensitive": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "If true the event may contains sensitive data. Use the post events/{trackingId}/fetchEventDetails endpoint to fetch sensitive data see https://learn.microsoft.com/en-us/azure/service-health/security-advisories-elevated-access"
@@ -586,14 +617,14 @@
       },
       "article": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/71"
         },
         "flags": 0,
         "description": "Article of event."
       },
       "links": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Useful links of event."
@@ -614,35 +645,35 @@
       },
       "impact": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "List services impacted by the service health event."
       },
       "recommendedActions": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "Recommended actions of event."
       },
       "faqs": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Frequently asked questions for the service health event."
       },
       "isHIR": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "It provides information if the event is High incident rate event or not."
       },
       "enableMicrosoftSupport": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Tells if we want to enable or disable Microsoft Support for this event."
@@ -656,21 +687,21 @@
       },
       "platformInitiated": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Is true if the event is platform initiated."
       },
       "enableChatWithUs": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Tells if we want to enable or disable Microsoft Support for this event."
       },
       "priority": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Priority level of the event. Has value from 0 to 23. 0 is the highest priority. Service issue events have higher priority followed by planned maintenance and health advisory. Critical events have higher priority followed by error, warning and informational. Furthermore, active events have higher priority than resolved."
@@ -691,14 +722,14 @@
       },
       "additionalInformation": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/97"
         },
         "flags": 0,
         "description": "Additional information"
       },
       "duration": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "duration in seconds"
@@ -712,21 +743,21 @@
       },
       "eventTags": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/98"
         },
         "flags": 0,
-        "description": "A list of metadata tags associated with the event. Possible values include:\n -Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It is recommended to evaluate these actions and the potential impact on your services. \n- False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services as originally communicated.\n- Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.\n- Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings. Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation."
+        "description": "A list of metadata tags associated with the event. Possible values include:\n-Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It is recommended to evaluate these actions and the potential impact on your services.\n- False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services as originally communicated.\n- Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.\n- Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings. Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation."
       },
       "newRate": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Billing rate change information - new rate"
       },
       "oldRate": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Billing rate change information - old rate"
@@ -779,15 +810,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/39"
-      },
-      {
         "$ref": "#/40"
       },
       {
@@ -798,6 +820,15 @@
       },
       {
         "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
       },
       {
         "$ref": "#/0"
@@ -840,15 +871,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
-      },
-      {
-        "$ref": "#/46"
-      },
-      {
-        "$ref": "#/47"
-      },
-      {
         "$ref": "#/48"
       },
       {
@@ -862,6 +884,15 @@
       },
       {
         "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
       },
       {
         "$ref": "#/0"
@@ -880,10 +911,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/54"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/55"
+        "$ref": "#/58"
       },
       {
         "$ref": "#/0"
@@ -902,10 +933,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/57"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/61"
       },
       {
         "$ref": "#/0"
@@ -924,10 +955,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/60"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/61"
+        "$ref": "#/64"
       },
       {
         "$ref": "#/0"
@@ -954,24 +985,21 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/65"
-      },
-      {
         "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
       },
       {
         "$ref": "#/0"
       }
     ]
-  },
-  {
-    "$type": "BooleanType"
   },
   {
     "$type": "ObjectType",
@@ -993,7 +1021,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "It provides a map of parameter name and value"
@@ -1009,14 +1037,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "Type of link."
       },
       "displayText": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/77"
         },
         "flags": 0,
         "description": "Display text of link."
@@ -1037,7 +1065,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "It provides a map of parameter name and value for portal extension blade to produce lik for given service health event."
@@ -1056,10 +1084,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/72"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/73"
+        "$ref": "#/75"
       },
       {
         "$ref": "#/0"
@@ -1089,7 +1117,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/71"
+      "$ref": "#/73"
     }
   },
   {
@@ -1112,7 +1140,7 @@
       },
       "impactedRegions": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "List regions impacted by the service health event."
@@ -1132,21 +1160,21 @@
       },
       "status": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Current status of event in the region."
       },
       "impactedSubscriptions": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "List subscription impacted by the service health event."
       },
       "impactedTenants": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "List tenant impacted by the service health event."
@@ -1160,7 +1188,7 @@
       },
       "updates": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "List of updates for given service health event.  Use fetchEventDetails endpoint to get updates of sensitive events."
@@ -1179,10 +1207,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/82"
       },
       {
         "$ref": "#/0"
@@ -1221,10 +1249,10 @@
       },
       "eventTags": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/87"
         },
         "flags": 0,
-        "description": "A list of metadata tags associated with the event. Possible values include:\n -Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It is recommended to evaluate these actions and the potential impact on your services. \n- False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services as originally communicated.\n- Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.\n- Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings. Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation."
+        "description": "A list of metadata tags associated with the event. Possible values include:\n-Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It is recommended to evaluate these actions and the potential impact on your services.\n- False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services as originally communicated.\n- Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.\n- Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings. Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation."
       }
     }
   },
@@ -1237,19 +1265,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/84"
+      "$ref": "#/86"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/78"
+      "$ref": "#/80"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/77"
+      "$ref": "#/79"
     }
   },
   {
@@ -1265,7 +1293,7 @@
       },
       "actions": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Recommended actions for the service health event."
@@ -1285,7 +1313,7 @@
     "properties": {
       "groupId": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Recommended action group Id for the service health event."
@@ -1300,9 +1328,12 @@
     }
   },
   {
+    "$type": "IntegerType"
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/90"
+      "$ref": "#/92"
     }
   },
   {
@@ -1335,7 +1366,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/92"
+      "$ref": "#/95"
     }
   },
   {
@@ -1361,29 +1392,18 @@
     "$type": "ResourceType",
     "name": "Microsoft.ResourceHealth/events@2025-05-01",
     "body": {
-      "$ref": "#/35"
+      "$ref": "#/38"
     },
     "readableScopes": 5,
     "writableScopes": 0
   },
   {
-    "$type": "StringLiteralType",
-    "value": "default"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/97"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
+    "$type": "StringType",
+    "pattern": "^[^*#&+:<>%?]+$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.ResourceHealth/emergingIssues"
+    "value": "Microsoft.ResourceHealth/events/impactedResources"
   },
   {
     "$type": "StringLiteralType",
@@ -1391,7 +1411,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.ResourceHealth/emergingIssues",
+    "name": "Microsoft.ResourceHealth/events/impactedResources",
     "properties": {
       "id": {
         "type": {
@@ -1402,35 +1422,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/100"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/101"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/102"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/102"
+          "$ref": "#/104"
         },
         "flags": 2,
-        "description": "The emerging issue entity properties."
+        "description": "Properties of impacted resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1439,262 +1459,56 @@
   },
   {
     "$type": "ObjectType",
-    "name": "EmergingIssue",
+    "name": "EventImpactedResourceProperties",
     "properties": {
-      "refreshTimestamp": {
+      "targetResourceType": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 0,
-        "description": "Timestamp for when last time refreshed for ongoing emerging issue."
+        "flags": 2,
+        "description": "Resource type within Microsoft cloud."
       },
-      "statusBanners": {
+      "targetResourceId": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Identity for resource within Microsoft cloud."
+      },
+      "targetRegion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Impacted resource region name."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/106"
         },
         "flags": 0,
-        "description": "The list of emerging issues of banner type."
-      },
-      "statusActiveEvents": {
-        "type": {
-          "$ref": "#/118"
-        },
-        "flags": 0,
-        "description": "The list of emerging issues of active event type."
+        "description": "Additional information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "StatusBanner",
+    "name": "KeyValueItem",
     "properties": {
-      "title": {
+      "key": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 0,
-        "description": "The banner title."
+        "flags": 2,
+        "description": "Key of tuple."
       },
-      "message": {
+      "value": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 0,
-        "description": "The details of banner."
-      },
-      "cloud": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The cloud type of this banner."
-      },
-      "lastModifiedTime": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The last time modified on this banner."
+        "flags": 2,
+        "description": "Value of tuple."
       }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/103"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "StatusActiveEvent",
-    "properties": {
-      "title": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The active event title."
-      },
-      "description": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The details of active event."
-      },
-      "trackingId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The tracking id of this active event."
-      },
-      "startTime": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The impact start time on this active event."
-      },
-      "cloud": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The cloud type of this active event."
-      },
-      "severity": {
-        "type": {
-          "$ref": "#/109"
-        },
-        "flags": 0,
-        "description": "The severity level of this active event."
-      },
-      "stage": {
-        "type": {
-          "$ref": "#/113"
-        },
-        "flags": 0,
-        "description": "The stage of this active event."
-      },
-      "published": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 0,
-        "description": "The boolean value of this active event if published or not."
-      },
-      "lastModifiedTime": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The last time modified on this banner."
-      },
-      "impacts": {
-        "type": {
-          "$ref": "#/117"
-        },
-        "flags": 0,
-        "description": "The list of emerging issues impacts."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Information"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Warning"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Error"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/106"
-      },
-      {
-        "$ref": "#/107"
-      },
-      {
-        "$ref": "#/108"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Active"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Resolve"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Archived"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/110"
-      },
-      {
-        "$ref": "#/111"
-      },
-      {
-        "$ref": "#/112"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EmergingIssueImpact",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The impacted service id."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The impacted service name."
-      },
-      "regions": {
-        "type": {
-          "$ref": "#/116"
-        },
-        "flags": 0,
-        "description": "The list of impacted regions for corresponding emerging issues."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ImpactedRegion",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The impacted region id."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The impacted region name."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/115"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/114"
     }
   },
   {
@@ -1705,68 +1519,63 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.ResourceHealth/emergingIssues@2025-05-01",
+    "name": "Microsoft.ResourceHealth/events/impactedResources@2025-05-01",
     "body": {
-      "$ref": "#/101"
+      "$ref": "#/103"
     },
-    "readableScopes": 1,
+    "readableScopes": 5,
     "writableScopes": 0
   },
   {
-    "$type": "ObjectType",
-    "name": "EventImpactedResourceListResult",
-    "properties": {
-      "value": {
-        "type": {
-          "$ref": "#/122"
-        },
-        "flags": 1,
-        "description": "The list of eventImpactedResources."
-      },
-      "nextLink": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource."
-      }
-    }
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ResourceHealth/metadata"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01"
   },
   {
     "$type": "ObjectType",
-    "name": "EventImpactedResource",
+    "name": "Microsoft.ResourceHealth/metadata",
     "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 0,
-        "description": "Properties of impacted resource."
-      },
       "id": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 2,
-        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+        "flags": 10,
+        "description": "The resource id"
       },
       "name": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 2,
-        "description": "The name of the resource"
+        "flags": 9,
+        "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/108"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/111"
         },
         "flags": 2,
-        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+        "description": "The metadata entity properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1774,19 +1583,134 @@
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/121"
+    "$type": "ObjectType",
+    "name": "MetadataEntityProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name."
+      },
+      "dependsOn": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "The list of keys on which this entity depends on."
+      },
+      "applicableScenarios": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "The list of scenarios applicable to this metadata entity."
+      },
+      "supportedValues": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 0,
+        "description": "The list of supported values."
+      }
     }
   },
   {
-    "$type": "ResourceFunctionType",
-    "name": "listSecurityAdvisoryImpactedResources",
-    "resourceType": "Microsoft.ResourceHealth/events",
-    "apiVersion": "2025-05-01",
-    "output": {
-      "$ref": "#/120"
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
     }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Alerts"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetadataSupportedValueDetail",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The id of the metadata value"
+      },
+      "previousId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The previous value of the id field in case the data has changed."
+      },
+      "serviceGuid": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The permanent guid for the service. Used when the id is a service name."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name."
+      },
+      "resourceTypes": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "The list of associated resource types."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Priority of this metadata supported value. Lower number is given higher preference."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/116"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ResourceHealth/metadata@2025-05-01",
+    "body": {
+      "$ref": "#/110"
+    },
+    "readableScopes": 1,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -1794,7 +1718,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "Properties of event."
@@ -1822,7 +1746,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1835,7 +1759,7 @@
     "resourceType": "Microsoft.ResourceHealth/events",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/124"
+      "$ref": "#/120"
     }
   },
   {
@@ -1844,7 +1768,83 @@
     "resourceType": "Microsoft.ResourceHealth/events",
     "apiVersion": "2025-05-01",
     "output": {
+      "$ref": "#/120"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventImpactedResourceListResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "The list of eventImpactedResources."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventImpactedResource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Properties of impacted resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
       "$ref": "#/124"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecurityAdvisoryImpactedResources",
+    "resourceType": "Microsoft.ResourceHealth/events",
+    "apiVersion": "2025-05-01",
+    "output": {
+      "$ref": "#/123"
     }
   }
 ]

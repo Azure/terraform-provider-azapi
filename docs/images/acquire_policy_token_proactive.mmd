@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant TF as AzAPI provider
+    participant POL as acquirePolicyToken API
+    participant ARM as ARM API
+
+    TF->>POL: POST acquirePolicyToken (operation details)
+    POL-->>TF: token
+    TF->>ARM: PUT/POST/PATCH/DELETE with x-ms-policy-external-evaluations header
+    ARM-->>TF: 200/201 Success

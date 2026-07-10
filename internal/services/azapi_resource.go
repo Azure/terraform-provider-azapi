@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"reflect"
 	"slices"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -47,6 +49,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 const FlagMoveState = "move_state"
@@ -141,6 +144,7 @@ var _ resource.ResourceWithImportState = &AzapiResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiResource{}
 var _ resource.ResourceWithMoveState = &AzapiResource{}
 var _ resource.ResourceWithIdentity = &AzapiResource{}
+var _ tffwdocs.ResourceWithRenderOption = &AzapiResource{}
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -181,7 +185,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name of the azure resource.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -244,12 +248,11 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
 					"```hcl\n" +
 					"resource \"azapi_resource\" \"example\" {\n" +
 					"  name      = var.name\n" +
@@ -283,7 +286,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -414,6 +417,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
+				MarkdownDescription: "The identity of this resource.",
 				NestedObject: schema.NestedBlockObject{
 					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{
@@ -470,11 +474,11 @@ func (r *AzapiResource) IdentitySchema(ctx context.Context, request resource.Ide
 		Attributes: map[string]identityschema.Attribute{
 			"id": identityschema.StringAttribute{
 				RequiredForImport: true,
-				Description:       "The Azure resource ID",
+				Description:       "The Azure resource ID.",
 			},
 			"type": identityschema.StringAttribute{
 				OptionalForImport: true,
-				Description:       "The Azure resource type",
+				Description:       "The Azure resource type.",
 			},
 		},
 		Version: 0,
@@ -711,7 +715,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if r.ProviderData.Features.EnablePreflight && isNewResource {
+	if r.ProviderData.Features.EnablePreflight {
 		parentId := plan.ParentID.ValueString()
 		if parentId == "" {
 			placeholder, err := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId())
@@ -819,7 +823,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 
 		// 403 is returned if group (or child resource of group) does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
-		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+		if utils.ResponseErrorWasNotFound(err) || (utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+			// A 403 is returned for management groups that do not exist.
+		} else {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -1203,11 +1209,14 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	var id parse.ResourceId
 	var err error
+	var explicitApiVersion string
+	var candidateApiVersions []string
+	var responseBody interface{}
 
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
-		id, err = parse.ResourceID(request.ID)
+		id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(request.ID)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())
 			return
@@ -1232,10 +1241,11 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q with type %q: %+v", resourceID, identityData.Type.ValueString(), err).Error())
 				return
 			}
+			explicitApiVersion = id.ApiVersion
 		} else {
 			// Case 3: Only id is set - parse it to extract API version
 			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
-			id, err = parse.ResourceID(resourceID)
+			id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(resourceID)
 			if err != nil {
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", resourceID, err).Error())
 				return
@@ -1251,7 +1261,10 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	responseBody, err = withApiVersionFallback(ctx, func(apiVersion string) (interface{}, error) {
+		return client.Get(ctx, id.AzureResourceId, apiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	}, explicitApiVersion, candidateApiVersions)
+
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -1301,6 +1314,36 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Type: state.Type,
 	}
 	response.Diagnostics.Append(response.Identity.Set(ctx, resourceIdentity)...)
+}
+
+func withApiVersionFallback(ctx context.Context, operation func(apiVersion string) (result interface{}, err error), explicitApiVersion string, candidateApiVersions []string) (result interface{}, err error) {
+	if explicitApiVersion == "" && len(candidateApiVersions) == 0 {
+		return nil, fmt.Errorf("have to specify either an explicit api-version or provide candidate api-versions")
+	}
+
+	if explicitApiVersion != "" {
+		return operation(explicitApiVersion)
+	}
+
+	const maxAttempts = 3
+	attempts := maxAttempts
+	if len(candidateApiVersions) < attempts {
+		attempts = len(candidateApiVersions)
+	}
+	for attempt := 0; attempt < attempts; attempt++ {
+		apiVersion := candidateApiVersions[len(candidateApiVersions)-1-attempt]
+		result, err = operation(apiVersion)
+		if err == nil {
+			return result, nil
+		}
+		if !utils.ResponseErrorWasStatusCode(err, http.StatusBadRequest) && !utils.ResponseErrorWasNotFound(err) {
+			return result, err
+		}
+		if attempt < attempts-1 {
+			tflog.Info(ctx, fmt.Sprintf("api-version %q failed with error: %+v, retrying with an older api-version", apiVersion, err))
+		}
+	}
+	return result, err
 }
 
 func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
@@ -1583,4 +1626,102 @@ func isManagementGroupScope(scope string) bool {
 		strings.ToLower(scope),
 		managementGroupScope,
 	)
+}
+
+func (r *AzapiResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_user_assigned_identity" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+}
+
+// manage a container registry resource
+resource "azapi_resource" "example" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  name      = "registry1"
+  parent_id = azurerm_resource_group.example.id
+
+  location = azurerm_resource_group.example.location
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.example.id]
+  }
+
+  body = {
+    sku = {
+      name = "Standard"
+    }
+    properties = {
+      adminUserEnabled = true
+    }
+  }
+
+  tags = {
+    "Key" = "Value"
+  }
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}`,
+			},
+		},
+		ImportId: &tffwdocs.ImportId{
+			Format:    "<resource_id>[?api-version=<api_version>]",
+			ExampleId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01",
+		},
+		IdentityExamples: []tffwdocs.Example{
+			{
+				HCL: `
+id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet"
+type = "Microsoft.Network/virtualNetworks@2023-11-01"
+`,
+			},
+		},
+		Template: template.Must(template.New("resource").Parse(`{{ .Header }}
+{{ .Description }}
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}
+{{- with .Import }}
+{{ . }}
+### API Version for Initial Import Call
+
+While processing an import request, the provider cannot determine which api-version to use for the initial import GET call. To work around this, the provider falls back to the 3 most recent [indexed](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) api-versions (regardless of preview / stable), trying each in turn. The provider treats any 400 or 404 response as a signal to attempt the next older version. This fallback can result in an api-version mismatch; to avoid it, specify an explicit api-version using the ` + "`api-version`" + ` query parameter or the resource ` + "`type`" + ` attribute.
+
+{{- end }}`)),
+	}
 }

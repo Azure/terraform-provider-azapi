@@ -654,13 +654,6 @@
         "flags": 1,
         "description": "Specification of the discovery rule defining how entities are discovered."
       },
-      "deletionDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Date when the discovery rule was (soft-)deleted."
-      },
       "error": {
         "type": {
           "$ref": "#/72"
@@ -989,23 +982,16 @@
         "flags": 2,
         "description": "Discovered by which discovery rule. If set, the entity cannot be deleted manually."
       },
-      "deletionDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Date when the entity was (soft-)deleted"
-      },
       "healthState": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/190"
         },
         "flags": 2,
         "description": "Health state of this entity"
       },
       "alerts": {
         "type": {
-          "$ref": "#/185"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "Alert configuration for this entity"
@@ -1183,7 +1169,7 @@
       },
       "external": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/177"
         },
         "flags": 2,
         "description": "List of signals which have been externally submitted for this entity."
@@ -2048,28 +2034,42 @@
   },
   {
     "$type": "ObjectType",
-    "name": "DependenciesSignalGroup",
+    "name": "DependenciesSignalGroupV2",
     "properties": {
       "aggregationType": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/171"
         },
         "flags": 1,
         "description": "Aggregation type for child dependencies."
       },
       "degradedThreshold": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/172"
         },
         "flags": 0,
-        "description": "Degraded threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number that is greater than 0, or a percentage between 1-100%. The entity will be considered degraded when the number of not healthy child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when AggregationType is 'Thresholds'."
+        "description": "Degraded threshold for aggregation. For MinHealthy: parent is degraded when healthy count/percentage falls to or below this value. For MaxNotHealthy: parent is degraded when not-healthy count/percentage reaches or exceeds this value. Optional — if not set, there is no degraded state (transitions directly from Healthy to Unhealthy)."
       },
       "unhealthyThreshold": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/172"
         },
         "flags": 0,
-        "description": "Unhealthy threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number that is greater than 0, or a percentage between 1-100%. The entity will be considered unhealthy when the number of not healthy child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when AggregationType is 'Thresholds'."
+        "description": "Unhealthy threshold for aggregation. For MinHealthy: parent is unhealthy when healthy count/percentage falls to or below this value. For MaxNotHealthy: parent is unhealthy when not-healthy count/percentage reaches or exceeds this value. Required when aggregationType is MinHealthy or MaxNotHealthy."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Unit type for the aggregation thresholds. Required when aggregationType is MinHealthy or MaxNotHealthy."
+      },
+      "ignoreUnknown": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "If true, children with Unknown health state are excluded from aggregation calculations. Defaults to true."
       }
     }
   },
@@ -2079,7 +2079,11 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Thresholds"
+    "value": "MinHealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaxNotHealthy"
   },
   {
     "$type": "UnionType",
@@ -2091,9 +2095,41 @@
         "$ref": "#/169"
       },
       {
+        "$ref": "#/170"
+      },
+      {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Absolute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Percentage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
   },
   {
     "$type": "ObjectType",
@@ -2101,7 +2137,7 @@
     "properties": {
       "signals": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/184"
         },
         "flags": 2,
         "description": "Signals assigned to this signal group."
@@ -2121,7 +2157,7 @@
       },
       "signalKind": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/183"
         },
         "flags": 1,
         "description": "Kind of the signal instance"
@@ -2169,16 +2205,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/173"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/174"
+        "$ref": "#/180"
       },
       {
-        "$ref": "#/175"
+        "$ref": "#/181"
       },
       {
-        "$ref": "#/176"
+        "$ref": "#/182"
       },
       {
         "$ref": "#/2"
@@ -2188,7 +2224,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/172"
+      "$ref": "#/178"
     }
   },
   {
@@ -2215,19 +2251,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/179"
+        "$ref": "#/185"
       },
       {
-        "$ref": "#/180"
+        "$ref": "#/186"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/187"
       },
       {
-        "$ref": "#/182"
+        "$ref": "#/188"
       },
       {
-        "$ref": "#/183"
+        "$ref": "#/189"
       },
       {
         "$ref": "#/2"
@@ -2240,14 +2276,14 @@
     "properties": {
       "unhealthy": {
         "type": {
-          "$ref": "#/186"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "Alert to be triggered on state change to unhealthy"
       },
       "degraded": {
         "type": {
-          "$ref": "#/186"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "Alert to be triggered on state change to degraded"
@@ -2260,21 +2296,21 @@
     "properties": {
       "severity": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/198"
         },
         "flags": 1,
         "description": "The severity of triggered alert."
       },
       "description": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/199"
         },
         "flags": 0,
         "description": "The alert rule description."
       },
       "actionGroupIds": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/200"
         },
         "flags": 0,
         "description": "Optional list of action group resource IDs to be notified when the alert is triggered."
@@ -2305,19 +2341,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/187"
+        "$ref": "#/193"
       },
       {
-        "$ref": "#/188"
+        "$ref": "#/194"
       },
       {
-        "$ref": "#/189"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/190"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/191"
+        "$ref": "#/197"
       },
       {
         "$ref": "#/2"
@@ -2374,21 +2410,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/202"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/203"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/199"
+          "$ref": "#/205"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -2408,7 +2444,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/205"
+          "$ref": "#/211"
         },
         "flags": 2,
         "description": "The status of the last operation."
@@ -2436,7 +2472,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/206"
+          "$ref": "#/212"
         },
         "flags": 0,
         "description": "Optional set of tags (key-value pairs)"
@@ -2447,13 +2483,6 @@
         },
         "flags": 2,
         "description": "Discovered by which discovery rule. If set, the relationship cannot be deleted manually."
-      },
-      "deletionDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Date when the relationship was (soft-)deleted"
       }
     }
   },
@@ -2481,19 +2510,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/200"
+        "$ref": "#/206"
       },
       {
-        "$ref": "#/201"
+        "$ref": "#/207"
       },
       {
-        "$ref": "#/202"
+        "$ref": "#/208"
       },
       {
-        "$ref": "#/203"
+        "$ref": "#/209"
       },
       {
-        "$ref": "#/204"
+        "$ref": "#/210"
       },
       {
         "$ref": "#/2"
@@ -2512,7 +2541,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.CloudHealth/healthmodels/relationships@2026-01-01-preview",
     "body": {
-      "$ref": "#/198"
+      "$ref": "#/204"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2545,21 +2574,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/214"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/209"
+          "$ref": "#/215"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/217"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -2580,7 +2609,7 @@
     "baseProperties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/223"
         },
         "flags": 2,
         "description": "The status of the last operation."
@@ -2594,14 +2623,14 @@
       },
       "refreshInterval": {
         "type": {
-          "$ref": "#/224"
+          "$ref": "#/230"
         },
         "flags": 0,
         "description": "Interval in which the signal is being evaluated. Defaults to PT1M (1 minute)."
       },
       "tags": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/231"
         },
         "flags": 0,
         "description": "Optional set of tags (key-value pairs)"
@@ -2619,24 +2648,17 @@
         },
         "flags": 1,
         "description": "Evaluation rules for the signal definition"
-      },
-      "deletionDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Date when the signal definition was (soft-)deleted"
       }
     },
     "elements": {
       "AzureResourceMetric": {
-        "$ref": "#/226"
+        "$ref": "#/232"
       },
       "LogAnalyticsQuery": {
-        "$ref": "#/235"
+        "$ref": "#/241"
       },
       "PrometheusMetricsQuery": {
-        "$ref": "#/237"
+        "$ref": "#/243"
       }
     }
   },
@@ -2664,19 +2686,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/212"
+        "$ref": "#/218"
       },
       {
-        "$ref": "#/213"
+        "$ref": "#/219"
       },
       {
-        "$ref": "#/214"
+        "$ref": "#/220"
       },
       {
-        "$ref": "#/215"
+        "$ref": "#/221"
       },
       {
-        "$ref": "#/216"
+        "$ref": "#/222"
       },
       {
         "$ref": "#/2"
@@ -2711,22 +2733,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/218"
+        "$ref": "#/224"
       },
       {
-        "$ref": "#/219"
+        "$ref": "#/225"
       },
       {
-        "$ref": "#/220"
+        "$ref": "#/226"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/227"
       },
       {
-        "$ref": "#/222"
+        "$ref": "#/228"
       },
       {
-        "$ref": "#/223"
+        "$ref": "#/229"
       },
       {
         "$ref": "#/2"
@@ -2768,7 +2790,7 @@
       },
       "aggregationType": {
         "type": {
-          "$ref": "#/233"
+          "$ref": "#/239"
         },
         "flags": 1,
         "description": "Type of aggregation to apply to the metric"
@@ -2789,7 +2811,7 @@
       },
       "signalKind": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/240"
         },
         "flags": 1,
         "description": "Kind of the signal definition"
@@ -2824,22 +2846,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/227"
+        "$ref": "#/233"
       },
       {
-        "$ref": "#/228"
+        "$ref": "#/234"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/235"
       },
       {
-        "$ref": "#/230"
+        "$ref": "#/236"
       },
       {
-        "$ref": "#/231"
+        "$ref": "#/237"
       },
       {
-        "$ref": "#/232"
+        "$ref": "#/238"
       },
       {
         "$ref": "#/2"
@@ -2877,7 +2899,7 @@
       },
       "signalKind": {
         "type": {
-          "$ref": "#/236"
+          "$ref": "#/242"
         },
         "flags": 1,
         "description": "Kind of the signal definition"
@@ -2908,7 +2930,7 @@
       },
       "signalKind": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/244"
         },
         "flags": 1,
         "description": "Kind of the signal definition"
@@ -2923,7 +2945,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.CloudHealth/healthmodels/signaldefinitions@2026-01-01-preview",
     "body": {
-      "$ref": "#/210"
+      "$ref": "#/216"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2961,7 +2983,7 @@
       },
       "history": {
         "type": {
-          "$ref": "#/255"
+          "$ref": "#/261"
         },
         "flags": 1,
         "description": "List of health state transitions"
@@ -2974,14 +2996,14 @@
     "properties": {
       "previousState": {
         "type": {
-          "$ref": "#/248"
+          "$ref": "#/254"
         },
         "flags": 1,
         "description": "Previous health state before the transition"
       },
       "newState": {
         "type": {
-          "$ref": "#/254"
+          "$ref": "#/260"
         },
         "flags": 1,
         "description": "New health state after the transition"
@@ -3001,49 +3023,6 @@
         "description": "Reason of the transition"
       }
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Healthy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Degraded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unhealthy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unknown"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleted"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/243"
-      },
-      {
-        "$ref": "#/244"
-      },
-      {
-        "$ref": "#/245"
-      },
-      {
-        "$ref": "#/246"
-      },
-      {
-        "$ref": "#/247"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "StringLiteralType",
@@ -3089,9 +3068,52 @@
     ]
   },
   {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/242"
+      "$ref": "#/248"
     }
   },
   {
@@ -3100,10 +3122,10 @@
     "resourceType": "Microsoft.CloudHealth/healthmodels/entities",
     "apiVersion": "2026-01-01-preview",
     "output": {
-      "$ref": "#/241"
+      "$ref": "#/247"
     },
     "input": {
-      "$ref": "#/240"
+      "$ref": "#/246"
     }
   },
   {
@@ -3153,7 +3175,7 @@
       },
       "history": {
         "type": {
-          "$ref": "#/266"
+          "$ref": "#/272"
         },
         "flags": 1,
         "description": "Signal history data points"
@@ -3180,7 +3202,7 @@
       },
       "healthState": {
         "type": {
-          "$ref": "#/265"
+          "$ref": "#/271"
         },
         "flags": 1,
         "description": "Health state at this point in time"
@@ -3218,19 +3240,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/260"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/261"
+        "$ref": "#/267"
       },
       {
-        "$ref": "#/262"
+        "$ref": "#/268"
       },
       {
-        "$ref": "#/263"
+        "$ref": "#/269"
       },
       {
-        "$ref": "#/264"
+        "$ref": "#/270"
       },
       {
         "$ref": "#/2"
@@ -3240,7 +3262,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/259"
+      "$ref": "#/265"
     }
   },
   {
@@ -3249,10 +3271,10 @@
     "resourceType": "Microsoft.CloudHealth/healthmodels/entities",
     "apiVersion": "2026-01-01-preview",
     "output": {
-      "$ref": "#/258"
+      "$ref": "#/264"
     },
     "input": {
-      "$ref": "#/257"
+      "$ref": "#/263"
     }
   },
   {
@@ -3268,7 +3290,7 @@
       },
       "healthState": {
         "type": {
-          "$ref": "#/274"
+          "$ref": "#/280"
         },
         "flags": 1,
         "description": "Health state to report for the signal"
@@ -3282,14 +3304,14 @@
       },
       "evaluationRules": {
         "type": {
-          "$ref": "#/275"
+          "$ref": "#/281"
         },
         "flags": 0,
         "description": "Evaluation rules that were used to determine the reported health state"
       },
-      "expiresIn": {
+      "expiresInMinutes": {
         "type": {
-          "$ref": "#/276"
+          "$ref": "#/282"
         },
         "flags": 0,
         "description": "Number of minutes until the health report expires. Defaults to 60 (1 hour) if not specified."
@@ -3327,19 +3349,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/269"
+        "$ref": "#/275"
       },
       {
-        "$ref": "#/270"
+        "$ref": "#/276"
       },
       {
-        "$ref": "#/271"
+        "$ref": "#/277"
       },
       {
-        "$ref": "#/272"
+        "$ref": "#/278"
       },
       {
-        "$ref": "#/273"
+        "$ref": "#/279"
       },
       {
         "$ref": "#/2"
@@ -3377,7 +3399,7 @@
     "resourceType": "Microsoft.CloudHealth/healthmodels/entities",
     "apiVersion": "2026-01-01-preview",
     "input": {
-      "$ref": "#/268"
+      "$ref": "#/274"
     }
   }
 ]

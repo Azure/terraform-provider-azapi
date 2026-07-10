@@ -48,6 +48,13 @@
         },
         "flags": 0,
         "description": "The properties of a governance assignment"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -174,6 +181,126 @@
     "minValue": 0
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Security/assessments/governanceAssignments@2022-01-01-preview",
     "body": {
@@ -210,24 +337,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/22"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/23"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "Properties of a governance rule"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -258,7 +392,7 @@
       },
       "remediationTimeframe": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g. 7.00:00:00 - means 7 days"
@@ -272,7 +406,7 @@
       },
       "rulePriority": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/27"
         },
         "flags": 1,
         "description": "The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will not be allowed"
@@ -286,28 +420,28 @@
       },
       "ruleType": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/30"
         },
         "flags": 1,
         "description": "The rule type of the governance rule, defines the source of the rule e.g. Integrated"
       },
       "sourceResourceType": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/32"
         },
         "flags": 1,
         "description": "The governance rule source, what the rule affects, e.g. Assessments"
       },
       "excludedScopes": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "Excluded scopes, filter out the descendants of the scope (on management scopes)"
       },
       "conditionSets": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/35"
         },
         "flags": 1,
         "description": "The governance rule conditionSets - see examples"
@@ -321,21 +455,21 @@
       },
       "ownerSource": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The owner source for the governance rule - e.g. Manually by user@contoso.com - see example"
       },
       "governanceEmailNotification": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners"
       },
       "metadata": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "The governance rule metadata"
@@ -363,10 +497,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/17"
+        "$ref": "#/28"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/29"
       },
       {
         "$ref": "#/0"
@@ -381,7 +515,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/20"
+        "$ref": "#/31"
       },
       {
         "$ref": "#/0"
@@ -400,7 +534,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/23"
+      "$ref": "#/34"
     }
   },
   {
@@ -409,7 +543,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "The owner type for the governance rule owner source"
@@ -435,10 +569,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/26"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/27"
+        "$ref": "#/38"
       },
       {
         "$ref": "#/0"
@@ -503,7 +637,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Security/governanceRules@2022-01-01-preview",
     "body": {
-      "$ref": "#/13"
+      "$ref": "#/24"
     },
     "readableScopes": 31,
     "writableScopes": 31
@@ -527,7 +661,7 @@
     "resourceType": "Microsoft.Security/governanceRules",
     "apiVersion": "2022-01-01-preview",
     "input": {
-      "$ref": "#/32"
+      "$ref": "#/43"
     }
   }
 ]

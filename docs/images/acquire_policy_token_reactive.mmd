@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant TF as AzAPI provider
+    participant ARM as ARM API
+    participant POL as acquirePolicyToken API
+
+    TF->>ARM: PUT/POST/PATCH/DELETE resource
+    ARM-->>TF: 403 RequestDisallowedByPolicy (policy token required)
+    TF->>POL: POST acquirePolicyToken (operation details)
+    POL-->>TF: token
+    TF->>ARM: Retry request with x-ms-policy-external-evaluations header
+    ARM-->>TF: 200/201 Success

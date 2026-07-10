@@ -55,13 +55,6 @@
         "flags": 0,
         "description": "Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported."
       },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The location of the ACI and the storage account for the deployment script."
-      },
       "tags": {
         "type": {
           "$ref": "#/10"
@@ -69,12 +62,19 @@
         "flags": 0,
         "description": "Resource tags."
       },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
       "systemData": {
         "type": {
           "$ref": "#/11"
         },
         "flags": 2,
-        "description": "The system metadata related to this resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     },
     "elements": {
@@ -102,7 +102,7 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "ID of the Azure Active Directory."
+        "description": "The tenant id of the managed identity."
       },
       "userAssignedIdentities": {
         "type": {
@@ -158,7 +158,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "DeploymentScriptTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -315,48 +315,6 @@
         "flags": 1,
         "description": "Azure CLI module version to be used."
       },
-      "containerSettings": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "Container settings."
-      },
-      "storageAccountSettings": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 0,
-        "description": "Storage Account settings."
-      },
-      "cleanupPreference": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 0,
-        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/40"
-        },
-        "flags": 2,
-        "description": "State of the script execution. This only appears in the response."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 2,
-        "description": "Contains the results of script execution."
-      },
-      "outputs": {
-        "type": {
-          "$ref": "#/47"
-        },
-        "flags": 2,
-        "description": "List of script outputs."
-      },
       "primaryScriptUri": {
         "type": {
           "$ref": "#/2"
@@ -366,7 +324,7 @@
       },
       "supportingScriptUris": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Supporting files for the external script."
@@ -387,7 +345,7 @@
       },
       "environmentVariables": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "The environment variables to pass over to the script."
@@ -412,7 +370,92 @@
         },
         "flags": 0,
         "description": "Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D"
+      },
+      "containerSettings": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Container settings."
+      },
+      "storageAccountSettings": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Storage Account settings."
+      },
+      "cleanupPreference": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "State of the script execution. This only appears in the response."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Contains the results of script execution."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 2,
+        "description": "List of script outputs."
       }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentVariable",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the environment variable."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the environment variable."
+      },
+      "secureValue": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The value of the secure environment variable."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/25"
     }
   },
   {
@@ -421,14 +464,14 @@
     "properties": {
       "containerGroupName": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. To specify a 'containerGroupName', add the following object to properties: { \"containerSettings\": { \"containerGroupName\": \"contoso-container\" } }. If you do not want to specify a 'containerGroupName' then do not add 'containerSettings' property."
       },
       "subnetIds": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The subnet resource IDs for a container group."
@@ -463,7 +506,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/26"
+      "$ref": "#/30"
     }
   },
   {
@@ -479,16 +522,12 @@
       },
       "storageAccountKey": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The storage account access key."
       }
     }
-  },
-  {
-    "$type": "StringType",
-    "sensitive": true
   },
   {
     "$type": "StringLiteralType",
@@ -506,13 +545,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/30"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/32"
+        "$ref": "#/35"
       },
       {
         "$ref": "#/2"
@@ -547,15 +586,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
         "$ref": "#/37"
       },
       {
@@ -563,6 +593,15 @@
       },
       {
         "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
       },
       {
         "$ref": "#/2"
@@ -610,7 +649,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "Error that is relayed from the script execution."
@@ -619,7 +658,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ErrorResponse",
+    "name": "ErrorDetail",
     "properties": {
       "code": {
         "type": {
@@ -644,14 +683,14 @@
       },
       "details": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/46"
         },
         "flags": 2,
         "description": "The error details."
       },
       "additionalInfo": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/49"
         },
         "flags": 2,
         "description": "The error additional info."
@@ -661,7 +700,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/42"
+      "$ref": "#/45"
     }
   },
   {
@@ -677,7 +716,7 @@
       },
       "info": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/48"
         },
         "flags": 2,
         "description": "The additional info."
@@ -690,7 +729,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/44"
+      "$ref": "#/47"
     }
   },
   {
@@ -698,46 +737,7 @@
     "name": "DeploymentScriptPropertiesBaseOutputs",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/45"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EnvironmentVariable",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The name of the environment variable."
-      },
-      "value": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The value of the environment variable."
-      },
-      "secureValue": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 0,
-        "description": "The value of the secure environment variable."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/49"
+      "$ref": "#/48"
     }
   },
   {
@@ -775,48 +775,6 @@
         "flags": 1,
         "description": "Azure PowerShell module version to be used."
       },
-      "containerSettings": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "Container settings."
-      },
-      "storageAccountSettings": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 0,
-        "description": "Storage Account settings."
-      },
-      "cleanupPreference": {
-        "type": {
-          "$ref": "#/57"
-        },
-        "flags": 0,
-        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/64"
-        },
-        "flags": 2,
-        "description": "State of the script execution. This only appears in the response."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 2,
-        "description": "Contains the results of script execution."
-      },
-      "outputs": {
-        "type": {
-          "$ref": "#/65"
-        },
-        "flags": 2,
-        "description": "List of script outputs."
-      },
       "primaryScriptUri": {
         "type": {
           "$ref": "#/2"
@@ -826,7 +784,7 @@
       },
       "supportingScriptUris": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "Supporting files for the external script."
@@ -847,7 +805,7 @@
       },
       "environmentVariables": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/55"
         },
         "flags": 0,
         "description": "The environment variables to pass over to the script."
@@ -872,7 +830,61 @@
         },
         "flags": 0,
         "description": "Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D"
+      },
+      "containerSettings": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Container settings."
+      },
+      "storageAccountSettings": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Storage Account settings."
+      },
+      "cleanupPreference": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "State of the script execution. This only appears in the response."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Contains the results of script execution."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "List of script outputs."
       }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/25"
     }
   },
   {
@@ -891,13 +903,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/54"
-      },
-      {
-        "$ref": "#/55"
-      },
-      {
         "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
       },
       {
         "$ref": "#/2"
@@ -932,12 +944,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/58"
-      },
-      {
-        "$ref": "#/59"
-      },
-      {
         "$ref": "#/60"
       },
       {
@@ -950,6 +956,12 @@
         "$ref": "#/63"
       },
       {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -959,19 +971,7 @@
     "name": "DeploymentScriptPropertiesBaseOutputs",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/45"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/49"
+      "$ref": "#/48"
     }
   },
   {
@@ -1037,6 +1037,13 @@
         },
         "flags": 2,
         "description": "Script log properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },

@@ -14,6 +14,7 @@ import (
 type AzapiResourceActionActionTest struct{}
 
 func TestAccAzapiResourceActionAction_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := AzapiResourceActionActionTest{}
 

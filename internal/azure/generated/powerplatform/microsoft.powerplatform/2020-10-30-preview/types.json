@@ -49,16 +49,9 @@
         "flags": 0,
         "description": "The properties that define configuration for the account."
       },
-      "systemData": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
-      },
       "tags": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -69,6 +62,13 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -94,6 +94,14 @@
   },
   {
     "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
       "createdBy": {
@@ -105,7 +113,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/11"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -126,7 +134,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -160,9 +168,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/6"
-      },
-      {
         "$ref": "#/7"
       },
       {
@@ -170,6 +175,9 @@
       },
       {
         "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
       },
       {
         "$ref": "#/0"
@@ -196,9 +204,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/11"
-      },
-      {
         "$ref": "#/12"
       },
       {
@@ -208,17 +213,12 @@
         "$ref": "#/14"
       },
       {
+        "$ref": "#/15"
+      },
+      {
         "$ref": "#/0"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
   },
   {
     "$type": "ResourceType",
@@ -269,33 +269,26 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The properties that define configuration for the enterprise policy"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The identity of the EnterprisePolicy."
       },
       "kind": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/52"
         },
         "flags": 1,
         "description": "The kind (type) of Enterprise Policy."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 0,
-        "description": "The properties that define configuration for the enterprise policy"
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
       },
       "tags": {
         "type": {
@@ -310,97 +303,15 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EnterprisePolicyIdentity",
-    "properties": {
-      "systemAssignedIdentityPrincipalId": {
+      },
+      "systemData": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/6"
         },
         "flags": 2,
-        "description": "The principal id of EnterprisePolicy identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The tenant id associated with the EnterprisePolicy."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "The type of identity used for the EnterprisePolicy. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/22"
-      },
-      {
-        "$ref": "#/23"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Lockbox"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "PrivateEndpoint"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Encryption"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NetworkInjection"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Identity"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -415,28 +326,28 @@
       },
       "lockbox": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Settings concerning lockbox."
       },
       "encryption": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "The encryption settings for a configuration store."
       },
       "networkInjection": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/34"
         },
         "flags": 0,
         "description": "Settings concerning network injection."
       },
       "healthStatus": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The health status of the resource."
@@ -449,7 +360,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "lockbox configuration"
@@ -472,13 +383,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/33"
+        "$ref": "#/23"
       },
       {
-        "$ref": "#/34"
+        "$ref": "#/24"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/25"
       },
       {
         "$ref": "#/0"
@@ -491,14 +402,14 @@
     "properties": {
       "keyVault": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Key vault properties."
       },
       "state": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "The state of onboarding, which only appears in the response."
@@ -518,7 +429,7 @@
       },
       "key": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Identity of the secret that includes name and version."
@@ -561,13 +472,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/40"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/32"
       },
       {
         "$ref": "#/0"
@@ -580,7 +491,7 @@
     "properties": {
       "virtualNetworks": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Network injection configuration"
@@ -600,7 +511,7 @@
       },
       "subnet": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "Properties of a subnet."
@@ -623,7 +534,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/45"
+      "$ref": "#/35"
     }
   },
   {
@@ -645,6 +556,95 @@
   {
     "$type": "UnionType",
     "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnterprisePolicyIdentity",
+    "properties": {
+      "systemAssignedIdentityPrincipalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of EnterprisePolicy identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant id associated with the EnterprisePolicy."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the EnterprisePolicy. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Lockbox"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrivateEndpoint"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Encryption"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NetworkInjection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Identity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
       {
         "$ref": "#/48"
       },
@@ -728,10 +728,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/6"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -922,6 +922,13 @@
         },
         "flags": 2,
         "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },

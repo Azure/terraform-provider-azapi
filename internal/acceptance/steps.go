@@ -57,7 +57,7 @@ func (td TestData) ImportStepFor(resourceName string, ignore ...string) resource
 		return resource.TestStep{
 			ResourceName: resourceName,
 			SkipFunc: func() (bool, error) {
-				return false, fmt.Errorf("Data Sources (%q) do not support import - remove the ImportStep / ImportStepFor`", resourceName)
+				return false, fmt.Errorf("data sources (%q) do not support import - remove the ImportStep / ImportStepFor`", resourceName)
 			},
 		}
 	}

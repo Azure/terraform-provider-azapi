@@ -1,35 +1,28 @@
-# This template will generate a list of jobs that will run. The
-# jobs created will correspond to the cross product of the
-# vmImages and goVersions specified by the parameters.
-
 parameters:
-  goVersions: []
-  vmImages: []
-  maxParallel: 1
+  unitTest: false
+  accTest: false
 
 jobs:
   - job: build
     timeoutInMinutes: 300
-    displayName: "Build: "
-
-    # Build on each combination of supported OS and Go version
-    strategy:
-      maxParallel: ${{ parameters.maxParallel }}
-      matrix:
-        ${{ each goVersion in parameters.goVersions }}:
-          ${{ each vmImage in parameters.vmImages }}:
-            OS_${{ vmImage.ymlSafeName }}_GO_${{ goVersion.ymlSafeName }}:
-              vmImage: ${{ vmImage.value }}
-              goVersion: ${{ goVersion.value }}
+    displayName: "Build"
 
     pool:
       name: pool-ubuntu-2404
 
     steps:
+      - bash: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          go_version="$(awk '/^go / { print $2; exit }' "$BUILD_SOURCESDIRECTORY/go.mod")"
+          echo "Using Go version ${go_version} from go.mod"
+          echo "##vso[task.setvariable variable=GO_VERSION]${go_version}"
+        displayName: "Read Go version from go.mod"
+
       - task: GoTool@0
         displayName: "Install correct version of Go"
         inputs:
-          version: $(goVersion)
+          version: $(GO_VERSION)
           GOPATH: "$(Pipeline.Workspace)/gopath"
           GOBIN: "$(GOPATH)/bin"
 
@@ -38,6 +31,17 @@ jobs:
           cd "$BUILD_SOURCESDIRECTORY"
           make tools
         displayName: "Install Dependencies"
+      - task: TerraformInstaller@1
+        displayName: "Install Terraform"
+        inputs:
+          terraformVersion: "1.14.9"
+      - bash: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          terraform_path="$(which terraform)"
+          echo "Terraform installed at: ${terraform_path}"
+          echo "##vso[task.setvariable variable=TF_ACC_TERRAFORM_PATH]${terraform_path}"
+        displayName: "Configure Terraform CLI for acctest"
       - bash: |
           #!/usr/bin/env bash
           cd "$BUILD_SOURCESDIRECTORY"
@@ -65,11 +69,13 @@ jobs:
               #!/usr/bin/env bash
               cd "$BUILD_SOURCESDIRECTORY"
               make testacc
-            displayName: "Run All Tests"
+            displayName: "Run core acctests"
             env:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_READER_CLIENT_ID: $(ARM_READER_CLIENT_ID)
+              ARM_READER_CLIENT_SECRET: $(ARM_READER_CLIENT_SECRET)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
               ARM_TEST_LOCATION: $(ARM_TEST_LOCATION)
               ARM_TEST_LOCATION_ALT: $(ARM_TEST_LOCATION_ALT)
@@ -77,4 +83,6 @@ jobs:
               ARM_TEST_EXAMPLES: $(ARM_TEST_EXAMPLES)
               ARM_TEST_EXAMPLES_ALL: $(ARM_TEST_EXAMPLES_ALL)
               ARM_TEST_AVM: $(ARM_TEST_AVM)
+              TF_ACC_TERRAFORM_PATH: $(TF_ACC_TERRAFORM_PATH)
               TESTARGS: $(TESTARGS)
+              AZAPI_CORE_ACCTESTS_ONLY: "true"

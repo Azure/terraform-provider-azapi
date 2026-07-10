@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Security/assessmentMetadata"
+    "value": "Microsoft.Security/assessments"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Security/assessmentMetadata",
+    "name": "Microsoft.Security/assessments",
     "properties": {
       "id": {
         "type": {
@@ -47,7 +47,1095 @@
           "$ref": "#/4"
         },
         "flags": 0,
+        "description": "Describes properties of an assessment."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesOrSecurityAssessmentPropertiesResponse",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The result of the assessment"
+      },
+      "risk": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "External model of risk result"
+      },
+      "resourceDetails": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "Details of the resource that was assessed"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "User friendly display name of the assessment"
+      },
+      "additionalData": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Additional data regarding the assessment"
+      },
+      "links": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 2,
+        "description": "Links relevant to the assessment"
+      },
+      "metadata": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Describes properties of an assessment metadata."
+      },
+      "partnersData": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Data regarding 3rd party partner integration"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssessmentStatusOrAssessmentStatusResponse",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 1,
+        "description": "Programmatic code for the status of the assessment"
+      },
+      "cause": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Programmatic code for the cause of the assessment status"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of the assessment status"
+      },
+      "firstEvaluationDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The time that the assessment was created and first evaluated. Returned as UTC time in ISO 8601 format"
+      },
+      "statusChangeDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The time that the status of the assessment last changed. Returned as UTC time in ISO 8601 format"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesBaseRisk",
+    "properties": {
+      "riskFactors": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The factors of the risk adding base factor"
+      },
+      "level": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The risk level"
+      },
+      "attackPathsReferences": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The attack paths references of the risk"
+      },
+      "paths": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0
+      },
+      "isContextualRisk": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates if the risk is contextual or static"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesBaseRiskPathsItem",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Unique identifier for the path"
+      },
+      "nodes": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0
+      },
+      "edges": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Connections between nodes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesBaseRiskPathsItemNodesItem",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Node identifier"
+      },
+      "nodePropertiesLabel": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Properties associated with the node"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesBaseRiskPathsItemEdgeItem",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Edge identifier"
+      },
+      "targetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Target node identifier"
+      },
+      "sourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Source node identifier"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/23"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "CommonResourceDetails",
+    "discriminator": "source",
+    "baseProperties": {},
+    "elements": {
+      "Azure": {
+        "$ref": "#/28"
+      },
+      "OnPremiseSql": {
+        "$ref": "#/30"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Azure resource Id of the assessed resource"
+      },
+      "source": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 1,
+        "description": "The platform where the assessed resource resides"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnPremiseSqlResourceDetails",
+    "properties": {
+      "serverName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Sql server name installed on the machine"
+      },
+      "databaseName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Sql database name installed on the machine"
+      },
+      "workspaceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Azure resource Id of the workspace the machine is attached to"
+      },
+      "vmuuid": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The unique Id of the machine"
+      },
+      "sourceComputerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The oms agent Id installed on the machine"
+      },
+      "machineName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the machine"
+      },
+      "source": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The platform where the assessed resource resides"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnPremiseSql"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesBaseAdditionalData",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssessmentLinks",
+    "properties": {
+      "azurePortalUri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link to assessment in Azure Portal"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentMetadataProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "User friendly display name of the assessment"
+      },
+      "policyDefinitionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Azure resource ID of the policy definition that turns this assessment calculation on"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of the assessment"
+      },
+      "remediationDescription": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of what you should do to mitigate this security issue"
+      },
+      "categories": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "The severity level of the assessment"
+      },
+      "userImpact": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The user impact of the assessment"
+      },
+      "implementationEffort": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "The implementation effort required to remediate this assessment"
+      },
+      "threats": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0
+      },
+      "preview": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True if this assessment is in preview release status"
+      },
+      "assessmentType": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition"
+      },
+      "partnerData": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Describes the partner that created the assessment"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Networking"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Data"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IdentityAndAccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IoT"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Container"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppServices"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moderate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moderate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "accountBreach"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dataExfiltration"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dataSpillage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "maliciousInsider"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "elevationOfPrivilege"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "threatResistance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "missingCoverage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "denialOfService"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BuiltIn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomPolicy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BuiltInPolicy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VerifiedPartner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManualBuiltInPolicy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManualBuiltIn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManualCustomPolicy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DynamicBuiltIn"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentMetadataPartnerData",
+    "properties": {
+      "partnerName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the company of the partner"
+      },
+      "productName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the product of the partner that created the assessment"
+      },
+      "secret": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "Secret to authenticate the partner and verify it created the assessment - write only"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPartnerData",
+    "properties": {
+      "partnerName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the company of the partner"
+      },
+      "secret": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "secret to authenticate the partner - write only"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/assessments@2025-05-04",
+    "body": {
+      "$ref": "#/3"
+    },
+    "readableScopes": 31,
+    "writableScopes": 31
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/assessmentMetadata"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-04"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/assessmentMetadata",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
         "description": "Describes properties of an assessment metadata response."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -57,25 +1145,25 @@
     "properties": {
       "publishDates": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/98"
         },
         "flags": 0
       },
       "plannedDeprecationDate": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/100"
         },
         "flags": 0
       },
       "tactics": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/116"
         },
         "flags": 0
       },
       "techniques": {
         "type": {
-          "$ref": "#/129"
+          "$ref": "#/222"
         },
         "flags": 0
       },
@@ -109,54 +1197,54 @@
       },
       "categories": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/231"
         },
         "flags": 0
       },
       "severity": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/236"
         },
         "flags": 1,
         "description": "The severity level of the assessment"
       },
       "userImpact": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/240"
         },
         "flags": 0,
         "description": "The user impact of the assessment"
       },
       "implementationEffort": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "The implementation effort required to remediate this assessment"
       },
       "threats": {
         "type": {
-          "$ref": "#/161"
+          "$ref": "#/254"
         },
         "flags": 0
       },
       "preview": {
         "type": {
-          "$ref": "#/162"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "True if this assessment is in preview release status"
       },
       "assessmentType": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/266"
         },
         "flags": 1,
         "description": "BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition"
       },
       "partnerData": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "Describes the partner that created the assessment"
@@ -169,13 +1257,13 @@
     "properties": {
       "GA": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/99"
         },
         "flags": 0
       },
       "public": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/99"
         },
         "flags": 1
       }
@@ -249,46 +1337,46 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/8"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/9"
+        "$ref": "#/102"
       },
       {
-        "$ref": "#/10"
+        "$ref": "#/103"
       },
       {
-        "$ref": "#/11"
+        "$ref": "#/104"
       },
       {
-        "$ref": "#/12"
+        "$ref": "#/105"
       },
       {
-        "$ref": "#/13"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/14"
+        "$ref": "#/107"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/108"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/109"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/110"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/111"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/112"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/21"
+        "$ref": "#/114"
       },
       {
         "$ref": "#/0"
@@ -298,7 +1386,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/22"
+      "$ref": "#/115"
     }
   },
   {
@@ -721,285 +1809,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/24"
-      },
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/39"
-      },
-      {
-        "$ref": "#/40"
-      },
-      {
-        "$ref": "#/41"
-      },
-      {
-        "$ref": "#/42"
-      },
-      {
-        "$ref": "#/43"
-      },
-      {
-        "$ref": "#/44"
-      },
-      {
-        "$ref": "#/45"
-      },
-      {
-        "$ref": "#/46"
-      },
-      {
-        "$ref": "#/47"
-      },
-      {
-        "$ref": "#/48"
-      },
-      {
-        "$ref": "#/49"
-      },
-      {
-        "$ref": "#/50"
-      },
-      {
-        "$ref": "#/51"
-      },
-      {
-        "$ref": "#/52"
-      },
-      {
-        "$ref": "#/53"
-      },
-      {
-        "$ref": "#/54"
-      },
-      {
-        "$ref": "#/55"
-      },
-      {
-        "$ref": "#/56"
-      },
-      {
-        "$ref": "#/57"
-      },
-      {
-        "$ref": "#/58"
-      },
-      {
-        "$ref": "#/59"
-      },
-      {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/61"
-      },
-      {
-        "$ref": "#/62"
-      },
-      {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/65"
-      },
-      {
-        "$ref": "#/66"
-      },
-      {
-        "$ref": "#/67"
-      },
-      {
-        "$ref": "#/68"
-      },
-      {
-        "$ref": "#/69"
-      },
-      {
-        "$ref": "#/70"
-      },
-      {
-        "$ref": "#/71"
-      },
-      {
-        "$ref": "#/72"
-      },
-      {
-        "$ref": "#/73"
-      },
-      {
-        "$ref": "#/74"
-      },
-      {
-        "$ref": "#/75"
-      },
-      {
-        "$ref": "#/76"
-      },
-      {
-        "$ref": "#/77"
-      },
-      {
-        "$ref": "#/78"
-      },
-      {
-        "$ref": "#/79"
-      },
-      {
-        "$ref": "#/80"
-      },
-      {
-        "$ref": "#/81"
-      },
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/84"
-      },
-      {
-        "$ref": "#/85"
-      },
-      {
-        "$ref": "#/86"
-      },
-      {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/89"
-      },
-      {
-        "$ref": "#/90"
-      },
-      {
-        "$ref": "#/91"
-      },
-      {
-        "$ref": "#/92"
-      },
-      {
-        "$ref": "#/93"
-      },
-      {
-        "$ref": "#/94"
-      },
-      {
-        "$ref": "#/95"
-      },
-      {
-        "$ref": "#/96"
-      },
-      {
-        "$ref": "#/97"
-      },
-      {
-        "$ref": "#/98"
-      },
-      {
-        "$ref": "#/99"
-      },
-      {
-        "$ref": "#/100"
-      },
-      {
-        "$ref": "#/101"
-      },
-      {
-        "$ref": "#/102"
-      },
-      {
-        "$ref": "#/103"
-      },
-      {
-        "$ref": "#/104"
-      },
-      {
-        "$ref": "#/105"
-      },
-      {
-        "$ref": "#/106"
-      },
-      {
-        "$ref": "#/107"
-      },
-      {
-        "$ref": "#/108"
-      },
-      {
-        "$ref": "#/109"
-      },
-      {
-        "$ref": "#/110"
-      },
-      {
-        "$ref": "#/111"
-      },
-      {
-        "$ref": "#/112"
-      },
-      {
-        "$ref": "#/113"
-      },
-      {
-        "$ref": "#/114"
-      },
-      {
-        "$ref": "#/115"
-      },
-      {
-        "$ref": "#/116"
-      },
-      {
         "$ref": "#/117"
       },
       {
@@ -1033,47 +1842,11 @@
         "$ref": "#/127"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/128"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Compute"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Networking"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Data"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "IdentityAndAccess"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "IoT"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Container"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AppServices"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
       {
         "$ref": "#/130"
       },
@@ -1096,35 +1869,11 @@
         "$ref": "#/136"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/137"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Medium"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Critical"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
       {
         "$ref": "#/139"
       },
@@ -1138,25 +1887,8 @@
         "$ref": "#/142"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Moderate"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/143"
+      },
       {
         "$ref": "#/144"
       },
@@ -1167,25 +1899,8 @@
         "$ref": "#/146"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Moderate"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/147"
+      },
       {
         "$ref": "#/148"
       },
@@ -1196,45 +1911,8 @@
         "$ref": "#/150"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "accountBreach"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "dataExfiltration"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "dataSpillage"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "maliciousInsider"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "elevationOfPrivilege"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "threatResistance"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "missingCoverage"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "denialOfService"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/151"
+      },
       {
         "$ref": "#/152"
       },
@@ -1260,66 +1938,14 @@
         "$ref": "#/159"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/160"
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unknown"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "BuiltIn"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Custom"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "CustomPolicy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "CustomerManaged"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "BuiltInPolicy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "VerifiedPartner"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManualBuiltInPolicy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManualBuiltIn"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManualCustomPolicy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DynamicBuiltIn"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
       {
         "$ref": "#/163"
       },
@@ -1354,217 +1980,32 @@
         "$ref": "#/173"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentMetadataPartnerData",
-    "properties": {
-      "partnerName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Name of the company of the partner"
+        "$ref": "#/174"
       },
-      "productName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Name of the product of the partner that created the assessment"
+      {
+        "$ref": "#/175"
       },
-      "secret": {
-        "type": {
-          "$ref": "#/176"
-        },
-        "flags": 1,
-        "description": "Secret to authenticate the partner and verify it created the assessment - write only"
-      }
-    }
-  },
-  {
-    "$type": "StringType",
-    "sensitive": true
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Security/assessmentMetadata@2025-05-04",
-    "body": {
-      "$ref": "#/3"
-    },
-    "readableScopes": 5,
-    "writableScopes": 4
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Security/assessments"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-04"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Security/assessments",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
+      {
+        "$ref": "#/176"
       },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
+      {
+        "$ref": "#/177"
       },
-      "type": {
-        "type": {
-          "$ref": "#/178"
-        },
-        "flags": 10,
-        "description": "The resource type"
+      {
+        "$ref": "#/178"
       },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/179"
-        },
-        "flags": 10,
-        "description": "The resource api version"
+      {
+        "$ref": "#/179"
       },
-      "properties": {
-        "type": {
-          "$ref": "#/181"
-        },
-        "flags": 0,
-        "description": "Describes properties of an assessment."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPropertiesOrSecurityAssessmentPropertiesResponse",
-    "properties": {
-      "status": {
-        "type": {
-          "$ref": "#/182"
-        },
-        "flags": 1,
-        "description": "The result of the assessment"
+      {
+        "$ref": "#/180"
       },
-      "risk": {
-        "type": {
-          "$ref": "#/187"
-        },
-        "flags": 0,
-        "description": "External model of risk result"
+      {
+        "$ref": "#/181"
       },
-      "resourceDetails": {
-        "type": {
-          "$ref": "#/203"
-        },
-        "flags": 1,
-        "description": "Details of the resource that was assessed"
+      {
+        "$ref": "#/182"
       },
-      "displayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "User friendly display name of the assessment"
-      },
-      "additionalData": {
-        "type": {
-          "$ref": "#/208"
-        },
-        "flags": 0,
-        "description": "Additional data regarding the assessment"
-      },
-      "links": {
-        "type": {
-          "$ref": "#/209"
-        },
-        "flags": 2,
-        "description": "Links relevant to the assessment"
-      },
-      "metadata": {
-        "type": {
-          "$ref": "#/210"
-        },
-        "flags": 0,
-        "description": "Describes properties of an assessment metadata."
-      },
-      "partnersData": {
-        "type": {
-          "$ref": "#/255"
-        },
-        "flags": 0,
-        "description": "Data regarding 3rd party partner integration"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssessmentStatusOrAssessmentStatusResponse",
-    "properties": {
-      "code": {
-        "type": {
-          "$ref": "#/186"
-        },
-        "flags": 1,
-        "description": "Programmatic code for the status of the assessment"
-      },
-      "cause": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Programmatic code for the cause of the assessment status"
-      },
-      "description": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Human readable description of the assessment status"
-      },
-      "firstEvaluationDate": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The time that the assessment was created and first evaluated. Returned as UTC time in ISO 8601 format"
-      },
-      "statusChangeDate": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The time that the status of the assessment last changed. Returned as UTC time in ISO 8601 format"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Healthy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unhealthy"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotApplicable"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
       {
         "$ref": "#/183"
       },
@@ -1575,79 +2016,14 @@
         "$ref": "#/185"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPropertiesBaseRisk",
-    "properties": {
-      "riskFactors": {
-        "type": {
-          "$ref": "#/188"
-        },
-        "flags": 0,
-        "description": "The factors of the risk adding base factor"
+        "$ref": "#/186"
       },
-      "level": {
-        "type": {
-          "$ref": "#/194"
-        },
-        "flags": 0,
-        "description": "The risk level"
+      {
+        "$ref": "#/187"
       },
-      "attackPathsReferences": {
-        "type": {
-          "$ref": "#/195"
-        },
-        "flags": 0,
-        "description": "The attack paths references of the risk"
+      {
+        "$ref": "#/188"
       },
-      "paths": {
-        "type": {
-          "$ref": "#/202"
-        },
-        "flags": 0
-      },
-      "isContextualRisk": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 0,
-        "description": "Indicates if the risk is contextual or static"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Medium"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Critical"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
       {
         "$ref": "#/189"
       },
@@ -1664,6 +2040,87 @@
         "$ref": "#/193"
       },
       {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -1671,310 +2128,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPropertiesBaseRiskPathsItem",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Unique identifier for the path"
-      },
-      "nodes": {
-        "type": {
-          "$ref": "#/199"
-        },
-        "flags": 0
-      },
-      "edges": {
-        "type": {
-          "$ref": "#/201"
-        },
-        "flags": 0,
-        "description": "Connections between nodes"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPropertiesBaseRiskPathsPropertiesItemsItem",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Node identifier"
-      },
-      "nodePropertiesLabel": {
-        "type": {
-          "$ref": "#/198"
-        },
-        "flags": 0,
-        "description": "Properties associated with the node"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/197"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Components1Uu4J47SchemasSecurityassessmentpropertiesbasePropertiesRiskPropertiesPathsItemsPropertiesEdgesItems",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Edge identifier"
-      },
-      "targetId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Target node identifier"
-      },
-      "sourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Source node identifier"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/200"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/196"
-    }
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "ResourceDetails",
-    "discriminator": "source",
-    "baseProperties": {},
-    "elements": {
-      "Azure": {
-        "$ref": "#/204"
-      },
-      "OnPremiseSql": {
-        "$ref": "#/206"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AzureResourceDetails",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Azure resource Id of the assessed resource"
-      },
-      "source": {
-        "type": {
-          "$ref": "#/205"
-        },
-        "flags": 1,
-        "description": "The platform where the assessed resource resides"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Azure"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "OnPremiseSqlResourceDetails",
-    "properties": {
-      "serverName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The Sql server name installed on the machine"
-      },
-      "databaseName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The Sql database name installed on the machine"
-      },
-      "workspaceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Azure resource Id of the workspace the machine is attached to"
-      },
-      "vmuuid": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The unique Id of the machine"
-      },
-      "sourceComputerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The oms agent Id installed on the machine"
-      },
-      "machineName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The name of the machine"
-      },
-      "source": {
-        "type": {
-          "$ref": "#/207"
-        },
-        "flags": 1,
-        "description": "The platform where the assessed resource resides"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "OnPremiseSql"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPropertiesBaseAdditionalData",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssessmentLinks",
-    "properties": {
-      "azurePortalUri": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Link to assessment in Azure Portal"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentMetadataProperties",
-    "properties": {
-      "displayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "User friendly display name of the assessment"
-      },
-      "policyDefinitionId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Azure resource ID of the policy definition that turns this assessment calculation on"
-      },
-      "description": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Human readable description of the assessment"
-      },
-      "remediationDescription": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Human readable description of what you should do to mitigate this security issue"
-      },
-      "categories": {
-        "type": {
-          "$ref": "#/219"
-        },
-        "flags": 0
-      },
-      "severity": {
-        "type": {
-          "$ref": "#/224"
-        },
-        "flags": 1,
-        "description": "The severity level of the assessment"
-      },
-      "userImpact": {
-        "type": {
-          "$ref": "#/228"
-        },
-        "flags": 0,
-        "description": "The user impact of the assessment"
-      },
-      "implementationEffort": {
-        "type": {
-          "$ref": "#/232"
-        },
-        "flags": 0,
-        "description": "The implementation effort required to remediate this assessment"
-      },
-      "threats": {
-        "type": {
-          "$ref": "#/242"
-        },
-        "flags": 0
-      },
-      "preview": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 0,
-        "description": "True if this assessment is in preview release status"
-      },
-      "assessmentType": {
-        "type": {
-          "$ref": "#/254"
-        },
-        "flags": 1,
-        "description": "BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition"
-      },
-      "partnerData": {
-        "type": {
-          "$ref": "#/175"
-        },
-        "flags": 0,
-        "description": "Describes the partner that created the assessment"
-      }
+      "$ref": "#/221"
     }
   },
   {
@@ -2009,25 +2163,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/211"
+        "$ref": "#/223"
       },
       {
-        "$ref": "#/212"
+        "$ref": "#/224"
       },
       {
-        "$ref": "#/213"
+        "$ref": "#/225"
       },
       {
-        "$ref": "#/214"
+        "$ref": "#/226"
       },
       {
-        "$ref": "#/215"
+        "$ref": "#/227"
       },
       {
-        "$ref": "#/216"
+        "$ref": "#/228"
       },
       {
-        "$ref": "#/217"
+        "$ref": "#/229"
       },
       {
         "$ref": "#/0"
@@ -2037,7 +2191,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/218"
+      "$ref": "#/230"
     }
   },
   {
@@ -2060,45 +2214,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/220"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/233"
       },
       {
-        "$ref": "#/222"
+        "$ref": "#/234"
       },
       {
-        "$ref": "#/223"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Low"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Moderate"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "High"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/225"
-      },
-      {
-        "$ref": "#/226"
-      },
-      {
-        "$ref": "#/227"
+        "$ref": "#/235"
       },
       {
         "$ref": "#/0"
@@ -2121,13 +2246,42 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/229"
+        "$ref": "#/237"
       },
       {
-        "$ref": "#/230"
+        "$ref": "#/238"
       },
       {
-        "$ref": "#/231"
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moderate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
       },
       {
         "$ref": "#/0"
@@ -2170,28 +2324,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/233"
+        "$ref": "#/245"
       },
       {
-        "$ref": "#/234"
+        "$ref": "#/246"
       },
       {
-        "$ref": "#/235"
+        "$ref": "#/247"
       },
       {
-        "$ref": "#/236"
+        "$ref": "#/248"
       },
       {
-        "$ref": "#/237"
+        "$ref": "#/249"
       },
       {
-        "$ref": "#/238"
+        "$ref": "#/250"
       },
       {
-        "$ref": "#/239"
+        "$ref": "#/251"
       },
       {
-        "$ref": "#/240"
+        "$ref": "#/252"
       },
       {
         "$ref": "#/0"
@@ -2201,7 +2355,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/241"
+      "$ref": "#/253"
     }
   },
   {
@@ -2252,37 +2406,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/243"
+        "$ref": "#/255"
       },
       {
-        "$ref": "#/244"
+        "$ref": "#/256"
       },
       {
-        "$ref": "#/245"
+        "$ref": "#/257"
       },
       {
-        "$ref": "#/246"
+        "$ref": "#/258"
       },
       {
-        "$ref": "#/247"
+        "$ref": "#/259"
       },
       {
-        "$ref": "#/248"
+        "$ref": "#/260"
       },
       {
-        "$ref": "#/249"
+        "$ref": "#/261"
       },
       {
-        "$ref": "#/250"
+        "$ref": "#/262"
       },
       {
-        "$ref": "#/251"
+        "$ref": "#/263"
       },
       {
-        "$ref": "#/252"
+        "$ref": "#/264"
       },
       {
-        "$ref": "#/253"
+        "$ref": "#/265"
       },
       {
         "$ref": "#/0"
@@ -2290,32 +2444,12 @@
     ]
   },
   {
-    "$type": "ObjectType",
-    "name": "SecurityAssessmentPartnerData",
-    "properties": {
-      "partnerName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Name of the company of the partner"
-      },
-      "secret": {
-        "type": {
-          "$ref": "#/176"
-        },
-        "flags": 1,
-        "description": "secret to authenticate the partner - write only"
-      }
-    }
-  },
-  {
     "$type": "ResourceType",
-    "name": "Microsoft.Security/assessments@2025-05-04",
+    "name": "Microsoft.Security/assessmentMetadata@2025-05-04",
     "body": {
-      "$ref": "#/180"
+      "$ref": "#/96"
     },
-    "readableScopes": 31,
-    "writableScopes": 31
+    "readableScopes": 5,
+    "writableScopes": 4
   }
 ]

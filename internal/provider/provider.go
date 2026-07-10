@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"strings"
+	"text/template"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -34,6 +35,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 var _ provider.Provider = &Provider{}
@@ -41,6 +43,7 @@ var _ provider.ProviderWithFunctions = &Provider{}
 var _ provider.ProviderWithEphemeralResources = &Provider{}
 var _ provider.ProviderWithListResources = &Provider{}
 var _ provider.ProviderWithActions = &Provider{}
+var _ tffwdocs.ProviderWithRenderOption = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -83,6 +86,7 @@ type providerData struct {
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
+	AlwaysAcquirePolicyToken     types.Bool   `tfsdk:"always_acquire_policy_token"`
 	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
@@ -98,7 +102,7 @@ func (p Provider) Metadata(ctx context.Context, request provider.MetadataRequest
 
 func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, response *provider.SchemaResponse) {
 	response.Schema = schema.Schema{
-		Description: "The Azure API Provider",
+		Description: "The Azure API Provider.",
 		Attributes: map[string]schema.Attribute{
 			"subscription_id": schema.StringAttribute{
 				Optional:            true,
@@ -156,7 +160,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.OneOfCaseInsensitive("public", "usgovernment", "china", "custom"),
 				},
-				MarkdownDescription: "The Cloud Environment which should be used. Possible values are `public`, `usgovernment`, `china` and `custom`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.",
+				MarkdownDescription: "The Cloud Environment which should be used. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.",
 			},
 
 			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
@@ -291,7 +295,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"default_location": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: " The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
+				MarkdownDescription: "The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
 			},
 
 			"default_tags": schema.MapAttribute{
@@ -300,7 +304,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
-				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.",
+				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The `tags` in each resource block can override the `default_tags`.",
 			},
 
 			"enable_preflight": schema.BoolAttribute{
@@ -317,7 +321,10 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Optional:    true,
 				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
 			},
-
+			"always_acquire_policy_token": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "Always acquire a policy token for write requests, regardless of whether one is required. The default is `false`. The default behaviour is to wait for a qualifying `403` response indicating that a policy token is required, and then retry the request with an acquired policy token. When this attribute is set to `true`, the provider proactively acquires a policy token and attaches it to every write request, avoiding the extra round-trip per request. Performance will be improved if the number of changed resources is known to be large beforehand. This can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` Environment Variable. See [Feature: Acquire Policy Token](guides/feature_acquire_policy_token.html) to learn more.",
+			},
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
 				Optional:            true,
 				MarkdownDescription: "DEPRECATED - The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `32767`, this allows the provider to rely on the resource timeout values rather than a maximum retry count. The resource-specific retry configuration may additionally be used to retry on other errors and conditions. This property will be removed in a future version.",
@@ -581,6 +588,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.AlwaysAcquirePolicyToken.IsNull() {
+		if v := os.Getenv("ARM_ALWAYS_ACQUIRE_POLICY_TOKEN"); v != "" {
+			model.AlwaysAcquirePolicyToken = types.BoolValue(v == "true")
+		} else {
+			model.AlwaysAcquirePolicyToken = types.BoolValue(false)
+		}
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -687,6 +702,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		SubscriptionId:              model.SubscriptionID.ValueString(),
 		TenantId:                    model.TenantID.ValueString(),
 		AuxiliaryTenants:            auxTenants,
+		AlwaysAcquirePolicyToken:    model.AlwaysAcquirePolicyToken.ValueBool(),
 	}
 
 	client := &clients.Client{}
@@ -851,4 +867,63 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 	})
 
 	return cred, err
+}
+
+func (p *Provider) RenderOption() tffwdocs.ProviderRenderOption {
+	return tffwdocs.ProviderRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+# We strongly recommend using the required_providers block to set the
+# Azure Provider source and version being used
+terraform {
+  required_providers {
+    azapi = {
+      source = "azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}`,
+			},
+		},
+		Template: template.Must(template.New("provider").Parse(`---
+layout: "azapi"
+page_title: "Provider: Azure API"
+description: |-
+  The AzAPI Provider is used to interact with the many resources supported by Azure Resource Manager through its APIs.
+---
+
+# AzAPI Provider
+
+The AzAPI provider is a very thin layer on top of the [Azure ARM REST APIs](https://learn.microsoft.com/rest/api/azure). This provider complements the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
+
+Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
+
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/main/CHANGELOG.md) for version information and release notes.
+
+For VS Code authoring, install the [Microsoft Terraform extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) which now contains the former AzAPI extension features (the standalone AzAPI extension has been deprecated).
+
+Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
+
+## Authenticating to Azure
+
+Terraform supports a number of different methods for authenticating to Azure:
+
+* [Authenticating to Azure using the Azure CLI](guides/azure_cli.html)
+* [Authenticating to Azure using Managed Service Identity](guides/managed_service_identity.html)
+* [Authenticating to Azure using a Service Principal and a Client Certificate](guides/service_principal_client_certificate.html)
+* [Authenticating to Azure using a Service Principal and a Client Secret](guides/service_principal_client_secret.html)
+* [Authenticating to Azure using OpenID Connect](guides/service_principal_oidc.html)
+
+---
+
+We recommend using either a Service Principal or Managed Service Identity when running Terraform non-interactively (such as when running Terraform in a CI server) - and authenticating using the Azure CLI when running Terraform locally.
+
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}`)),
+	}
 }
