@@ -1,14 +1,14 @@
 ---
 layout: "azapi"
-page_title: "Feature: Migrate from Azurerm"
+page_title: "Feature: Migrate from AzureRM"
 description: |-
-  This guide will cover how to migrate your existing AzureRM resources to AzApi in Terraform Module.
+  This guide will cover how to migrate your existing AzureRM resources to AzAPI in Terraform Module.
 
 ---
 
 ## Introduction
 
-This guide is intended to help you migrate your existing AzureRM resources to AzApi in Terraform Module. 
+This guide is intended to help you migrate your existing AzureRM resources to AzAPI in Terraform Module. 
 
 
 ## Prerequisites
@@ -19,7 +19,7 @@ This guide is intended to help you migrate your existing AzureRM resources to Az
 
 ## Migration Steps
 
-This guide will walk you through the steps to migrate your existing AzureRM resources to AzApi in Terraform Module. 
+This guide will walk you through the steps to migrate your existing AzureRM resources to AzAPI in Terraform Module. 
 It will use [terraform-azurerm-avm-ptn-aks-dev](https://github.com/Azure/terraform-azurerm-avm-ptn-aks-dev) as an example.
 The target is to migrate the `azurerm_management_lock` to `azapi_resource` in the module.
 

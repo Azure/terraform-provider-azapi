@@ -82,7 +82,7 @@ resource "azapi_resource" "cluster" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Kusto/clusters@api-version`. The available api-versions for this resource are: [`2018-09-07-preview`, `2019-01-21`, `2019-05-15`, `2019-09-07`, `2019-11-09`, `2020-02-15`, `2020-06-14`, `2020-09-18`, `2021-01-01`, `2021-08-27`, `2022-02-01`, `2022-07-07`, `2022-11-11`, `2022-12-29`, `2023-05-02`, `2023-08-15`, `2024-04-13`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Kusto/clusters@api-version`. The available api-versions for this resource are: [`2018-09-07-preview`, `2019-01-21`, `2019-05-15`, `2019-09-07`, `2019-11-09`, `2020-02-15`, `2020-06-14`, `2020-09-18`, `2021-01-01`, `2021-08-27`, `2022-02-01`, `2022-07-07`, `2022-11-11`, `2022-12-29`, `2023-05-02`, `2023-08-15`, `2024-04-13`, `2025-02-14`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -100,5 +100,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{resourceName}?api-version=2024-04-13
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{resourceName}?api-version=2025-02-14
  ```

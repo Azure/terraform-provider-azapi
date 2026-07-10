@@ -68,7 +68,7 @@ resource "azapi_resource" "account" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Monitor/accounts@api-version`. The available api-versions for this resource are: [`2021-06-03-preview`, `2023-04-03`, `2023-10-01-preview`, `2025-05-03-preview`, `2025-10-03-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Monitor/accounts@api-version`. The available api-versions for this resource are: [`2021-06-03-preview`, `2023-04-03`, `2023-10-01-preview`, `2025-05-03-preview`, `2025-10-03`, `2025-10-03-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
