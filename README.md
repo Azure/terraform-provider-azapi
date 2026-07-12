@@ -4,9 +4,9 @@ The AzAPI provider is a very thin layer on top of the [Azure ARM REST APIs](http
 
 This provider complements the AzureRM provider by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
 
-## Get started with AzApi
+## Get started with AzAPI
 
-* [AzApi Provider Overview](https://docs.microsoft.com/en-us/azure/developer/terraform/overview-azapi-provider)
+* [AzAPI Provider Overview](https://docs.microsoft.com/en-us/azure/developer/terraform/overview-azapi-provider)
 
 * [Learn how to use azapi_resource](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-azapi-resource)
 
@@ -31,7 +31,7 @@ terraform {
 
 provider "azapi" {
   # More information on the authentication methods supported by
-  # the AzApi Provider can be found here:
+  # the AzAPI Provider can be found here:
   # https://registry.terraform.io/providers/Azure/azapi/latest/docs
 
   # subscription_id = "..."

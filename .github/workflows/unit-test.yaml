@@ -6,6 +6,8 @@ on:
     paths:
       - '**.go'
       - '**.tf'
+      - 'docs/**'
+      - 'internal/azure/generated/**'
       - 'vendor/**'
       - '.github/workflows/**'
 
@@ -22,14 +24,11 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
-      - name: Install Terraform dev version
-        run: |
-          git clone https://github.com/hashicorp/terraform.git
-          cd terraform
-          git checkout v1.14.0
-          go install
-          cd ..
-          terraform version
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+      - run: terraform version
       - run: go generate ./...
       - name: git diff
         run: |
