@@ -21,7 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-func TestAzapiResourceReadSetsIdentityWhenArmReturnsEmptyObject(t *testing.T) {
+func TestAzapiResourceReadSetsIdentityWhenArmReturnsNotFound(t *testing.T) {
 	ctx := context.Background()
 	resourceID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctest-rg"
 	resourceType := "Microsoft.Resources/resourceGroups@2021-04-01"
@@ -29,7 +29,7 @@ func TestAzapiResourceReadSetsIdentityWhenArmReturnsEmptyObject(t *testing.T) {
 	resourceClient, err := clients.NewResourceClient(staticTokenCredential{}, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: staticTransport{
-				statusCode: http.StatusOK,
+				statusCode: http.StatusNotFound,
 				body:       `{}`,
 			},
 		},
@@ -86,6 +86,9 @@ func TestAzapiResourceReadSetsIdentityWhenArmReturnsEmptyObject(t *testing.T) {
 	azapiResource.Read(ctx, readRequest, &readResponse)
 	if readResponse.Diagnostics.HasError() {
 		t.Fatalf("reading resource: %+v", readResponse.Diagnostics)
+	}
+	if readResponse.Identity.Raw.IsFullyNull() {
+		t.Fatal("expected identity to be populated from the existing resource state")
 	}
 
 	var identity services.AzapiResourceIdentityModel
