@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"testing"
 
@@ -187,6 +188,27 @@ func TestAccGenericResource_preflightValidationInvokedForUpdates(t *testing.T) {
 			Config:      r.preflightValidationInvokedForUpdates(data, false),
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile("Error: Preflight Validation: Invalid configuration"),
+		},
+	})
+}
+
+func TestAccGenericResource_preflightResourceGroupScopedIdentity(t *testing.T) {
+	rgContributorClientId := os.Getenv("AZAPI_RG_CONTRIBUTOR_CLIENT_ID")
+	rgContributorClientSecret := os.Getenv("AZAPI_RG_CONTRIBUTOR_CLIENT_SECRET")
+	rgName := os.Getenv("AZAPI_RG_NAME")
+	rgLocation := os.Getenv("AZAPI_RG_LOCATION")
+
+	// Not running this test in acctest pipeline because to scope the identity to an RG, the pipeline SP need to have
+	// Entra ID Admin permission.
+	if rgContributorClientId == "" || rgContributorClientSecret == "" || rgName == "" || rgLocation == "" {
+		t.Skip("Skipping preflight resource-group scoped identity test because AZAPI_RG_CONTRIBUTOR_CLIENT_ID, AZAPI_RG_CONTRIBUTOR_CLIENT_SECRET, AZAPI_RG_NAME, and AZAPI_RG_LOCATION must be set")
+	}
+
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightResourceGroupScopedIdentity(data, rgContributorClientId, rgContributorClientSecret, rgName, rgLocation),
 		},
 	})
 }
@@ -504,4 +526,38 @@ resource "azapi_resource" "test" {
   schema_validation_enabled = false
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, strayProp)
+}
+
+func (r GenericResource) preflightResourceGroupScopedIdentity(data acceptance.TestData, rgContributorClientId, rgContributorClientSecret, rgName, rgLocation string) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+  client_id        = %[1]q
+  client_secret    = %[2]q
+}
+
+data "azapi_client_config" "current" {}
+
+import {
+  to = azapi_resource.rg
+  id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/%[3]s"
+}
+
+resource "azapi_resource" "rg" {
+  type     = "Microsoft.Resources/resourceGroups@2025-04-01"
+  name     = "%[3]s"
+  location = "%[4]s"
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.rg.id
+  name      = "acctestsa%[4]s"
+  location  = "%[5]s"
+  body = {
+    kind = "StorageV2"
+    sku  = { name = "Standard_LRS" }
+  }
+}
+`, rgContributorClientId, rgContributorClientSecret, rgName, rgLocation, data.RandomString, data.LocationPrimary)
 }
