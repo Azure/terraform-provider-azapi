@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+
       - name: Checkout current repository
         uses: actions/checkout@v4
         with:
@@ -93,6 +98,13 @@ jobs:
           find . -type f -name "*.md" -delete
           find . -type f -name "*.out" -delete
 
+      - name: Sync generated docs to updated source
+        run: |
+          set -xe
+          go version
+          go build -buildvcs=false
+          go generate ./...
+
       - name: Configure git name and email
         run: |
           set -xe
@@ -103,6 +115,7 @@ jobs:
         id: commit
         run: |
           set -xe
+          git diff --name-status
           git add -A
           if git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)"; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
