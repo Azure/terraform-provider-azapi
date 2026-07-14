@@ -1,3 +1,9 @@
+## v2.11.0 (Unreleased)
+
+ENHANCEMENTS:
+
+- `azapi_resource`, `azapi_update_resource` resources: Support `read_action`, `read_action_method`, and `read_action_response_path` arguments to read property values from a list-style action (for example a `POST` to `.../config/appsettings/list`) when a plain `GET` returns them empty. By default a `POST {resource_id}/list` fallback is attempted automatically when the `GET` response covers none of the configured body properties, fixing perpetual diffs for resources such as `Microsoft.Web/sites/config` app settings (GH-1167).
+
 ## v2.10.0
 
 ENHANCEMENTS:

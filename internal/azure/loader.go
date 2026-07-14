@@ -82,3 +82,45 @@ func GetResourceDefinition(resourceType, apiVersion string) (*types.ResourceType
 	}
 	return nil, fmt.Errorf("failed to find resource type %s api-version %s in azure schema index", resourceType, apiVersion)
 }
+
+// GetFunctionDefinitions returns all resource function definitions registered for the given
+// resource type and api-version (e.g. list, listKeys). Returns an empty slice when none exist.
+func GetFunctionDefinitions(resourceType, apiVersion string) ([]*types.ResourceFunctionType, error) {
+	azureSchema := GetAzureSchema()
+	if azureSchema == nil {
+		return nil, fmt.Errorf("failed to load azure schema index")
+	}
+	res := make([]*types.ResourceFunctionType, 0)
+	for key, value := range azureSchema.Functions {
+		if strings.EqualFold(key, resourceType) {
+			for _, v := range value.Definitions {
+				if v.ApiVersion != apiVersion {
+					continue
+				}
+				def, err := v.GetDefinition()
+				if err != nil {
+					return nil, err
+				}
+				if def != nil {
+					res = append(res, def)
+				}
+			}
+		}
+	}
+	return res, nil
+}
+
+// GetFunctionDefinition returns the resource function definition matching the given name
+// (case-insensitive) for the resource type and api-version, or nil when not found.
+func GetFunctionDefinition(resourceType, apiVersion, name string) (*types.ResourceFunctionType, error) {
+	definitions, err := GetFunctionDefinitions(resourceType, apiVersion)
+	if err != nil {
+		return nil, err
+	}
+	for _, def := range definitions {
+		if strings.EqualFold(def.Name, name) {
+			return def, nil
+		}
+	}
+	return nil, nil
+}
