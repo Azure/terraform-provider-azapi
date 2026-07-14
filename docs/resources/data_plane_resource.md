@@ -284,6 +284,7 @@ Optional:
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan                                                        |
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints | /managedvirtualnetworks/{managedVirtualNetworkName}/managedprivateendpoints/{managedPrivateEndpointName} | {accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}     |
 | Microsoft.Purview/accounts/Workflow/workflows | /workflows/{workflowId} | {accountName}.purview.azure.com                                                             |
+| Microsoft.Search/searchServices/aliases | /aliases('{aliasName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/datasources | /datasources('{dataSourceName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/indexers | /indexers('{indexerName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
@@ -918,6 +919,114 @@ resource "azapi_data_plane_resource" "example" {
 }
 ```
 
+### Microsoft.Search/searchServices/aliases
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "index" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "hotels-index"
+  body = {
+    fields = [
+      {
+        name       = "hotelId"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "hotelName"
+        type       = "Edm.String"
+        searchable = true
+      }
+    ]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/aliases@2026-04-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myalias"
+  body = {
+    name    = "myalias"
+    indexes = [azapi_data_plane_resource.index.name]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_data_plane_resource.index,
+  ]
+}
+```
+
 ### Microsoft.Search/searchServices/datasources
 
 ```terraform
@@ -1038,6 +1147,169 @@ resource "azapi_data_plane_resource" "example" {
 }
 ```
 
+### Microsoft.Search/searchServices/indexers
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplestorageacct"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+}
+
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-01-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "storageContainer" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01"
+  parent_id = "${azapi_resource.storageAccount.id}/blobServices/default"
+  name      = "content"
+  body = {
+    properties = {}
+  }
+}
+
+resource "azapi_data_plane_resource" "index" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "hotels-index"
+  body = {
+    fields = [
+      {
+        name       = "hotelId"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "hotelName"
+        type       = "Edm.String"
+        searchable = true
+      }
+    ]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "datasource" {
+  type      = "Microsoft.Search/searchServices/datasources@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mydatasource"
+  body = {
+    type = "azureblob"
+    credentials = {
+      connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
+    }
+    container = {
+      name = azapi_resource.storageContainer.name
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/indexers@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myindexer"
+  body = {
+    dataSourceName  = azapi_data_plane_resource.datasource.name
+    targetIndexName = azapi_data_plane_resource.index.name
+    schedule = {
+      interval = "PT2H"
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_data_plane_resource.datasource,
+    azapi_data_plane_resource.index,
+  ]
+}
+```
+
 ### Microsoft.Search/searchServices/indexes
 
 ```terraform
@@ -1133,6 +1405,107 @@ resource "azapi_data_plane_resource" "example" {
         type       = "Edm.String"
         searchable = true
         filterable = true
+      }
+    ]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+```
+
+### Microsoft.Search/searchServices/skillsets
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/skillsets@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myskillset"
+  body = {
+    description = "Example skillset that splits document content into pages"
+    skills = [
+      {
+        "@odata.type"     = "#Microsoft.Skills.Text.SplitSkill"
+        name              = "split-into-pages"
+        textSplitMode     = "pages"
+        maximumPageLength = 1000
+        inputs = [
+          {
+            name   = "text"
+            source = "/document/content"
+          }
+        ]
+        outputs = [
+          {
+            name       = "textItems"
+            targetName = "pages"
+          }
+        ]
       }
     ]
   }
