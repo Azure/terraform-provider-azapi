@@ -317,6 +317,9 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		}
 
 		if actionWillRun && !skip.CanSkipExternalRequest(*state, *plan, "update") {
+			// The action response can vary between runs, so output fields must remain unknown until apply.
+			plan.Output = basetypes.NewDynamicUnknown()
+			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 			plan.Exist = basetypes.NewBoolUnknown()
 		}
 
