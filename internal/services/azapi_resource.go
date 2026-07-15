@@ -1030,6 +1030,9 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+	if response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), model.ID)...); response.Diagnostics.HasError() {
+		return
+	}
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
@@ -1188,7 +1191,6 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
-	response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), state.ID)...)
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
