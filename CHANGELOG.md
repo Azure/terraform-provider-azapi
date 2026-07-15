@@ -12,6 +12,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 
+- Fix `Missing Resource Identity After Read` after upgrading from v2.7.0 when a resource is deleted outside Terraform (GH-1050).
 - Fix `azapi_resource_action` output handling when updating existing actions (GH-1158).
 - Fix `azapi_resource_action` output being set incorrectly while the action is executing (GH-1168).
 - Fix `ResourceClient CreateOrUpdate` to return the initial PUT body correctly (GH-1160).
