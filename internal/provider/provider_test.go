@@ -2,6 +2,8 @@ package provider
 
 import "testing"
 
+// AzAPI acctest pipeline uses password based secret and does not yet support OIDC / federated token, hence we only
+// do unit test coverage
 func TestGetOIDCTokenFilePathFromEnv(t *testing.T) {
 	t.Run("prefers ARM_OIDC_TOKEN_FILE_PATH", func(t *testing.T) {
 		t.Setenv("ARM_OIDC_TOKEN_FILE_PATH", "/tmp/arm-token")
