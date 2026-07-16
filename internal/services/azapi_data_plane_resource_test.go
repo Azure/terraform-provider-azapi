@@ -97,10 +97,29 @@ func TestAccDataPlaneResource_keyVaultSecret(t *testing.T) {
 	})
 }
 
-func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
+func TestAccDataPlaneResource_keyVaultCertificate(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.keyVaultCertificate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.keyVaultCertificateUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.iotAppsUser(data),
@@ -609,6 +628,134 @@ resource "azapi_resource_action" "add_accesspolicy_secret" {
           secrets = [
             "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"
           ]
+        }
+      }]
+    }
+  }
+}
+
+
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultCertificate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/certificates@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    policy = {
+      issuer = {
+        name = "Self"
+      }
+      key_props = {
+        exportable = true
+        kty        = "RSA"
+        key_size   = 2048
+        reuse_key  = false
+      }
+      secret_props = {
+        contentType = "application/x-pkcs12"
+      }
+      x509_props = {
+        subject         = "CN=contoso.com"
+        validity_months = 12
+      }
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_certificate
+  ]
+}`, r.keyVaultCertificateTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultCertificateUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/certificates@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    policy = {
+      issuer = {
+        name = "Self"
+      }
+      key_props = {
+        exportable = true
+        kty        = "RSA"
+        key_size   = 2048
+        reuse_key  = false
+      }
+      secret_props = {
+        contentType = "application/x-pkcs12"
+      }
+      x509_props = {
+        subject         = "CN=contoso.com"
+        validity_months = 12
+      }
+    }
+    tags = {
+      environment = "test"
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_certificate
+  ]
+}`, r.keyVaultCertificateTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultCertificateTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId       = data.azapi_client_config.current.tenant_id
+      accessPolicies = []
+    }
+  }
+  schema_validation_enabled = false
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
+  response_export_values = {
+    "vaultUri" = "properties.vaultUri"
+  }
+}
+
+resource "azapi_resource_action" "add_accesspolicy_certificate" {
+  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
+  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
+  method      = "PUT"
+  body = {
+    properties = {
+      accessPolicies = [{
+        tenantId = data.azapi_client_config.current.tenant_id
+        objectId = data.azapi_client_config.current.object_id
+        permissions = {
+          certificates = ["Create", "Get", "Delete", "Purge"]
         }
       }]
     }
