@@ -766,6 +766,9 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 			return &services.AzapiResourceDataSource{}
 		},
 		func() datasource.DataSource {
+			return &services.DataPlaneResourceDataSource{}
+		},
+		func() datasource.DataSource {
 			return &services.ClientConfigDataSource{}
 		},
 	}
