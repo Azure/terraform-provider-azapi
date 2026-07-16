@@ -96,6 +96,18 @@ type providerEndpointData struct {
 	ResourceManagerAudience      types.String `tfsdk:"resource_manager_audience"`
 }
 
+func getOIDCTokenFilePathFromEnv(useAKSWorkloadIdentity bool) string {
+	if v := os.Getenv("ARM_OIDC_TOKEN_FILE_PATH"); v != "" {
+		return v
+	}
+	if useAKSWorkloadIdentity {
+		if v := os.Getenv("AZURE_FEDERATED_TOKEN_FILE"); v != "" {
+			return v
+		}
+	}
+	return ""
+}
+
 func (p Provider) Metadata(ctx context.Context, request provider.MetadataRequest, response *provider.MetadataResponse) {
 	response.TypeName = "azapi"
 }
@@ -483,9 +495,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	}
 
 	if model.OIDCTokenFilePath.IsNull() {
-		if v := os.Getenv("ARM_OIDC_TOKEN_FILE_PATH"); v != "" {
-			model.OIDCTokenFilePath = types.StringValue(v)
-		} else if v := os.Getenv("AZURE_FEDERATED_TOKEN_FILE"); v != "" {
+		if v := getOIDCTokenFilePathFromEnv(model.UseAKSWorkloadIdentity.ValueBool()); v != "" {
 			model.OIDCTokenFilePath = types.StringValue(v)
 		}
 	}
