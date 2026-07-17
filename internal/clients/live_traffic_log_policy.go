@@ -2,13 +2,11 @@ package clients
 
 import (
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const redactedValue = "REDACTED"
@@ -83,25 +81,14 @@ func (p *liveTrafficLogPolicy) requestBodyString(req *policy.Request) string {
 	if req.Raw().Body == nil {
 		return ""
 	}
-	body, err := io.ReadAll(req.Raw().Body)
-	if err != nil {
-		log.Printf("[ERROR] Failed to read request body: %v", err)
-		body = []byte(err.Error())
-	}
-	if err := req.RewindBody(); err != nil {
-		log.Printf("[ERROR] Failed to rewind request body: %v", err)
-		return ""
-	}
-	return string(body)
+	return redactedValue
 }
 
 func (p *liveTrafficLogPolicy) responseBodyString(resp *http.Response) string {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		log.Printf("[ERROR] Failed to read response body: %v", err)
+	if resp.Body == nil {
 		return ""
 	}
-	return string(body)
+	return redactedValue
 }
 
 func (p *liveTrafficLogPolicy) header(input http.Header) map[string]string {

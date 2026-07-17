@@ -356,7 +356,11 @@ func copyFile(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer in.Close()
+	defer func() {
+		if closeErr := in.Close(); closeErr != nil && err == nil {
+			err = closeErr
+		}
+	}()
 
 	// Ensure destination directory exists
 	if err := os.MkdirAll(filepath.Dir(dst), 0o750); err != nil {

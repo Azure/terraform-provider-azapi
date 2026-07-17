@@ -5100,6 +5100,19 @@
     "$type": "ObjectType",
     "name": "SvmPeerCommandResponse",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 0,
+        "description": "Represents the properties of the SVM peer command response."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SvmPeerCommandResponseProperties",
+    "properties": {
       "svmPeeringCommand": {
         "type": {
           "$ref": "#/2"
@@ -5137,7 +5150,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/347"
+      "$ref": "#/348"
     }
   },
   {
@@ -5166,7 +5179,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/349"
+      "$ref": "#/350"
     }
   },
   {
@@ -5188,7 +5201,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/351"
+      "$ref": "#/352"
     }
   },
   {
@@ -5228,7 +5241,7 @@
     "properties": {
       "groupIdsForLdapUser": {
         "type": {
-          "$ref": "#/358"
+          "$ref": "#/359"
         },
         "flags": 0,
         "description": "Group Id list"
@@ -5247,10 +5260,10 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/357"
+      "$ref": "#/358"
     },
     "input": {
-      "$ref": "#/356"
+      "$ref": "#/357"
     }
   },
   {
@@ -5259,7 +5272,7 @@
     "properties": {
       "exclude": {
         "type": {
-          "$ref": "#/363"
+          "$ref": "#/364"
         },
         "flags": 0,
         "description": "Exclude Replications filter. 'None' returns all replications, 'Deleted' excludes deleted replications. Default is 'None'"
@@ -5278,10 +5291,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/361"
+        "$ref": "#/362"
       },
       {
-        "$ref": "#/362"
+        "$ref": "#/363"
       },
       {
         "$ref": "#/2"
@@ -5294,7 +5307,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/377"
+          "$ref": "#/378"
         },
         "flags": 1,
         "description": "The Replication items on this page"
@@ -5321,14 +5334,14 @@
       },
       "endpointType": {
         "type": {
-          "$ref": "#/368"
+          "$ref": "#/369"
         },
         "flags": 0,
         "description": "Indicates whether the local volume is the source or destination for the Volume Replication"
       },
       "replicationSchedule": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/373"
         },
         "flags": 0,
         "description": "Schedule"
@@ -5349,7 +5362,7 @@
       },
       "mirrorState": {
         "type": {
-          "$ref": "#/376"
+          "$ref": "#/377"
         },
         "flags": 2,
         "description": "The status of the replication"
@@ -5382,10 +5395,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/366"
+        "$ref": "#/367"
       },
       {
-        "$ref": "#/367"
+        "$ref": "#/368"
       },
       {
         "$ref": "#/2"
@@ -5408,13 +5421,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/369"
-      },
-      {
         "$ref": "#/370"
       },
       {
         "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
       },
       {
         "$ref": "#/2"
@@ -5437,13 +5450,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/373"
-      },
-      {
         "$ref": "#/374"
       },
       {
         "$ref": "#/375"
+      },
+      {
+        "$ref": "#/376"
       },
       {
         "$ref": "#/2"
@@ -5453,7 +5466,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/365"
+      "$ref": "#/366"
     }
   },
   {
@@ -5462,10 +5475,10 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/364"
+      "$ref": "#/365"
     },
     "input": {
-      "$ref": "#/360"
+      "$ref": "#/361"
     }
   },
   {
@@ -5474,7 +5487,7 @@
     "properties": {
       "peerIpAddresses": {
         "type": {
-          "$ref": "#/380"
+          "$ref": "#/381"
         },
         "flags": 1,
         "description": "A list of IC-LIF IPs that can be used to connect to the On-prem cluster"
@@ -5492,12 +5505,32 @@
     "$type": "ObjectType",
     "name": "ClusterPeerCommandResponse",
     "properties": {
-      "peerAcceptCommand": {
+      "properties": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 0,
+        "description": "Represents the properties of the cluster peer command response."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterPeerCommandResponseProperties",
+    "properties": {
+      "clusterPeeringCommand": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "A command that needs to be run on the external ONTAP to accept cluster peering.  Will only be present if <code>clusterPeeringStatus</code> is <code>pending</code>"
+        "description": "ClusterPeeringCommand to run to accept cluster peer. Will only be present if <code>clusterPeeringStatus</code> is <code>pending</code>."
+      },
+      "passphrase": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Passphrase for use with cluster peer command"
       }
     }
   },
@@ -5507,10 +5540,10 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/381"
+      "$ref": "#/382"
     },
     "input": {
-      "$ref": "#/379"
+      "$ref": "#/380"
     }
   },
   {
@@ -5538,7 +5571,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/384"
+      "$ref": "#/386"
     }
   },
   {
@@ -5561,14 +5594,14 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/389"
         },
         "flags": 0,
         "description": "The availability zones."
       },
       "tags": {
         "type": {
-          "$ref": "#/388"
+          "$ref": "#/390"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -5630,7 +5663,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/386"
+      "$ref": "#/388"
     }
   },
   {
@@ -5652,7 +5685,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/390"
+      "$ref": "#/392"
     }
   },
   {
@@ -5680,7 +5713,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/393"
+      "$ref": "#/395"
     }
   },
   {
@@ -5714,7 +5747,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/397"
+      "$ref": "#/399"
     }
   },
   {
@@ -5729,7 +5762,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/386"
+      "$ref": "#/388"
     }
   },
   {
@@ -5747,7 +5780,7 @@
     "properties": {
       "filePaths": {
         "type": {
-          "$ref": "#/403"
+          "$ref": "#/405"
         },
         "flags": 1,
         "description": "List of files to be restored"
@@ -5775,7 +5808,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/402"
+      "$ref": "#/404"
     }
   },
   {
@@ -5805,7 +5838,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/406"
+          "$ref": "#/408"
         },
         "flags": 0,
         "description": "It represents the minimal properties of the subvolume."
@@ -5894,7 +5927,7 @@
     "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/405"
+      "$ref": "#/407"
     }
   }
 ]

@@ -162,6 +162,7 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Output:                        outputVal,
 				Timeouts:                      oldState.Timeouts,
 				Retry:                         retry.NewRetryValueNull(),
+				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
 			}
 

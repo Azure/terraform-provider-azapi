@@ -6,7 +6,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Databricks/workspaces"
+    "value": "Microsoft.Databricks/accessConnectors"
   },
   {
     "$type": "StringType"
@@ -17,7 +17,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Databricks/workspaces",
+    "name": "Microsoft.Databricks/accessConnectors",
     "properties": {
       "id": {
         "type": {
@@ -51,26 +51,19 @@
         "type": {
           "$ref": "#/5"
         },
-        "flags": 1,
-        "description": "The workspace properties."
+        "flags": 0,
+        "description": "Azure Databricks Access Connector properties"
       },
-      "sku": {
+      "identity": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/19"
         },
         "flags": 0,
-        "description": "The SKU of the resource."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/118"
-        },
-        "flags": 2,
-        "description": "The system metadata relating to this resource"
+        "description": "The managed service identities assigned to this resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/129"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -81,6 +74,442 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessConnectorProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "Provisioning status of the Access Connector."
+      },
+      "referedBy": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "List of workspaces referring this Access Connector."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/26"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Databricks/accessConnectors@2026-01-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Databricks/workspaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-01-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Databricks/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "The workspace properties."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "The SKU of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -90,7 +519,7 @@
     "properties": {
       "computeMode": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/47"
         },
         "flags": 1,
         "description": "The workspace compute mode. Required on create, cannot be changed. Possible values include: 'Serverless', 'Hybrid'"
@@ -104,14 +533,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "The workspace's custom parameters."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/91"
         },
         "flags": 2,
         "description": "The workspace provisioning state."
@@ -125,21 +554,21 @@
       },
       "authorizations": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "The workspace provider authorizations."
       },
       "createdBy": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Indicates the Object ID, PUID and Application ID of entity that created the workspace."
       },
       "updatedBy": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Indicates the Object ID, PUID and Application ID of entity that last updated the workspace."
@@ -167,14 +596,14 @@
       },
       "storageAccountIdentity": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The details of Managed Identity of Storage Account. Only returned in Hybrid ComputeMode workspace."
       },
       "managedDiskIdentity": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption. Only returned in Hybrid ComputeMode workspace."
@@ -188,63 +617,63 @@
       },
       "encryption": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Encryption properties for databricks workspace. Supported in both Serverless and Hybrid ComputeMode workspace."
       },
       "enhancedSecurityCompliance": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/106"
         },
         "flags": 0,
         "description": "Contains settings related to the Enhanced Security and Compliance Add-On. Supported in both Serverless and Hybrid ComputeMode workspace."
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/136"
         },
         "flags": 2,
         "description": "Private endpoint connections created on the workspace. Supported in both Serverless and Hybrid ComputeMode workspace."
       },
       "publicNetworkAccess": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/139"
         },
         "flags": 0,
         "description": "The network access type for accessing workspace. Set value to disabled to access workspace only via private link. Used to configure front-end only private link for Serverless ComputeMode workspace."
       },
       "requiredNsgRules": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/143"
         },
         "flags": 0,
         "description": "Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is for internal use only. Not allowed in Serverless ComputeMode workspace."
       },
       "defaultCatalog": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/144"
         },
         "flags": 0,
         "description": "Properties for Default Catalog configuration during workspace creation. Not allowed in Serverless ComputeMode workspace."
       },
       "isUcEnabled": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 2,
         "description": "Indicates whether unity catalog enabled for the workspace or not. Set as true in Serverless ComputeMode workspace."
       },
       "accessConnector": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/148"
         },
         "flags": 0,
         "description": "Access Connector Resource that is going to be associated with Databricks Workspace. Not allowed in Serverless ComputeMode workspace."
       },
       "defaultStorageFirewall": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "Gets or Sets Default Storage Firewall configuration information. Not allowed in Serverless ComputeMode workspace."
@@ -263,10 +692,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/6"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/7"
+        "$ref": "#/46"
       },
       {
         "$ref": "#/2"
@@ -279,112 +708,112 @@
     "properties": {
       "amlWorkspaceId": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The ID of a Azure Machine Learning workspace to link with Databricks workspace. Not allowed in Serverless ComputeMode workspace."
       },
       "customVirtualNetworkId": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The ID of a Virtual Network where this Databricks Cluster should be created. Not allowed in Serverless ComputeMode workspace."
       },
       "customPublicSubnetName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The name of a Public Subnet within the Virtual Network. Not allowed in Serverless ComputeMode workspace."
       },
       "customPrivateSubnetName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The name of the Private Subnet within the Virtual Network. Not allowed in Serverless ComputeMode workspace."
       },
       "enableNoPublicIp": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "Boolean indicating whether the public IP should be disabled. Default value is true. Not allowed in Serverless ComputeMode workspace."
       },
       "loadBalancerBackendPoolName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP). Not allowed in Serverless ComputeMode workspace."
       },
       "loadBalancerId": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace. Not allowed in Serverless ComputeMode workspace."
       },
       "natGatewayName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. Not allowed in Serverless ComputeMode workspace."
       },
       "publicIpName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Name of the Public IP for No Public IP workspace with managed vNet. Not allowed in Serverless ComputeMode workspace."
       },
       "prepareEncryption": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/60"
         },
         "flags": 0,
         "description": "Prepare the workspace for encryption. Enables the Managed Identity for managed storage account. Not allowed in Serverless ComputeMode workspace."
       },
       "encryption": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.Not allowed in Serverless ComputeMode workspace."
       },
       "requireInfrastructureEncryption": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/60"
         },
         "flags": 0,
         "description": "A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest. Not allowed in Serverless ComputeMode workspace."
       },
       "storageAccountName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Default DBFS storage account name. Not allowed in Serverless ComputeMode workspace."
       },
       "storageAccountSkuName": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer https://aka.ms/storageskus for valid inputs. Not allowed in Serverless ComputeMode workspace."
       },
       "vnetAddressPrefix": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "Address prefix for Managed virtual network. Default value for this input is 10.139. Not allowed in Serverless ComputeMode workspace."
       },
       "resourceTags": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/74"
         },
         "flags": 2,
         "description": "Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace level. Not allowed in Serverless ComputeMode workspace."
@@ -397,7 +826,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "The type of variable that this is"
@@ -427,13 +856,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/11"
+        "$ref": "#/50"
       },
       {
-        "$ref": "#/12"
+        "$ref": "#/51"
       },
       {
-        "$ref": "#/13"
+        "$ref": "#/52"
       },
       {
         "$ref": "#/2"
@@ -446,14 +875,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/58"
         },
         "flags": 0,
         "description": "The type of variable that this is"
       },
       "value": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 1,
         "description": "The value which should be used for this field."
@@ -476,13 +905,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/16"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/57"
       },
       {
         "$ref": "#/2"
@@ -498,14 +927,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The type of variable that this is"
       },
       "value": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 1,
         "description": "The value which should be used for this field."
@@ -528,13 +957,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/22"
+        "$ref": "#/61"
       },
       {
-        "$ref": "#/23"
+        "$ref": "#/62"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/63"
       },
       {
         "$ref": "#/2"
@@ -547,14 +976,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/69"
         },
         "flags": 0,
         "description": "The type of variable that this is"
       },
       "value": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "The value which should be used for this field."
@@ -577,13 +1006,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/27"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/28"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/29"
+        "$ref": "#/68"
       },
       {
         "$ref": "#/2"
@@ -596,7 +1025,7 @@
     "properties": {
       "keySource": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/73"
         },
         "flags": 0,
         "description": "The encryption keySource (provider). Possible values (case-insensitive):  Default, Microsoft.Keyvault"
@@ -636,10 +1065,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/32"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/33"
+        "$ref": "#/72"
       },
       {
         "$ref": "#/2"
@@ -652,14 +1081,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "The type of variable that this is"
       },
       "value": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/79"
         },
         "flags": 1,
         "description": "The value which should be used for this field."
@@ -682,13 +1111,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/36"
+        "$ref": "#/75"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/76"
       },
       {
-        "$ref": "#/38"
+        "$ref": "#/77"
       },
       {
         "$ref": "#/2"
@@ -746,37 +1175,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/41"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/82"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/88"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/89"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/90"
       },
       {
         "$ref": "#/2"
@@ -789,14 +1218,14 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 1,
         "description": "The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the workspace resources."
       },
       "roleDefinitionId": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 1,
         "description": "The provider's role definition identifier. This role will define all the permissions that the provider must have on the workspace's container resource group. This role definition cannot have permission to delete the resource group."
@@ -804,15 +1233,9 @@
     }
   },
   {
-    "$type": "StringType",
-    "minLength": 36,
-    "maxLength": 36,
-    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
-  },
-  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/53"
+      "$ref": "#/92"
     }
   },
   {
@@ -821,7 +1244,7 @@
     "properties": {
       "oid": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 2,
         "description": "The Object ID that created the workspace."
@@ -835,7 +1258,7 @@
       },
       "applicationId": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 2,
         "description": "The application ID of the application that initiated the creation of the workspace. For example, Azure Portal."
@@ -848,14 +1271,14 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 2,
         "description": "The objectId of the Managed Identity that is linked to the Managed Storage account."
       },
       "tenantId": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/20"
         },
         "flags": 2,
         "description": "The tenant Id where the Managed Identity is created."
@@ -875,7 +1298,7 @@
     "properties": {
       "entities": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/97"
         },
         "flags": 1,
         "description": "Encryption entities definition for the workspace."
@@ -888,14 +1311,14 @@
     "properties": {
       "managedServices": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "Encryption properties for the databricks managed services. Supported in both Serverless and Hybrid ComputeMode."
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/102"
         },
         "flags": 0,
         "description": "Encryption properties for the databricks managed disks. Not allowed in Serverless ComputeMode workspace."
@@ -908,14 +1331,14 @@
     "properties": {
       "keySource": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/100"
         },
         "flags": 1,
         "description": "The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Keyvault"
       },
       "keyVaultProperties": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "Key Vault input properties for encryption."
@@ -930,7 +1353,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/61"
+        "$ref": "#/99"
       },
       {
         "$ref": "#/2"
@@ -970,21 +1393,21 @@
     "properties": {
       "keySource": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/104"
         },
         "flags": 1,
         "description": "The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Keyvault. Not allowed in Serverless ComputeMode workspace."
       },
       "keyVaultProperties": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/105"
         },
         "flags": 1,
         "description": "Key Vault input properties for encryption."
       },
       "rotationToLatestKeyVersionEnabled": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Indicate whether the latest key version should be automatically used for Managed Disk Encryption."
@@ -999,7 +1422,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/65"
+        "$ref": "#/103"
       },
       {
         "$ref": "#/2"
@@ -1039,21 +1462,21 @@
     "properties": {
       "automaticClusterUpdate": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "Status of automated cluster updates feature."
       },
       "complianceSecurityProfile": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "Status of Compliance Security Profile feature."
       },
       "enhancedSecurityMonitoring": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "Status of Enhanced Security Monitoring feature."
@@ -1066,7 +1489,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/110"
         },
         "flags": 0
       }
@@ -1084,10 +1507,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/70"
+        "$ref": "#/108"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/109"
       },
       {
         "$ref": "#/2"
@@ -1100,14 +1523,14 @@
     "properties": {
       "complianceStandards": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "Compliance standards associated with the workspace."
       },
       "value": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/115"
         },
         "flags": 0
       }
@@ -1131,10 +1554,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/75"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/76"
+        "$ref": "#/114"
       },
       {
         "$ref": "#/2"
@@ -1147,7 +1570,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/119"
         },
         "flags": 0
       }
@@ -1165,10 +1588,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/118"
       },
       {
         "$ref": "#/2"
@@ -1179,33 +1602,40 @@
     "$type": "ObjectType",
     "name": "PrivateEndpointConnection",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 1,
+        "description": "The private endpoint connection properties."
+      },
       "id": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The resource identifier."
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The resource name."
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The resource type."
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
-      "properties": {
+      "systemData": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/29"
         },
-        "flags": 1,
-        "description": "The private endpoint connection properties."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1215,28 +1645,28 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/122"
         },
         "flags": 0,
         "description": "Private endpoint"
       },
       "groupIds": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "GroupIds from the private link service resource."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/124"
         },
         "flags": 1,
         "description": "Private endpoint connection state"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/135"
         },
         "flags": 2,
         "description": "Provisioning state of the private endpoint connection."
@@ -1268,7 +1698,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/129"
         },
         "flags": 1,
         "description": "The status of a private endpoint connection"
@@ -1309,16 +1739,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/87"
+        "$ref": "#/125"
       },
       {
-        "$ref": "#/88"
+        "$ref": "#/126"
       },
       {
-        "$ref": "#/89"
+        "$ref": "#/127"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/128"
       },
       {
         "$ref": "#/2"
@@ -1349,19 +1779,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/92"
+        "$ref": "#/130"
       },
       {
-        "$ref": "#/93"
+        "$ref": "#/131"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/132"
       },
       {
-        "$ref": "#/95"
+        "$ref": "#/133"
       },
       {
-        "$ref": "#/96"
+        "$ref": "#/134"
       },
       {
         "$ref": "#/2"
@@ -1371,7 +1801,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/82"
+      "$ref": "#/120"
     }
   },
   {
@@ -1386,10 +1816,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/99"
+        "$ref": "#/137"
       },
       {
-        "$ref": "#/100"
+        "$ref": "#/138"
       },
       {
         "$ref": "#/2"
@@ -1412,13 +1842,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/102"
+        "$ref": "#/140"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/141"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/142"
       },
       {
         "$ref": "#/2"
@@ -1431,7 +1861,7 @@
     "properties": {
       "initialType": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/147"
         },
         "flags": 0,
         "description": "Defines the initial type of the default catalog. Possible values (case-insensitive):  HiveMetastore, UnityCatalog"
@@ -1457,10 +1887,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/107"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/146"
       },
       {
         "$ref": "#/2"
@@ -1480,7 +1910,7 @@
       },
       "identityType": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/151"
         },
         "flags": 1,
         "description": "The identity type of the Access Connector Resource."
@@ -1506,10 +1936,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/111"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/112"
+        "$ref": "#/150"
       },
       {
         "$ref": "#/2"
@@ -1528,10 +1958,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/114"
+        "$ref": "#/152"
       },
       {
-        "$ref": "#/115"
+        "$ref": "#/153"
       },
       {
         "$ref": "#/2"
@@ -1560,126 +1990,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/123"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/128"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/119"
-      },
-      {
-        "$ref": "#/120"
-      },
-      {
-        "$ref": "#/121"
-      },
-      {
-        "$ref": "#/122"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/124"
-      },
-      {
-        "$ref": "#/125"
-      },
-      {
-        "$ref": "#/126"
-      },
-      {
-        "$ref": "#/127"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
@@ -1690,7 +2000,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Databricks/workspaces@2026-01-01",
     "body": {
-      "$ref": "#/4"
+      "$ref": "#/43"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -1723,24 +2033,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/158"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/159"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/121"
         },
         "flags": 1,
         "description": "The private endpoint connection properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1748,7 +2065,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Databricks/workspaces/privateEndpointConnections@2026-01-01",
     "body": {
-      "$ref": "#/133"
+      "$ref": "#/160"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -1781,24 +2098,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/162"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/163"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/165"
         },
         "flags": 1,
         "description": "List of properties for vNet Peering"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1808,70 +2132,70 @@
     "properties": {
       "allowVirtualNetworkAccess": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space."
       },
       "allowForwardedTraffic": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network."
       },
       "allowGatewayTransit": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "If gateway links can be used in remote virtual networking to link to this virtual network."
       },
       "useRemoteGateways": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway."
       },
       "databricksVirtualNetwork": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering)."
       },
       "databricksAddressSpace": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "The reference to the databricks virtual network address space."
       },
       "remoteVirtualNetwork": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/169"
         },
         "flags": 1,
         "description": "The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering)."
       },
       "remoteAddressSpace": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "The reference to the remote virtual network address space."
       },
       "peeringState": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/173"
         },
         "flags": 2,
         "description": "The status of the virtual network peering."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/178"
         },
         "flags": 2,
         "description": "The provisioning state of the virtual network peering resource."
@@ -1897,7 +2221,7 @@
     "properties": {
       "addressPrefixes": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/168"
         },
         "flags": 0,
         "description": "A list of address blocks reserved for this virtual network in CIDR notation."
@@ -1939,13 +2263,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/143"
+        "$ref": "#/170"
       },
       {
-        "$ref": "#/144"
+        "$ref": "#/171"
       },
       {
-        "$ref": "#/145"
+        "$ref": "#/172"
       },
       {
         "$ref": "#/2"
@@ -1972,16 +2296,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/147"
+        "$ref": "#/174"
       },
       {
-        "$ref": "#/148"
+        "$ref": "#/175"
       },
       {
-        "$ref": "#/149"
+        "$ref": "#/176"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/177"
       },
       {
         "$ref": "#/2"
@@ -1992,310 +2316,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Databricks/workspaces/virtualNetworkPeerings@2026-01-01",
     "body": {
-      "$ref": "#/137"
-    },
-    "readableScopes": 8,
-    "writableScopes": 8
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Databricks/accessConnectors"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2026-01-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Databricks/accessConnectors",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/153"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/154"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "identity": {
-        "type": {
-          "$ref": "#/156"
-        },
-        "flags": 0,
-        "description": "Managed service identity (system assigned and/or user assigned identities)"
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/118"
-        },
-        "flags": 2,
-        "description": "The system metadata relating to this resource"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/164"
-        },
-        "flags": 0,
-        "description": "Azure Databricks Access Connector properties"
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/178"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The geo-location where the resource lives"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedServiceIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 2,
-        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 2,
-        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/161"
-        },
-        "flags": 1,
-        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/163"
-        },
-        "flags": 0,
-        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned,UserAssigned"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/157"
-      },
-      {
-        "$ref": "#/158"
-      },
-      {
-        "$ref": "#/159"
-      },
-      {
-        "$ref": "#/160"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 2,
-        "description": "The principal ID of the assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 2,
-        "description": "The client ID of the assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/162"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AccessConnectorProperties",
-    "properties": {
-      "provisioningState": {
-        "type": {
-          "$ref": "#/176"
-        },
-        "flags": 2,
-        "description": "Provisioning status of the Access Connector."
-      },
-      "referedBy": {
-        "type": {
-          "$ref": "#/177"
-        },
-        "flags": 2,
-        "description": "List of workspaces referring this Access Connector."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Accepted"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Running"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Ready"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Creating"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Created"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleted"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Updating"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/165"
-      },
-      {
-        "$ref": "#/166"
-      },
-      {
-        "$ref": "#/167"
-      },
-      {
-        "$ref": "#/168"
-      },
-      {
-        "$ref": "#/169"
-      },
-      {
-        "$ref": "#/170"
-      },
-      {
-        "$ref": "#/171"
-      },
-      {
-        "$ref": "#/172"
-      },
-      {
-        "$ref": "#/173"
-      },
-      {
-        "$ref": "#/174"
-      },
-      {
-        "$ref": "#/175"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Databricks/accessConnectors@2026-01-01",
-    "body": {
-      "$ref": "#/155"
+      "$ref": "#/164"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2346,6 +2367,13 @@
         },
         "flags": 2,
         "description": "The group id properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },

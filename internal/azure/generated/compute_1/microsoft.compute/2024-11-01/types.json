@@ -4732,7 +4732,7 @@
           "$ref": "#/331"
         },
         "flags": 0,
-        "description": "Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set."
+        "description": "Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set and is not Standard. If not specified, Standard will be returned starting api version 2025-11-01."
       },
       "encryptionIdentity": {
         "type": {
@@ -4974,12 +4974,12 @@
     "$type": "ObjectType",
     "name": "VirtualMachineScaleSetExtension",
     "properties": {
-      "properties": {
+      "name": {
         "type": {
-          "$ref": "#/346"
+          "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Describes the properties of a Virtual Machine Scale Set Extension."
+        "description": "Resource name"
       },
       "type": {
         "type": {
@@ -4988,12 +4988,12 @@
         "flags": 2,
         "description": "Resource type"
       },
-      "name": {
+      "properties": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/346"
         },
         "flags": 0,
-        "description": "Resource name"
+        "description": "Describes the properties of a Virtual Machine Scale Set Extension."
       },
       "id": {
         "type": {
@@ -5832,7 +5832,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "UserAssignedIdentitiesValue",
+    "name": "CommonUserAssignedIdentitiesValue",
     "properties": {
       "principalId": {
         "type": {
@@ -12553,7 +12553,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/922"
+          "$ref": "#/923"
         },
         "flags": 2,
         "description": "Resource tags."
@@ -12594,7 +12594,7 @@
       },
       "progress": {
         "type": {
-          "$ref": "#/921"
+          "$ref": "#/922"
         },
         "flags": 2,
         "description": "Information about the number of virtual machine instances in each upgrade state."
@@ -12614,7 +12614,7 @@
     "properties": {
       "code": {
         "type": {
-          "$ref": "#/917"
+          "$ref": "#/918"
         },
         "flags": 2,
         "description": "Code indicating the current status of the upgrade."
@@ -12628,7 +12628,7 @@
       },
       "lastAction": {
         "type": {
-          "$ref": "#/920"
+          "$ref": "#/921"
         },
         "flags": 2,
         "description": "The last action performed on the rolling upgrade."
@@ -12645,6 +12645,10 @@
   {
     "$type": "StringLiteralType",
     "value": "RollingForward"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RollingBack"
   },
   {
     "$type": "StringLiteralType",
@@ -12672,6 +12676,9 @@
       },
       {
         "$ref": "#/916"
+      },
+      {
+        "$ref": "#/917"
       }
     ]
   },
@@ -12687,10 +12694,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/918"
+        "$ref": "#/919"
       },
       {
-        "$ref": "#/919"
+        "$ref": "#/920"
       }
     ]
   },
@@ -12770,7 +12777,7 @@
     "resourceType": "Microsoft.Compute/availabilitySets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/925"
+      "$ref": "#/926"
     }
   },
   {
@@ -12792,7 +12799,7 @@
     "resourceType": "Microsoft.Compute/availabilitySets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/927"
+      "$ref": "#/928"
     }
   },
   {
@@ -12801,7 +12808,7 @@
     "resourceType": "Microsoft.Compute/availabilitySets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/927"
+      "$ref": "#/928"
     }
   },
   {
@@ -12810,7 +12817,7 @@
     "properties": {
       "intervalLength": {
         "type": {
-          "$ref": "#/935"
+          "$ref": "#/936"
         },
         "flags": 1,
         "description": "Interval value in minutes used to create LogAnalytics call rate logs."
@@ -12893,9 +12900,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/931"
-      },
-      {
         "$ref": "#/932"
       },
       {
@@ -12903,6 +12907,9 @@
       },
       {
         "$ref": "#/934"
+      },
+      {
+        "$ref": "#/935"
       }
     ]
   },
@@ -12912,7 +12919,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/937"
+          "$ref": "#/938"
         },
         "flags": 2,
         "description": "LogAnalyticsOutput"
@@ -12938,10 +12945,10 @@
     "resourceType": "Microsoft.Compute/locations/logAnalytics",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/936"
+      "$ref": "#/937"
     },
     "input": {
-      "$ref": "#/930"
+      "$ref": "#/931"
     }
   },
   {
@@ -13012,10 +13019,10 @@
     "resourceType": "Microsoft.Compute/locations/logAnalytics",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/936"
+      "$ref": "#/937"
     },
     "input": {
-      "$ref": "#/939"
+      "$ref": "#/940"
     }
   },
   {
@@ -13024,7 +13031,7 @@
     "properties": {
       "instanceIds": {
         "type": {
-          "$ref": "#/942"
+          "$ref": "#/943"
         },
         "flags": 0,
         "description": "The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set."
@@ -13043,7 +13050,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13065,7 +13072,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/944"
+      "$ref": "#/945"
     }
   },
   {
@@ -13074,7 +13081,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13083,7 +13090,7 @@
     "properties": {
       "instanceIds": {
         "type": {
-          "$ref": "#/948"
+          "$ref": "#/949"
         },
         "flags": 1,
         "description": "The virtual machine scale set instance ids."
@@ -13102,7 +13109,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/947"
+      "$ref": "#/948"
     }
   },
   {
@@ -13111,7 +13118,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/947"
+      "$ref": "#/948"
     }
   },
   {
@@ -13120,7 +13127,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13129,7 +13136,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13144,7 +13151,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13153,7 +13160,7 @@
     "properties": {
       "instanceIds": {
         "type": {
-          "$ref": "#/956"
+          "$ref": "#/957"
         },
         "flags": 0,
         "description": "The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set."
@@ -13181,7 +13188,7 @@
       },
       "osProfile": {
         "type": {
-          "$ref": "#/957"
+          "$ref": "#/958"
         },
         "flags": 0,
         "description": "Specifies information required for reimaging the non-ephemeral OS disk."
@@ -13220,7 +13227,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/955"
+      "$ref": "#/956"
     }
   },
   {
@@ -13229,7 +13236,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13238,7 +13245,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13247,14 +13254,14 @@
     "properties": {
       "serviceName": {
         "type": {
-          "$ref": "#/963"
+          "$ref": "#/964"
         },
         "flags": 1,
         "description": "The name of the service."
       },
       "action": {
         "type": {
-          "$ref": "#/966"
+          "$ref": "#/967"
         },
         "flags": 1,
         "description": "The action to be performed."
@@ -13269,7 +13276,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/962"
+        "$ref": "#/963"
       },
       {
         "$ref": "#/0"
@@ -13288,10 +13295,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/964"
+        "$ref": "#/965"
       },
       {
-        "$ref": "#/965"
+        "$ref": "#/966"
       },
       {
         "$ref": "#/0"
@@ -13304,7 +13311,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/961"
+      "$ref": "#/962"
     }
   },
   {
@@ -13313,7 +13320,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/941"
+      "$ref": "#/942"
     }
   },
   {
@@ -13334,7 +13341,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/977"
+          "$ref": "#/978"
         },
         "flags": 2,
         "description": "The overall success or failure status of the operation. It remains \"InProgress\" until the operation completes. At that point it will become \"Unknown\", \"Failed\", \"Succeeded\", or \"CompletedWithWarnings.\""
@@ -13376,7 +13383,7 @@
       },
       "availablePatches": {
         "type": {
-          "$ref": "#/988"
+          "$ref": "#/989"
         },
         "flags": 2,
         "description": "The list of patches that have been detected as available for installation."
@@ -13414,9 +13421,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/972"
-      },
-      {
         "$ref": "#/973"
       },
       {
@@ -13427,6 +13431,9 @@
       },
       {
         "$ref": "#/976"
+      },
+      {
+        "$ref": "#/977"
       },
       {
         "$ref": "#/0"
@@ -13467,14 +13474,14 @@
       },
       "classifications": {
         "type": {
-          "$ref": "#/979"
+          "$ref": "#/980"
         },
         "flags": 2,
         "description": "The classification(s) of the patch as provided by the patch publisher."
       },
       "rebootBehavior": {
         "type": {
-          "$ref": "#/984"
+          "$ref": "#/985"
         },
         "flags": 2,
         "description": "Describes the reboot requirements of the patch."
@@ -13502,7 +13509,7 @@
       },
       "assessmentState": {
         "type": {
-          "$ref": "#/987"
+          "$ref": "#/988"
         },
         "flags": 2,
         "description": "Describes the availability of a given patch."
@@ -13535,9 +13542,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/980"
-      },
-      {
         "$ref": "#/981"
       },
       {
@@ -13545,6 +13549,9 @@
       },
       {
         "$ref": "#/983"
+      },
+      {
+        "$ref": "#/984"
       },
       {
         "$ref": "#/0"
@@ -13563,10 +13570,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/985"
+        "$ref": "#/986"
       },
       {
-        "$ref": "#/986"
+        "$ref": "#/987"
       },
       {
         "$ref": "#/0"
@@ -13576,7 +13583,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/978"
+      "$ref": "#/979"
     }
   },
   {
@@ -13585,7 +13592,7 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/971"
+      "$ref": "#/972"
     }
   },
   {
@@ -13594,14 +13601,14 @@
     "properties": {
       "dataDisksToAttach": {
         "type": {
-          "$ref": "#/999"
+          "$ref": "#/1000"
         },
         "flags": 0,
         "description": "The list of managed data disks to be attached."
       },
       "dataDisksToDetach": {
         "type": {
-          "$ref": "#/1003"
+          "$ref": "#/1004"
         },
         "flags": 0,
         "description": "The list of managed data disks to be detached."
@@ -13628,14 +13635,14 @@
       },
       "caching": {
         "type": {
-          "$ref": "#/995"
+          "$ref": "#/996"
         },
         "flags": 0,
         "description": "Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**"
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/998"
+          "$ref": "#/999"
         },
         "flags": 0,
         "description": "Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**."
@@ -13672,13 +13679,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/992"
-      },
-      {
         "$ref": "#/993"
       },
       {
         "$ref": "#/994"
+      },
+      {
+        "$ref": "#/995"
       }
     ]
   },
@@ -13694,10 +13701,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/996"
+        "$ref": "#/997"
       },
       {
-        "$ref": "#/997"
+        "$ref": "#/998"
       },
       {
         "$ref": "#/0"
@@ -13707,7 +13714,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/991"
+      "$ref": "#/992"
     },
     "minLength": 1
   },
@@ -13724,7 +13731,7 @@
       },
       "detachOption": {
         "type": {
-          "$ref": "#/1002"
+          "$ref": "#/1003"
         },
         "flags": 0,
         "description": "Supported options available for Detach of a disk from a VM. Refer to DetachOption object reference for more details."
@@ -13739,7 +13746,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1001"
+        "$ref": "#/1002"
       },
       {
         "$ref": "#/0"
@@ -13749,7 +13756,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1000"
+      "$ref": "#/1001"
     },
     "minLength": 1
   },
@@ -13762,7 +13769,7 @@
       "$ref": "#/584"
     },
     "input": {
-      "$ref": "#/990"
+      "$ref": "#/991"
     }
   },
   {
@@ -13819,7 +13826,7 @@
       },
       "resources": {
         "type": {
-          "$ref": "#/1007"
+          "$ref": "#/1008"
         },
         "flags": 2,
         "description": "a list of resource items of the captured virtual machine"
@@ -13845,10 +13852,10 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1006"
+      "$ref": "#/1007"
     },
     "input": {
-      "$ref": "#/1005"
+      "$ref": "#/1006"
     }
   },
   {
@@ -13882,21 +13889,21 @@
       },
       "rebootSetting": {
         "type": {
-          "$ref": "#/1016"
+          "$ref": "#/1017"
         },
         "flags": 1,
         "description": "Defines when it is acceptable to reboot a VM during a software update operation."
       },
       "windowsParameters": {
         "type": {
-          "$ref": "#/1017"
+          "$ref": "#/1018"
         },
         "flags": 0,
         "description": "Input for InstallPatches on a Windows VM, as directly received by the API"
       },
       "linuxParameters": {
         "type": {
-          "$ref": "#/1030"
+          "$ref": "#/1031"
         },
         "flags": 0,
         "description": "Input for InstallPatches on a Linux VM, as directly received by the API"
@@ -13919,13 +13926,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1013"
-      },
-      {
         "$ref": "#/1014"
       },
       {
         "$ref": "#/1015"
+      },
+      {
+        "$ref": "#/1016"
       },
       {
         "$ref": "#/0"
@@ -13938,21 +13945,21 @@
     "properties": {
       "classificationsToInclude": {
         "type": {
-          "$ref": "#/1027"
+          "$ref": "#/1028"
         },
         "flags": 0,
         "description": "The update classifications to select when installing patches for Windows."
       },
       "kbNumbersToInclude": {
         "type": {
-          "$ref": "#/1028"
+          "$ref": "#/1029"
         },
         "flags": 0,
         "description": "Kbs to include in the patch operation"
       },
       "kbNumbersToExclude": {
         "type": {
-          "$ref": "#/1029"
+          "$ref": "#/1030"
         },
         "flags": 0,
         "description": "Kbs to exclude in the patch operation"
@@ -14009,9 +14016,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1018"
-      },
-      {
         "$ref": "#/1019"
       },
       {
@@ -14033,6 +14037,9 @@
         "$ref": "#/1025"
       },
       {
+        "$ref": "#/1026"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -14040,7 +14047,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1026"
+      "$ref": "#/1027"
     }
   },
   {
@@ -14061,21 +14068,21 @@
     "properties": {
       "classificationsToInclude": {
         "type": {
-          "$ref": "#/1035"
+          "$ref": "#/1036"
         },
         "flags": 0,
         "description": "The update classifications to select when installing patches for Linux."
       },
       "packageNameMasksToInclude": {
         "type": {
-          "$ref": "#/1036"
+          "$ref": "#/1037"
         },
         "flags": 0,
         "description": "packages to include in the patch operation. Format: packageName_packageVersion"
       },
       "packageNameMasksToExclude": {
         "type": {
-          "$ref": "#/1037"
+          "$ref": "#/1038"
         },
         "flags": 0,
         "description": "packages to exclude in the patch operation. Format: packageName_packageVersion"
@@ -14105,13 +14112,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1031"
-      },
-      {
         "$ref": "#/1032"
       },
       {
         "$ref": "#/1033"
+      },
+      {
+        "$ref": "#/1034"
       },
       {
         "$ref": "#/0"
@@ -14121,7 +14128,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1034"
+      "$ref": "#/1035"
     }
   },
   {
@@ -14142,7 +14149,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/1044"
+          "$ref": "#/1045"
         },
         "flags": 2,
         "description": "The overall success or failure status of the operation. It remains \"InProgress\" until the operation completes. At that point it will become \"Failed\", \"Succeeded\", \"Unknown\" or \"CompletedWithWarnings.\""
@@ -14156,7 +14163,7 @@
       },
       "rebootStatus": {
         "type": {
-          "$ref": "#/1051"
+          "$ref": "#/1052"
         },
         "flags": 2,
         "description": "The reboot state of the VM following completion of the operation."
@@ -14205,7 +14212,7 @@
       },
       "patches": {
         "type": {
-          "$ref": "#/1061"
+          "$ref": "#/1062"
         },
         "flags": 2,
         "description": "The patches that were installed during the operation."
@@ -14250,9 +14257,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1039"
-      },
-      {
         "$ref": "#/1040"
       },
       {
@@ -14263,6 +14267,9 @@
       },
       {
         "$ref": "#/1043"
+      },
+      {
+        "$ref": "#/1044"
       },
       {
         "$ref": "#/0"
@@ -14297,9 +14304,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1045"
-      },
-      {
         "$ref": "#/1046"
       },
       {
@@ -14313,6 +14317,9 @@
       },
       {
         "$ref": "#/1050"
+      },
+      {
+        "$ref": "#/1051"
       },
       {
         "$ref": "#/0"
@@ -14353,14 +14360,14 @@
       },
       "classifications": {
         "type": {
-          "$ref": "#/1053"
+          "$ref": "#/1054"
         },
         "flags": 2,
         "description": "The classification(s) of the patch as provided by the patch publisher."
       },
       "installationState": {
         "type": {
-          "$ref": "#/1060"
+          "$ref": "#/1061"
         },
         "flags": 2,
         "description": "The state of the patch after the installation operation completed."
@@ -14401,9 +14408,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1054"
-      },
-      {
         "$ref": "#/1055"
       },
       {
@@ -14419,6 +14423,9 @@
         "$ref": "#/1059"
       },
       {
+        "$ref": "#/1060"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -14426,7 +14433,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1052"
+      "$ref": "#/1053"
     }
   },
   {
@@ -14435,10 +14442,10 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1038"
+      "$ref": "#/1039"
     },
     "input": {
-      "$ref": "#/1012"
+      "$ref": "#/1013"
     }
   },
   {
@@ -14474,7 +14481,7 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/1063"
+      "$ref": "#/1064"
     }
   },
   {
@@ -14521,7 +14528,7 @@
       },
       "osProfile": {
         "type": {
-          "$ref": "#/957"
+          "$ref": "#/958"
         },
         "flags": 0,
         "description": "Specifies information required for reimaging the non-ephemeral OS disk."
@@ -14534,7 +14541,7 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/1069"
+      "$ref": "#/1070"
     }
   },
   {
@@ -14569,7 +14576,7 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1072"
+      "$ref": "#/1073"
     }
   },
   {
@@ -14585,14 +14592,14 @@
       },
       "script": {
         "type": {
-          "$ref": "#/1075"
+          "$ref": "#/1076"
         },
         "flags": 0,
         "description": "Optional. The script to be executed.  When this value is given, the given script will override the default script of the command."
       },
       "parameters": {
         "type": {
-          "$ref": "#/1076"
+          "$ref": "#/1077"
         },
         "flags": 0,
         "description": "The run command parameters."
@@ -14617,7 +14624,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/1078"
+          "$ref": "#/1079"
         },
         "flags": 0,
         "description": "Run command operation response."
@@ -14636,10 +14643,10 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1077"
+      "$ref": "#/1078"
     },
     "input": {
-      "$ref": "#/1074"
+      "$ref": "#/1075"
     }
   },
   {
@@ -14660,7 +14667,7 @@
     "properties": {
       "encryptionType": {
         "type": {
-          "$ref": "#/1085"
+          "$ref": "#/1086"
         },
         "flags": 0,
         "description": "The encryption type of the SSH keys to be generated. See SshEncryptionTypes for possible set of values. If not provided, will default to RSA"
@@ -14679,10 +14686,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1083"
+        "$ref": "#/1084"
       },
       {
-        "$ref": "#/1084"
+        "$ref": "#/1085"
       },
       {
         "$ref": "#/0"
@@ -14722,10 +14729,10 @@
     "resourceType": "Microsoft.Compute/sshPublicKeys",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1086"
+      "$ref": "#/1087"
     },
     "input": {
-      "$ref": "#/1082"
+      "$ref": "#/1083"
     }
   },
   {
@@ -14755,7 +14762,7 @@
       "$ref": "#/584"
     },
     "input": {
-      "$ref": "#/990"
+      "$ref": "#/991"
     }
   },
   {
@@ -14809,7 +14816,7 @@
       },
       "osProfile": {
         "type": {
-          "$ref": "#/957"
+          "$ref": "#/958"
         },
         "flags": 0,
         "description": "Specifies information required for reimaging the non-ephemeral OS disk."
@@ -14822,7 +14829,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/1096"
+      "$ref": "#/1097"
     }
   },
   {
@@ -14843,7 +14850,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1072"
+      "$ref": "#/1073"
     }
   },
   {
@@ -14852,10 +14859,10 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/1077"
+      "$ref": "#/1078"
     },
     "input": {
-      "$ref": "#/1074"
+      "$ref": "#/1075"
     }
   },
   {

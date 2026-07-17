@@ -12,23 +12,42 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
+	"github.com/magodo/terraform-plugin-framework-docs/fwdtypes"
 )
 
 type ParseResourceIdFunction struct {
 }
 
-var ParseResourceIdResultAttrTypes = map[string]attr.Type{
-	"id":                  types.StringType,
-	"type":                types.StringType,
-	"name":                types.StringType,
-	"parent_id":           types.StringType,
-	"resource_group_name": types.StringType,
-	"resource_group_id":   types.StringType,
-	"subscription_id":     types.StringType,
-	"provider_namespace":  types.StringType,
-	"parts": types.MapType{
-		ElemType: types.StringType,
-	},
+var _ function.Function = &ParseResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &ParseResourceIdFunction{}
+
+func ParseResourceIdResultAttrTypes(withDoc bool) map[string]attr.Type {
+	if withDoc {
+		return map[string]attr.Type{
+			"id":                  fwdtypes.NewStringType("The resource id of this resource."),
+			"type":                fwdtypes.NewStringType("The azure resource type."),
+			"name":                fwdtypes.NewStringType("The resource name."),
+			"parent_id":           fwdtypes.NewStringType("The resource id of the parent resource."),
+			"resource_group_name": fwdtypes.NewStringType("The name of the resource group this resource resides in."),
+			"resource_group_id":   fwdtypes.NewStringType("The id of the resource group this resource resides in."),
+			"subscription_id":     fwdtypes.NewStringType("The id of the subscription this resource resides in."),
+			"provider_namespace":  fwdtypes.NewStringType("The namespace of the resource provider."),
+			"parts":               fwdtypes.NewMapType("A map of the parts of the resource id.", types.StringType),
+		}
+	} else {
+		return map[string]attr.Type{
+			"id":                  types.StringType,
+			"type":                types.StringType,
+			"name":                types.StringType,
+			"parent_id":           types.StringType,
+			"resource_group_name": types.StringType,
+			"resource_group_id":   types.StringType,
+			"subscription_id":     types.StringType,
+			"provider_namespace":  types.StringType,
+			"parts":               types.MapType{ElemType: types.StringType},
+		}
+	}
 }
 
 func (p *ParseResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
@@ -54,7 +73,7 @@ func (p *ParseResourceIdFunction) Definition(ctx context.Context, request functi
 			},
 		},
 		Return: function.ObjectReturn{
-			AttributeTypes: ParseResourceIdResultAttrTypes,
+			AttributeTypes: ParseResourceIdResultAttrTypes(true),
 		},
 		Summary:             "Parses an Azure resource ID into its components.",
 		Description:         "This function takes an Azure resource ID and a resource type and parses the ID into its individual components such as subscription ID, resource group name, provider namespace, and other parts.",
@@ -116,7 +135,41 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 		"parts":               types.MapValueMust(types.StringType, parts),
 	}
 
-	response.Error = response.Result.Set(ctx, types.ObjectValueMust(ParseResourceIdResultAttrTypes, result))
+	response.Error = response.Result.Set(ctx, types.ObjectValueMust(ParseResourceIdResultAttrTypes(false), result))
 }
 
-var _ function.Function = &ParseResourceIdFunction{}
+func (p *ParseResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  resource_id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet"
+  resource_type = "Microsoft.Network/virtualNetworks"
+}
+
+// it will output below object
+# {
+#   "id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet"
+#   "name" = "myVNet"
+#   "parent_id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
+#   "parts" = tomap({
+#     "providers" = "Microsoft.Network"
+#     "resourceGroups" = "myResourceGroup"
+#     "subscriptions" = "00000000-0000-0000-0000-000000000000"
+#     "virtualNetworks" = "myVNet"
+#   })
+#   "provider_namespace" = "Microsoft.Network"
+#   "resource_group_id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
+#   "resource_group_name" = "myResourceGroup"
+#   "subscription_id" = "00000000-0000-0000-0000-000000000000"
+#   "type" = "Microsoft.Network/virtualNetworks"
+# }
+output "parsed_resource_id" {
+  value = provider::azapi::parse_resource_id(local.resource_type, local.resource_id)
+}
+`,
+			},
+		},
+	}
+}

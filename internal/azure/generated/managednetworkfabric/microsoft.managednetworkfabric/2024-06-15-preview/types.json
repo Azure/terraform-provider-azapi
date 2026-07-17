@@ -51,7 +51,7 @@
           "$ref": "#/5"
         },
         "flags": 1,
-        "description": "The Access ControlList properties"
+        "description": "The Access ControlList properties."
       },
       "tags": {
         "type": {
@@ -300,238 +300,84 @@
     "$type": "ObjectType",
     "name": "AccessControlListMatchCondition",
     "properties": {
-      "protocolTypes": {
-        "type": {
-          "$ref": "#/19"
-        },
-        "flags": 0,
-        "description": "List of the protocols that need to be matched."
-      },
-      "vlanMatchCondition": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Vlan match condition that needs to be matched."
-      },
-      "ipCondition": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "IP condition that needs to be matched."
-      },
       "etherTypes": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/19"
         },
         "flags": 0,
         "description": "List of ether type values that need to be matched."
       },
       "fragments": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "List of IP fragment packets that need to be matched."
       },
       "ipLengths": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/21"
         },
         "flags": 0,
         "description": "List of IP Lengths that need to be matched."
       },
       "ttlValues": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "List of TTL [Time To Live] values that need to be matched."
       },
       "dscpMarkings": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "List of DSCP Markings that need to be matched."
       },
       "protocolNeighbors": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Protocol neighbors that need to be matched."
       },
       "portCondition": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "Defines the port condition that needs to be matched."
       },
       "icmpConfiguration": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Internet Control Message Protocol (ICMP) configuration"
+      },
+      "protocolTypes": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "List of the protocols that need to be matched."
+      },
+      "vlanMatchCondition": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Vlan match condition that needs to be matched."
+      },
+      "ipCondition": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "IP condition that needs to be matched."
       }
     }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
-  },
-  {
-    "$type": "ObjectType",
-    "name": "VlanMatchCondition",
-    "properties": {
-      "vlans": {
-        "type": {
-          "$ref": "#/21"
-        },
-        "flags": 0,
-        "description": "List of vlans that need to be matched. Inputs can be single vlan or the range of vlans."
-      },
-      "innerVlans": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 0,
-        "description": "List of inner vlans that need to be matched.Inputs can be single vlan or the range of vlans."
-      },
-      "vlanGroupNames": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 0,
-        "description": "List of vlan group names that need to be matched."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
-  },
-  {
-    "$type": "ObjectType",
-    "name": "IpMatchCondition",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 0,
-        "description": "IP Address type that needs to be matched."
-      },
-      "prefixType": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 0,
-        "description": "IP Prefix Type that needs to be matched."
-      },
-      "ipPrefixValues": {
-        "type": {
-          "$ref": "#/32"
-        },
-        "flags": 0,
-        "description": "The list of IP Prefixes that need to be matched."
-      },
-      "ipGroupNames": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 0,
-        "description": "The List of IP Group Names that need to be matched."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SourceIP"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DestinationIP"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Bidirectional"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Prefix"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LongestPrefix"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
   },
   {
     "$type": "ArrayType",
@@ -578,41 +424,47 @@
     "$type": "ObjectType",
     "name": "AccessControlListPortCondition",
     "properties": {
+      "flags": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "List of protocol flags that need to be matched. Example: established | initial | <List-of-TCP-flags>. List of eligible TCP Flags are ack, fin, not-ack, not-fin, not-psh, not-rst, not-syn, not-urg, psh, rst, syn, urg"
+      },
       "portType": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "Port type that needs to be matched."
       },
       "layer4Protocol": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/34"
         },
         "flags": 1,
         "description": "Layer4 protocol type that needs to be matched."
       },
       "ports": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/35"
         },
         "flags": 0,
         "description": "List of the Ports that need to be matched."
       },
       "portGroupNames": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "List of the port Group Names that need to be matched."
-      },
-      "flags": {
-        "type": {
-          "$ref": "#/51"
-        },
-        "flags": 0,
-        "description": "List of protocol flags that need to be matched. Example: established | initial | <List-of-TCP-flags>. List of eligible TCP Flags are ack, fin, not-ack, not-fin, not-psh, not-rst, not-syn, not-urg, psh, rst, syn, urg"
       }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
     }
   },
   {
@@ -631,13 +483,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/41"
+        "$ref": "#/27"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/28"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/29"
       },
       {
         "$ref": "#/2"
@@ -660,13 +512,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/33"
       },
       {
         "$ref": "#/2"
@@ -686,23 +538,171 @@
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
     "$type": "ObjectType",
     "name": "IcmpConfigurationProperties",
     "properties": {
       "icmpTypes": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Internet Control Message Protocol (ICMP) types"
       }
     }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VlanMatchCondition",
+    "properties": {
+      "vlans": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "List of vlans that need to be matched. Inputs can be single vlan or the range of vlans."
+      },
+      "innerVlans": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "List of inner vlans that need to be matched.Inputs can be single vlan or the range of vlans."
+      },
+      "vlanGroupNames": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "List of vlan group names that need to be matched."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IpMatchCondition",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "IP Address type that needs to be matched."
+      },
+      "prefixType": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "IP Prefix Type that needs to be matched."
+      },
+      "ipPrefixValues": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The list of IP Prefixes that need to be matched."
+      },
+      "ipGroupNames": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The List of IP Group Names that need to be matched."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SourceIP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DestinationIP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bidirectional"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prefix"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LongestPrefix"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
   },
   {
     "$type": "ArrayType",
@@ -1612,13 +1612,6 @@
     "$type": "ObjectType",
     "name": "InternetGatewayRuleProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "ruleProperties": {
         "type": {
           "$ref": "#/149"
@@ -1646,6 +1639,13 @@
         },
         "flags": 2,
         "description": "List of Internet Gateway resource Id."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -2641,19 +2641,19 @@
         "flags": 0,
         "description": "Switch configuration description."
       },
-      "networkFabricId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "ARM Resource ID of the Network Fabric."
-      },
       "ipExtendedCommunityRules": {
         "type": {
           "$ref": "#/245"
         },
         "flags": 1,
         "description": "List of IP Extended Community Rules."
+      },
+      "networkFabricId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ARM Resource ID of the Network Fabric."
       },
       "lastOperation": {
         "type": {
@@ -3455,13 +3455,6 @@
     "$type": "ObjectType",
     "name": "L2IsolationDomainProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "networkFabricId": {
         "type": {
           "$ref": "#/2"
@@ -3524,6 +3517,13 @@
         },
         "flags": 2,
         "description": "Administrative state of the resource."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -5429,13 +5429,6 @@
     "$type": "ObjectType",
     "name": "NetworkFabricProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "networkFabricSku": {
         "type": {
           "$ref": "#/13"
@@ -5624,6 +5617,13 @@
         },
         "flags": 2,
         "description": "Administrative state of the resource."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -6696,7 +6696,7 @@
           "$ref": "#/594"
         },
         "flags": 1,
-        "description": "The NetworkFabric Properties"
+        "description": "The NetworkMonitor properties."
       },
       "tags": {
         "type": {
@@ -6725,13 +6725,6 @@
     "$type": "ObjectType",
     "name": "NetworkMonitorProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "bmpConfiguration": {
         "type": {
           "$ref": "#/595"
@@ -6766,6 +6759,13 @@
         },
         "flags": 2,
         "description": "Administrative state of the resource."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -7485,7 +7485,7 @@
           "$ref": "#/666"
         },
         "flags": 1,
-        "description": "The NetworkRack properties"
+        "description": "Network Rack Properties"
       },
       "tags": {
         "type": {
@@ -7514,13 +7514,6 @@
     "$type": "ObjectType",
     "name": "NetworkRackProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "networkRackType": {
         "type": {
           "$ref": "#/670"
@@ -7555,6 +7548,13 @@
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -7916,49 +7916,42 @@
     "$type": "ObjectType",
     "name": "NetworkTapRuleMatchCondition",
     "properties": {
-      "protocolTypes": {
-        "type": {
-          "$ref": "#/693"
-        },
-        "flags": 0,
-        "description": "List of the protocols that need to be matched."
-      },
-      "vlanMatchCondition": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Vlan match condition that needs to be matched."
-      },
-      "ipCondition": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "IP condition that needs to be matched."
-      },
       "encapsulationType": {
         "type": {
-          "$ref": "#/696"
+          "$ref": "#/695"
         },
         "flags": 0,
         "description": "Encapsulation Type that needs to be matched."
       },
       "portCondition": {
         "type": {
-          "$ref": "#/697"
+          "$ref": "#/696"
         },
         "flags": 0,
         "description": "Defines the port condition that needs to be matched."
+      },
+      "protocolTypes": {
+        "type": {
+          "$ref": "#/707"
+        },
+        "flags": 0,
+        "description": "List of the protocols that need to be matched."
+      },
+      "vlanMatchCondition": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Vlan match condition that needs to be matched."
+      },
+      "ipCondition": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "IP condition that needs to be matched."
       }
     }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    },
-    "minLength": 1
   },
   {
     "$type": "StringLiteralType",
@@ -7972,10 +7965,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/694"
+        "$ref": "#/693"
       },
       {
-        "$ref": "#/695"
+        "$ref": "#/694"
       },
       {
         "$ref": "#/2"
@@ -7988,28 +7981,28 @@
     "properties": {
       "portType": {
         "type": {
-          "$ref": "#/701"
+          "$ref": "#/700"
         },
         "flags": 0,
         "description": "Port type that needs to be matched."
       },
       "layer4Protocol": {
         "type": {
-          "$ref": "#/705"
+          "$ref": "#/704"
         },
         "flags": 1,
         "description": "Layer4 protocol type that needs to be matched."
       },
       "ports": {
         "type": {
-          "$ref": "#/706"
+          "$ref": "#/705"
         },
         "flags": 0,
         "description": "List of the Ports that need to be matched."
       },
       "portGroupNames": {
         "type": {
-          "$ref": "#/707"
+          "$ref": "#/706"
         },
         "flags": 0,
         "description": "List of the port Group Names that need to be matched."
@@ -8032,13 +8025,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/697"
+      },
+      {
         "$ref": "#/698"
       },
       {
         "$ref": "#/699"
-      },
-      {
-        "$ref": "#/700"
       },
       {
         "$ref": "#/2"
@@ -8061,13 +8054,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/701"
+      },
+      {
         "$ref": "#/702"
       },
       {
         "$ref": "#/703"
-      },
-      {
-        "$ref": "#/704"
       },
       {
         "$ref": "#/2"
@@ -8085,6 +8078,13 @@
     "itemType": {
       "$ref": "#/2"
     }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
   },
   {
     "$type": "ArrayType",
@@ -8550,13 +8550,6 @@
     "$type": "ObjectType",
     "name": "NetworkTapProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "networkPacketBrokerId": {
         "type": {
           "$ref": "#/2"
@@ -8612,6 +8605,13 @@
         },
         "flags": 2,
         "description": "Administrative state of the resource. Example -Enabled/Disabled"
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -9121,13 +9121,6 @@
     "$type": "ObjectType",
     "name": "RoutePolicyStatementProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "sequenceNumber": {
         "type": {
           "$ref": "#/14"
@@ -9148,6 +9141,13 @@
         },
         "flags": 1,
         "description": "Route policy action properties."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -10447,6 +10447,13 @@
         "flags": 0,
         "description": "Switch configuration description."
       },
+      "extension": {
+        "type": {
+          "$ref": "#/925"
+        },
+        "flags": 0,
+        "description": "Extension. Example: NoExtension | NPB."
+      },
       "mtu": {
         "type": {
           "$ref": "#/321"
@@ -10456,14 +10463,14 @@
       },
       "connectedIPv4Subnets": {
         "type": {
-          "$ref": "#/924"
+          "$ref": "#/927"
         },
         "flags": 0,
         "description": "List of Connected IPv4 Subnets."
       },
       "connectedIPv6Subnets": {
         "type": {
-          "$ref": "#/925"
+          "$ref": "#/928"
         },
         "flags": 0,
         "description": "List of connected IPv6 Subnets."
@@ -10498,17 +10505,10 @@
       },
       "isMonitoringEnabled": {
         "type": {
-          "$ref": "#/928"
-        },
-        "flags": 0,
-        "description": "To check whether monitoring of internal network is enabled or not."
-      },
-      "extension": {
-        "type": {
           "$ref": "#/931"
         },
         "flags": 0,
-        "description": "Extension. Example: NoExtension | NPB."
+        "description": "To check whether monitoring of internal network is enabled or not."
       },
       "vlanId": {
         "type": {
@@ -10576,36 +10576,58 @@
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "NoExtension"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NPB"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/923"
+      },
+      {
+        "$ref": "#/924"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ObjectType",
     "name": "ConnectedSubnet",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "prefix": {
         "type": {
           "$ref": "#/13"
         },
         "flags": 1,
         "description": "Prefix of the Connected Subnet."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/923"
+      "$ref": "#/926"
     },
     "minLength": 1
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/923"
+      "$ref": "#/926"
     },
     "minLength": 1
   },
@@ -10616,28 +10638,6 @@
   {
     "$type": "StringLiteralType",
     "value": "False"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/926"
-      },
-      {
-        "$ref": "#/927"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NoExtension"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NPB"
   },
   {
     "$type": "UnionType",
@@ -10657,13 +10657,6 @@
     "$type": "ObjectType",
     "name": "BgpConfiguration",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "bfdConfiguration": {
         "type": {
           "$ref": "#/530"
@@ -10754,6 +10747,13 @@
         },
         "flags": 0,
         "description": "v6 over v4 bgp session."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -11429,13 +11429,6 @@
     "$type": "ObjectType",
     "name": "NetworkInterfaceProperties",
     "properties": {
-      "annotation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Switch configuration description."
-      },
       "physicalIdentifier": {
         "type": {
           "$ref": "#/2"
@@ -11505,6 +11498,13 @@
         },
         "flags": 2,
         "description": "Administrative state of the resource."
+      },
+      "annotation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Switch configuration description."
       }
     }
   },
@@ -11910,34 +11910,6 @@
     "$type": "ObjectType",
     "name": "OptionBLayer3Configuration",
     "properties": {
-      "primaryIpv4Prefix": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "IPv4 Address Prefix."
-      },
-      "primaryIpv6Prefix": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "IPv6 Address Prefix."
-      },
-      "secondaryIpv4Prefix": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Secondary IPv4 Address Prefix."
-      },
-      "secondaryIpv6Prefix": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Secondary IPv6 Address Prefix."
-      },
       "peerASN": {
         "type": {
           "$ref": "#/14"
@@ -11979,6 +11951,34 @@
         },
         "flags": 0,
         "description": "OptionB Layer3 prefix limit configuration."
+      },
+      "primaryIpv4Prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "IPv4 Address Prefix."
+      },
+      "primaryIpv6Prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "IPv6 Address Prefix."
+      },
+      "secondaryIpv4Prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secondary IPv4 Address Prefix."
+      },
+      "secondaryIpv6Prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secondary IPv6 Address Prefix."
       }
     }
   },
@@ -12456,7 +12456,7 @@
           "$ref": "#/1098"
         },
         "flags": 2,
-        "description": "The NetworkDeviceSku properties"
+        "description": "The Network Device SKU properties."
       },
       "systemData": {
         "type": {
@@ -12789,7 +12789,7 @@
           "$ref": "#/1126"
         },
         "flags": 2,
-        "description": "The Network Fabric Sku properties"
+        "description": "The Network Fabric SKU properties."
       },
       "systemData": {
         "type": {
@@ -12939,96 +12939,20 @@
     "$type": "ObjectType",
     "name": "CommonPostActionResponseForStateUpdate",
     "properties": {
-      "error": {
-        "type": {
-          "$ref": "#/1140"
-        },
-        "flags": 0,
-        "description": "The error object."
-      },
       "configurationState": {
         "type": {
-          "$ref": "#/1157"
+          "$ref": "#/1152"
         },
         "flags": 2,
         "description": "Gets the configuration state."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/1153"
+        },
+        "flags": 0,
+        "description": "The error object."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ErrorDetail",
-    "properties": {
-      "code": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error code."
-      },
-      "message": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error message."
-      },
-      "target": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error target."
-      },
-      "details": {
-        "type": {
-          "$ref": "#/1141"
-        },
-        "flags": 2,
-        "description": "The error details."
-      },
-      "additionalInfo": {
-        "type": {
-          "$ref": "#/1144"
-        },
-        "flags": 2,
-        "description": "The error additional info."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/1140"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ErrorAdditionalInfo",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The additional info type."
-      },
-      "info": {
-        "type": {
-          "$ref": "#/1143"
-        },
-        "flags": 2,
-        "description": "The additional info."
-      }
-    }
-  },
-  {
-    "$type": "AnyType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/1142"
     }
   },
   {
@@ -13083,6 +13007,21 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/1140"
+      },
+      {
+        "$ref": "#/1141"
+      },
+      {
+        "$ref": "#/1142"
+      },
+      {
+        "$ref": "#/1143"
+      },
+      {
+        "$ref": "#/1144"
+      },
+      {
         "$ref": "#/1145"
       },
       {
@@ -13104,24 +13043,85 @@
         "$ref": "#/1151"
       },
       {
-        "$ref": "#/1152"
-      },
-      {
-        "$ref": "#/1153"
-      },
-      {
-        "$ref": "#/1154"
-      },
-      {
-        "$ref": "#/1155"
-      },
-      {
-        "$ref": "#/1156"
-      },
-      {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/1154"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/1157"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1153"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/1156"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1155"
+    }
   },
   {
     "$type": "ResourceFunctionType",
@@ -13136,26 +13136,20 @@
     "$type": "ObjectType",
     "name": "UpdateAdministrativeState",
     "properties": {
-      "resourceIds": {
+      "state": {
         "type": {
-          "$ref": "#/1160"
+          "$ref": "#/1163"
         },
         "flags": 0,
-        "description": "Network Fabrics or Network Rack resource Id."
+        "description": "Administrative state."
       },
-      "state": {
+      "resourceIds": {
         "type": {
           "$ref": "#/1164"
         },
         "flags": 0,
-        "description": "Administrative state."
+        "description": "Network Fabrics or Network Rack resource Id."
       }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
     }
   },
   {
@@ -13174,18 +13168,24 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/1160"
+      },
+      {
         "$ref": "#/1161"
       },
       {
         "$ref": "#/1162"
       },
       {
-        "$ref": "#/1163"
-      },
-      {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
   },
   {
     "$type": "ResourceFunctionType",
@@ -13203,13 +13203,6 @@
     "$type": "ObjectType",
     "name": "ValidateConfigurationResponse",
     "properties": {
-      "error": {
-        "type": {
-          "$ref": "#/1140"
-        },
-        "flags": 0,
-        "description": "The error object."
-      },
       "configurationState": {
         "type": {
           "$ref": "#/1179"
@@ -13223,6 +13216,13 @@
         },
         "flags": 0,
         "description": "URL for the details of the response."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/1153"
+        },
+        "flags": 0,
+        "description": "The error object."
       }
     }
   },
@@ -13340,13 +13340,6 @@
     "$type": "ObjectType",
     "name": "CommonPostActionResponseForDeviceUpdate",
     "properties": {
-      "error": {
-        "type": {
-          "$ref": "#/1140"
-        },
-        "flags": 0,
-        "description": "The error object."
-      },
       "configurationState": {
         "type": {
           "$ref": "#/1195"
@@ -13367,6 +13360,13 @@
         },
         "flags": 0,
         "description": "List of ARM Resource IDs for which the given action failed to apply."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/1153"
+        },
+        "flags": 0,
+        "description": "The error object."
       }
     }
   },
@@ -13612,13 +13612,6 @@
     "$type": "ObjectType",
     "name": "CommonPostActionResponseForDeviceROCommandsOperationStatusResult",
     "properties": {
-      "error": {
-        "type": {
-          "$ref": "#/1140"
-        },
-        "flags": 0,
-        "description": "The error object."
-      },
       "endTime": {
         "type": {
           "$ref": "#/2"
@@ -13667,6 +13660,13 @@
         },
         "flags": 1,
         "description": "Operation status."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/1153"
+        },
+        "flags": 0,
+        "description": "The error object."
       }
     }
   },
@@ -13818,13 +13818,6 @@
     "$type": "ObjectType",
     "name": "CommonPostActionResponseForDeviceRWCommands",
     "properties": {
-      "error": {
-        "type": {
-          "$ref": "#/1140"
-        },
-        "flags": 0,
-        "description": "The error object."
-      },
       "configurationState": {
         "type": {
           "$ref": "#/1242"
@@ -13838,6 +13831,13 @@
         },
         "flags": 0,
         "description": "Predefined link containing Device Rw Command output."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/1153"
+        },
+        "flags": 0,
+        "description": "The error object."
       }
     }
   },
@@ -13949,26 +13949,20 @@
     "$type": "ObjectType",
     "name": "UpdateDeviceAdministrativeState",
     "properties": {
-      "resourceIds": {
+      "state": {
         "type": {
-          "$ref": "#/1245"
+          "$ref": "#/1254"
         },
         "flags": 0,
-        "description": "Network Fabrics or Network Rack resource Id."
+        "description": "Administrative state."
       },
-      "state": {
+      "resourceIds": {
         "type": {
           "$ref": "#/1255"
         },
         "flags": 0,
-        "description": "Administrative state."
+        "description": "Network Fabrics or Network Rack resource Id."
       }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
     }
   },
   {
@@ -14011,6 +14005,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/1245"
+      },
+      {
         "$ref": "#/1246"
       },
       {
@@ -14035,12 +14032,15 @@
         "$ref": "#/1253"
       },
       {
-        "$ref": "#/1254"
-      },
-      {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
   },
   {
     "$type": "ResourceFunctionType",
@@ -14092,7 +14092,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -14148,7 +14148,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -14259,7 +14259,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -14409,19 +14409,19 @@
     "$type": "ObjectType",
     "name": "UpgradeNetworkFabricProperties",
     "properties": {
-      "version": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Specify the version."
-      },
       "action": {
         "type": {
           "$ref": "#/1291"
         },
         "flags": 0,
         "description": "Action to be performed while upgrading the fabric."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specify the version."
       }
     }
   },
@@ -14526,7 +14526,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -14745,7 +14745,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -14932,7 +14932,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -15076,7 +15076,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."
@@ -15273,7 +15273,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/1140"
+          "$ref": "#/1153"
         },
         "flags": 0,
         "description": "The error object."

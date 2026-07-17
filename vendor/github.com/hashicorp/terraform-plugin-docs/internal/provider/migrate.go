@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2020, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package provider
@@ -149,6 +149,13 @@ func (m *migrator) Migrate() error {
 			case "list-resources":
 				m.infof("migrating list resources directory: %s", d.Name())
 				err := filepath.WalkDir(path, m.MigrateTemplate("list-resources"))
+				if err != nil {
+					return err
+				}
+				return filepath.SkipDir
+			case "state-stores":
+				m.infof("migrating state stores directory: %s", d.Name())
+				err := filepath.WalkDir(path, m.MigrateTemplate("state-stores"))
 				if err != nil {
 					return err
 				}

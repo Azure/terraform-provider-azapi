@@ -52,6 +52,13 @@
         },
         "flags": 0,
         "description": "The Advanced Threat Protection settings."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -70,6 +77,126 @@
   },
   {
     "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",
@@ -92,10 +219,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/8"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/9"
+        "$ref": "#/20"
       },
       {
         "$ref": "#/2"
@@ -124,21 +251,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/21"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/22"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/23"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -146,7 +273,7 @@
     },
     "elements": {
       "DataExportSettings": {
-        "$ref": "#/14"
+        "$ref": "#/25"
       }
     }
   },
@@ -156,14 +283,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Data export setting data"
       },
       "kind": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/27"
         },
         "flags": 1,
         "description": "the kind of the settings string (DataExportSettings)"
@@ -191,7 +318,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Security/settings@2019-01-01",
     "body": {
-      "$ref": "#/13"
+      "$ref": "#/24"
     },
     "readableScopes": 4,
     "writableScopes": 4
@@ -224,21 +351,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/29"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/30"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "describes security alert properties."
@@ -314,7 +441,7 @@
       },
       "reportedSeverity": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Estimated severity of this alert"
@@ -335,7 +462,7 @@
       },
       "extendedProperties": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "Changing set of properties depending on the alert type."
@@ -363,21 +490,21 @@
       },
       "entities": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "objects that are related to this alerts"
       },
       "confidenceScore": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/42"
         },
         "flags": 2,
         "description": "level of confidence we have on the alert"
       },
       "confidenceReasons": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/44"
         },
         "flags": 0,
         "description": "reasons the alert got the confidenceScore value"
@@ -432,16 +559,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/22"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/23"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/25"
+        "$ref": "#/36"
       },
       {
         "$ref": "#/2"
@@ -456,7 +583,7 @@
     "name": "AlertExtendedProperties",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/27"
+      "$ref": "#/38"
     }
   },
   {
@@ -472,13 +599,13 @@
       }
     },
     "additionalProperties": {
-      "$ref": "#/27"
+      "$ref": "#/38"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/29"
+      "$ref": "#/40"
     }
   },
   {
@@ -509,14 +636,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/32"
+      "$ref": "#/43"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.Security/locations/alerts@2019-01-01",
     "body": {
-      "$ref": "#/20"
+      "$ref": "#/31"
     },
     "readableScopes": 12,
     "writableScopes": 0

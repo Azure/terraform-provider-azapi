@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ClientConfigDataSourceModel struct {
@@ -27,6 +28,7 @@ type ClientConfigDataSource struct {
 
 var _ datasource.DataSource = &ClientConfigDataSource{}
 var _ datasource.DataSourceWithConfigure = &ClientConfigDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &ClientConfigDataSource{}
 
 func (r *ClientConfigDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -43,34 +45,33 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 		MarkdownDescription: "This data source provides information about the current Azure client configuration, including the tenant ID, subscription ID, and object ID of the identity used by the provider.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				MarkdownDescription: "The ID of this resource.",
+				Computed:            true,
 			},
 
 			"tenant_id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "The tenant ID. E.g. `00000000-0000-0000-0000-000000000000`",
+				MarkdownDescription: "The tenant ID. E.g. `00000000-0000-0000-0000-000000000000`.",
 			},
 
 			"subscription_id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "The subscription ID. E.g. `00000000-0000-0000-0000-000000000000`",
+				MarkdownDescription: "The subscription ID. E.g. `00000000-0000-0000-0000-000000000000`.",
 			},
 
 			"subscription_resource_id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`",
+				MarkdownDescription: "The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`.",
 			},
 
 			"object_id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "The object ID of the identity. E.g. `00000000-0000-0000-0000-000000000000`",
+				MarkdownDescription: "The object ID of the identity. E.g. `00000000-0000-0000-0000-000000000000`.",
 			},
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }
@@ -99,4 +100,32 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 	model.TenantID = types.StringValue(tenantId)
 	model.ObjectID = types.StringValue(objectId)
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *ClientConfigDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+provider "azapi" {
+}
+data "azapi_client_config" "current" {
+}
+output "subscription_id" {
+  value = data.azapi_client_config.current.subscription_id
+}
+output "tenant_id" {
+  value = data.azapi_client_config.current.tenant_id
+}
+`,
+			},
+		},
+	}
 }

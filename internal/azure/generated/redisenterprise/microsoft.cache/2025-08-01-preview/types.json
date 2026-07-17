@@ -79,7 +79,7 @@
           "$ref": "#/152"
         },
         "flags": 0,
-        "description": "The identity of the resource."
+        "description": "The managed service identities assigned to this resource."
       },
       "tags": {
         "type": {
@@ -184,6 +184,13 @@
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with the specified Redis Enterprise cluster"
+      },
+      "migratedEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The endpoint of the source resource that is currently pointing to this resource as a result of an ACR/ACRE to AMR migration."
       }
     }
   },
@@ -1480,7 +1487,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "SystemAssigned,UserAssigned"
+    "value": "SystemAssigned, UserAssigned"
   },
   {
     "$type": "UnionType",
@@ -1524,7 +1531,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "name": "UserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/159"
@@ -2310,7 +2317,7 @@
           "$ref": "#/245"
         },
         "flags": 1,
-        "description": "Name of access policy under specific access policy assignment. Only \"default\" policy is supported for now."
+        "description": "**Deprecated.** This property always returns \"default\". Use `accessString` to configure custom Redis ACL permissions instead."
       },
       "user": {
         "type": {
@@ -2471,7 +2478,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/260"
+          "$ref": "#/261"
         },
         "flags": 2,
         "description": "Current provisioning status of the migration"
@@ -2500,7 +2507,7 @@
     },
     "elements": {
       "AzureCacheForRedis": {
-        "$ref": "#/261"
+        "$ref": "#/262"
       }
     }
   },
@@ -2533,6 +2540,10 @@
     "value": "Cancelled"
   },
   {
+    "$type": "StringLiteralType",
+    "value": "CancellationFailed"
+  },
+  {
     "$type": "UnionType",
     "elements": [
       {
@@ -2555,6 +2566,9 @@
       },
       {
         "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
       },
       {
         "$ref": "#/2"
@@ -2586,9 +2600,16 @@
         "flags": 1,
         "description": "Sets whether the data is migrated from source to target or not. This property must be true during the preview."
       },
+      "forceMigrate": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Sets whether to ignore warnings when performing validation of the migration request. If this property is true, warning-level disparities between the source and target resources will be ignored, and the request will only fail validation if there are error-level disparities. The default value is false."
+      },
       "sourceType": {
         "type": {
-          "$ref": "#/262"
+          "$ref": "#/263"
         },
         "flags": 1,
         "description": "Describes the source of the migration operation."
@@ -2636,14 +2657,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/264"
+          "$ref": "#/265"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/265"
+          "$ref": "#/266"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -2668,7 +2689,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Cache/redisEnterprise/privateEndpointConnections@2025-08-01-preview",
     "body": {
-      "$ref": "#/266"
+      "$ref": "#/267"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2679,7 +2700,7 @@
     "properties": {
       "skus": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/271"
         },
         "flags": 0,
         "description": "List of SKUS available to scale up or scale down."
@@ -2709,7 +2730,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/269"
+      "$ref": "#/270"
     }
   },
   {
@@ -2718,7 +2739,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise",
     "apiVersion": "2025-08-01-preview",
     "output": {
-      "$ref": "#/268"
+      "$ref": "#/269"
     }
   },
   {
@@ -2727,7 +2748,7 @@
     "properties": {
       "sasUri": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/274"
         },
         "flags": 1,
         "description": "SAS URI for the target directory to export to"
@@ -2744,7 +2765,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "input": {
-      "$ref": "#/272"
+      "$ref": "#/273"
     }
   },
   {
@@ -2753,7 +2774,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/276"
+          "$ref": "#/277"
         },
         "flags": 0,
         "description": "The identifiers of all the other database resources in the georeplication group to be flushed."
@@ -2772,7 +2793,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "input": {
-      "$ref": "#/275"
+      "$ref": "#/276"
     }
   },
   {
@@ -2781,7 +2802,7 @@
     "properties": {
       "geoReplication": {
         "type": {
-          "$ref": "#/279"
+          "$ref": "#/280"
         },
         "flags": 1,
         "description": "Properties to configure geo replication for this database."
@@ -2801,7 +2822,7 @@
       },
       "linkedDatabases": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/281"
         },
         "flags": 0,
         "description": "The resource IDs of the databases that are expected to be linked and included in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it is splintered."
@@ -2820,7 +2841,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "input": {
-      "$ref": "#/278"
+      "$ref": "#/279"
     }
   },
   {
@@ -2829,7 +2850,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/284"
         },
         "flags": 1,
         "description": "The resource IDs of the database resources to be unlinked."
@@ -2848,7 +2869,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "input": {
-      "$ref": "#/282"
+      "$ref": "#/283"
     }
   },
   {
@@ -2857,7 +2878,7 @@
     "properties": {
       "sasUris": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/287"
         },
         "flags": 1,
         "description": "SAS URIs for the target blobs to import from"
@@ -2867,7 +2888,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/273"
+      "$ref": "#/274"
     }
   },
   {
@@ -2876,7 +2897,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "input": {
-      "$ref": "#/285"
+      "$ref": "#/286"
     }
   },
   {
@@ -2905,7 +2926,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "output": {
-      "$ref": "#/288"
+      "$ref": "#/289"
     }
   },
   {
@@ -2914,7 +2935,7 @@
     "properties": {
       "keyType": {
         "type": {
-          "$ref": "#/293"
+          "$ref": "#/294"
         },
         "flags": 1,
         "description": "Which access key to regenerate."
@@ -2933,10 +2954,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/291"
+        "$ref": "#/292"
       },
       {
-        "$ref": "#/292"
+        "$ref": "#/293"
       }
     ]
   },
@@ -2946,10 +2967,10 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2025-08-01-preview",
     "output": {
-      "$ref": "#/288"
+      "$ref": "#/289"
     },
     "input": {
-      "$ref": "#/290"
+      "$ref": "#/291"
     }
   },
   {
@@ -2963,5 +2984,141 @@
     "name": "cancel",
     "resourceType": "Microsoft.Cache/redisEnterprise/migrations",
     "apiVersion": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationValidationRequest",
+    "properties": {
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The source resource ID to validate migration from. This is the resource ID of the Azure Cache for Redis."
+      },
+      "skipDataMigration": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Sets whether the data is migrated from source to target or not. The default value is true."
+      },
+      "forceMigrate": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this property is true, the isValid property in the response will ignore warning-level disparities between the source and target resource. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationValidationResponse",
+    "properties": {
+      "isValid": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 1,
+        "description": "Indicates whether the migration validation passed."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "List of validation errors that prevent migration."
+      },
+      "warnings": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 0,
+        "description": "List of validation warnings that may impact migration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationValidationError",
+    "properties": {
+      "disparities": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 1,
+        "description": "List of specific disparities that cause this error."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationValidationDisparity",
+    "properties": {
+      "category": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A localized string denoting the category of the validation issue. Examples are \"Region\", \"Data\", \"Identity\", \"Clustering Mode\", and \"TLS\"."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Detailed message describing the validation issue."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/301"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/300"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationValidationWarning",
+    "properties": {
+      "disparities": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 1,
+        "description": "List of specific disparities that cause this warning."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/301"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/304"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validate",
+    "resourceType": "Microsoft.Cache/redisEnterprise/migrations",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/299"
+    },
+    "input": {
+      "$ref": "#/298"
+    }
   }
 ]

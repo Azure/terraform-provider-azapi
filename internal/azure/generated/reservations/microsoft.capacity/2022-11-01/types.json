@@ -74,7 +74,7 @@
           "$ref": "#/198"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -948,6 +948,13 @@
     "$type": "ObjectType",
     "name": "ReservationResponse",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "The properties associated to this reservation"
+      },
       "location": {
         "type": {
           "$ref": "#/0"
@@ -967,13 +974,6 @@
         },
         "flags": 0,
         "description": "The sku information associated to this reservation"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/88"
-        },
-        "flags": 0,
-        "description": "The properties associated to this reservation"
       },
       "kind": {
         "type": {
@@ -1070,7 +1070,7 @@
           "$ref": "#/40"
         },
         "flags": 0,
-        "description": "Quantity of the skus that are part of the reservation."
+        "description": "Quantity of the skus that are part of the reservation. Must be greater than zero."
       },
       "provisioningState": {
         "type": {
@@ -2429,6 +2429,13 @@
         "flags": 10,
         "description": "The resource api version"
       },
+      "properties": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 2,
+        "description": "The properties associated to this reservation"
+      },
       "location": {
         "type": {
           "$ref": "#/0"
@@ -2448,13 +2455,6 @@
         },
         "flags": 2,
         "description": "The sku information associated to this reservation"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/88"
-        },
-        "flags": 2,
-        "description": "The properties associated to this reservation"
       },
       "kind": {
         "type": {
@@ -2487,217 +2487,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AvailableScopeRequest",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/217"
-        },
-        "flags": 0,
-        "description": "Available scope request properties"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AvailableScopeRequestProperties",
-    "properties": {
-      "scopes": {
-        "type": {
-          "$ref": "#/218"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AvailableScopeProperties",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/220"
-        },
-        "flags": 0,
-        "description": "The scopes checked by the available scope api."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SubscriptionScopeProperties",
-    "properties": {
-      "scopes": {
-        "type": {
-          "$ref": "#/222"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ScopeProperties",
-    "properties": {
-      "scope": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "valid": {
-        "type": {
-          "$ref": "#/47"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/221"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "availableScopes",
-    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
-    "apiVersion": "2022-11-01",
-    "output": {
-      "$ref": "#/219"
-    },
-    "input": {
-      "$ref": "#/216"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "archive",
-    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
-    "apiVersion": "2022-11-01"
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "unarchive",
-    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
-    "apiVersion": "2022-11-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SplitRequest",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/227"
-        },
-        "flags": 0,
-        "description": "Properties for reservation split"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SplitProperties",
-    "properties": {
-      "quantities": {
-        "type": {
-          "$ref": "#/228"
-        },
-        "flags": 0,
-        "description": "List of the quantities in the new reservations to create."
-      },
-      "reservationId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Resource id of the reservation to be split. Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/40"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/87"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "split",
-    "resourceType": "Microsoft.Capacity/reservationOrders",
-    "apiVersion": "2022-11-01",
-    "output": {
-      "$ref": "#/229"
-    },
-    "input": {
-      "$ref": "#/226"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "MergeRequest",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/232"
-        },
-        "flags": 0,
-        "description": "Properties for reservation merge"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "MergeProperties",
-    "properties": {
-      "sources": {
-        "type": {
-          "$ref": "#/233"
-        },
-        "flags": 0,
-        "description": "Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/87"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "merge",
-    "resourceType": "Microsoft.Capacity/reservationOrders",
-    "apiVersion": "2022-11-01",
-    "output": {
-      "$ref": "#/234"
-    },
-    "input": {
-      "$ref": "#/231"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "ChangeDirectoryRequest",
     "properties": {
       "destinationTenantId": {
@@ -2715,14 +2504,14 @@
     "properties": {
       "reservationOrder": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/218"
         },
         "flags": 0,
         "description": "Change directory result for reservation order or reservation"
       },
       "reservations": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/219"
         },
         "flags": 0
       }
@@ -2765,7 +2554,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/238"
+      "$ref": "#/218"
     }
   },
   {
@@ -2774,10 +2563,10 @@
     "resourceType": "Microsoft.Capacity/reservationOrders",
     "apiVersion": "2022-11-01",
     "output": {
-      "$ref": "#/237"
+      "$ref": "#/217"
     },
     "input": {
-      "$ref": "#/236"
+      "$ref": "#/216"
     }
   },
   {
@@ -2793,7 +2582,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/242"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "Properties needed for calculate refund including the scope and the reservation to be returned."
@@ -2813,7 +2602,7 @@
       },
       "reservationToReturn": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/223"
         },
         "flags": 0,
         "description": "Reservation to return"
@@ -2853,7 +2642,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/225"
         },
         "flags": 0,
         "description": "The refund properties of reservation"
@@ -2894,14 +2683,14 @@
       },
       "policyResult": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/226"
         },
         "flags": 0,
         "description": "Refund policy result"
       },
       "billingInformation": {
         "type": {
-          "$ref": "#/309"
+          "$ref": "#/289"
         },
         "flags": 0,
         "description": "billing information"
@@ -2914,7 +2703,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/247"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "Refund policy result property"
@@ -2941,7 +2730,7 @@
       },
       "policyErrors": {
         "type": {
-          "$ref": "#/308"
+          "$ref": "#/288"
         },
         "flags": 0,
         "description": "Refund Policy errors"
@@ -2954,7 +2743,7 @@
     "properties": {
       "code": {
         "type": {
-          "$ref": "#/307"
+          "$ref": "#/287"
         },
         "flags": 0,
         "description": "Error code describing the reason that service is not able to process the incoming request"
@@ -3203,6 +2992,66 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
         "$ref": "#/249"
       },
       {
@@ -3317,66 +3166,6 @@
         "$ref": "#/286"
       },
       {
-        "$ref": "#/287"
-      },
-      {
-        "$ref": "#/288"
-      },
-      {
-        "$ref": "#/289"
-      },
-      {
-        "$ref": "#/290"
-      },
-      {
-        "$ref": "#/291"
-      },
-      {
-        "$ref": "#/292"
-      },
-      {
-        "$ref": "#/293"
-      },
-      {
-        "$ref": "#/294"
-      },
-      {
-        "$ref": "#/295"
-      },
-      {
-        "$ref": "#/296"
-      },
-      {
-        "$ref": "#/297"
-      },
-      {
-        "$ref": "#/298"
-      },
-      {
-        "$ref": "#/299"
-      },
-      {
-        "$ref": "#/300"
-      },
-      {
-        "$ref": "#/301"
-      },
-      {
-        "$ref": "#/302"
-      },
-      {
-        "$ref": "#/303"
-      },
-      {
-        "$ref": "#/304"
-      },
-      {
-        "$ref": "#/305"
-      },
-      {
-        "$ref": "#/306"
-      },
-      {
         "$ref": "#/0"
       }
     ]
@@ -3384,7 +3173,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/248"
+      "$ref": "#/228"
     }
   },
   {
@@ -3393,7 +3182,7 @@
     "properties": {
       "billingPlan": {
         "type": {
-          "$ref": "#/312"
+          "$ref": "#/292"
         },
         "flags": 0,
         "description": "Represent the billing plans."
@@ -3447,10 +3236,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/310"
+        "$ref": "#/290"
       },
       {
-        "$ref": "#/311"
+        "$ref": "#/291"
       },
       {
         "$ref": "#/0"
@@ -3463,10 +3252,117 @@
     "resourceType": "Microsoft.Capacity/reservationOrders",
     "apiVersion": "2022-11-01",
     "output": {
-      "$ref": "#/244"
+      "$ref": "#/224"
     },
     "input": {
-      "$ref": "#/241"
+      "$ref": "#/221"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MergeRequest",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 0,
+        "description": "Properties for reservation merge"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MergeProperties",
+    "properties": {
+      "sources": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 0,
+        "description": "Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/87"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "merge",
+    "resourceType": "Microsoft.Capacity/reservationOrders",
+    "apiVersion": "2022-11-01",
+    "output": {
+      "$ref": "#/297"
+    },
+    "input": {
+      "$ref": "#/294"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SplitRequest",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Properties for reservation split"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SplitProperties",
+    "properties": {
+      "quantities": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "List of the quantities in the new reservations to create."
+      },
+      "reservationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource id of the reservation to be split. Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/87"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "split",
+    "resourceType": "Microsoft.Capacity/reservationOrders",
+    "apiVersion": "2022-11-01",
+    "output": {
+      "$ref": "#/302"
+    },
+    "input": {
+      "$ref": "#/299"
     }
   },
   {
@@ -3475,7 +3371,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/305"
         },
         "flags": 0,
         "description": "Properties needed for refund request including the session id from calculate refund, the scope, the reservation to be returned and the return reason."
@@ -3502,7 +3398,7 @@
       },
       "reservationToReturn": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/223"
         },
         "flags": 0,
         "description": "Reservation to return"
@@ -3520,6 +3416,13 @@
     "$type": "ObjectType",
     "name": "ReservationOrderResponse",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "Properties of a reservation order."
+      },
       "etag": {
         "type": {
           "$ref": "#/40"
@@ -3531,35 +3434,28 @@
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Identifier of the reservation"
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Name of the reservation"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/317"
-        },
-        "flags": 0,
-        "description": "Properties of a reservation order."
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Type of resource. \"Microsoft.Capacity/reservations\""
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
           "$ref": "#/198"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -3618,21 +3514,21 @@
       },
       "term": {
         "type": {
-          "$ref": "#/321"
+          "$ref": "#/311"
         },
         "flags": 0,
         "description": "Represent the term of reservation."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/335"
+          "$ref": "#/325"
         },
         "flags": 0,
         "description": "Current state of the reservation."
       },
       "billingPlan": {
         "type": {
-          "$ref": "#/338"
+          "$ref": "#/328"
         },
         "flags": 0,
         "description": "Represent the billing plans."
@@ -3646,7 +3542,7 @@
       },
       "reservations": {
         "type": {
-          "$ref": "#/339"
+          "$ref": "#/329"
         },
         "flags": 0
       },
@@ -3675,13 +3571,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/318"
+        "$ref": "#/308"
       },
       {
-        "$ref": "#/319"
+        "$ref": "#/309"
       },
       {
-        "$ref": "#/320"
+        "$ref": "#/310"
       },
       {
         "$ref": "#/0"
@@ -3744,6 +3640,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/320"
+      },
+      {
+        "$ref": "#/321"
+      },
+      {
         "$ref": "#/322"
       },
       {
@@ -3751,36 +3677,6 @@
       },
       {
         "$ref": "#/324"
-      },
-      {
-        "$ref": "#/325"
-      },
-      {
-        "$ref": "#/326"
-      },
-      {
-        "$ref": "#/327"
-      },
-      {
-        "$ref": "#/328"
-      },
-      {
-        "$ref": "#/329"
-      },
-      {
-        "$ref": "#/330"
-      },
-      {
-        "$ref": "#/331"
-      },
-      {
-        "$ref": "#/332"
-      },
-      {
-        "$ref": "#/333"
-      },
-      {
-        "$ref": "#/334"
       },
       {
         "$ref": "#/0"
@@ -3799,10 +3695,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/336"
+        "$ref": "#/326"
       },
       {
-        "$ref": "#/337"
+        "$ref": "#/327"
       },
       {
         "$ref": "#/0"
@@ -3821,10 +3717,114 @@
     "resourceType": "Microsoft.Capacity/reservationOrders",
     "apiVersion": "2022-11-01",
     "output": {
-      "$ref": "#/316"
+      "$ref": "#/306"
     },
     "input": {
-      "$ref": "#/314"
+      "$ref": "#/304"
     }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "archive",
+    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
+    "apiVersion": "2022-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableScopeRequest",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/333"
+        },
+        "flags": 0,
+        "description": "Available scope request properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableScopeRequestProperties",
+    "properties": {
+      "scopes": {
+        "type": {
+          "$ref": "#/334"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableScopeProperties",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/336"
+        },
+        "flags": 0,
+        "description": "The scopes checked by the available scope api."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubscriptionScopeProperties",
+    "properties": {
+      "scopes": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScopeProperties",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "valid": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/337"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "availableScopes",
+    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
+    "apiVersion": "2022-11-01",
+    "output": {
+      "$ref": "#/335"
+    },
+    "input": {
+      "$ref": "#/332"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "unarchive",
+    "resourceType": "Microsoft.Capacity/reservationOrders/reservations",
+    "apiVersion": "2022-11-01"
   }
 ]

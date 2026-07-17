@@ -52,6 +52,7 @@ func TestAccDataPlaneResource_importPurviewClassification(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -66,6 +67,7 @@ func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_purviewCollection(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
@@ -382,7 +384,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -436,7 +438,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
@@ -747,7 +749,7 @@ resource "azapi_resource" "account" {
   type      = "Microsoft.Purview/accounts@2021-12-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
+  location  = "%[1]s"
   identity {
     type         = "SystemAssigned"
     identity_ids = []
