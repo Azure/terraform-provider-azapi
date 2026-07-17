@@ -49,6 +49,16 @@ func waitForCertificateOperation(ctx context.Context, client clients.Client, id 
 		if status == "failed" || status == "cancelled" || status == "deleted" {
 			return fmt.Errorf("certificate operation for %s did not succeed (status %q): %s", id.AzureResourceId, status, certificateOperationError(operation))
 		}
+		// When the certificate is issued by an external CA, the issuer name is "Unknown". In that case
+		// Key Vault generates a CSR and the operation stays "inProgress" until the signed certificate is
+		// merged back out-of-band. Stop polling here to avoid blocking until the create timeout.
+		if status == "inprogress" {
+			if issuer, ok := operation["issuer"].(map[string]interface{}); ok {
+				if name, ok := issuer["name"].(string); ok && strings.EqualFold(name, "Unknown") {
+					return nil
+				}
+			}
+		}
 
 		select {
 		case <-ctx.Done():
