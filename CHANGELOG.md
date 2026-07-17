@@ -1,3 +1,22 @@
+## v2.11.0
+
+ENHANCEMENTS:
+
+- `azapi_resource_action` resource: Support sensitive body for resource actions (GH-1150).
+- `azapi_resource`: Import now falls back to up to three most recent indexed API versions when a 400 or 404 response is returned without an explicit `api-version` (GH-1093).
+- `azapi` provider: Support PFX modern encryption for client certificate authentication (GH-1151).
+- `azapi` client: Return the last retryable error instead of `context deadline exceeded` when retries fail (GH-1079).
+- Acquire a policy token when a request is blocked by an invoke policy (GH-1145).
+- Update bicep types to Azure/azure-rest-api-specs revision 51d53915b5f31b10e6645c136807b9d95f9f09d1 (GH-1159).
+- Improve the bicep types update process (GH-1155).
+
+BUG FIXES:
+
+- Fix `Missing Resource Identity After Read` after upgrading from v2.7.0 when a resource is deleted outside Terraform (GH-1050).
+- Fix `azapi_resource_action` output handling when updating existing actions (GH-1158).
+- Fix `azapi_resource_action` output being set incorrectly while the action is executing (GH-1168).
+- Fix `ResourceClient CreateOrUpdate` to return the initial PUT body correctly (GH-1160).
+
 ## v2.10.0
 
 ENHANCEMENTS:
