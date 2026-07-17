@@ -755,7 +755,7 @@ resource "azapi_resource_action" "add_accesspolicy_certificate" {
         tenantId = data.azapi_client_config.current.tenant_id
         objectId = data.azapi_client_config.current.object_id
         permissions = {
-          certificates = ["Create", "Get", "Delete", "Purge"]
+          certificates = ["Create", "Get", "Update", "Delete", "Purge"]
         }
       }]
     }
