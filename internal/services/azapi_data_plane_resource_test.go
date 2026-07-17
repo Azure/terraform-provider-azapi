@@ -17,10 +17,6 @@ import (
 
 type DataPlaneResource struct{}
 
-func dataPlaneImportIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "body", "locks", "output", "create_", "delete_", "update_", "read_"}
-}
-
 func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -47,7 +43,7 @@ func TestAccDataPlaneResource_importPurviewClassification(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, dataPlaneImportIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
