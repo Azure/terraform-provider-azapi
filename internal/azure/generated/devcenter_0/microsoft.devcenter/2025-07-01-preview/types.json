@@ -14,7 +14,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -311,6 +311,13 @@
         "flags": 0,
         "description": "User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity."
       },
+      "federatedClientId": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "application client identity to use for accessing key encryption key Url in a different tenant. Ex: f83c6b1b-4d34-47e4-bb34-9d83df58b540"
+      },
       "delegatedIdentityClientId": {
         "type": {
           "$ref": "#/30"
@@ -508,7 +515,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
+    "value": "SystemAssigned,UserAssigned"
   },
   {
     "$type": "UnionType",
@@ -688,7 +695,7 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters@2025-07-01-preview",
     "body": {
       "$ref": "#/4"
     },
@@ -707,7 +714,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -1060,7 +1067,7 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/networkConnections@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/networkConnections@2025-07-01-preview",
     "body": {
       "$ref": "#/67"
     },
@@ -1073,7 +1080,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -1123,7 +1130,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/161"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1204,40 +1211,33 @@
         "flags": 0,
         "description": "Settings to be used for customizations."
       },
-      "devBoxScheduleDeleteSettings": {
+      "devBoxAutoDeleteSettings": {
         "type": {
           "$ref": "#/137"
         },
         "flags": 0,
-        "description": "Dev Box Schedule Delete settings."
+        "description": "Dev Box Auto Delete settings."
       },
       "azureAiServicesSettings": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/141"
         },
         "flags": 0,
         "description": "Indicates whether Azure AI services are enabled for a project."
       },
       "serverlessGpuSessionsSettings": {
         "type": {
-          "$ref": "#/148"
+          "$ref": "#/145"
         },
         "flags": 0,
         "description": "Settings to be used for serverless GPU."
       },
       "workspaceStorageSettings": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/150"
         },
         "flags": 0,
         "description": "Settings to be used for workspace storage."
-      },
-      "assignedGroups": {
-        "type": {
-          "$ref": "#/160"
-        },
-        "flags": 0,
-        "description": "List of Entra ID group assignments associated with this project."
       }
     }
   },
@@ -1498,7 +1498,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "DevBoxScheduleDeleteSettings",
+    "name": "DevBoxAutoDeleteSettings",
     "properties": {
       "deleteMode": {
         "type": {
@@ -1520,13 +1520,6 @@
         },
         "flags": 0,
         "description": "ISO8601 duration required for the dev box to be marked for deletion prior to it being deleted. ISO8601 format PT[n]H[n]M[n]S."
-      },
-      "cancelOnConnectEnableStatus": {
-        "type": {
-          "$ref": "#/143"
-        },
-        "flags": 0,
-        "description": "Indicates whether scheduled deletion should be canceled when a user connects to the dev box."
       }
     }
   },
@@ -1553,34 +1546,12 @@
     ]
   },
   {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/141"
-      },
-      {
-        "$ref": "#/142"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
     "$type": "ObjectType",
     "name": "AzureAiServicesSettings",
     "properties": {
       "azureAiServicesMode": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/144"
         },
         "flags": 0,
         "description": "The property indicates whether Azure AI services is enabled."
@@ -1599,10 +1570,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/145"
+        "$ref": "#/142"
       },
       {
-        "$ref": "#/146"
+        "$ref": "#/143"
       },
       {
         "$ref": "#/2"
@@ -1615,14 +1586,14 @@
     "properties": {
       "serverlessGpuSessionsMode": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/148"
         },
         "flags": 0,
         "description": "The property indicates whether serverless GPU access is enabled on the project."
       },
       "maxConcurrentSessionsPerProject": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/149"
         },
         "flags": 0,
         "description": "When specified, limits the maximum number of concurrent sessions across all pools in the project."
@@ -1641,10 +1612,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/149"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/147"
       },
       {
         "$ref": "#/2"
@@ -1661,7 +1632,7 @@
     "properties": {
       "workspaceStorageMode": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/153"
         },
         "flags": 0,
         "description": "Indicates whether workspace storage is enabled."
@@ -1680,56 +1651,15 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/154"
+        "$ref": "#/151"
       },
       {
-        "$ref": "#/155"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssignedGroup",
-    "properties": {
-      "objectId": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 0,
-        "description": "The Entra group object ID (GUID)."
-      },
-      "scope": {
-        "type": {
-          "$ref": "#/159"
-        },
-        "flags": 0,
-        "description": "The scope of the assignment."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DevBox"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/158"
+        "$ref": "#/152"
       },
       {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/157"
-    }
   },
   {
     "$type": "ObjectType",
@@ -1741,7 +1671,7 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects@2025-07-01-preview",
     "body": {
       "$ref": "#/103"
     },
@@ -1754,7 +1684,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -1776,21 +1706,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/163"
+          "$ref": "#/156"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/164"
+          "$ref": "#/157"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/166"
+          "$ref": "#/159"
         },
         "flags": 0,
         "description": "Attached NetworkConnection properties."
@@ -1810,7 +1740,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/183"
+          "$ref": "#/176"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -1831,14 +1761,14 @@
       },
       "healthCheckStatus": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/184"
         },
         "flags": 2,
         "description": "Health check status values."
       },
       "domainJoinType": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/188"
         },
         "flags": 2,
         "description": "AAD Join type of the network. This is populated based on the referenced Network Connection."
@@ -1913,6 +1843,27 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
         "$ref": "#/167"
       },
       {
@@ -1938,27 +1889,6 @@
       },
       {
         "$ref": "#/175"
-      },
-      {
-        "$ref": "#/176"
-      },
-      {
-        "$ref": "#/177"
-      },
-      {
-        "$ref": "#/178"
-      },
-      {
-        "$ref": "#/179"
-      },
-      {
-        "$ref": "#/180"
-      },
-      {
-        "$ref": "#/181"
-      },
-      {
-        "$ref": "#/182"
       },
       {
         "$ref": "#/2"
@@ -1997,25 +1927,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/184"
+        "$ref": "#/177"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/178"
       },
       {
-        "$ref": "#/186"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/187"
+        "$ref": "#/180"
       },
       {
-        "$ref": "#/188"
+        "$ref": "#/181"
       },
       {
-        "$ref": "#/189"
+        "$ref": "#/182"
       },
       {
-        "$ref": "#/190"
+        "$ref": "#/183"
       },
       {
         "$ref": "#/2"
@@ -2038,13 +1968,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/192"
+        "$ref": "#/185"
       },
       {
-        "$ref": "#/193"
+        "$ref": "#/186"
       },
       {
-        "$ref": "#/194"
+        "$ref": "#/187"
       },
       {
         "$ref": "#/2"
@@ -2053,9 +1983,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/attachednetworks@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/attachednetworks@2025-07-01-preview",
     "body": {
-      "$ref": "#/165"
+      "$ref": "#/158"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2066,7 +1996,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -2088,21 +2018,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/190"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/198"
+          "$ref": "#/191"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/193"
         },
         "flags": 0,
         "description": "Catalog properties."
@@ -2122,28 +2052,28 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/210"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "syncState": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/215"
         },
         "flags": 2,
         "description": "The synchronization state of the catalog."
       },
       "lastSyncStats": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/216"
         },
         "flags": 2,
         "description": "Stats of the latest synchronization."
       },
       "connectionState": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/223"
         },
         "flags": 2,
         "description": "The connection state of the catalog."
@@ -2164,35 +2094,28 @@
       },
       "gitHub": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/224"
         },
         "flags": 0,
         "description": "Properties for a GitHub catalog type."
       },
       "adoGit": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/224"
         },
         "flags": 0,
         "description": "Properties for an Azure DevOps catalog type."
       },
       "syncType": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "Indicates the type of sync that is configured for the catalog."
       },
-      "autoImageBuildEnableStatus": {
-        "type": {
-          "$ref": "#/237"
-        },
-        "flags": 0,
-        "description": "Indicates whether the catalog is configured to automatically build image definitions. Defaults to disabled for newly created catalogs."
-      },
       "tags": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -2267,6 +2190,27 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
         "$ref": "#/201"
       },
       {
@@ -2294,27 +2238,6 @@
         "$ref": "#/209"
       },
       {
-        "$ref": "#/210"
-      },
-      {
-        "$ref": "#/211"
-      },
-      {
-        "$ref": "#/212"
-      },
-      {
-        "$ref": "#/213"
-      },
-      {
-        "$ref": "#/214"
-      },
-      {
-        "$ref": "#/215"
-      },
-      {
-        "$ref": "#/216"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -2339,16 +2262,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/218"
+        "$ref": "#/211"
       },
       {
-        "$ref": "#/219"
+        "$ref": "#/212"
       },
       {
-        "$ref": "#/220"
+        "$ref": "#/213"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/214"
       },
       {
         "$ref": "#/2"
@@ -2403,7 +2326,7 @@
       },
       "syncedCatalogItemTypes": {
         "type": {
-          "$ref": "#/227"
+          "$ref": "#/220"
         },
         "flags": 0,
         "description": "Indicates catalog item types that were synced."
@@ -2422,10 +2345,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/224"
+        "$ref": "#/217"
       },
       {
-        "$ref": "#/225"
+        "$ref": "#/218"
       },
       {
         "$ref": "#/2"
@@ -2435,7 +2358,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/226"
+      "$ref": "#/219"
     }
   },
   {
@@ -2450,10 +2373,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/228"
+        "$ref": "#/221"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/222"
       },
       {
         "$ref": "#/2"
@@ -2506,32 +2429,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/232"
+        "$ref": "#/225"
       },
       {
-        "$ref": "#/233"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/235"
-      },
-      {
-        "$ref": "#/236"
+        "$ref": "#/226"
       },
       {
         "$ref": "#/2"
@@ -2548,9 +2449,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/catalogs@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/catalogs@2025-07-01-preview",
     "body": {
-      "$ref": "#/199"
+      "$ref": "#/192"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -2561,7 +2462,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -2583,28 +2484,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/230"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/241"
+          "$ref": "#/231"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/233"
         },
         "flags": 0,
         "description": "Dev Box definition properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/284"
+          "$ref": "#/274"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -2631,49 +2532,49 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/260"
+          "$ref": "#/250"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "imageValidationStatus": {
         "type": {
-          "$ref": "#/266"
+          "$ref": "#/256"
         },
         "flags": 2,
         "description": "Validation status of the configured image."
       },
       "imageValidationErrorDetails": {
         "type": {
-          "$ref": "#/267"
+          "$ref": "#/257"
         },
         "flags": 2,
         "description": "Details for image validator error. Populated when the image validation is not successful."
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/272"
+          "$ref": "#/262"
         },
         "flags": 2,
         "description": "Validation status for the Dev Box Definition."
       },
       "activeImageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "Image reference information for the currently active image (only populated during updates)."
       },
       "imageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 0,
         "description": "Image reference information."
       },
       "sku": {
         "type": {
-          "$ref": "#/274"
+          "$ref": "#/264"
         },
         "flags": 0,
         "description": "The SKU for Dev Boxes created using this definition."
@@ -2687,7 +2588,7 @@
       },
       "hibernateSupport": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/273"
         },
         "flags": 0,
         "description": "Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate"
@@ -2762,6 +2663,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
         "$ref": "#/244"
       },
       {
@@ -2778,36 +2709,6 @@
       },
       {
         "$ref": "#/249"
-      },
-      {
-        "$ref": "#/250"
-      },
-      {
-        "$ref": "#/251"
-      },
-      {
-        "$ref": "#/252"
-      },
-      {
-        "$ref": "#/253"
-      },
-      {
-        "$ref": "#/254"
-      },
-      {
-        "$ref": "#/255"
-      },
-      {
-        "$ref": "#/256"
-      },
-      {
-        "$ref": "#/257"
-      },
-      {
-        "$ref": "#/258"
-      },
-      {
-        "$ref": "#/259"
       },
       {
         "$ref": "#/2"
@@ -2838,19 +2739,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/261"
+        "$ref": "#/251"
       },
       {
-        "$ref": "#/262"
+        "$ref": "#/252"
       },
       {
-        "$ref": "#/263"
+        "$ref": "#/253"
       },
       {
-        "$ref": "#/264"
+        "$ref": "#/254"
       },
       {
-        "$ref": "#/265"
+        "$ref": "#/255"
       },
       {
         "$ref": "#/2"
@@ -2897,16 +2798,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/268"
+        "$ref": "#/258"
       },
       {
-        "$ref": "#/269"
+        "$ref": "#/259"
       },
       {
-        "$ref": "#/270"
+        "$ref": "#/260"
       },
       {
-        "$ref": "#/271"
+        "$ref": "#/261"
       },
       {
         "$ref": "#/2"
@@ -2946,7 +2847,7 @@
       },
       "tier": {
         "type": {
-          "$ref": "#/279"
+          "$ref": "#/269"
         },
         "flags": 0,
         "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
@@ -2967,7 +2868,7 @@
       },
       "capacity": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
@@ -2994,16 +2895,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/275"
+        "$ref": "#/265"
       },
       {
-        "$ref": "#/276"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/277"
+        "$ref": "#/267"
       },
       {
-        "$ref": "#/278"
+        "$ref": "#/268"
       }
     ]
   },
@@ -3022,10 +2923,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/281"
+        "$ref": "#/271"
       },
       {
-        "$ref": "#/282"
+        "$ref": "#/272"
       },
       {
         "$ref": "#/2"
@@ -3042,9 +2943,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/devboxdefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/devboxdefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/242"
+      "$ref": "#/232"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -3061,7 +2962,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -3076,28 +2977,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/276"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/287"
+          "$ref": "#/277"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/288"
+          "$ref": "#/278"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/290"
+          "$ref": "#/280"
         },
         "flags": 0,
         "description": "Properties of a devcenter encryption set."
@@ -3111,7 +3012,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/305"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -3138,14 +3039,14 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/307"
+          "$ref": "#/297"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "devboxDisksEncryptionEnableStatus": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/300"
         },
         "flags": 0,
         "description": "Devbox disk encryption enable or disable status. Indicates if Devbox disks encryption using DevCenter CMK is enabled or not."
@@ -3159,7 +3060,7 @@
       },
       "keyEncryptionKeyIdentity": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/301"
         },
         "flags": 0,
         "description": "The managed identity configuration used for key vault access."
@@ -3234,6 +3135,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
         "$ref": "#/291"
       },
       {
@@ -3252,36 +3183,6 @@
         "$ref": "#/296"
       },
       {
-        "$ref": "#/297"
-      },
-      {
-        "$ref": "#/298"
-      },
-      {
-        "$ref": "#/299"
-      },
-      {
-        "$ref": "#/300"
-      },
-      {
-        "$ref": "#/301"
-      },
-      {
-        "$ref": "#/302"
-      },
-      {
-        "$ref": "#/303"
-      },
-      {
-        "$ref": "#/304"
-      },
-      {
-        "$ref": "#/305"
-      },
-      {
-        "$ref": "#/306"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -3298,10 +3199,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/308"
+        "$ref": "#/298"
       },
       {
-        "$ref": "#/309"
+        "$ref": "#/299"
       },
       {
         "$ref": "#/2"
@@ -3314,7 +3215,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/304"
         },
         "flags": 0,
         "description": "The type of managed identity to use for key vault access."
@@ -3340,10 +3241,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/312"
+        "$ref": "#/302"
       },
       {
-        "$ref": "#/313"
+        "$ref": "#/303"
       },
       {
         "$ref": "#/2"
@@ -3360,9 +3261,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/encryptionSets@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/encryptionSets@2025-07-01-preview",
     "body": {
-      "$ref": "#/289"
+      "$ref": "#/279"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -3373,7 +3274,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -3395,28 +3296,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/317"
+          "$ref": "#/307"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/318"
+          "$ref": "#/308"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/320"
+          "$ref": "#/310"
         },
         "flags": 0,
         "description": "Properties of an environment type."
       },
       "tags": {
         "type": {
-          "$ref": "#/338"
+          "$ref": "#/328"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -3436,7 +3337,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/337"
+          "$ref": "#/327"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -3518,6 +3419,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/320"
+      },
+      {
         "$ref": "#/321"
       },
       {
@@ -3536,36 +3467,6 @@
         "$ref": "#/326"
       },
       {
-        "$ref": "#/327"
-      },
-      {
-        "$ref": "#/328"
-      },
-      {
-        "$ref": "#/329"
-      },
-      {
-        "$ref": "#/330"
-      },
-      {
-        "$ref": "#/331"
-      },
-      {
-        "$ref": "#/332"
-      },
-      {
-        "$ref": "#/333"
-      },
-      {
-        "$ref": "#/334"
-      },
-      {
-        "$ref": "#/335"
-      },
-      {
-        "$ref": "#/336"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -3580,9 +3481,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/environmentTypes@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/environmentTypes@2025-07-01-preview",
     "body": {
-      "$ref": "#/319"
+      "$ref": "#/309"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -3593,7 +3494,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -3615,21 +3516,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/340"
+          "$ref": "#/330"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/341"
+          "$ref": "#/331"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/343"
+          "$ref": "#/333"
         },
         "flags": 0,
         "description": "Gallery properties."
@@ -3649,7 +3550,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/360"
+          "$ref": "#/350"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -3731,6 +3632,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
         "$ref": "#/344"
       },
       {
@@ -3749,45 +3680,15 @@
         "$ref": "#/349"
       },
       {
-        "$ref": "#/350"
-      },
-      {
-        "$ref": "#/351"
-      },
-      {
-        "$ref": "#/352"
-      },
-      {
-        "$ref": "#/353"
-      },
-      {
-        "$ref": "#/354"
-      },
-      {
-        "$ref": "#/355"
-      },
-      {
-        "$ref": "#/356"
-      },
-      {
-        "$ref": "#/357"
-      },
-      {
-        "$ref": "#/358"
-      },
-      {
-        "$ref": "#/359"
-      },
-      {
         "$ref": "#/2"
       }
     ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/galleries@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/galleries@2025-07-01-preview",
     "body": {
-      "$ref": "#/342"
+      "$ref": "#/332"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -3798,7 +3699,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -3820,21 +3721,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/362"
+          "$ref": "#/352"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/363"
+          "$ref": "#/353"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/365"
+          "$ref": "#/355"
         },
         "flags": 0,
         "description": "Properties of an project policy."
@@ -3854,31 +3755,24 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/382"
+          "$ref": "#/372"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "resourcePolicies": {
         "type": {
-          "$ref": "#/391"
+          "$ref": "#/381"
         },
         "flags": 0,
         "description": "Resource policies that are a part of this project policy."
       },
       "scopes": {
         "type": {
-          "$ref": "#/392"
+          "$ref": "#/382"
         },
         "flags": 0,
         "description": "Resources that have access to the shared resources that are a part of this project policy."
-      },
-      "configurationPolicies": {
-        "type": {
-          "$ref": "#/393"
-        },
-        "flags": 0,
-        "description": "Configuration Policies part of this project policy."
       }
     }
   },
@@ -3950,6 +3844,36 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/365"
+      },
+      {
         "$ref": "#/366"
       },
       {
@@ -3966,36 +3890,6 @@
       },
       {
         "$ref": "#/371"
-      },
-      {
-        "$ref": "#/372"
-      },
-      {
-        "$ref": "#/373"
-      },
-      {
-        "$ref": "#/374"
-      },
-      {
-        "$ref": "#/375"
-      },
-      {
-        "$ref": "#/376"
-      },
-      {
-        "$ref": "#/377"
-      },
-      {
-        "$ref": "#/378"
-      },
-      {
-        "$ref": "#/379"
-      },
-      {
-        "$ref": "#/380"
-      },
-      {
-        "$ref": "#/381"
       },
       {
         "$ref": "#/2"
@@ -4022,14 +3916,14 @@
       },
       "action": {
         "type": {
-          "$ref": "#/386"
+          "$ref": "#/376"
         },
         "flags": 0,
         "description": "Policy action to be taken on the resources. This is optional, and defaults to allow"
       },
       "resourceType": {
         "type": {
-          "$ref": "#/390"
+          "$ref": "#/380"
         },
         "flags": 0,
         "description": "Optional. The resource type being restricted or allowed by a project policy. Used with a given action to restrict or allow access to a resource type."
@@ -4048,10 +3942,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/384"
+        "$ref": "#/374"
       },
       {
-        "$ref": "#/385"
+        "$ref": "#/375"
       },
       {
         "$ref": "#/2"
@@ -4074,13 +3968,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/387"
+        "$ref": "#/377"
       },
       {
-        "$ref": "#/388"
+        "$ref": "#/378"
       },
       {
-        "$ref": "#/389"
+        "$ref": "#/379"
       },
       {
         "$ref": "#/2"
@@ -4090,7 +3984,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/383"
+      "$ref": "#/373"
     }
   },
   {
@@ -4100,212 +3994,10 @@
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "ConfigurationPolicies",
-    "properties": {
-      "azureAiServicesFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "The property indicates the Azure AI services settings on a project."
-      },
-      "devBoxScheduleDeleteFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether the setting is configurable at Project scope."
-      },
-      "devBoxLimitsFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether DevBox limits are configurable at Project scope."
-      },
-      "displayNameFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether project display name is configurable at Project scope."
-      },
-      "devBoxTunnelFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether DevBox tunnel settings are configurable at Pool scope."
-      },
-      "projectCatalogFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether project catalogs are configurable at Project scope."
-      },
-      "serverlessGpuSessionsFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether serverless GPU sessions are configurable at Project scope."
-      },
-      "userCustomizationsFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether user customizations is configurable at Project scope."
-      },
-      "workspaceStorageFeatureStatus": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 0,
-        "description": "Indicates whether workspace storage is configurable at Project scope."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "FeatureState",
-    "properties": {
-      "statusModifiable": {
-        "type": {
-          "$ref": "#/397"
-        },
-        "flags": 0,
-        "description": "Indicates whether the feature's status, Enabled or Disabled, is configurable at the Project scope."
-      },
-      "valuesModifiable": {
-        "type": {
-          "$ref": "#/400"
-        },
-        "flags": 0,
-        "description": "Indicates whether the feature values are configurable at the Project scope."
-      },
-      "defaultStatus": {
-        "type": {
-          "$ref": "#/404"
-        },
-        "flags": 0,
-        "description": "Indicates the default status of the feature."
-      },
-      "defaultValues": {
-        "type": {
-          "$ref": "#/406"
-        },
-        "flags": 0,
-        "description": "The default values of the feature."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotModifiable"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Modifiable"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/395"
-      },
-      {
-        "$ref": "#/396"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotModifiable"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Modifiable"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/398"
-      },
-      {
-        "$ref": "#/399"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AutoDeploy"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/401"
-      },
-      {
-        "$ref": "#/402"
-      },
-      {
-        "$ref": "#/403"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DefaultValue",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The name of the feature property."
-      },
-      "value": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The default value to be applied for the given property."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/405"
-    }
-  },
-  {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/projectPolicies@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/projectPolicies@2025-07-01-preview",
     "body": {
-      "$ref": "#/364"
+      "$ref": "#/354"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -4316,7 +4008,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -4338,21 +4030,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/408"
+          "$ref": "#/384"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/385"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/193"
         },
         "flags": 0,
         "description": "Catalog properties."
@@ -4368,9 +4060,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/catalogs@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/catalogs@2025-07-01-preview",
     "body": {
-      "$ref": "#/410"
+      "$ref": "#/386"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -4381,7 +4073,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -4403,21 +4095,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/412"
+          "$ref": "#/388"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/413"
+          "$ref": "#/389"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/415"
+          "$ref": "#/391"
         },
         "flags": 0,
         "description": "Properties of an environment type."
@@ -4431,7 +4123,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/442"
+          "$ref": "#/418"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4458,7 +4150,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/432"
+          "$ref": "#/408"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -4486,21 +4178,21 @@
       },
       "status": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/411"
         },
         "flags": 0,
         "description": "Defines whether this Environment Type can be used in this Project."
       },
       "creatorRoleAssignment": {
         "type": {
-          "$ref": "#/436"
+          "$ref": "#/412"
         },
         "flags": 0,
         "description": "The role definition assigned to the environment creator on backing resources."
       },
       "userRoleAssignments": {
         "type": {
-          "$ref": "#/441"
+          "$ref": "#/417"
         },
         "flags": 0,
         "description": "Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role definition IDs."
@@ -4575,52 +4267,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/416"
+        "$ref": "#/392"
       },
       {
-        "$ref": "#/417"
+        "$ref": "#/393"
       },
       {
-        "$ref": "#/418"
+        "$ref": "#/394"
       },
       {
-        "$ref": "#/419"
+        "$ref": "#/395"
       },
       {
-        "$ref": "#/420"
+        "$ref": "#/396"
       },
       {
-        "$ref": "#/421"
+        "$ref": "#/397"
       },
       {
-        "$ref": "#/422"
+        "$ref": "#/398"
       },
       {
-        "$ref": "#/423"
+        "$ref": "#/399"
       },
       {
-        "$ref": "#/424"
+        "$ref": "#/400"
       },
       {
-        "$ref": "#/425"
+        "$ref": "#/401"
       },
       {
-        "$ref": "#/426"
+        "$ref": "#/402"
       },
       {
-        "$ref": "#/427"
+        "$ref": "#/403"
       },
       {
-        "$ref": "#/428"
+        "$ref": "#/404"
       },
       {
-        "$ref": "#/429"
+        "$ref": "#/405"
       },
       {
-        "$ref": "#/430"
+        "$ref": "#/406"
       },
       {
-        "$ref": "#/431"
+        "$ref": "#/407"
       },
       {
         "$ref": "#/2"
@@ -4639,10 +4331,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/433"
+        "$ref": "#/409"
       },
       {
-        "$ref": "#/434"
+        "$ref": "#/410"
       },
       {
         "$ref": "#/2"
@@ -4655,7 +4347,7 @@
     "properties": {
       "roles": {
         "type": {
-          "$ref": "#/438"
+          "$ref": "#/414"
         },
         "flags": 0,
         "description": "A map of roles to assign to the environment creator."
@@ -4687,7 +4379,7 @@
     "name": "ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentRoles",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/437"
+      "$ref": "#/413"
     }
   },
   {
@@ -4696,7 +4388,7 @@
     "properties": {
       "roles": {
         "type": {
-          "$ref": "#/440"
+          "$ref": "#/416"
         },
         "flags": 0,
         "description": "A map of roles to assign to the parent user."
@@ -4708,7 +4400,7 @@
     "name": "UserRoleAssignmentRoles",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/437"
+      "$ref": "#/413"
     }
   },
   {
@@ -4716,7 +4408,7 @@
     "name": "ProjectEnvironmentTypeUpdatePropertiesUserRoleAssignments",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/439"
+      "$ref": "#/415"
     }
   },
   {
@@ -4729,9 +4421,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/environmentTypes@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/environmentTypes@2025-07-01-preview",
     "body": {
-      "$ref": "#/414"
+      "$ref": "#/390"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -4742,7 +4434,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -4764,28 +4456,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/444"
+          "$ref": "#/420"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/445"
+          "$ref": "#/421"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/447"
+          "$ref": "#/423"
         },
         "flags": 0,
         "description": "Pool properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/516"
+          "$ref": "#/492"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4812,35 +4504,35 @@
     "properties": {
       "healthStatus": {
         "type": {
-          "$ref": "#/453"
+          "$ref": "#/429"
         },
         "flags": 2,
         "description": "Overall health status of the Pool. Indicates whether or not the Pool is available to create Dev Boxes."
       },
       "healthStatusDetails": {
         "type": {
-          "$ref": "#/455"
+          "$ref": "#/431"
         },
         "flags": 2,
         "description": "Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates the pool is in a non-healthy state"
       },
       "devBoxCount": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "Indicates the number of provisioned Dev Boxes in this pool."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/472"
+          "$ref": "#/448"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "devBoxDefinitionType": {
         "type": {
-          "$ref": "#/475"
+          "$ref": "#/451"
         },
         "flags": 0,
         "description": "Indicates if the pool is created from an existing Dev Box Definition or if one is provided directly."
@@ -4854,7 +4546,7 @@
       },
       "devBoxDefinition": {
         "type": {
-          "$ref": "#/476"
+          "$ref": "#/452"
         },
         "flags": 0,
         "description": "A definition of the machines that are created from this Pool. Will be ignored if devBoxDefinitionType is Reference or not provided."
@@ -4868,35 +4560,35 @@
       },
       "licenseType": {
         "type": {
-          "$ref": "#/478"
+          "$ref": "#/454"
         },
         "flags": 0,
         "description": "Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created."
       },
       "localAdministrator": {
         "type": {
-          "$ref": "#/481"
+          "$ref": "#/457"
         },
         "flags": 0,
         "description": "Indicates whether owners of Dev Boxes in this pool are added as local administrators on the Dev Box."
       },
       "stopOnDisconnect": {
         "type": {
-          "$ref": "#/482"
+          "$ref": "#/458"
         },
         "flags": 0,
         "description": "Stop on disconnect configuration settings for Dev Boxes created in this pool."
       },
       "stopOnNoConnect": {
         "type": {
-          "$ref": "#/486"
+          "$ref": "#/462"
         },
         "flags": 0,
         "description": "Stop on no connect configuration settings for Dev Boxes created in this pool."
       },
       "singleSignOnStatus": {
         "type": {
-          "$ref": "#/492"
+          "$ref": "#/468"
         },
         "flags": 0,
         "description": "Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single sign on be enabled on the tenant."
@@ -4910,28 +4602,28 @@
       },
       "virtualNetworkType": {
         "type": {
-          "$ref": "#/495"
+          "$ref": "#/471"
         },
         "flags": 0,
         "description": "Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network."
       },
       "managedVirtualNetworkRegions": {
         "type": {
-          "$ref": "#/496"
+          "$ref": "#/472"
         },
         "flags": 0,
         "description": "The regions of the managed virtual network (required when managedNetworkType is Managed)."
       },
       "activeHoursConfiguration": {
         "type": {
-          "$ref": "#/497"
+          "$ref": "#/473"
         },
         "flags": 0,
         "description": "Active hours configuration settings for Dev Boxes created in this pool."
       },
       "devBoxTunnelEnableStatus": {
         "type": {
-          "$ref": "#/515"
+          "$ref": "#/491"
         },
         "flags": 0,
         "description": "Indicates whether Dev Box Tunnel is enabled for a the pool."
@@ -4962,19 +4654,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/448"
+        "$ref": "#/424"
       },
       {
-        "$ref": "#/449"
+        "$ref": "#/425"
       },
       {
-        "$ref": "#/450"
+        "$ref": "#/426"
       },
       {
-        "$ref": "#/451"
+        "$ref": "#/427"
       },
       {
-        "$ref": "#/452"
+        "$ref": "#/428"
       },
       {
         "$ref": "#/2"
@@ -5004,7 +4696,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/454"
+      "$ref": "#/430"
     }
   },
   {
@@ -5075,52 +4767,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/456"
+        "$ref": "#/432"
       },
       {
-        "$ref": "#/457"
+        "$ref": "#/433"
       },
       {
-        "$ref": "#/458"
+        "$ref": "#/434"
       },
       {
-        "$ref": "#/459"
+        "$ref": "#/435"
       },
       {
-        "$ref": "#/460"
+        "$ref": "#/436"
       },
       {
-        "$ref": "#/461"
+        "$ref": "#/437"
       },
       {
-        "$ref": "#/462"
+        "$ref": "#/438"
       },
       {
-        "$ref": "#/463"
+        "$ref": "#/439"
       },
       {
-        "$ref": "#/464"
+        "$ref": "#/440"
       },
       {
-        "$ref": "#/465"
+        "$ref": "#/441"
       },
       {
-        "$ref": "#/466"
+        "$ref": "#/442"
       },
       {
-        "$ref": "#/467"
+        "$ref": "#/443"
       },
       {
-        "$ref": "#/468"
+        "$ref": "#/444"
       },
       {
-        "$ref": "#/469"
+        "$ref": "#/445"
       },
       {
-        "$ref": "#/470"
+        "$ref": "#/446"
       },
       {
-        "$ref": "#/471"
+        "$ref": "#/447"
       },
       {
         "$ref": "#/2"
@@ -5139,10 +4831,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/473"
+        "$ref": "#/449"
       },
       {
-        "$ref": "#/474"
+        "$ref": "#/450"
       },
       {
         "$ref": "#/2"
@@ -5155,21 +4847,21 @@
     "properties": {
       "imageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 0,
         "description": "Image reference information."
       },
       "sku": {
         "type": {
-          "$ref": "#/274"
+          "$ref": "#/264"
         },
         "flags": 0,
         "description": "The SKU for Dev Boxes created from the Pool."
       },
       "activeImageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "Image reference information for the currently active image (only populated during updates)."
@@ -5184,7 +4876,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/477"
+        "$ref": "#/453"
       },
       {
         "$ref": "#/2"
@@ -5203,10 +4895,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/479"
+        "$ref": "#/455"
       },
       {
-        "$ref": "#/480"
+        "$ref": "#/456"
       },
       {
         "$ref": "#/2"
@@ -5219,14 +4911,14 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/485"
+          "$ref": "#/461"
         },
         "flags": 0,
         "description": "Whether the feature to stop the Dev Box on disconnect once the grace period has lapsed is enabled."
       },
       "gracePeriodMinutes": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The specified time in minutes to wait before stopping a Dev Box once disconnect is detected."
@@ -5245,10 +4937,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/483"
+        "$ref": "#/459"
       },
       {
-        "$ref": "#/484"
+        "$ref": "#/460"
       },
       {
         "$ref": "#/2"
@@ -5261,14 +4953,14 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/489"
+          "$ref": "#/465"
         },
         "flags": 0,
         "description": "Enables the feature to stop a started Dev Box when it has not been connected to, once the grace period has lapsed."
       },
       "gracePeriodMinutes": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The specified time in minutes to wait before stopping a Dev Box if no connection is made."
@@ -5287,10 +4979,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/487"
+        "$ref": "#/463"
       },
       {
-        "$ref": "#/488"
+        "$ref": "#/464"
       },
       {
         "$ref": "#/2"
@@ -5309,10 +5001,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/490"
+        "$ref": "#/466"
       },
       {
-        "$ref": "#/491"
+        "$ref": "#/467"
       },
       {
         "$ref": "#/2"
@@ -5331,10 +5023,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/493"
+        "$ref": "#/469"
       },
       {
-        "$ref": "#/494"
+        "$ref": "#/470"
       },
       {
         "$ref": "#/2"
@@ -5353,14 +5045,14 @@
     "properties": {
       "keepAwakeEnableStatus": {
         "type": {
-          "$ref": "#/500"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "Enables or disables whether the Dev Box should be kept awake during active hours."
       },
       "autoStartEnableStatus": {
         "type": {
-          "$ref": "#/503"
+          "$ref": "#/479"
         },
         "flags": 0,
         "description": "Enables or disables whether the Dev Box should be automatically started at commencement of active hours."
@@ -5374,28 +5066,28 @@
       },
       "defaultStartTimeHour": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The default start time of the active hours."
       },
       "defaultEndTimeHour": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The default end time of the active hours."
       },
       "defaultDaysOfWeek": {
         "type": {
-          "$ref": "#/512"
+          "$ref": "#/488"
         },
         "flags": 0,
         "description": "The days of the week that active hours features will be enabled. This serves as a default that can be updated by each individual user."
       },
       "daysOfWeekLimit": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The maximum amount of days per week that a user can enable active hours related features."
@@ -5414,10 +5106,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/498"
+        "$ref": "#/474"
       },
       {
-        "$ref": "#/499"
+        "$ref": "#/475"
       },
       {
         "$ref": "#/2"
@@ -5436,10 +5128,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/501"
+        "$ref": "#/477"
       },
       {
-        "$ref": "#/502"
+        "$ref": "#/478"
       },
       {
         "$ref": "#/2"
@@ -5478,32 +5170,32 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/504"
+        "$ref": "#/480"
       },
       {
-        "$ref": "#/505"
+        "$ref": "#/481"
       },
       {
-        "$ref": "#/506"
+        "$ref": "#/482"
       },
       {
-        "$ref": "#/507"
+        "$ref": "#/483"
       },
       {
-        "$ref": "#/508"
+        "$ref": "#/484"
       },
       {
-        "$ref": "#/509"
+        "$ref": "#/485"
       },
       {
-        "$ref": "#/510"
+        "$ref": "#/486"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/511"
+      "$ref": "#/487"
     }
   },
   {
@@ -5518,10 +5210,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/513"
+        "$ref": "#/489"
       },
       {
-        "$ref": "#/514"
+        "$ref": "#/490"
       },
       {
         "$ref": "#/2"
@@ -5538,9 +5230,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/pools@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/pools@2025-07-01-preview",
     "body": {
-      "$ref": "#/446"
+      "$ref": "#/422"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -5557,7 +5249,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -5572,28 +5264,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/518"
+          "$ref": "#/494"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/519"
+          "$ref": "#/495"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/520"
+          "$ref": "#/496"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/522"
+          "$ref": "#/498"
         },
         "flags": 0,
         "description": "Properties of a Schedule resource"
@@ -5613,14 +5305,14 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/539"
+          "$ref": "#/515"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/540"
+          "$ref": "#/516"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -5634,14 +5326,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/542"
+          "$ref": "#/518"
         },
         "flags": 0,
         "description": "Supported type this scheduled task represents."
       },
       "frequency": {
         "type": {
-          "$ref": "#/544"
+          "$ref": "#/520"
         },
         "flags": 0,
         "description": "The frequency of this scheduled task."
@@ -5662,7 +5354,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/547"
+          "$ref": "#/523"
         },
         "flags": 0,
         "description": "Indicates whether or not this scheduled task is enabled."
@@ -5737,52 +5429,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/523"
+        "$ref": "#/499"
       },
       {
-        "$ref": "#/524"
+        "$ref": "#/500"
       },
       {
-        "$ref": "#/525"
+        "$ref": "#/501"
       },
       {
-        "$ref": "#/526"
+        "$ref": "#/502"
       },
       {
-        "$ref": "#/527"
+        "$ref": "#/503"
       },
       {
-        "$ref": "#/528"
+        "$ref": "#/504"
       },
       {
-        "$ref": "#/529"
+        "$ref": "#/505"
       },
       {
-        "$ref": "#/530"
+        "$ref": "#/506"
       },
       {
-        "$ref": "#/531"
+        "$ref": "#/507"
       },
       {
-        "$ref": "#/532"
+        "$ref": "#/508"
       },
       {
-        "$ref": "#/533"
+        "$ref": "#/509"
       },
       {
-        "$ref": "#/534"
+        "$ref": "#/510"
       },
       {
-        "$ref": "#/535"
+        "$ref": "#/511"
       },
       {
-        "$ref": "#/536"
+        "$ref": "#/512"
       },
       {
-        "$ref": "#/537"
+        "$ref": "#/513"
       },
       {
-        "$ref": "#/538"
+        "$ref": "#/514"
       },
       {
         "$ref": "#/2"
@@ -5805,7 +5497,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/541"
+        "$ref": "#/517"
       },
       {
         "$ref": "#/2"
@@ -5820,7 +5512,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/543"
+        "$ref": "#/519"
       },
       {
         "$ref": "#/2"
@@ -5839,10 +5531,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/545"
+        "$ref": "#/521"
       },
       {
-        "$ref": "#/546"
+        "$ref": "#/522"
       },
       {
         "$ref": "#/2"
@@ -5851,9 +5543,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/pools/schedules@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/pools/schedules@2025-07-01-preview",
     "body": {
-      "$ref": "#/521"
+      "$ref": "#/497"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -5868,7 +5560,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -5883,28 +5575,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/549"
+          "$ref": "#/525"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/550"
+          "$ref": "#/526"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/551"
+          "$ref": "#/527"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/553"
+          "$ref": "#/529"
         },
         "flags": 2,
         "description": "Health check status details properties."
@@ -5938,7 +5630,7 @@
       },
       "healthChecks": {
         "type": {
-          "$ref": "#/563"
+          "$ref": "#/539"
         },
         "flags": 2,
         "description": "Details for each health check item."
@@ -5951,7 +5643,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/562"
+          "$ref": "#/538"
         },
         "flags": 2,
         "description": "The status of the health check item."
@@ -6032,25 +5724,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/555"
+        "$ref": "#/531"
       },
       {
-        "$ref": "#/556"
+        "$ref": "#/532"
       },
       {
-        "$ref": "#/557"
+        "$ref": "#/533"
       },
       {
-        "$ref": "#/558"
+        "$ref": "#/534"
       },
       {
-        "$ref": "#/559"
+        "$ref": "#/535"
       },
       {
-        "$ref": "#/560"
+        "$ref": "#/536"
       },
       {
-        "$ref": "#/561"
+        "$ref": "#/537"
       },
       {
         "$ref": "#/2"
@@ -6060,14 +5752,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/554"
+      "$ref": "#/530"
     }
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/networkConnections/healthChecks@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/networkConnections/healthChecks@2025-07-01-preview",
     "body": {
-      "$ref": "#/552"
+      "$ref": "#/528"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -6078,7 +5770,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -6100,21 +5792,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/565"
+          "$ref": "#/541"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/566"
+          "$ref": "#/542"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/166"
+          "$ref": "#/159"
         },
         "flags": 2,
         "description": "Attached NetworkConnection properties."
@@ -6130,9 +5822,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/attachednetworks@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/attachednetworks@2025-07-01-preview",
     "body": {
-      "$ref": "#/567"
+      "$ref": "#/543"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -6143,7 +5835,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -6165,21 +5857,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/569"
+          "$ref": "#/545"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/570"
+          "$ref": "#/546"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/572"
+          "$ref": "#/548"
         },
         "flags": 2,
         "description": "Environment definition properties."
@@ -6206,7 +5898,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/582"
+          "$ref": "#/558"
         },
         "flags": 2,
         "description": "Input parameters passed to an environment."
@@ -6220,7 +5912,7 @@
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/587"
+          "$ref": "#/563"
         },
         "flags": 2,
         "description": "Validation status for the environment definition."
@@ -6254,21 +5946,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/580"
+          "$ref": "#/556"
         },
         "flags": 2,
         "description": "A string of one of the basic JSON types (number, integer, array, object, boolean, string)."
       },
       "readOnly": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/557"
         },
         "flags": 2,
         "description": "Whether or not this parameter is read-only.  If true, default should have a value."
       },
       "required": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/557"
         },
         "flags": 2,
         "description": "Whether or not this parameter is required."
@@ -6303,22 +5995,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/574"
+        "$ref": "#/550"
       },
       {
-        "$ref": "#/575"
+        "$ref": "#/551"
       },
       {
-        "$ref": "#/576"
+        "$ref": "#/552"
       },
       {
-        "$ref": "#/577"
+        "$ref": "#/553"
       },
       {
-        "$ref": "#/578"
+        "$ref": "#/554"
       },
       {
-        "$ref": "#/579"
+        "$ref": "#/555"
       },
       {
         "$ref": "#/2"
@@ -6331,7 +6023,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/573"
+      "$ref": "#/549"
     }
   },
   {
@@ -6354,16 +6046,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/583"
+        "$ref": "#/559"
       },
       {
-        "$ref": "#/584"
+        "$ref": "#/560"
       },
       {
-        "$ref": "#/585"
+        "$ref": "#/561"
       },
       {
-        "$ref": "#/586"
+        "$ref": "#/562"
       },
       {
         "$ref": "#/2"
@@ -6372,9 +6064,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/catalogs/environmentDefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/catalogs/environmentDefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/571"
+      "$ref": "#/547"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -6385,7 +6077,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -6407,21 +6099,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/589"
+          "$ref": "#/565"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/590"
+          "$ref": "#/566"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/572"
+          "$ref": "#/548"
         },
         "flags": 2,
         "description": "Environment definition properties."
@@ -6437,9 +6129,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/catalogs/environmentDefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/catalogs/environmentDefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/591"
+      "$ref": "#/567"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -6450,7 +6142,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -6472,21 +6164,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/593"
+          "$ref": "#/569"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/594"
+          "$ref": "#/570"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/596"
+          "$ref": "#/572"
         },
         "flags": 2,
         "description": "Image Definition properties"
@@ -6506,7 +6198,7 @@
     "properties": {
       "imageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 0,
         "description": "Image reference information."
@@ -6520,63 +6212,63 @@
       },
       "latestBuild": {
         "type": {
-          "$ref": "#/597"
+          "$ref": "#/573"
         },
         "flags": 0,
         "description": "Details about the latest build."
       },
       "imageValidationStatus": {
         "type": {
-          "$ref": "#/610"
+          "$ref": "#/586"
         },
         "flags": 2,
         "description": "Validation status of the configured image."
       },
       "imageValidationErrorDetails": {
         "type": {
-          "$ref": "#/267"
+          "$ref": "#/257"
         },
         "flags": 2,
         "description": "Details for image validator error. Populated when the image validation is not successful."
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/615"
+          "$ref": "#/591"
         },
         "flags": 2,
         "description": "Validation status for the Image Definition."
       },
       "activeImageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "Image reference information for the currently active image (only populated during updates)."
       },
       "autoImageBuild": {
         "type": {
-          "$ref": "#/618"
+          "$ref": "#/594"
         },
         "flags": 2,
         "description": "Indicates if automatic image builds will be triggered for image definition updates"
       },
       "tasks": {
         "type": {
-          "$ref": "#/622"
+          "$ref": "#/598"
         },
         "flags": 0,
         "description": "Tasks to run at Dev Box provisioning time."
       },
       "userTasks": {
         "type": {
-          "$ref": "#/623"
+          "$ref": "#/599"
         },
         "flags": 0,
         "description": "Tasks to run when a user first logs into a Dev Box."
       },
       "extends": {
         "type": {
-          "$ref": "#/624"
+          "$ref": "#/600"
         },
         "flags": 0,
         "description": "Another Image Definition that this one extends."
@@ -6610,7 +6302,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/604"
+          "$ref": "#/580"
         },
         "flags": 2,
         "description": "The state of an Image Definition Build."
@@ -6645,22 +6337,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/598"
+        "$ref": "#/574"
       },
       {
-        "$ref": "#/599"
+        "$ref": "#/575"
       },
       {
-        "$ref": "#/600"
+        "$ref": "#/576"
       },
       {
-        "$ref": "#/601"
+        "$ref": "#/577"
       },
       {
-        "$ref": "#/602"
+        "$ref": "#/578"
       },
       {
-        "$ref": "#/603"
+        "$ref": "#/579"
       },
       {
         "$ref": "#/2"
@@ -6691,19 +6383,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/605"
+        "$ref": "#/581"
       },
       {
-        "$ref": "#/606"
+        "$ref": "#/582"
       },
       {
-        "$ref": "#/607"
+        "$ref": "#/583"
       },
       {
-        "$ref": "#/608"
+        "$ref": "#/584"
       },
       {
-        "$ref": "#/609"
+        "$ref": "#/585"
       },
       {
         "$ref": "#/2"
@@ -6730,16 +6422,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/611"
+        "$ref": "#/587"
       },
       {
-        "$ref": "#/612"
+        "$ref": "#/588"
       },
       {
-        "$ref": "#/613"
+        "$ref": "#/589"
       },
       {
-        "$ref": "#/614"
+        "$ref": "#/590"
       },
       {
         "$ref": "#/2"
@@ -6758,10 +6450,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/616"
+        "$ref": "#/592"
       },
       {
-        "$ref": "#/617"
+        "$ref": "#/593"
       },
       {
         "$ref": "#/2"
@@ -6781,7 +6473,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/621"
+          "$ref": "#/597"
         },
         "flags": 0,
         "description": "Parameters for the task."
@@ -6795,7 +6487,7 @@
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "Timeout, in seconds. Overrides any timeout provided on the task definition."
@@ -6832,19 +6524,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/620"
+      "$ref": "#/596"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/619"
+      "$ref": "#/595"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/619"
+      "$ref": "#/595"
     }
   },
   {
@@ -6860,7 +6552,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/625"
+          "$ref": "#/601"
         },
         "flags": 0,
         "description": "Parameters for the referenced Image Definition."
@@ -6870,14 +6562,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/620"
+      "$ref": "#/596"
     }
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/595"
+      "$ref": "#/571"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -6888,7 +6580,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -6910,21 +6602,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/627"
+          "$ref": "#/603"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/628"
+          "$ref": "#/604"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/630"
+          "$ref": "#/606"
         },
         "flags": 2,
         "description": "Image Definition Build properties"
@@ -6944,14 +6636,14 @@
     "properties": {
       "imageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "The specific image version used by the build."
       },
       "status": {
         "type": {
-          "$ref": "#/637"
+          "$ref": "#/613"
         },
         "flags": 2,
         "description": "The status of the build."
@@ -6972,7 +6664,7 @@
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/638"
+          "$ref": "#/614"
         },
         "flags": 2,
         "description": "Details for image creation error. Populated when the image creation is not successful."
@@ -7007,22 +6699,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/631"
+        "$ref": "#/607"
       },
       {
-        "$ref": "#/632"
+        "$ref": "#/608"
       },
       {
-        "$ref": "#/633"
+        "$ref": "#/609"
       },
       {
-        "$ref": "#/634"
+        "$ref": "#/610"
       },
       {
-        "$ref": "#/635"
+        "$ref": "#/611"
       },
       {
-        "$ref": "#/636"
+        "$ref": "#/612"
       },
       {
         "$ref": "#/2"
@@ -7051,9 +6743,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions/builds@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions/builds@2025-07-01-preview",
     "body": {
-      "$ref": "#/629"
+      "$ref": "#/605"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7064,7 +6756,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7086,21 +6778,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/640"
+          "$ref": "#/616"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/641"
+          "$ref": "#/617"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/643"
+          "$ref": "#/619"
         },
         "flags": 2,
         "description": "Task properties"
@@ -7120,21 +6812,21 @@
     "properties": {
       "inputs": {
         "type": {
-          "$ref": "#/649"
+          "$ref": "#/625"
         },
         "flags": 2,
         "description": "Inputs to the task."
       },
       "timeout": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "The default timeout for the task."
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/654"
+          "$ref": "#/630"
         },
         "flags": 2,
         "description": "Validation status for the Task."
@@ -7154,14 +6846,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/648"
+          "$ref": "#/624"
         },
         "flags": 2,
         "description": "Type of the input."
       },
       "required": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/557"
         },
         "flags": 2,
         "description": "Whether or not the input is required."
@@ -7184,13 +6876,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/645"
+        "$ref": "#/621"
       },
       {
-        "$ref": "#/646"
+        "$ref": "#/622"
       },
       {
-        "$ref": "#/647"
+        "$ref": "#/623"
       },
       {
         "$ref": "#/2"
@@ -7202,7 +6894,7 @@
     "name": "CustomizationTaskPropertiesInputs",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/644"
+      "$ref": "#/620"
     }
   },
   {
@@ -7225,16 +6917,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/650"
+        "$ref": "#/626"
       },
       {
-        "$ref": "#/651"
+        "$ref": "#/627"
       },
       {
-        "$ref": "#/652"
+        "$ref": "#/628"
       },
       {
-        "$ref": "#/653"
+        "$ref": "#/629"
       },
       {
         "$ref": "#/2"
@@ -7243,9 +6935,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/catalogs/tasks@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/catalogs/tasks@2025-07-01-preview",
     "body": {
-      "$ref": "#/642"
+      "$ref": "#/618"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7256,7 +6948,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7278,28 +6970,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/656"
+          "$ref": "#/632"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/657"
+          "$ref": "#/633"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/233"
         },
         "flags": 2,
         "description": "Dev Box definition properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/659"
+          "$ref": "#/635"
         },
         "flags": 2,
         "description": "Resource tags."
@@ -7330,9 +7022,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/devboxdefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/devboxdefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/658"
+      "$ref": "#/634"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7349,7 +7041,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7364,28 +7056,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/661"
+          "$ref": "#/637"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/662"
+          "$ref": "#/638"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/663"
+          "$ref": "#/639"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/665"
+          "$ref": "#/641"
         },
         "flags": 2,
         "description": "Image properties."
@@ -7433,31 +7125,24 @@
       },
       "recommendedMachineConfiguration": {
         "type": {
-          "$ref": "#/666"
+          "$ref": "#/642"
         },
         "flags": 2,
         "description": "The recommended machine configuration to use with the image."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/684"
+          "$ref": "#/660"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
       },
       "hibernateSupport": {
         "type": {
-          "$ref": "#/687"
+          "$ref": "#/663"
         },
         "flags": 2,
         "description": "Indicates whether this image has hibernate enabled. Not all images are capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate"
-      },
-      "architecture": {
-        "type": {
-          "$ref": "#/690"
-        },
-        "flags": 2,
-        "description": "The architecture type of the image."
       }
     }
   },
@@ -7467,14 +7152,14 @@
     "properties": {
       "memory": {
         "type": {
-          "$ref": "#/667"
+          "$ref": "#/643"
         },
         "flags": 2,
         "description": "Recommended memory range."
       },
       "vCPUs": {
         "type": {
-          "$ref": "#/667"
+          "$ref": "#/643"
         },
         "flags": 2,
         "description": "Recommended vCPU range."
@@ -7487,14 +7172,14 @@
     "properties": {
       "min": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "Minimum value."
       },
       "max": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "Maximum value."
@@ -7569,52 +7254,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/668"
+        "$ref": "#/644"
       },
       {
-        "$ref": "#/669"
+        "$ref": "#/645"
       },
       {
-        "$ref": "#/670"
+        "$ref": "#/646"
       },
       {
-        "$ref": "#/671"
+        "$ref": "#/647"
       },
       {
-        "$ref": "#/672"
+        "$ref": "#/648"
       },
       {
-        "$ref": "#/673"
+        "$ref": "#/649"
       },
       {
-        "$ref": "#/674"
+        "$ref": "#/650"
       },
       {
-        "$ref": "#/675"
+        "$ref": "#/651"
       },
       {
-        "$ref": "#/676"
+        "$ref": "#/652"
       },
       {
-        "$ref": "#/677"
+        "$ref": "#/653"
       },
       {
-        "$ref": "#/678"
+        "$ref": "#/654"
       },
       {
-        "$ref": "#/679"
+        "$ref": "#/655"
       },
       {
-        "$ref": "#/680"
+        "$ref": "#/656"
       },
       {
-        "$ref": "#/681"
+        "$ref": "#/657"
       },
       {
-        "$ref": "#/682"
+        "$ref": "#/658"
       },
       {
-        "$ref": "#/683"
+        "$ref": "#/659"
       },
       {
         "$ref": "#/2"
@@ -7633,32 +7318,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/685"
+        "$ref": "#/661"
       },
       {
-        "$ref": "#/686"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "x64"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Arm64"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/688"
-      },
-      {
-        "$ref": "#/689"
+        "$ref": "#/662"
       },
       {
         "$ref": "#/2"
@@ -7667,9 +7330,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/galleries/images@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/galleries/images@2025-07-01-preview",
     "body": {
-      "$ref": "#/664"
+      "$ref": "#/640"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7686,7 +7349,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7701,28 +7364,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/692"
+          "$ref": "#/665"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/693"
+          "$ref": "#/666"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/694"
+          "$ref": "#/667"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/665"
+          "$ref": "#/641"
         },
         "flags": 2,
         "description": "Image properties."
@@ -7738,9 +7401,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/images@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/images@2025-07-01-preview",
     "body": {
-      "$ref": "#/695"
+      "$ref": "#/668"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7757,7 +7420,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7772,28 +7435,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/697"
+          "$ref": "#/670"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/698"
+          "$ref": "#/671"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/699"
+          "$ref": "#/672"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/701"
+          "$ref": "#/674"
         },
         "flags": 2,
         "description": "Image version properties."
@@ -7827,21 +7490,21 @@
       },
       "excludeFromLatest": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/557"
         },
         "flags": 2,
         "description": "If the version should be excluded from being treated as the latest version."
       },
       "osDiskImageSizeInGb": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "The size of the OS disk image, in GB."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/718"
+          "$ref": "#/691"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -7916,52 +7579,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/702"
+        "$ref": "#/675"
       },
       {
-        "$ref": "#/703"
+        "$ref": "#/676"
       },
       {
-        "$ref": "#/704"
+        "$ref": "#/677"
       },
       {
-        "$ref": "#/705"
+        "$ref": "#/678"
       },
       {
-        "$ref": "#/706"
+        "$ref": "#/679"
       },
       {
-        "$ref": "#/707"
+        "$ref": "#/680"
       },
       {
-        "$ref": "#/708"
+        "$ref": "#/681"
       },
       {
-        "$ref": "#/709"
+        "$ref": "#/682"
       },
       {
-        "$ref": "#/710"
+        "$ref": "#/683"
       },
       {
-        "$ref": "#/711"
+        "$ref": "#/684"
       },
       {
-        "$ref": "#/712"
+        "$ref": "#/685"
       },
       {
-        "$ref": "#/713"
+        "$ref": "#/686"
       },
       {
-        "$ref": "#/714"
+        "$ref": "#/687"
       },
       {
-        "$ref": "#/715"
+        "$ref": "#/688"
       },
       {
-        "$ref": "#/716"
+        "$ref": "#/689"
       },
       {
-        "$ref": "#/717"
+        "$ref": "#/690"
       },
       {
         "$ref": "#/2"
@@ -7970,9 +7633,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/devcenters/galleries/images/versions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/devcenters/galleries/images/versions@2025-07-01-preview",
     "body": {
-      "$ref": "#/700"
+      "$ref": "#/673"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -7983,7 +7646,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -7998,28 +7661,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/697"
+          "$ref": "#/670"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/720"
+          "$ref": "#/693"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/721"
+          "$ref": "#/694"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/701"
+          "$ref": "#/674"
         },
         "flags": 2,
         "description": "Image version properties."
@@ -8035,9 +7698,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/images/versions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/images/versions@2025-07-01-preview",
     "body": {
-      "$ref": "#/722"
+      "$ref": "#/695"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -8048,7 +7711,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8070,21 +7733,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/724"
+          "$ref": "#/697"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/725"
+          "$ref": "#/698"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/727"
+          "$ref": "#/700"
         },
         "flags": 2,
         "description": "Properties of an allowed environment type."
@@ -8104,7 +7767,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/744"
+          "$ref": "#/717"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -8186,52 +7849,52 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/728"
+        "$ref": "#/701"
       },
       {
-        "$ref": "#/729"
+        "$ref": "#/702"
       },
       {
-        "$ref": "#/730"
+        "$ref": "#/703"
       },
       {
-        "$ref": "#/731"
+        "$ref": "#/704"
       },
       {
-        "$ref": "#/732"
+        "$ref": "#/705"
       },
       {
-        "$ref": "#/733"
+        "$ref": "#/706"
       },
       {
-        "$ref": "#/734"
+        "$ref": "#/707"
       },
       {
-        "$ref": "#/735"
+        "$ref": "#/708"
       },
       {
-        "$ref": "#/736"
+        "$ref": "#/709"
       },
       {
-        "$ref": "#/737"
+        "$ref": "#/710"
       },
       {
-        "$ref": "#/738"
+        "$ref": "#/711"
       },
       {
-        "$ref": "#/739"
+        "$ref": "#/712"
       },
       {
-        "$ref": "#/740"
+        "$ref": "#/713"
       },
       {
-        "$ref": "#/741"
+        "$ref": "#/714"
       },
       {
-        "$ref": "#/742"
+        "$ref": "#/715"
       },
       {
-        "$ref": "#/743"
+        "$ref": "#/716"
       },
       {
         "$ref": "#/2"
@@ -8240,9 +7903,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/allowedEnvironmentTypes@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/allowedEnvironmentTypes@2025-07-01-preview",
     "body": {
-      "$ref": "#/726"
+      "$ref": "#/699"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -8253,7 +7916,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8275,21 +7938,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/746"
+          "$ref": "#/719"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/747"
+          "$ref": "#/720"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/596"
+          "$ref": "#/572"
         },
         "flags": 2,
         "description": "Image Definition properties"
@@ -8305,9 +7968,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/catalogs/imageDefinitions@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/catalogs/imageDefinitions@2025-07-01-preview",
     "body": {
-      "$ref": "#/748"
+      "$ref": "#/721"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -8318,7 +7981,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "2026-01-01-preview"
+    "value": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8340,21 +8003,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/750"
+          "$ref": "#/723"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/751"
+          "$ref": "#/724"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/630"
+          "$ref": "#/606"
         },
         "flags": 2,
         "description": "Image Definition Build properties"
@@ -8370,9 +8033,9 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DevCenter/projects/catalogs/imageDefinitions/builds@2026-01-01-preview",
+    "name": "Microsoft.DevCenter/projects/catalogs/imageDefinitions/builds@2025-07-01-preview",
     "body": {
-      "$ref": "#/752"
+      "$ref": "#/725"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -8381,7 +8044,7 @@
     "$type": "ResourceFunctionType",
     "name": "runHealthChecks",
     "resourceType": "Microsoft.DevCenter/networkConnections",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8389,217 +8052,19 @@
     "properties": {
       "projectCatalogSettings": {
         "type": {
-          "$ref": "#/756"
+          "$ref": "#/31"
         },
         "flags": 2,
         "description": "Dev Center settings to be used when associating a project with a catalog."
       },
       "networkSettings": {
         "type": {
-          "$ref": "#/771"
+          "$ref": "#/729"
         },
         "flags": 2,
         "description": "Network settings that will be enforced on this project."
-      },
-      "azureAiServicesSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Azure AI project policy settings that will be enforced on this project."
-      },
-      "devBoxScheduleDeleteSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Dev box schedule delete project policy settings that will be enforced on this project."
-      },
-      "devBoxLimitsSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Dev box limits project policy settings that will be enforced on this project."
-      },
-      "displayNameSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Display name project policy settings that will be enforced on this project."
-      },
-      "devBoxTunnelSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Dev box tunnel project policy settings that will be enforced on this project."
-      },
-      "serverlessGpuSessionsSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Serverless GPU sessions project policy settings that will be enforced on this project."
-      },
-      "userCustomizationsSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "User customizations project policy settings that will be enforced on this project."
-      },
-      "workspaceStorageSettings": {
-        "type": {
-          "$ref": "#/394"
-        },
-        "flags": 2,
-        "description": "Workspace storage project policy settings that will be enforced on this project."
       }
     }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "InheritedProjectCatalogSettings",
-    "properties": {
-      "statusModifiable": {
-        "type": {
-          "$ref": "#/759"
-        },
-        "flags": 0,
-        "description": "Indicates whether the feature's status, Enabled or Disabled, is configurable at the Project scope."
-      },
-      "valuesModifiable": {
-        "type": {
-          "$ref": "#/762"
-        },
-        "flags": 0,
-        "description": "Indicates whether the feature values are configurable at the Project scope."
-      },
-      "defaultStatus": {
-        "type": {
-          "$ref": "#/766"
-        },
-        "flags": 0,
-        "description": "Indicates the default status of the feature."
-      },
-      "defaultValues": {
-        "type": {
-          "$ref": "#/767"
-        },
-        "flags": 0,
-        "description": "The default values of the feature."
-      },
-      "catalogItemSyncEnableStatus": {
-        "type": {
-          "$ref": "#/770"
-        },
-        "flags": 0,
-        "description": "Whether project catalogs associated with projects in this dev center can be configured to sync catalog items."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotModifiable"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Modifiable"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/757"
-      },
-      {
-        "$ref": "#/758"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotModifiable"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Modifiable"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/760"
-      },
-      {
-        "$ref": "#/761"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AutoDeploy"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/763"
-      },
-      {
-        "$ref": "#/764"
-      },
-      {
-        "$ref": "#/765"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/405"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/768"
-      },
-      {
-        "$ref": "#/769"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -8607,7 +8072,7 @@
     "properties": {
       "microsoftHostedNetworkEnableStatus": {
         "type": {
-          "$ref": "#/774"
+          "$ref": "#/732"
         },
         "flags": 2,
         "description": "Indicates whether pools in this Dev Center can use Microsoft Hosted Networks. Defaults to Enabled if not set."
@@ -8626,10 +8091,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/772"
+        "$ref": "#/730"
       },
       {
-        "$ref": "#/773"
+        "$ref": "#/731"
       },
       {
         "$ref": "#/2"
@@ -8640,9 +8105,9 @@
     "$type": "ResourceFunctionType",
     "name": "getInheritedSettings",
     "resourceType": "Microsoft.DevCenter/projects",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/755"
+      "$ref": "#/728"
     }
   },
   {
@@ -8651,7 +8116,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/786"
+          "$ref": "#/744"
         },
         "flags": 3,
         "description": "The DevCenterSku items on this page"
@@ -8678,14 +8143,14 @@
       },
       "locations": {
         "type": {
-          "$ref": "#/778"
+          "$ref": "#/736"
         },
         "flags": 2,
         "description": "SKU supported locations."
       },
       "capabilities": {
         "type": {
-          "$ref": "#/780"
+          "$ref": "#/738"
         },
         "flags": 2,
         "description": "Collection of name/value pairs to describe the SKU capabilities."
@@ -8699,7 +8164,7 @@
       },
       "tier": {
         "type": {
-          "$ref": "#/785"
+          "$ref": "#/743"
         },
         "flags": 0,
         "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
@@ -8720,7 +8185,7 @@
       },
       "capacity": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
@@ -8756,7 +8221,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/779"
+      "$ref": "#/737"
     }
   },
   {
@@ -8779,39 +8244,39 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/781"
+        "$ref": "#/739"
       },
       {
-        "$ref": "#/782"
+        "$ref": "#/740"
       },
       {
-        "$ref": "#/783"
+        "$ref": "#/741"
       },
       {
-        "$ref": "#/784"
+        "$ref": "#/742"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/777"
+      "$ref": "#/735"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "listSkus",
     "resourceType": "Microsoft.DevCenter/projects",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/776"
+      "$ref": "#/734"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "connect",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8819,21 +8284,21 @@
     "properties": {
       "operationError": {
         "type": {
-          "$ref": "#/790"
+          "$ref": "#/748"
         },
         "flags": 2,
         "description": "Error information for the overall synchronization operation."
       },
       "conflicts": {
         "type": {
-          "$ref": "#/792"
+          "$ref": "#/750"
         },
         "flags": 2,
         "description": "Catalog items that have conflicting names."
       },
       "errors": {
         "type": {
-          "$ref": "#/795"
+          "$ref": "#/753"
         },
         "flags": 2,
         "description": "Errors that occured during synchronization."
@@ -8883,7 +8348,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/791"
+      "$ref": "#/749"
     }
   },
   {
@@ -8899,7 +8364,7 @@
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/794"
+          "$ref": "#/752"
         },
         "flags": 2,
         "description": "Errors associated with the file."
@@ -8909,29 +8374,29 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/790"
+      "$ref": "#/748"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/793"
+      "$ref": "#/751"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getSyncErrorDetails",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/789"
+      "$ref": "#/747"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "sync",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8939,7 +8404,7 @@
     "properties": {
       "errors": {
         "type": {
-          "$ref": "#/799"
+          "$ref": "#/757"
         },
         "flags": 2,
         "description": "Errors associated with resources synchronized from the catalog."
@@ -8949,38 +8414,38 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/790"
+      "$ref": "#/748"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getErrorDetails",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/environmentDefinitions",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/798"
+      "$ref": "#/756"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "buildImage",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getErrorDetails",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/798"
+      "$ref": "#/756"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "cancel",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions/builds",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -8988,14 +8453,14 @@
     "properties": {
       "imageReference": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "The specific image version used by the build."
       },
       "status": {
         "type": {
-          "$ref": "#/811"
+          "$ref": "#/769"
         },
         "flags": 2,
         "description": "The status of the build."
@@ -9016,14 +8481,14 @@
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/638"
+          "$ref": "#/614"
         },
         "flags": 2,
         "description": "Details for image creation error. Populated when the image creation is not successful."
       },
       "taskGroups": {
         "type": {
-          "$ref": "#/831"
+          "$ref": "#/789"
         },
         "flags": 2,
         "description": "The list of task groups executed during the image definition build."
@@ -9086,22 +8551,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/805"
+        "$ref": "#/763"
       },
       {
-        "$ref": "#/806"
+        "$ref": "#/764"
       },
       {
-        "$ref": "#/807"
+        "$ref": "#/765"
       },
       {
-        "$ref": "#/808"
+        "$ref": "#/766"
       },
       {
-        "$ref": "#/809"
+        "$ref": "#/767"
       },
       {
-        "$ref": "#/810"
+        "$ref": "#/768"
       },
       {
         "$ref": "#/2"
@@ -9121,7 +8586,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/819"
+          "$ref": "#/777"
         },
         "flags": 2,
         "description": "The status of the task group."
@@ -9142,7 +8607,7 @@
       },
       "tasks": {
         "type": {
-          "$ref": "#/830"
+          "$ref": "#/788"
         },
         "flags": 2,
         "description": "The list of tasks executed during the task group."
@@ -9177,22 +8642,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/813"
+        "$ref": "#/771"
       },
       {
-        "$ref": "#/814"
+        "$ref": "#/772"
       },
       {
-        "$ref": "#/815"
+        "$ref": "#/773"
       },
       {
-        "$ref": "#/816"
+        "$ref": "#/774"
       },
       {
-        "$ref": "#/817"
+        "$ref": "#/775"
       },
       {
-        "$ref": "#/818"
+        "$ref": "#/776"
       },
       {
         "$ref": "#/2"
@@ -9212,7 +8677,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/822"
+          "$ref": "#/780"
         },
         "flags": 0,
         "description": "Parameters for the task."
@@ -9247,7 +8712,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/829"
+          "$ref": "#/787"
         },
         "flags": 2,
         "description": "The status of the task."
@@ -9284,7 +8749,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/821"
+      "$ref": "#/779"
     }
   },
   {
@@ -9315,22 +8780,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/823"
+        "$ref": "#/781"
       },
       {
-        "$ref": "#/824"
+        "$ref": "#/782"
       },
       {
-        "$ref": "#/825"
+        "$ref": "#/783"
       },
       {
-        "$ref": "#/826"
+        "$ref": "#/784"
       },
       {
-        "$ref": "#/827"
+        "$ref": "#/785"
       },
       {
-        "$ref": "#/828"
+        "$ref": "#/786"
       },
       {
         "$ref": "#/2"
@@ -9340,97 +8805,97 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/820"
+      "$ref": "#/778"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/812"
+      "$ref": "#/770"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getBuildDetails",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/imageDefinitions/builds",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/804"
+      "$ref": "#/762"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getErrorDetails",
     "resourceType": "Microsoft.DevCenter/devcenters/catalogs/tasks",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/798"
+      "$ref": "#/756"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "connect",
     "resourceType": "Microsoft.DevCenter/projects/catalogs",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getSyncErrorDetails",
     "resourceType": "Microsoft.DevCenter/projects/catalogs",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/789"
+      "$ref": "#/747"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "sync",
     "resourceType": "Microsoft.DevCenter/projects/catalogs",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getErrorDetails",
     "resourceType": "Microsoft.DevCenter/projects/catalogs/environmentDefinitions",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/798"
+      "$ref": "#/756"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "buildImage",
     "resourceType": "Microsoft.DevCenter/projects/catalogs/imageDefinitions",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getErrorDetails",
     "resourceType": "Microsoft.DevCenter/projects/catalogs/imageDefinitions",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/798"
+      "$ref": "#/756"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "cancel",
     "resourceType": "Microsoft.DevCenter/projects/catalogs/imageDefinitions/builds",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   },
   {
     "$type": "ResourceFunctionType",
     "name": "getBuildDetails",
     "resourceType": "Microsoft.DevCenter/projects/catalogs/imageDefinitions/builds",
-    "apiVersion": "2026-01-01-preview",
+    "apiVersion": "2025-07-01-preview",
     "output": {
-      "$ref": "#/804"
+      "$ref": "#/762"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "runHealthChecks",
     "resourceType": "Microsoft.DevCenter/projects/pools",
-    "apiVersion": "2026-01-01-preview"
+    "apiVersion": "2025-07-01-preview"
   }
 ]
