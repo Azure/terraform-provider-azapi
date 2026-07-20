@@ -1402,6 +1402,12 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 
 				response.Diagnostics.Append(response.TargetPrivate.SetKey(ctx, FlagMoveState, []byte("true"))...)
 				response.Diagnostics.Append(response.TargetState.Set(ctx, state)...)
+
+				resourceIdentity := AzapiResourceIdentityModel{
+					ID:   state.ID,
+					Type: state.Type,
+				}
+				response.Diagnostics.Append(response.TargetIdentity.Set(ctx, resourceIdentity)...)
 			},
 		},
 	}
