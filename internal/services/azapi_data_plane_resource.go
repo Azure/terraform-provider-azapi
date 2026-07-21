@@ -432,10 +432,6 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	if isNewResource && hasCreateResult {
 		resourceName = "__generated__"
 	}
-	if resourceName == "" {
-		diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
-		return
-	}
 
 	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
@@ -613,6 +609,10 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
 	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	if !parse.HasNameSegment(config.Type.ValueString()) {
 		return nil
 	}
 

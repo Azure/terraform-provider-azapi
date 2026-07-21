@@ -33,3 +33,16 @@ func findApiPathByResourceType(resourceType string) *ApiPath {
 	}
 	return nil
 }
+
+func hasIdentifierSegment(resourceType string, identifier string) bool {
+	apiPath := findApiPathByResourceType(resourceType)
+	if apiPath == nil {
+		return false
+	}
+	return strings.Contains(apiPath.UrlFormat, "{"+identifier+"}") ||
+		strings.Contains(apiPath.UrlFormat, "{"+identifier+"=")
+}
+
+func HasNameSegment(resourceType string) bool {
+	return hasIdentifierSegment(resourceType, "name")
+}

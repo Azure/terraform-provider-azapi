@@ -286,5 +286,8 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 		if actual.ParentId != v.Expected.ParentId {
 			t.Fatalf("Expected %q but got %q for ParentId", v.Expected.ParentId, actual.ParentId)
 		}
+		if actual.Name != v.Expected.Name {
+			t.Fatalf("Expected %q but got %q for Name", v.Expected.Name, actual.Name)
+		}
 	}
 }
