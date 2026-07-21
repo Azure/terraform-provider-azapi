@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"encoding/json"
 	"strings"
+
+	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
 type ApiPath struct {
@@ -35,9 +37,13 @@ func findApiPathByResourceType(resourceType string) *ApiPath {
 }
 
 func hasIdentifierSegment(resourceType string, identifier string) bool {
+	if azureResourceType, _, err := utils.GetAzureResourceTypeApiVersion(resourceType); err == nil {
+		resourceType = azureResourceType
+	}
 	apiPath := findApiPathByResourceType(resourceType)
 	if apiPath == nil {
-		return false
+		// currently impossible as every service needs to register, but keep it as a defensive guard.
+		return true
 	}
 	return strings.Contains(apiPath.UrlFormat, "{"+identifier+"}") ||
 		strings.Contains(apiPath.UrlFormat, "{"+identifier+"=")
