@@ -612,24 +612,27 @@ func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
 		return nil
 	}
 
-	if !parse.HasNameSegment(config.Type.ValueString()) {
-		return nil
-	}
-
 	if config.Name.IsUnknown() {
 		return nil
 	}
 
 	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
+	resourceType := strings.Split(config.Type.ValueString(), "@")[0]
 	if _, ok := getCreateResultFunc(config); ok {
 		// A resource exposing CreateResultFunc has a service-generated name, so "name" must not be set. See PR #1053.
 		if !nameIsEmpty {
-			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, strings.Split(config.Type.ValueString(), "@")[0])
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, resourceType)
+		}
+		return nil
+	}
+	if !parse.HasNameSegment(config.Type.ValueString()) {
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
 		}
 		return nil
 	}
 	if nameIsEmpty {
-		return fmt.Errorf(`the argument "name" must be set for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
+		return fmt.Errorf(`the argument "name" must be set for resource type %q`, resourceType)
 	}
 	return nil
 }

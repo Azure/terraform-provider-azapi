@@ -42,7 +42,7 @@ func hasIdentifierSegment(resourceType string, identifier string) bool {
 	}
 	apiPath := findApiPathByResourceType(resourceType)
 	if apiPath == nil {
-		// currently impossible as every service needs to register, but keep it as a defensive guard.
+		// Unknown type: assume it needs an identifier so validation isn't silently skipped.
 		return true
 	}
 	return strings.Contains(apiPath.UrlFormat, "{"+identifier+"}") ||

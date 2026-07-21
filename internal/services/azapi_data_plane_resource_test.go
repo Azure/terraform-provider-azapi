@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -113,6 +114,24 @@ func TestAccDataPlaneResource_keyVaultCertificate(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_keyVaultCertificateContact(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.keyVaultCertificateContactWithName(),
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile(`the argument "name" should not be set`),
+		},
+		{
+			Config:             r.keyVaultCertificateContact(),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
 		},
 	})
 }
@@ -764,6 +783,39 @@ resource "azapi_resource_action" "add_accesspolicy_certificate" {
 
 
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultCertificateContact() string {
+	return `
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/certificates/contacts@7.4"
+  parent_id = "example.vault.azure.net"
+  body = {
+    contacts = [
+      {
+        email = "foo@contoso.com"
+      }
+    ]
+  }
+}
+`
+}
+
+func (r DataPlaneResource) keyVaultCertificateContactWithName() string {
+	return `
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/certificates/contacts@7.4"
+  parent_id = "example.vault.azure.net"
+  name      = "foo"
+  body = {
+    contacts = [
+      {
+        email = "foo@contoso.com"
+      }
+    ]
+  }
+}
+`
 }
 
 func (r DataPlaneResource) iotAppsUser(data acceptance.TestData) string {
