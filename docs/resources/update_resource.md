@@ -135,6 +135,11 @@ resource "azapi_update_resource" "example" {
 	~> Once set, the value of this attribute in state will not change.
 
 	-> Ensure this in resource ID format.
+- `read_action` (String) Controls how the resource is read when a plain `GET` does not return the configured values. Some Azure endpoints (e.g. `Microsoft.Web/sites/config/appsettings`) only expose their values through a `POST` list function. When unset, the provider automatically falls back to a `POST {resource_id}/list` when the `GET` response covers none of the configured `body` values and a `list` function exists for the resource type. Set to `none` to always use the `GET` response, or to the name of an action (e.g. `list`) to always call `{resource_id}/{action}` for the read.
+- `read_action_method` (String) The HTTP method used when `read_action` names an action to call. Defaults to `POST`, which matches the Azure convention for `list*` functions. The embedded resource metadata does not carry the verb, so set this when an action must be read with a different method.
+
+	-> Value must be one of: ["POST" "PATCH" "PUT" "DELETE" "GET" "HEAD"].
+- `read_action_response_path` (String) An optional [JMESPath](https://jmespath.org/) expression applied to the `read_action` response before it is merged into `body`. Use this when the list function nests the values under a sub-object.
 - `read_headers` (Map of String) A mapping of headers to be sent with the read request.
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.

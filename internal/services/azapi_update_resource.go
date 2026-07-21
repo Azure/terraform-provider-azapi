@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -60,6 +61,9 @@ type AzapiUpdateResourceModel struct {
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	ReadAction                    types.String     `tfsdk:"read_action" skip_on:"update"`
+	ReadActionMethod              types.String     `tfsdk:"read_action_method" skip_on:"update"`
+	ReadActionResponsePath        types.String     `tfsdk:"read_action_response_path" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -283,6 +287,24 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				},
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
+			},
+
+			"read_action": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Controls how the resource is read when a plain `GET` does not return the configured values. Some Azure endpoints (e.g. `Microsoft.Web/sites/config/appsettings`) only expose their values through a `POST` list function. When unset, the provider automatically falls back to a `POST {resource_id}/list` when the `GET` response covers none of the configured `body` values and a `list` function exists for the resource type. Set to `none` to always use the `GET` response, or to the name of an action (e.g. `list`) to always call `{resource_id}/{action}` for the read.",
+			},
+
+			"read_action_method": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "The HTTP method used when `read_action` names an action to call. Defaults to `POST`, which matches the Azure convention for `list*` functions. The embedded resource metadata does not carry the verb, so set this when an action must be read with a different method.",
+				Validators: []validator.String{
+					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
+				},
+			},
+
+			"read_action_response_path": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "An optional [JMESPath](https://jmespath.org/) expression applied to the `read_action` response before it is merged into `body`. Use this when the list function nests the values under a sub-object.",
 			},
 		},
 
@@ -631,7 +653,12 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		}
 		option.IgnoreOtherItemsInList = m
 	}
-	body := utils.UpdateObject(requestBody, responseBody, option)
+	mergeResponseBody, readDiags := resolveReadResponse(ctx, client, id.AzureResourceId, id.AzureResourceType, id.ApiVersion, requestBody, responseBody, model.ReadAction.ValueString(), model.ReadActionMethod.ValueString(), model.ReadActionResponsePath.ValueString(), requestOptions)
+	response.Diagnostics.Append(readDiags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	body := utils.UpdateObject(requestBody, mergeResponseBody, option)
 
 	data, err := json.Marshal(body)
 	if err != nil {

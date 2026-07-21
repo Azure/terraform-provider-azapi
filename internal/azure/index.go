@@ -96,11 +96,11 @@ func (o *TypeLocation) LoadFunctionTypeDefinition() (*types.ResourceFunctionType
 		return nil, err
 	}
 	if o.Index < len(schema.Types) && schema.Types[o.Index] != nil {
-		if resourceType, ok := (*schema.Types[o.Index]).(*types.ResourceFunctionType); ok {
-			return resourceType, nil
+		if resourceFunctionType, ok := (*schema.Types[o.Index]).(types.ResourceFunctionType); ok {
+			return &resourceFunctionType, nil
 		}
 	}
-	return nil, fmt.Errorf("index invalid or the type is not a resource type")
+	return nil, fmt.Errorf("index invalid or the type is not a resource function type")
 }
 
 type IndexRaw struct {

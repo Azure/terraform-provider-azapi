@@ -9,6 +9,7 @@ ENHANCEMENTS:
 - Acquire a policy token when a request is blocked by an invoke policy (GH-1145).
 - Update bicep types to Azure/azure-rest-api-specs revision 51d53915b5f31b10e6645c136807b9d95f9f09d1 (GH-1159).
 - Improve the bicep types update process (GH-1155).
+- `azapi_resource`, `azapi_update_resource` resources: Support `read_action`, `read_action_method`, and `read_action_response_path` arguments to read property values from a list-style action (for example a `POST` to `.../config/appsettings/list`) when a plain `GET` returns them empty. By default a `POST {resource_id}/list` fallback is attempted automatically when the `GET` response covers none of the configured body properties, fixing perpetual diffs for resources such as `Microsoft.Web/sites/config` app settings (GH-1167).
 
 BUG FIXES:
 
