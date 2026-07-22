@@ -347,7 +347,7 @@ resource "azapi_resource" "managed_identity" {
   type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview"
   name      = "test-managed-identity"
   parent_id = azapi_resource.resourceGroup.id
-  location  = "westeurope"
+  location  = azapi_resource.resourceGroup.location
 }
 
 resource "azapi_resource" "federated_credential" {
