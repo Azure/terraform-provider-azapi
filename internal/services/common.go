@@ -3,11 +3,23 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+// preserveCasing returns existing when enabled and case-insensitively equal to candidate; otherwise candidate.
+func preserveCasing(existing, candidate string, enabled bool) string {
+	if !enabled || existing == "" {
+		return candidate
+	}
+	if strings.EqualFold(existing, candidate) {
+		return existing
+	}
+	return candidate
+}
 
 func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic, defaultResult interface{}) (types.Dynamic, error) {
 	if modelResponseExportValues.IsNull() {
