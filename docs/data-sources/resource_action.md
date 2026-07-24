@@ -62,7 +62,7 @@ data "azapi_resource_action" "example" {
 - `body` (Dynamic) The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of String) A map of headers to include in the request.
+- `headers` (Map of String) A map of headers to include in the request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `method` (String) The HTTP method to use when performing the action. Defaults to `POST`.
 
 	-> Value must be one of: ["POST" "GET"].

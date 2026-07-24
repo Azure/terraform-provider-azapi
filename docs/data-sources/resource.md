@@ -70,7 +70,7 @@ output "quarantine_policy" {
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request.
+- `headers` (Map of String) A map of headers to include in the request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `ignore_not_found` (Boolean) If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.
 - `name` (String) Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 

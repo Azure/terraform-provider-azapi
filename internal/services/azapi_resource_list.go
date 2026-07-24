@@ -25,10 +25,11 @@ import (
 )
 
 type AzapiResourceListModel struct {
-	Type            types.String `tfsdk:"type"`
-	ParentID        types.String `tfsdk:"parent_id"`
-	Headers         types.Map    `tfsdk:"headers"`
-	QueryParameters types.Map    `tfsdk:"query_parameters"`
+	Type             types.String `tfsdk:"type"`
+	ParentID         types.String `tfsdk:"parent_id"`
+	Headers          types.Map    `tfsdk:"headers"`
+	QueryParameters  types.Map    `tfsdk:"query_parameters"`
+	TelemetryHeaders types.Object `tfsdk:"telemetry_headers"`
 }
 
 // resourceListConfigValidator validates the configuration for azapi_resource_list
@@ -131,6 +132,12 @@ func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.L
 				Optional:            true,
 				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 	}
 }
@@ -175,7 +182,7 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 	// Prepare request options
 	client := r.ProviderData.ResourceClient
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.Headers),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.Headers), model.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
 	}
 

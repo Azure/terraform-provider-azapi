@@ -71,7 +71,7 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request.
+- `headers` (Map of String) A map of headers to include in the request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 

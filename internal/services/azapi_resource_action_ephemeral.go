@@ -40,6 +40,7 @@ type ActionEphemeralModel struct {
 	Retry                retry.RetryValue `tfsdk:"retry"`
 	Headers              types.Map        `tfsdk:"headers"`
 	QueryParameters      types.Map        `tfsdk:"query_parameters"`
+	TelemetryHeaders     types.Object     `tfsdk:"telemetry_headers"`
 }
 
 type ActionEphemeral struct {
@@ -147,6 +148,12 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				Optional:            true,
 				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -197,7 +204,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 
 	client := r.ProviderData.ResourceClient
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.Headers),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.Headers), model.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
@@ -219,6 +226,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		return
 	}
 	model.Output = output
+	model.TelemetryHeaders = types.ObjectNull(telemetryHeadersAttributeTypes())
 
 	response.Diagnostics.Append(response.Result.Set(ctx, model)...)
 }

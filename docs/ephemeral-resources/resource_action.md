@@ -72,7 +72,7 @@ ephemeral "azapi_resource_action" "listKeys" {
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of String) A map of headers to include in the request.
+- `headers` (Map of String) A map of headers to include in the request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.

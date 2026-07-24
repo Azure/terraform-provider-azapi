@@ -66,6 +66,7 @@ type DataPlaneResourceModel struct {
 	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	TelemetryHeaders              types.Object     `tfsdk:"telemetry_headers"`
 }
 
 type DataPlaneResource struct {
@@ -294,6 +295,13 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -466,7 +474,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		// a FooResourceNotFound error as a retryable error
 
 		requestOptions := clients.RequestOptions{
-			Headers:         common.AsMapOfString(plan.ReadHeaders),
+			Headers:         withTelemetryHeaders(common.AsMapOfString(plan.ReadHeaders), config.TelemetryHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
 		if customizedResource != nil && (*customizedResource).ReadFunc() != nil {
@@ -511,13 +519,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(plan.CreateHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(plan.CreateHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 
 	if !isNewResource {
-		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
+		requestOptions.Headers = withTelemetryHeaders(common.AsMapOfString(plan.UpdateHeaders), config.TelemetryHeaders)
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
 	}
 
@@ -545,7 +553,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
 	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
-		Headers:         common.AsMapOfString(plan.ReadHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(plan.ReadHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		RetryOptions:    combinedRetryOpts,
 		LastRetryError:  combinedLastRetryErr,

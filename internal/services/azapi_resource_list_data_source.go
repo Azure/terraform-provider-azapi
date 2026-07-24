@@ -33,6 +33,7 @@ type ResourceListDataSourceModel struct {
 	Retry                retry.RetryValue `tfsdk:"retry"`
 	Headers              types.Map        `tfsdk:"headers"`
 	QueryParameters      types.Map        `tfsdk:"query_parameters"`
+	TelemetryHeaders     types.Object     `tfsdk:"telemetry_headers"`
 }
 
 type ResourceListDataSource struct {
@@ -103,6 +104,12 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Optional:            true,
 				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -138,7 +145,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	client := r.ProviderData.ResourceClient
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.Headers),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.Headers), model.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
@@ -160,6 +167,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 		return
 	}
 	model.Output = output
+	model.TelemetryHeaders = types.ObjectNull(telemetryHeadersAttributeTypes())
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

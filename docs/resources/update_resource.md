@@ -135,7 +135,7 @@ resource "azapi_update_resource" "example" {
 	~> Once set, the value of this attribute in state will not change.
 
 	-> Ensure this in resource ID format.
-- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request. `telemetry_headers` are not applied to read requests.
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
 	If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
@@ -204,7 +204,7 @@ resource "azapi_update_resource" "example" {
 - `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 - `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
-- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only

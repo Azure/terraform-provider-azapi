@@ -60,6 +60,7 @@ type AzapiUpdateResourceModel struct {
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	TelemetryHeaders              types.Object     `tfsdk:"telemetry_headers"`
 }
 
 type AzapiUpdateResource struct {
@@ -284,6 +285,13 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -452,7 +460,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 
 	client := r.ProviderData.ResourceClient
 	readRequestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.ReadHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.ReadHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	readRequestOptions.RetryOptions, readRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
@@ -512,7 +520,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	}
 
 	updateRequestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.UpdateHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.UpdateHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.UpdateQueryParameters)),
 	}
 	updateRequestOptions.RetryOptions, updateRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)

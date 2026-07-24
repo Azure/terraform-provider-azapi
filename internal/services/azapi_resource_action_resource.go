@@ -57,6 +57,7 @@ type ActionResourceModel struct {
 	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	Headers                       types.Map        `tfsdk:"headers"`
 	QueryParameters               types.Map        `tfsdk:"query_parameters"`
+	TelemetryHeaders              types.Object     `tfsdk:"telemetry_headers"`
 }
 
 type ActionResource struct {
@@ -256,6 +257,13 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				},
 				Optional:            true,
 				MarkdownDescription: "A map of query parameters to include in the request.",
+			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
 			},
 		},
 
@@ -466,7 +474,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	}
 
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(model.Headers),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(model.Headers), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)

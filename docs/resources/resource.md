@@ -93,9 +93,9 @@ output "quarantine_policy" {
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 
 	-> Ensure the dynamic value is not a string.
-- `create_headers` (Map of String) A mapping of headers to be sent with the create request.
+- `create_headers` (Map of String) A mapping of headers to be sent with the create request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
-- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
+- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request. `telemetry_headers` are not applied to delete requests.
 - `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
 - `identity` (List of Block) The identity of this resource. See [below for nested schema](#nested--identity).
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
@@ -129,7 +129,7 @@ output "quarantine_policy" {
 	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
 	-> Ensure this in resource ID format.
-- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request. `telemetry_headers` are not applied to read requests.
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
 	If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
@@ -197,7 +197,7 @@ output "quarantine_policy" {
 
 	-> Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long.
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
-- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request. If conflicting with `telemetry_headers`, `telemetry_headers` takes precedence.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only

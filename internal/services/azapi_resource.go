@@ -86,6 +86,7 @@ type AzapiResourceModel struct {
 	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	TelemetryHeaders              types.Object     `tfsdk:"telemetry_headers"`
 }
 
 // AzapiResourceIdentityModel represents the identity data for importing a resource
@@ -133,6 +134,7 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		DeleteQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
 		ReadHeaders:           types.MapNull(types.StringType),
 		ReadQueryParameters:   types.MapNull(types.ListType{ElemType: types.StringType}),
+		TelemetryHeaders:      types.ObjectNull(telemetryHeadersAttributeTypes()),
 	}
 }
 
@@ -413,6 +415,13 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				},
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
+			},
+
+			"telemetry_headers": schema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
 			},
 		},
 		Blocks: map[string]schema.Block{
@@ -813,7 +822,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
 		requestOptions := clients.RequestOptions{
-			Headers:         common.AsMapOfString(plan.ReadHeaders),
+			Headers:         withTelemetryHeaders(common.AsMapOfString(plan.ReadHeaders), config.TelemetryHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
 		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
@@ -883,12 +892,12 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(plan.CreateHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(plan.CreateHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 	if !isNewResource {
-		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
+		requestOptions.Headers = withTelemetryHeaders(common.AsMapOfString(plan.UpdateHeaders), config.TelemetryHeaders)
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
 	}
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, requestOptions)
@@ -898,7 +907,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		})
 		if isNewResource {
 			requestOptions := clients.RequestOptions{
-				Headers:         common.AsMapOfString(plan.ReadHeaders),
+				Headers:         withTelemetryHeaders(common.AsMapOfString(plan.ReadHeaders), config.TelemetryHeaders),
 				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 			}
 			requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
@@ -943,7 +952,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
 	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
-		Headers:         common.AsMapOfString(plan.ReadHeaders),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(plan.ReadHeaders), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		RetryOptions:    combinedRetryOpts,
 		LastRetryError:  combinedLastRetryErr,

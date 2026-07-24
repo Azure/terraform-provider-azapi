@@ -24,15 +24,16 @@ import (
 
 // AzapiResourceActionModel defines the configuration for the action equivalent of the stateful `azapi_resource_action` resource.
 type AzapiResourceActionModel struct {
-	Type            types.String  `tfsdk:"type"`
-	ResourceId      types.String  `tfsdk:"resource_id"`
-	Action          types.String  `tfsdk:"action"`
-	Method          types.String  `tfsdk:"method"`
-	Body            types.Dynamic `tfsdk:"body"`
-	SensitiveBody   types.Dynamic `tfsdk:"sensitive_body"`
-	Locks           types.List    `tfsdk:"locks"`
-	Headers         types.Map     `tfsdk:"headers"`
-	QueryParameters types.Map     `tfsdk:"query_parameters"`
+	Type             types.String  `tfsdk:"type"`
+	ResourceId       types.String  `tfsdk:"resource_id"`
+	Action           types.String  `tfsdk:"action"`
+	Method           types.String  `tfsdk:"method"`
+	Body             types.Dynamic `tfsdk:"body"`
+	SensitiveBody    types.Dynamic `tfsdk:"sensitive_body"`
+	Locks            types.List    `tfsdk:"locks"`
+	Headers          types.Map     `tfsdk:"headers"`
+	QueryParameters  types.Map     `tfsdk:"query_parameters"`
+	TelemetryHeaders types.Object  `tfsdk:"telemetry_headers"`
 }
 
 // AzapiResourceAction implements performing an action without persisting state (stateless invocation).
@@ -121,6 +122,13 @@ func (a *AzapiResourceAction) Schema(ctx context.Context, req action.SchemaReque
 				ElementType:         types.ListType{ElemType: types.StringType},
 				MarkdownDescription: "Query parameters to include in the request.",
 			},
+
+			"telemetry_headers": actionschema.ObjectAttribute{
+				AttributeTypes:      telemetryHeadersAttributeTypes(),
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: telemetryHeadersMarkdownDescription,
+			},
 		},
 	}
 }
@@ -159,7 +167,7 @@ func (a *AzapiResourceAction) Invoke(ctx context.Context, req action.InvokeReque
 	}
 
 	requestOptions := clients.RequestOptions{
-		Headers:         common.AsMapOfString(config.Headers),
+		Headers:         withTelemetryHeaders(common.AsMapOfString(config.Headers), config.TelemetryHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(config.QueryParameters)),
 	}
 
