@@ -171,6 +171,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
 				ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
 				ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
+				TelemetryHeaders              types.Object        `tfsdk:"telemetry_headers"`
 			}
 
 			var oldState OldModel
@@ -221,6 +222,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				Timeouts:                      oldState.Timeouts,
 				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
+				TelemetryHeaders:              types.ObjectNull(telemetryHeadersAttributeTypes()),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

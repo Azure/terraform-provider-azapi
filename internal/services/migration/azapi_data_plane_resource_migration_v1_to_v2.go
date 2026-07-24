@@ -109,6 +109,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
 				ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
 				ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
+				TelemetryHeaders              types.Object        `tfsdk:"telemetry_headers"`
 			}
 
 			var oldState OldModel
@@ -150,6 +151,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				Retry:                         retry.NewRetryValueNull(),
 				Output:                        outputVal,
 				Timeouts:                      oldState.Timeouts,
+				TelemetryHeaders:              types.ObjectNull(telemetryHeadersAttributeTypes()),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

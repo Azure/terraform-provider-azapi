@@ -103,6 +103,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Retry                         retry.RetryValue    `tfsdk:"retry"`
 				Headers                       map[string]string   `tfsdk:"headers"`
 				QueryParameters               map[string][]string `tfsdk:"query_parameters"`
+				TelemetryHeaders              types.Object        `tfsdk:"telemetry_headers"`
 			}
 
 			var oldState OldModel
@@ -161,6 +162,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				SensitiveOutput:               types.DynamicNull(),
 				Timeouts:                      oldState.Timeouts,
 				Retry:                         retry.NewRetryValueNull(),
+				TelemetryHeaders:              types.ObjectNull(telemetryHeadersAttributeTypes()),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)
