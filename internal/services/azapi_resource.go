@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -897,12 +898,27 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			"err": err,
 		})
 		if isNewResource {
+			// If the create failed because terraform was interrupted (SIGINT,
+			// context.Canceled) or the operation exceeded its timeout
+			// (context.DeadlineExceeded), the resource may already have been
+			// created in Azure while the poll was aborted. Read it back on a
+			// context detached from the cancelled/expired parent so its id can
+			// still be persisted to state, avoiding an orphaned resource that a
+			// subsequent apply would reject with "already exists".
+			// See https://github.com/Azure/terraform-provider-azapi/issues/1110
+			// and https://github.com/Azure/terraform-provider-azapi/issues/1078.
+			recoveryCtx := ctx
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+				var cancel context.CancelFunc
+				recoveryCtx, cancel = context.WithTimeout(context.WithoutCancel(ctx), 5*time.Minute)
+				defer cancel()
+			}
 			requestOptions := clients.RequestOptions{
 				Headers:         common.AsMapOfString(plan.ReadHeaders),
 				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 			}
 			requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
-			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
+			if responseBody, err := client.Get(recoveryCtx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 
@@ -931,7 +947,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 						plan.Identity = identity.ToList(planIdentity)
 					}
 				}
-				diagnostics.Append(responseState.Set(ctx, plan)...)
+				diagnostics.Append(responseState.Set(recoveryCtx, plan)...)
 			}
 		}
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
