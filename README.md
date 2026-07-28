@@ -127,11 +127,25 @@ You can also cross-compile if necessary:
 GOOS=windows GOARCH=amd64 make build
 ```
 
-In order to run the `Unit Tests` for the provider, you can run:
+## Testing
+
+The provider has three kinds of tests:
+
+| Kind | What it verifies | Azure access | Cost / speed |
+| ---- | ---------------- | ------------ | ------------ |
+| **Unit tests** | Pure logic in isolation (parsing, validation, helpers) | None | Free, fast |
+| **Acceptance tests** (acctest) | End-to-end behavior against live Azure by provisioning real resources | Live, needs credentials | Costs money, slow |
+| **VCR tests** | The same acceptance coverage, but replayed from a pre-recorded HTTP "cassette" | Only when *recording*; *replay* needs none | Replay is free, fast, and deterministic |
+
+VCR tests are recently introduced, and will gradually replace most of acctests. We will still keep a small set of acctests to ensure core functionalities is always tested against live Azure. 
+
+### Unit tests
 
 ```sh
 make test
 ```
+
+### Acceptance tests
 
 The majority of tests in the provider are `Acceptance Tests` - which provisions real resources in Azure. It's possible to run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which you can do using a prefix, by running:
 
@@ -179,6 +193,42 @@ Use the `appId` for `ARM_CLIENT_ID` and the `password` for `ARM_CLIENT_SECRET`.
 The `ARM_READER_CLIENT_ID` and `ARM_READER_CLIENT_SECRET` follow the same process but with the `Reader` role instead of `Contributor`.
 
 **Note:** Acceptance tests create real resources in Azure which often cost money to run.
+
+### VCR (record / replay) tests
+
+VCR tests wrap [`dnaeon/go-vcr`](https://github.com/dnaeon/go-vcr) so an acceptance test can record its HTTP conversation with Azure once and then replay it later with **no network access and no credentials**. Replaying is deterministic, which makes VCR tests ideal for CI. See `internal/acceptance/vcr` for the harness details.
+
+Behavior is controlled by the `AZAPI_VCR_MODE` environment variable:
+
+| `AZAPI_VCR_MODE` | Behavior |
+| ---------------- | -------- |
+| unset / `off`    | VCR is disabled. VCR tests (those using `VcrResourceTest`) are **skipped**, live tests are unaffected. |
+| `record`         | The test runs live against Azure and every HTTP interaction is written to a sanitized cassette under `internal/services/testdata/cassettes/<TestName>.yaml`. |
+| `replay`         | The test runs entirely from the cassette using a fake credential. No network calls are made. |
+
+Cassettes are safe to commit: a `BeforeSave` hook strips sensitive information and rewrites real subscription/tenant IDs to canonical placeholders. VCR runs serially and uses fixed, name-derived locations and values so recorded and replayed requests match byte-for-byte.
+
+#### Writing a VCR test
+
+Use `VcrResourceTest` instead of `ResourceTest`. `VcrResourceTest` skips itself when VCR is disabled. See `TestVcrAccGenericResource_basic` in `internal/services/azapi_resource_test.go` for example.
+
+#### Recording a cassette
+
+Recording runs live, so it needs the same credentials and Azure quota as an acceptance test (see the environment variables above):
+
+```sh
+make vcrrecord TESTARGS='-run TestVcrAccGenericResource_basic'
+```
+
+This writes `internal/services/testdata/cassettes/TestVcrAccGenericResource_basic.yaml`. Review it (it must contain only canonical placeholder IDs and no secrets / sensitive data) and commit it alongside the test.
+
+#### Replaying a cassette
+
+Replay needs no credentials and no network:
+
+```sh
+make vcrreplay TESTARGS='-run TestVcrAccGenericResource_basic'
+```
 
 ## Generating Documentation
 

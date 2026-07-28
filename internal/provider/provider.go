@@ -49,7 +49,12 @@ func AzureProvider() provider.Provider {
 	return &Provider{}
 }
 
+func AzureProviderWithConfigure(configure func(*clients.Option)) provider.Provider {
+	return &Provider{configureOption: configure}
+}
+
 type Provider struct {
+	configureOption func(*clients.Option)
 }
 
 type providerData struct {
@@ -713,6 +718,10 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		TenantId:                    model.TenantID.ValueString(),
 		AuxiliaryTenants:            auxTenants,
 		AlwaysAcquirePolicyToken:    model.AlwaysAcquirePolicyToken.ValueBool(),
+	}
+
+	if p.configureOption != nil {
+		p.configureOption(copt)
 	}
 
 	client := &clients.Client{}
