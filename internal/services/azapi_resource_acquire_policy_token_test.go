@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"regexp"
 	"testing"
-	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
@@ -17,13 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-// invoke policy / acquire policy token feature is not yet enabled on the new acctest tenant until the date below
-var policyTokenFeatureUnavailableUntil = time.Date(2026, 8, 5, 0, 0, 0, 0, time.UTC)
-
-func policyTokenFeatureTemporarilyUnavailable() bool {
-	return time.Now().Before(policyTokenFeatureUnavailableUntil)
-}
-
 type ResourceWithAcquirePolicyToken struct{}
 
 func TestAccResourceWithAcquirePolicyToken_allowedByPolicy(t *testing.T) {
@@ -33,13 +25,9 @@ func TestAccResourceWithAcquirePolicyToken_allowedByPolicy(t *testing.T) {
 	step := resource.TestStep{
 		Config:            r.basic(data, true),
 		ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-	}
-	if policyTokenFeatureTemporarilyUnavailable() {
-		step.ExpectError = regexp.MustCompile(`(?s)ExternalEvaluationEnforcementSettings' property is not supported`)
-	} else {
-		step.Check = resource.ComposeTestCheckFunc(
+		Check: resource.ComposeTestCheckFunc(
 			check.That(data.ResourceName).ExistsInAzure(r),
-		)
+		),
 	}
 
 	data.ResourceTest(t, r, []resource.TestStep{step})
@@ -52,11 +40,7 @@ func TestAccResourceWithAcquirePolicyToken_disallowedByPolicy(t *testing.T) {
 	step := resource.TestStep{
 		Config:            r.basic(data, false),
 		ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-	}
-	if policyTokenFeatureTemporarilyUnavailable() {
-		step.ExpectError = regexp.MustCompile(`(?s)ExternalEvaluationEnforcementSettings' property is not supported`)
-	} else {
-		step.ExpectError = regexp.MustCompile("RequestDisallowedByPolicy")
+		ExpectError:       regexp.MustCompile("RequestDisallowedByPolicy"),
 	}
 
 	data.ResourceTest(t, r, []resource.TestStep{step})
@@ -69,14 +53,10 @@ func TestAccResourceWithAcquirePolicyToken_alwaysAcquire(t *testing.T) {
 	step := resource.TestStep{
 		Config:            r.alwaysAcquire(data),
 		ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-	}
-	if policyTokenFeatureTemporarilyUnavailable() {
-		step.ExpectError = regexp.MustCompile(`(?s)Policy Token' is not enabled`)
-	} else {
-		step.Check = resource.ComposeTestCheckFunc(
+		Check: resource.ComposeTestCheckFunc(
 			check.That("azapi_resource.storage").ExistsInAzure(r),
 			check.That("azapi_resource.virtual_network").ExistsInAzure(r),
-		)
+		),
 	}
 
 	data.ResourceTest(t, r, []resource.TestStep{step})
