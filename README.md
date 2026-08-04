@@ -220,7 +220,7 @@ Recording runs live, so it needs the same credentials and Azure quota as an acce
 make vcrrecord TESTARGS='-run TestVcrAccGenericResource_basic'
 ```
 
-This writes `internal/services/testdata/cassettes/TestVcrAccGenericResource_basic.yaml`. Review it (it must contain only canonical placeholder IDs and no secrets / sensitive data) and commit it alongside the test.
+This writes `internal/services/testdata/cassettes/TestVcrAccGenericResource_basic.yaml`. ⚠️ Important! Ensure this file contains no sensitive information such as subscription IDs, tenant IDs, or secrets. This file should be version controlled.
 
 #### Replaying a cassette
 
