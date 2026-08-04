@@ -108,6 +108,7 @@ testacc: fmtcheck
 acctests: fmtcheck
 	TF_ACC=1 go test -v ./internal/services $(TESTARGS) -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
 
+# Go accepts multiple -run flags and uses the last one, allowing CI to run all VCR tests while TESTARGS can select an individual test locally.
 vcrreplay: fmtcheck
 	AZAPI_VCR_MODE=replay TF_ACC=1 go test -v ./internal/services -run 'TestVcr' $(TESTARGS) -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
 
