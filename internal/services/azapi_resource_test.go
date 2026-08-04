@@ -1053,6 +1053,40 @@ func TestAccGenericResource_modifyPlanSubnet(t *testing.T) {
 	})
 }
 
+// TestAccGenericResource_ignoreMissingPropertyDrift reproduces issue #1116: when
+// ignore_missing_property is set to false and a writable property (a subnet delegation) is added
+// out-of-band directly in Azure, the drift must be detected during plan. Before the fix the plan
+// incorrectly reported "No changes" because the remote-only property was dropped during Read.
+func TestAccGenericResource_ignoreMissingPropertyDrift(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	config := r.ignoreMissingPropertyDrift(data)
+	var resourceID string
+	var resourceType string
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: config,
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				captureResourceState(data.ResourceName, &resourceID, &resourceType),
+			),
+		},
+		{
+			// A subnet delegation is added directly in Azure (out-of-band). Because
+			// ignore_missing_property is false, this drift must be detected in the plan.
+			PreConfig: func() {
+				if err := addSubnetDelegationOutsideTerraform(resourceID, resourceType); err != nil {
+					t.Fatalf("adding subnet delegation outside Terraform: %+v", err)
+				}
+			},
+			Config:             config,
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func TestAccGenericResource_modifyPlanAccount(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -3982,6 +4016,99 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) ignoreMissingPropertyDrift(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16"
+        ]
+      }
+      subnets = []
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
+  schema_validation_enabled = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  parent_id = azapi_resource.virtualNetwork.id
+  name      = "example-subnet"
+
+  # compute_complete_diff surfaces writable properties that exist in the remote resource but are
+  # missing from body, regardless of ignore_missing_property (which keeps its default of true here).
+  compute_complete_diff = true
+
+  # delegations is intentionally NOT declared here. The subnet is created without a delegation and
+  # then one is added out-of-band (see addSubnetDelegationOutsideTerraform). The remaining writable
+  # properties that Azure applies by default are declared so that the first apply is idempotent and
+  # the only drift detected in the second step is the out-of-band delegation.
+  body = {
+    properties = {
+      addressPrefix                     = "10.0.2.0/24"
+      privateEndpointNetworkPolicies    = "Disabled"
+      privateLinkServiceNetworkPolicies = "Enabled"
+      defaultOutboundAccess             = false
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+// addSubnetDelegationOutsideTerraform simulates an out-of-band change by adding a delegation to the
+// subnet directly through the Azure API, without going through Terraform.
+func addSubnetDelegationOutsideTerraform(resourceID, resourceType string) error {
+	id, err := parse.ResourceIDWithResourceType(resourceID, resourceType)
+	if err != nil {
+		return fmt.Errorf("parsing resource ID: %+v", err)
+	}
+
+	client, err := acceptance.BuildTestClient()
+	if err != nil {
+		return fmt.Errorf("building test client: %+v", err)
+	}
+
+	ctx := context.Background()
+	existing, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
+	if err != nil {
+		return fmt.Errorf("retrieving subnet: %+v", err)
+	}
+
+	body, ok := existing.(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("unexpected subnet response type %T", existing)
+	}
+	properties, ok := body["properties"].(map[string]interface{})
+	if !ok {
+		properties = map[string]interface{}{}
+		body["properties"] = properties
+	}
+	properties["delegations"] = []interface{}{
+		map[string]interface{}{
+			"name": "Microsoft.Web/serverFarms",
+			"properties": map[string]interface{}{
+				"serviceName": "Microsoft.Web/serverFarms",
+			},
+		},
+	}
+
+	if _, err := client.ResourceClient.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, clients.DefaultRequestOptions()); err != nil {
+		return fmt.Errorf("adding delegation to subnet: %+v", err)
+	}
+	return nil
 }
 
 func (r GenericResource) modifyPlanSubnet(data acceptance.TestData) string {

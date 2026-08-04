@@ -63,6 +63,7 @@ type AzapiResourceModel struct {
 	Identity                      types.List       `tfsdk:"identity"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ComputeCompleteDiff           types.Bool       `tfsdk:"compute_complete_diff"`
 	IgnoreNullProperty            types.Bool       `tfsdk:"ignore_null_property"`
 	ListUniqueIdProperty          types.Map        `tfsdk:"list_unique_id_property"`
 	IgnoreOtherItemsInList        types.List       `tfsdk:"ignore_other_items_in_list"`
@@ -107,6 +108,7 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
+		ComputeCompleteDiff:           types.BoolValue(false),
 		IgnoreNullProperty:            types.BoolValue(false),
 		ListUniqueIdProperty:          types.MapNull(types.StringType),
 		IgnoreOtherItemsInList:        types.ListNull(types.StringType),
@@ -294,7 +296,14 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(true),
-				MarkdownDescription: docstrings.IgnoreMissingProperty(),
+				MarkdownDescription: docstrings.IgnoreMissingPropertyDeprecated(),
+			},
+
+			"compute_complete_diff": schema.BoolAttribute{
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.ComputeCompleteDiff(),
 			},
 
 			"ignore_null_property": schema.BoolAttribute{
@@ -627,6 +636,15 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			option.IgnoreOtherItemsInList = m
 		}
 		remoteBody := utils.UpdateObject(configBody, responseBody, option)
+		// When compute_complete_diff is enabled, do not suppress the change if the remote
+		// resource has writable properties that are missing from the configuration (out-of-band
+		// drift). Surfacing them here ensures the no-op suppression below does not re-hide the
+		// drift that Read detected. Read-only properties are stripped first to avoid noise.
+		if plan.ComputeCompleteDiff.ValueBool() {
+			if writableResponse, ok := writableRemoteBody(responseBody, resourceDef); ok {
+				remoteBody = utils.AddMissingProperties(remoteBody, writableResponse)
+			}
+		}
 		// suppress the change if the remote body is equal to the config body
 		if reflect.DeepEqual(remoteBody, configBody) {
 			plan.Body = state.Body
@@ -1137,6 +1155,17 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
+	// When compute_complete_diff is enabled, surface writable properties that exist in the
+	// remote resource but are missing from the configuration, so that out-of-band changes
+	// (e.g. a subnet delegation added directly in Azure) are detected as drift instead of being
+	// silently ignored. Read-only properties are stripped first to avoid noisy, non-convergent
+	// diffs on properties the user cannot control.
+	if model.ComputeCompleteDiff.ValueBool() {
+		if writableResponse, ok := writableRemoteBody(responseBody, id.ResourceDef); ok {
+			body = utils.AddMissingProperties(body, writableResponse)
+		}
+	}
+
 	data, err := json.Marshal(body)
 	if err != nil {
 		response.Diagnostics.AddError("Invalid body", err.Error())
@@ -1162,6 +1191,15 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			if err != nil {
 				response.Diagnostics.AddError("Invalid payload", err.Error())
 				return
+			}
+		} else if model.ComputeCompleteDiff.ValueBool() {
+			// The config-derived type cannot represent remote-only properties that may have been
+			// surfaced above, so the typed conversion would silently drop them. If that happened,
+			// fall back to an inferred type so the drift is preserved in state and detected in plan.
+			if roundTrip, rtErr := dynamic.ToJSON(payload); rtErr == nil && utils.NormalizeJson(string(data)) != utils.NormalizeJson(string(roundTrip)) {
+				if implied, impliedErr := dynamic.FromJSONImplied(data); impliedErr == nil {
+					payload = implied
+				}
 			}
 		}
 		state.Body = payload
