@@ -26,6 +26,7 @@ ENHANCEMENTS:
 - Acquire a policy token when a request is blocked by an invoke policy (GH-1145).
 - Update bicep types to Azure/azure-rest-api-specs revision 51d53915b5f31b10e6645c136807b9d95f9f09d1 (GH-1159).
 - Improve the bicep types update process (GH-1155).
+- `azapi_resource`: Add `compute_complete_diff` property to detect out-of-band changes to writable properties that exist in the remote resource but are missing from `body` (for example, a subnet delegation added directly in Azure). It takes precedence over `ignore_missing_property`, which is now deprecated (GH-1116).
 
 BUG FIXES:
 

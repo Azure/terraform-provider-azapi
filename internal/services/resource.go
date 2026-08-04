@@ -164,6 +164,35 @@ func overrideBodyWithPaths(old, new interface{}, paths []string) (map[string]int
 	return body, nil
 }
 
+// writableRemoteBody projects the remote response body down to its writable properties so that
+// remote-only properties can be surfaced as drift when compute_complete_diff is enabled. It relies
+// on the resource schema's GetWriteOnly projection to drop read-only properties (such as
+// status/provisioningState) and removes the top-level meta properties that azapi models separately
+// (name, location, tags, identity). It returns false when the drift cannot be computed safely (e.g.
+// the resource type is unknown so read-only fields cannot be distinguished), in which case
+// surfacing must be skipped to avoid non-convergent diffs.
+//
+// Known limitation: GetWriteOnly retains properties that are both required and read-only (see
+// internal/azure/types/object_type.go), so schemas with required+read-only properties may surface
+// them. A strict schema-guided writable projection that excludes read-only properties at every
+// level (objects, arrays and discriminated types) would remove this edge case.
+func writableRemoteBody(responseBody interface{}, resourceDef *aztypes.ResourceType) (map[string]interface{}, bool) {
+	if resourceDef == nil {
+		return nil, false
+	}
+	normalized := utils.NormalizeObject(responseBody)
+	writable := (*resourceDef).GetWriteOnly(normalized)
+	writableMap, ok := writable.(map[string]interface{})
+	if !ok {
+		return nil, false
+	}
+	delete(writableMap, "location")
+	delete(writableMap, "tags")
+	delete(writableMap, "name")
+	delete(writableMap, "identity")
+	return writableMap, true
+}
+
 func flattenBody(responseBody interface{}, resourceDef *aztypes.ResourceType) (types.Dynamic, error) {
 	body := utils.NormalizeObject(responseBody)
 

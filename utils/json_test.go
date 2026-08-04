@@ -423,6 +423,130 @@ func Test_UpdateObject(t *testing.T) {
 	}
 }
 
+// Test_AddMissingProperties reproduces the scenario from issue #1116: a property (a subnet
+// delegation) is added out-of-band in Azure but is not declared in the Terraform configuration
+// body. AddMissingProperties surfaces such remote-only properties (so drift is detected) while
+// leaving existing values untouched and skipping service-applied defaults and redacted secrets.
+func Test_AddMissingProperties(t *testing.T) {
+	testcases := []struct {
+		Name       string
+		TargetJson string
+		SourceJson string
+		ExpectJson string
+	}{
+		{
+			Name: "surfaces a nested remote-only property (the issue #1116 delegation)",
+			TargetJson: `{
+  "properties": { "addressPrefix": "10.0.2.0/24" }
+}`,
+			SourceJson: `{
+  "properties": {
+    "addressPrefix": "10.0.2.0/24",
+    "delegations": [ { "name": "Microsoft.Web/serverFarms", "properties": { "serviceName": "Microsoft.Web/serverFarms" } } ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "addressPrefix": "10.0.2.0/24",
+    "delegations": [ { "name": "Microsoft.Web/serverFarms", "properties": { "serviceName": "Microsoft.Web/serverFarms" } } ]
+  }
+}`,
+		},
+		{
+			Name: "skips zero-value remote-only properties (service defaults)",
+			TargetJson: `{
+  "properties": { "addressPrefix": "10.0.2.0/24" }
+}`,
+			SourceJson: `{
+  "properties": {
+    "addressPrefix": "10.0.2.0/24",
+    "delegations": [],
+    "serviceEndpoints": [],
+    "defaultOutboundAccess": false,
+    "count": 0
+  }
+}`,
+			ExpectJson: `{
+  "properties": { "addressPrefix": "10.0.2.0/24" }
+}`,
+		},
+		{
+			Name: "skips redacted remote-only properties (secrets)",
+			TargetJson: `{
+  "properties": { "administratorLogin": "admin" }
+}`,
+			SourceJson: `{
+  "properties": {
+    "administratorLogin": "admin",
+    "administratorLoginPassword": "****",
+    "primaryKey": "<redacted>"
+  }
+}`,
+			ExpectJson: `{
+  "properties": { "administratorLogin": "admin" }
+}`,
+		},
+		{
+			Name: "never modifies existing scalar or array values",
+			TargetJson: `{
+  "properties": {
+    "addressPrefix": "10.0.2.0/24",
+    "serviceEndpoints": [ { "service": "Microsoft.Storage" } ]
+  }
+}`,
+			SourceJson: `{
+  "properties": {
+    "addressPrefix": "10.0.99.0/24",
+    "serviceEndpoints": [ { "service": "Microsoft.Sql" }, { "service": "Microsoft.KeyVault" } ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "addressPrefix": "10.0.2.0/24",
+    "serviceEndpoints": [ { "service": "Microsoft.Storage" } ]
+  }
+}`,
+		},
+		{
+			Name: "sanitizes nested redacted and zero leaves inside a surfaced remote-only subtree",
+			TargetJson: `{
+  "properties": { "administratorLogin": "admin" }
+}`,
+			SourceJson: `{
+  "properties": {
+    "administratorLogin": "admin",
+    "auth": {
+      "kind": "password",
+      "password": "****",
+      "retries": 0
+    },
+    "network": { "credentials": { "key": "<redacted>" } }
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "administratorLogin": "admin",
+    "auth": { "kind": "password" }
+  }
+}`,
+		},
+	}
+
+	for _, testcase := range testcases {
+		var target, source, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.TargetJson), &target)
+		_ = json.Unmarshal([]byte(testcase.SourceJson), &source)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.AddMissingProperties(target, source)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("%s:\nexpected %s\ngot      %s", testcase.Name, expectedJson, resultJson)
+		}
+	}
+}
+
 func Test_MergeObject(t *testing.T) {
 	testcases := []struct {
 		Name       string

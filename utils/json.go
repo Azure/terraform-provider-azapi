@@ -128,6 +128,111 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 	return updateObjectAtPath(old, new, option, "")
 }
 
+var redactedStringRegex = regexp.MustCompile(`^\*+$`)
+
+// isEmptyOrRedactedValue reports whether a value is a zero value (nil, empty string, empty
+// array/object, false or 0) or a redacted placeholder returned by the API in place of a secret
+// (a run of asterisks or the literal "<redacted>"). Such values are treated as service-applied
+// defaults or unreadable secrets and are not surfaced as drift.
+func isEmptyOrRedactedValue(value interface{}) bool {
+	switch v := value.(type) {
+	case nil:
+		return true
+	case string:
+		return v == "" || v == "<redacted>" || redactedStringRegex.MatchString(v)
+	case bool:
+		return !v
+	case float64:
+		return v == 0
+	case float32:
+		return v == 0
+	case int:
+		return v == 0
+	case int32:
+		return v == 0
+	case int64:
+		return v == 0
+	case map[string]interface{}:
+		return len(v) == 0
+	case []interface{}:
+		return len(v) == 0
+	}
+	return false
+}
+
+// sanitizeRemoteValue returns a deep copy of a remote-only value with zero-value and redacted
+// leaves removed and emptied objects/arrays pruned, or nil if the whole value should be skipped. It
+// is applied before surfacing a remote-only property so that service-applied defaults and
+// unreadable secrets nested inside a surfaced subtree do not create permanent, non-convergent drift.
+func sanitizeRemoteValue(value interface{}) interface{} {
+	switch v := value.(type) {
+	case map[string]interface{}:
+		res := make(map[string]interface{})
+		for key, item := range v {
+			if sanitized := sanitizeRemoteValue(item); sanitized != nil {
+				res[key] = sanitized
+			}
+		}
+		if len(res) == 0 {
+			return nil
+		}
+		return res
+	case []interface{}:
+		res := make([]interface{}, 0, len(v))
+		for _, item := range v {
+			if sanitized := sanitizeRemoteValue(item); sanitized != nil {
+				res = append(res, sanitized)
+			}
+		}
+		if len(res) == 0 {
+			return nil
+		}
+		return res
+	default:
+		if isEmptyOrRedactedValue(v) {
+			return nil
+		}
+		return v
+	}
+}
+
+// AddMissingProperties returns target with the properties that exist in source but are missing from
+// target added recursively. It is add-only: existing target values (scalars, arrays and populated
+// objects) are never modified, and objects present in both target and source are recursed into to
+// surface deeply-nested missing properties. Remote-only values are sanitized (see
+// sanitizeRemoteValue) so that service-applied defaults and unreadable secrets are not surfaced. It
+// is used to detect out-of-band changes (properties present in the remote resource but absent from
+// the configuration) without disturbing the configuration-shaped body.
+func AddMissingProperties(target interface{}, source interface{}) interface{} {
+	sourceMap, ok := source.(map[string]interface{})
+	if !ok {
+		return target
+	}
+	targetMap, ok := target.(map[string]interface{})
+	if !ok {
+		return target
+	}
+	res := make(map[string]interface{})
+	for key, value := range targetMap {
+		res[key] = value
+	}
+	for key, sourceValue := range sourceMap {
+		if existing, exists := res[key]; exists {
+			// Only recurse into nested objects to surface missing sub-properties. Existing scalar
+			// and array values are left untouched to avoid corrupting them (e.g. re-matching
+			// reordered list items whose identifiers were stripped as read-only).
+			if _, sourceIsMap := sourceValue.(map[string]interface{}); sourceIsMap {
+				res[key] = AddMissingProperties(existing, sourceValue)
+			}
+			continue
+		}
+		if sanitized := sanitizeRemoteValue(sourceValue); sanitized != nil {
+			res[key] = sanitized
+		}
+	}
+	return res
+}
+
 func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOption, path string) interface{} {
 	if reflect.DeepEqual(old, new) {
 		return old

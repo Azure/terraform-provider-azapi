@@ -93,6 +93,7 @@ output "quarantine_policy" {
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 
 	-> Ensure the dynamic value is not a string.
+- `compute_complete_diff` (Boolean) Whether to compute a complete diff that surfaces writable properties which exist in the remote resource but are missing from `body`. When enabled, out-of-band changes to such properties (for example, a subnet delegation added directly in Azure) are detected as drift instead of being silently ignored. This takes precedence over `ignore_missing_property`. Read-only properties and service-applied default (zero) values are not surfaced, to keep the plan convergent. Defaults to `false`.
 - `create_headers` (Map of String) A mapping of headers to be sent with the create request.
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
 - `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
@@ -102,7 +103,7 @@ output "quarantine_policy" {
 
 	-> Element value must satisfy all validations: string length must be at least 1.
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
-- `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. Defaults to `true`.
+- `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. **Deprecated**: to detect properties that exist in the remote resource but are missing from `body` (for example, out-of-band changes made directly in Azure), use `compute_complete_diff` instead, which takes precedence over this property. Defaults to `true`.
 - `ignore_null_property` (Boolean) When set to `true`, the provider will ignore properties whose values are `null` in the `body`. These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 - `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
 
