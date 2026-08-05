@@ -61,6 +61,7 @@ type AzapiResourceModel struct {
 	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
 	ID                            types.String     `tfsdk:"id"`
 	Identity                      types.List       `tfsdk:"identity"`
+	IgnoreBodyChanges             types.List       `tfsdk:"ignore_body_changes"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
 	IgnoreNullProperty            types.Bool       `tfsdk:"ignore_null_property"`
@@ -105,6 +106,7 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		Body:                          types.Dynamic{},
 		SensitiveBodyVersion:          types.MapNull(types.StringType),
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
+		IgnoreBodyChanges:             types.ListNull(types.StringType),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
 		IgnoreNullProperty:            types.BoolValue(false),
@@ -245,6 +247,16 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				ElementType:         types.StringType,
 				Optional:            true,
 				MarkdownDescription: docstrings.SensitiveBodyVersion(),
+			},
+
+			"ignore_body_changes": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				WriteOnly:   true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: "A list of paths in the resource body whose changes should be ignored. Prefer Terraform's `lifecycle.ignore_changes` when possible. Use this argument only when the paths must be derived from variables or other non-static values. Changes to this argument take effect only after an apply because its value is stored in provider-private state. Paths use dot notation, for example `properties.sku.name`. Individual list items cannot be targeted, ignore the entire list property instead. Configuration changes at an ignored path will not be sent to Azure until that path is removed from this list. This write-only argument requires Terraform 1.11 or later.",
 			},
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
@@ -556,6 +568,22 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		plan.Output = state.Output
 	}
 
+	var ignoreBodyChanges []string
+	if config.IgnoreBodyChanges.IsUnknown() {
+		plan.Output = types.DynamicUnknown()
+	} else {
+		ignoreBodyChanges = common.AsStringList(config.IgnoreBodyChanges)
+		ignoreBodyChangesChanged, diags := ignoreBodyChangesPrivateMgr.Diff(ctx, request.Private, ignoreBodyChanges)
+		response.Diagnostics.Append(diags...)
+		response.Diagnostics.Append(ignoreBodyChangesPrivateMgr.Set(ctx, response.Private, ignoreBodyChanges)...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+		if state != nil && ignoreBodyChangesChanged {
+			plan.Output = types.DynamicUnknown()
+		}
+	}
+
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
 	if err != nil {
 		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
@@ -585,6 +613,34 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		stateIdentity := identity.FromList(state.Identity)
 		if planIdentity.Type.Equal(stateIdentity.Type) && planIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
 			plan.Identity = state.Identity
+		}
+	}
+
+	if state != nil && len(ignoreBodyChanges) != 0 && dynamic.IsFullyKnown(plan.Body) {
+		planBody := make(map[string]interface{})
+		if err := unmarshalBody(plan.Body, &planBody); err != nil {
+			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+			return
+		}
+		stateBody := make(map[string]interface{})
+		if err := unmarshalBody(state.Body, &stateBody); err != nil {
+			response.Diagnostics.AddError("Invalid state body", fmt.Sprintf(`The argument "body" in state is invalid: %s`, err.Error()))
+			return
+		}
+		planBody, err = overrideBodyWithPaths(planBody, stateBody, ignoreBodyChanges)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: %s`, err))
+			return
+		}
+		data, err := json.Marshal(planBody)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
+		}
+		plan.Body, err = dynamic.FromJSON(data, plan.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
 		}
 	}
 
@@ -662,9 +718,13 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	if dynamic.IsFullyKnown(plan.Body) {
-		plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
-		if state == nil || !state.Tags.Equal(plan.Tags) {
-			plan.Output = basetypes.NewDynamicUnknown()
+		if state != nil && slices.Contains(ignoreBodyChanges, "tags") {
+			plan.Tags = state.Tags
+		} else {
+			plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
+			if state == nil || !state.Tags.Equal(plan.Tags) {
+				plan.Output = basetypes.NewDynamicUnknown()
+			}
 		}
 
 		// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
@@ -867,6 +927,35 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 	}
 
+	if !isNewResource {
+		ignoreBodyChanges := common.AsStringList(config.IgnoreBodyChanges)
+		if len(ignoreBodyChanges) != 0 {
+			requestOptions := clients.RequestOptions{
+				Headers:         common.AsMapOfString(plan.ReadHeaders),
+				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
+			}
+			existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+			if err != nil {
+				diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+				return
+			}
+			body, err = overrideBodyWithPaths(body, existing, ignoreBodyChanges)
+			if err != nil {
+				diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: %s`, err))
+				return
+			}
+			if id.ResourceDef != nil {
+				writableBody := (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(body))
+				var ok bool
+				body, ok = writableBody.(map[string]interface{})
+				if !ok {
+					diagnostics.AddError("Invalid body", fmt.Sprintf("expected writable body to be an object, got %T", writableBody))
+					return
+				}
+			}
+		}
+	}
+
 	if plan.IgnoreNullProperty.ValueBool() {
 		out := utils.RemoveNullProperty(body)
 		v, ok := out.(map[string]interface{})
@@ -1004,6 +1093,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 	}
 	diagnostics.Append(responseState.Set(ctx, plan)...)
+	diagnostics.Append(ignoreBodyChangesPrivateMgr.Set(ctx, privateData, common.AsStringList(config.IgnoreBodyChanges))...)
 
 	if plan.SensitiveBodyVersion.IsNull() {
 		writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
@@ -1117,6 +1207,19 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 				}
 				state.Identity = identity.ToList(*identityFromResponse)
 			}
+		}
+	}
+
+	ignoreBodyChanges, diags := ignoreBodyChangesPrivateMgr.Get(ctx, request.Private)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	if len(ignoreBodyChanges) != 0 {
+		responseBody, err = overrideBodyWithPaths(responseBody, requestBody, ignoreBodyChanges)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid private state", fmt.Sprintf(`The stored "ignore_body_changes" value is invalid: %s`, err))
+			return
 		}
 	}
 
