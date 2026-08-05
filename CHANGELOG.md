@@ -9,6 +9,7 @@ ENHANCEMENTS:
 - Acquire a policy token when a request is blocked by an invoke policy (GH-1145).
 - Update bicep types to Azure/azure-rest-api-specs revision 51d53915b5f31b10e6645c136807b9d95f9f09d1 (GH-1159).
 - Improve the bicep types update process (GH-1155).
+- `azapi` provider: Support `preserve_resource_id_casing` feature flag (default `false`). When enabled, if the resource ID the provider would write back to state differs from the existing state value only by casing, the existing casing is preserved. This avoids spurious `Unexpected Identity Change` errors and diffs when consumers (or upstream modules) rely on a specific casing the Azure API may not preserve. Only the `id` and `resource_id` attributes are affected. Can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` environment variable (GH-1122).
 
 BUG FIXES:
 
@@ -26,7 +27,6 @@ ENHANCEMENTS:
 - Bump Go version to 1.25.8 (GH-1082).
 - Bump `terraform-plugin-framework` from v1.16.1 to v1.19.0 (GH-1081).
 - Add example for `Microsoft.RedHatOpenShift/openShiftClusters` (GH-1083).
-- `azapi` provider: Support `preserve_resource_id_casing` feature flag (default `false`). When enabled, if the resource ID the provider would write back to state differs from the existing state value only by casing, the existing casing is preserved. This avoids spurious `Unexpected Identity Change` errors and diffs when consumers (or upstream modules) rely on a specific casing the Azure API may not preserve. Only the `id` and `resource_id` attributes are affected. Can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` environment variable (GH-1122).
 
 BUG FIXES:
 
