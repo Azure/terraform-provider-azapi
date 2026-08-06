@@ -148,6 +148,22 @@ func canResourceHaveProperty(resourceDef *aztypes.ResourceType, property string)
 	return false
 }
 
+func overrideBodyWithPaths(old, new interface{}, paths []string) (map[string]interface{}, error) {
+	pathSet := make(map[string]bool, len(paths))
+	for _, path := range paths {
+		pathSet[path] = true
+	}
+	out, err := utils.OverrideWithPaths(old, new, "", pathSet)
+	if err != nil {
+		return nil, err
+	}
+	body, ok := out.(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("expected body to be an object, got %T", out)
+	}
+	return body, nil
+}
+
 func flattenBody(responseBody interface{}, resourceDef *aztypes.ResourceType) (types.Dynamic, error) {
 	body := utils.NormalizeObject(responseBody)
 
