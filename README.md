@@ -208,6 +208,15 @@ Behavior is controlled by the `AZAPI_VCR_MODE` environment variable:
 
 Cassettes are safe to commit: a `BeforeSave` hook strips sensitive information and rewrites real subscription/tenant IDs to canonical placeholders. VCR runs serially and uses fixed, name-derived locations and values so recorded and replayed requests match byte-for-byte.
 
+Because that hook is a denylist (it only removes what it already knows about), recording also runs a **fail-closed audit** as a safety net: after redaction, every interaction is re-scanned for high-signal secret shapes (JWTs, PEM private keys, SAS `sig=` tokens, connection-string keys/passwords, secret JSON fields, and high-entropy key blobs). If anything survives, the recording **fails and no cassette is written**, so an unrecognized secret cannot be committed by accident. The audit is defined in `internal/acceptance/vcr/audit_interaction.go`.
+
+If a legitimate recording trips the audit, either add a redaction rule in `internal/acceptance/vcr/sanitize_interaction.go`, or — for a value your test reads back from Azure at runtime (e.g. a storage account key) — register it so it is scrubbed:
+
+```go
+key := /* value returned by Azure */
+vcr.RegisterSecret(key) // no-op unless VCR is recording
+```
+
 #### Writing a VCR test
 
 Use `VcrResourceTest` instead of `ResourceTest`. `VcrResourceTest` skips itself when VCR is disabled. See `TestVcrAccGenericResource_basic` in `internal/services/azapi_resource_test.go` for example.
@@ -220,7 +229,7 @@ Recording runs live, so it needs the same credentials and Azure quota as an acce
 make vcrrecord TESTARGS='-run TestVcrAccGenericResource_basic'
 ```
 
-This writes `internal/services/testdata/cassettes/TestVcrAccGenericResource_basic.yaml`. ⚠️ Important! Ensure this file contains no sensitive information such as subscription IDs, tenant IDs, or secrets. This file should be version controlled.
+This writes `internal/services/testdata/cassettes/TestVcrAccGenericResource_basic.yaml`. The sanitizer and fail-closed audit (described above) run automatically, so a recording that would leak an unrecognized secret fails instead of writing the file. Still give the cassette a quick review before committing, and register any test-known secrets with `vcr.RegisterSecret(...)`. This file should be version controlled.
 
 #### Replaying a cassette
 

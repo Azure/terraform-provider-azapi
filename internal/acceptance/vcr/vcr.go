@@ -64,6 +64,7 @@ type Recorder struct {
 	t    *testing.T
 	mode Mode
 	rec  *recorder.Recorder
+	san  *sanitizer
 }
 
 // The active recorder is a global with a read/write lock so that BuildTestClient can access it without needing to pass a *Recorder around
@@ -117,6 +118,19 @@ func New(t *testing.T) *Recorder {
 	realSubscriptionID := os.Getenv("ARM_SUBSCRIPTION_ID")
 	realTenantID := os.Getenv("ARM_TENANT_ID")
 
+	// The sanitizer redacts known sensitive values and then audits every
+	// interaction, failing the recording (fail-closed) if a secret survives.
+	san := newSanitizer(realSubscriptionID, realTenantID)
+	// Canonicalize non-secret identifiers and redact the credential material the
+	// harness itself supplies, so none of it can be written to a cassette.
+	san.AddReplacement(os.Getenv("ARM_CLIENT_ID"), CanonicalClientID)
+	san.AddReplacement(os.Getenv("ARM_READER_CLIENT_ID"), CanonicalClientID)
+	san.AddSecret(os.Getenv("ARM_CLIENT_SECRET"))
+	san.AddSecret(os.Getenv("ARM_READER_CLIENT_SECRET"))
+	san.AddSecret(os.Getenv("ARM_CLIENT_CERTIFICATE_PASSWORD"))
+	san.AddSecret(os.Getenv("ARM_OIDC_TOKEN"))
+	r.san = san
+
 	recorderMode := recorder.ModeReplayOnly
 	if r.mode == ModeRecord {
 		recorderMode = recorder.ModeRecordOnly
@@ -128,7 +142,7 @@ func New(t *testing.T) *Recorder {
 		recorder.WithMode(recorderMode),
 		recorder.WithSkipRequestLatency(true),
 		recorder.WithMatcher(methodURLMatcher),
-		recorder.WithHook(sanitizeInteraction(realSubscriptionID, realTenantID), recorder.BeforeSaveHook),
+		recorder.WithHook(san.BeforeSave, recorder.BeforeSaveHook),
 	)
 	if err != nil {
 		t.Fatalf("creating VCR recorder: %v", err)
@@ -157,6 +171,26 @@ func (r *Recorder) Enabled() bool {
 
 func (r *Recorder) Mode() Mode {
 	return r.mode
+}
+
+// AddSecret registers a sensitive value discovered while a test runs (for
+// example a storage account key or password returned by Azure) so that it is
+// scrubbed from the cassette before it is saved. It is a no-op when the
+// recorder is not recording, so tests may call it unconditionally.
+func (r *Recorder) AddSecret(v string) {
+	if r == nil || r.san == nil {
+		return
+	}
+	r.san.AddSecret(v)
+}
+
+// RegisterSecret registers a sensitive value with the active recorder so it is
+// scrubbed from the cassette before it is saved. It is safe to call
+// unconditionally: when VCR is disabled (or no recorder is active) it does
+// nothing. Use it from tests that read secret values back from Azure, e.g.
+// vcr.RegisterSecret(storageAccountKey).
+func RegisterSecret(v string) {
+	Active().AddSecret(v)
 }
 
 func (r *Recorder) Stop() {
