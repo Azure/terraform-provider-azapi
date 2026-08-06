@@ -45,6 +45,10 @@ func TestIgnoreBodyChangesPrivateMgr(t *testing.T) {
 	require.False(t, diags.HasError())
 	require.False(t, different)
 
+	different, diags = ignoreBodyChangesPrivateMgr.Diff(ctx, privateData, []string{"properties.sku.name", "tags"})
+	require.False(t, diags.HasError())
+	require.False(t, different)
+
 	diags = ignoreBodyChangesPrivateMgr.Set(ctx, privateData, nil)
 	require.False(t, diags.HasError())
 	require.NotContains(t, privateData.data, pkIgnoreBodyChanges)

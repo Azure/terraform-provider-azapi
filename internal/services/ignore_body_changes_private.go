@@ -47,5 +47,9 @@ func (m IgnoreBodyChangesPrivateMgr) Diff(ctx context.Context, d PrivateData, pa
 	if diags.HasError() {
 		return false, diags
 	}
+	storedPaths = slices.Clone(storedPaths)
+	paths = slices.Clone(paths)
+	slices.Sort(storedPaths)
+	slices.Sort(paths)
 	return !slices.Equal(storedPaths, paths), diags
 }
