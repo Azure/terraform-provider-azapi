@@ -38,19 +38,20 @@ import (
 	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
-var _ provider.Provider = &Provider{}
-var _ provider.ProviderWithFunctions = &Provider{}
-var _ provider.ProviderWithEphemeralResources = &Provider{}
-var _ provider.ProviderWithListResources = &Provider{}
-var _ provider.ProviderWithActions = &Provider{}
-var _ tffwdocs.ProviderWithRenderOption = &Provider{}
+var (
+	_ provider.Provider                       = &Provider{}
+	_ provider.ProviderWithFunctions          = &Provider{}
+	_ provider.ProviderWithEphemeralResources = &Provider{}
+	_ provider.ProviderWithListResources      = &Provider{}
+	_ provider.ProviderWithActions            = &Provider{}
+	_ tffwdocs.ProviderWithRenderOption       = &Provider{}
+)
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
 }
 
-type Provider struct {
-}
+type Provider struct{}
 
 type providerData struct {
 	SubscriptionID               types.String `tfsdk:"subscription_id"`
@@ -768,8 +769,10 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 		func() datasource.DataSource {
 			return &services.ClientConfigDataSource{}
 		},
+		func() datasource.DataSource {
+			return &services.DataPlaneResourceDataSource{}
+		},
 	}
-
 }
 
 func (p Provider) Resources(ctx context.Context) []func() resource.Resource {
