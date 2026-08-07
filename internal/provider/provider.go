@@ -797,6 +797,9 @@ func (p Provider) EphemeralResources(ctx context.Context) []func() ephemeral.Eph
 		func() ephemeral.EphemeralResource {
 			return &services.ActionEphemeral{}
 		},
+		func() ephemeral.EphemeralResource {
+			return &services.DataPlaneResourceEphemeral{}
+		},
 	}
 }
 

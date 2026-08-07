@@ -60,6 +60,7 @@ func TestAccDataPlaneResourceDataSource_timeouts(t *testing.T) {
 func (d DataPlaneResourceDataSource) keyVaultSecret(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 	%s
+
 	data "azapi_data_plane_resource" "test"{
 		name                   = azapi_data_plane_resource.test.name
   		parent_id              = azapi_data_plane_resource.test.parent_id
@@ -72,6 +73,7 @@ func (d DataPlaneResourceDataSource) keyVaultSecret(data acceptance.TestData) st
 func (d DataPlaneResourceDataSource) keyVaultCertificate(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 	%s
+
 	data "azapi_data_plane_resource" "test"{
 		name                   = azapi_data_plane_resource.test.name
   		parent_id              = azapi_data_plane_resource.test.parent_id
@@ -84,6 +86,7 @@ func (d DataPlaneResourceDataSource) keyVaultCertificate(data acceptance.TestDat
 func (d DataPlaneResourceDataSource) timeouts(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 	%s
+	
 	data "azapi_data_plane_resource" "test"{
 		name                   = azapi_data_plane_resource.test.name
   		parent_id              = azapi_data_plane_resource.test.parent_id
