@@ -6,8 +6,6 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Re-introduce the `ignore_body_changes` property to ignore changes to specified fields in the request body (GH-1192).
 - `azapi_data_plane_resource` resource: Allow `name` to be optional based on the URL format (GH-1178).
 - `azapi_data_plane_resource` resource: Support Key Vault certificates (GH-1174).
-- Bump `github.com/go-git/go-git/v5` from v5.19.1 to v5.19.2 (GH-1188).
-- Bump `github.com/hashicorp/terraform-plugin-log` from v0.10.0 to v0.11.0 (GH-1191).
 
 BUG FIXES:
 
