@@ -108,6 +108,13 @@ testacc: fmtcheck
 acctests: fmtcheck
 	TF_ACC=1 go test -v ./internal/services $(TESTARGS) -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
 
+# Go accepts multiple -run flags and uses the last one, allowing CI to run all VCR tests while TESTARGS can select an individual test locally.
+vcrreplay: fmtcheck
+	AZAPI_VCR_MODE=replay TF_ACC=1 go test -v ./internal/services -run 'TestVcr' $(TESTARGS) -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
+
+vcrrecord: fmtcheck
+	AZAPI_VCR_MODE=record TF_ACC=1 go test -v ./internal/services $(TESTARGS) -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
+
 debugacc: fmtcheck
 	TF_ACC=1 dlv test $(TEST) --headless --listen=:2345 --api-version=2 -- -test.v $(TESTARGS)
 
@@ -134,4 +141,4 @@ sync-reference-doc:
 	go run ./tools/sync-reference-doc -inDir $(INDIR) -outDir $(OUTDIR) -resourceTypes $(RESOURCETYPES)
 
 
-.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test example-test sync-reference-doc
+.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test example-test sync-reference-doc vcrrecord vcrreplay

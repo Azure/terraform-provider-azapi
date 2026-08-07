@@ -41,6 +41,7 @@ type Option struct {
 	AuxiliaryTenants            []string
 	MaxGoSdkRetries             int32
 	AlwaysAcquirePolicyToken    bool
+	Transport                   policy.Transporter
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -102,7 +103,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 
 	acquirePipeline, err := armruntime.NewPipeline(moduleName, moduleVersion, o.Cred, runtime.PipelineOptions{}, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Cloud: o.CloudCfg,
+			Cloud:     o.CloudCfg,
+			Transport: o.Transport,
 			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
 				Disabled: true,
@@ -126,7 +128,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Cloud: o.CloudCfg,
+			Cloud:     o.CloudCfg,
+			Transport: o.Transport,
 			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
 				Disabled: true,
@@ -150,7 +153,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 
 	dataPlaneClient, err := NewDataPlaneClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Cloud: o.CloudCfg,
+			Cloud:     o.CloudCfg,
+			Transport: o.Transport,
 			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
 				Disabled: true,

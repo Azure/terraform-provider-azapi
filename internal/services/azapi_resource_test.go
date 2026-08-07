@@ -47,6 +47,21 @@ func TestAccGenericResource_basic(t *testing.T) {
 	})
 }
 
+func TestVcrAccGenericResource_basic(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.VcrResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.basicWithVnet(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
+	})
+}
+
 func TestAccGenericResource_resourceGroup(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "resourceGroup")
 	r := GenericResource{}
@@ -1128,6 +1143,29 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) basicWithVnet(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16"
+        ]
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) withRetry(data acceptance.TestData) string {
