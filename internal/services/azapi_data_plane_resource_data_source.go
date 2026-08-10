@@ -82,7 +82,7 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 			},
 			"body": schema.DynamicAttribute{
 				Computed:            true,
-				MarkdownDescription: docstrings.Body(),
+				MarkdownDescription: docstrings.BodyResponse(),
 			},
 			"response_export_values": schema.DynamicAttribute{
 				Optional:            true,

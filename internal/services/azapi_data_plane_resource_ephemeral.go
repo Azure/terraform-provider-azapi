@@ -82,7 +82,7 @@ func (r *DataPlaneResourceEphemeral) Schema(ctx context.Context, request ephemer
 			},
 			"body": schema.DynamicAttribute{
 				Computed:            true,
-				MarkdownDescription: docstrings.Body(),
+				MarkdownDescription: docstrings.BodyResponse(),
 			},
 			"response_export_values": schema.DynamicAttribute{
 				Optional:            true,

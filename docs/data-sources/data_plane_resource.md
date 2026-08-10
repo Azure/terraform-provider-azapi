@@ -57,7 +57,7 @@ This data source can read Azure data plane resources.
 
 ### Read-Only
 
-- `body` (Dynamic) A dynamic attribute that contains the request body.
+- `body` (Dynamic) A dynamic attribute that contains the response body.
 - `id` (String) The ID of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
