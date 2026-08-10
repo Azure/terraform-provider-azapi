@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - manual-push/bicep-types-update
+      - manual-push/bicep-types-update/**
 
 permissions:
   contents: write
@@ -20,20 +21,24 @@ jobs:
   generate_bicep_types_and_push_to_a_branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
+      - name: Read Terraform version
+        id: terraform-version
+        run: echo "version=$(cat .terraform-version)" >> "$GITHUB_OUTPUT"
+
       - name: Install Terraform CLI
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.15.8
-
-      - name: Checkout current repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+          terraform_version: ${{ steps.terraform-version.outputs.version }}
 
       - name: Checkout azure-rest-api-specs
         uses: actions/checkout@v4
