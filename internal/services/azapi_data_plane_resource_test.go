@@ -124,14 +124,14 @@ func TestAccDataPlaneResource_keyVaultCertificateContact(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:      r.keyVaultCertificateContactWithName(),
-			PlanOnly:    true,
+			Config:      r.keyVaultCertificateContactWithName(data),
 			ExpectError: regexp.MustCompile(`the argument "name" should not be set`),
 		},
 		{
-			Config:             r.keyVaultCertificateContact(),
-			PlanOnly:           true,
-			ExpectNonEmptyPlan: true,
+			Config: r.keyVaultCertificateContact(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
 		},
 	})
 }
@@ -774,7 +774,7 @@ resource "azapi_resource_action" "add_accesspolicy_certificate" {
         tenantId = data.azapi_client_config.current.tenant_id
         objectId = data.azapi_client_config.current.object_id
         permissions = {
-          certificates = ["Create", "Get", "Update", "Delete", "Purge"]
+          certificates = ["Create", "Get", "Update", "Delete", "Purge", "ManageContacts", "List"]
         }
       }]
     }
@@ -785,11 +785,13 @@ resource "azapi_resource_action" "add_accesspolicy_certificate" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) keyVaultCertificateContact() string {
-	return `
-resource "azapi_data_plane_resource" "test" {
+func (r DataPlaneResource) keyVaultCertificateContact(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_data_plane_resource" "contact" {
   type      = "Microsoft.KeyVault/vaults/certificates/contacts@7.4"
-  parent_id = "example.vault.azure.net"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
   body = {
     contacts = [
       {
@@ -797,15 +799,20 @@ resource "azapi_data_plane_resource" "test" {
       }
     ]
   }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_certificate
+  ]
 }
-`
+`, r.keyVaultCertificate(data))
 }
 
-func (r DataPlaneResource) keyVaultCertificateContactWithName() string {
-	return `
-resource "azapi_data_plane_resource" "test" {
+func (r DataPlaneResource) keyVaultCertificateContactWithName(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+resource "azapi_data_plane_resource" "contact" {
   type      = "Microsoft.KeyVault/vaults/certificates/contacts@7.4"
-  parent_id = "example.vault.azure.net"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
   name      = "foo"
   body = {
     contacts = [
@@ -815,7 +822,7 @@ resource "azapi_data_plane_resource" "test" {
     ]
   }
 }
-`
+`, r.keyVaultCertificate(data))
 }
 
 func (r DataPlaneResource) iotAppsUser(data acceptance.TestData) string {
