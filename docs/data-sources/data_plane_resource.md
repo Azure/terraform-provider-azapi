@@ -17,15 +17,13 @@ This data source can read Azure data plane resources.
 - `parent_id` (String) The ID of the azure resource in which this resource exists.
 
 	-> String length must be at least 1.
-- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 
 	-> Ensure this in resource type format: `<resource-type>@<api-version>`.
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request.
 - `name` (String) Specifies the name (identifier segment) of the data plane resource.
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.

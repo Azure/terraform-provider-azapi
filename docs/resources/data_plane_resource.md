@@ -76,7 +76,7 @@ resource "azapi_data_plane_resource" "dataset" {
 	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
 	-> String length must be at least 1.
-- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 
 	-> Ensure this in resource type format: `<resource-type>@<api-version>`.
 

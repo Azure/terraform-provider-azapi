@@ -136,7 +136,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.DataPlaneType(),
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
