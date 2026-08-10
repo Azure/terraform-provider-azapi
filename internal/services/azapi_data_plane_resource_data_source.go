@@ -23,6 +23,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
+type DataPlaneResourceDataSource struct {
+	ProviderData *clients.Client
+}
+
+var (
+	_ datasource.DataSource                   = &DataPlaneResourceDataSource{}
+	_ datasource.DataSourceWithConfigure      = &DataPlaneResourceDataSource{}
+	_ datasource.DataSourceWithValidateConfig = &DataPlaneResourceDataSource{}
+)
+
+func (r *DataPlaneResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
+	tflog.Debug(ctx, "Configuring azapi_data_plane_resource_data_source")
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
+
 type DataPlaneResourceDataSourceModel struct {
 	ID                   types.String     `tfsdk:"id"`
 	Name                 types.String     `tfsdk:"name"`
@@ -36,20 +53,6 @@ type DataPlaneResourceDataSourceModel struct {
 	Retry                retry.RetryValue `tfsdk:"retry"`
 	Headers              types.Map        `tfsdk:"headers"`
 	QueryParameters      types.Map        `tfsdk:"query_parameters"`
-}
-
-type DataPlaneResourceDataSource struct {
-	ProviderData *clients.Client
-}
-
-var _ datasource.DataSource = &DataPlaneResourceDataSource{}
-var _ datasource.DataSourceWithConfigure = &DataPlaneResourceDataSource{}
-var _ datasource.DataSourceWithValidateConfig = &DataPlaneResourceDataSource{}
-
-func (r *DataPlaneResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
-	if v, ok := request.ProviderData.(*clients.Client); ok {
-		r.ProviderData = v
-	}
 }
 
 func (r *DataPlaneResourceDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
@@ -72,14 +75,14 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 			"parent_id": schema.StringAttribute{
 				Required:            true,
 				Validators:          []validator.String{myvalidator.StringIsNotEmpty()},
-				MarkdownDescription: "The parent ID or endpoint prefix for the data plane resource being read.",
+				MarkdownDescription: "The ID of the azure resource in which this resource exists.",
 			},
 			"type": schema.StringAttribute{
 				Required: true,
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.DataPlaneType(),
 			},
 			"identifiers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -89,7 +92,7 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 			},
 			"body": schema.DynamicAttribute{
 				Computed:            true,
-				MarkdownDescription: docstrings.Body(),
+				MarkdownDescription: docstrings.BodyResponse(),
 			},
 			"response_export_values": schema.DynamicAttribute{
 				Optional:            true,
@@ -140,7 +143,7 @@ func (r *DataPlaneResourceDataSource) ValidateConfig(ctx context.Context, reques
 }
 
 func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasource.ReadRequest, response *datasource.ReadResponse) {
-	var model DataPlaneResourceDataSourceModel
+	var model *DataPlaneResourceDataSourceModel
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
@@ -161,6 +164,7 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
+	client := r.ProviderData.DataPlaneClient
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.Headers),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
@@ -171,19 +175,15 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
 		responseBody, err = (*customizedResource).ReadFunc()(ctx, *r.ProviderData, id, requestOptions)
 	} else {
-		responseBody, err = r.ProviderData.DataPlaneClient.Get(ctx, id, requestOptions)
+		responseBody, err = client.Get(ctx, id, requestOptions)
 	}
+
 	if err != nil {
 		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 		return
 	}
 
-	bodyData, err := json.Marshal(responseBody)
-	if err != nil {
-		response.Diagnostics.AddError("Invalid body", err.Error())
-		return
-	}
-	body, err := dynamic.FromJSONImplied(bodyData)
+	data, err := json.Marshal(responseBody)
 	if err != nil {
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
@@ -194,14 +194,20 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return
 	}
+	model.Output = output
+
+	payload, err := dynamic.FromJSONImplied(data)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid payload", err.Error())
+		return
+	}
+	model.Body = payload
 
 	model.ID = basetypes.NewStringValue(id.ID())
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 	model.Identifiers = stringMapToTypesMap(id.Identifiers)
-	model.Body = body
-	model.Output = output
 
-	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+	response.Diagnostics.Append(response.State.Set(ctx, model)...)
 }

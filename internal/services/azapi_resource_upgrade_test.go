@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -8,10 +9,94 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 const PreviousVersion = "1.14.0"
+
+func TestAccAzapiResourceUpgrade_missingIdentityAfterReadWhenDeletedOutsideTerraform(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	config := r.missingIdentityAfterRead(data)
+	var resourceID string
+	var resourceType string
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: config,
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				captureResourceState(data.ResourceName, &resourceID, &resourceType),
+			),
+		}, "2.7.0"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config:             config,
+			ExpectNonEmptyPlan: true,
+			PreConfig: func() {
+				if err := deleteResourceOutsideTerraform(resourceID, resourceType); err != nil {
+					t.Fatalf("deleting resource outside Terraform: %+v", err)
+				}
+			},
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: config,
+		}),
+	})
+}
+
+func (r GenericResource) missingIdentityAfterRead(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks@2023-11-01"
+  name      = "acctest-vnet-%d"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = ["10.0.0.0/16"]
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomInteger)
+}
+
+func captureResourceState(resourceName string, resourceID, resourceType *string) resource.TestCheckFunc {
+	return func(state *terraform.State) error {
+		resourceState, ok := state.RootModule().Resources[resourceName]
+		if !ok {
+			return fmt.Errorf("resource %q was not found in state", resourceName)
+		}
+		*resourceID = resourceState.Primary.ID
+		*resourceType = resourceState.Primary.Attributes["type"]
+		return nil
+	}
+}
+
+func deleteResourceOutsideTerraform(resourceID, resourceType string) error {
+	id, err := parse.ResourceIDWithResourceType(resourceID, resourceType)
+	if err != nil {
+		return fmt.Errorf("parsing resource ID: %+v", err)
+	}
+
+	client, err := acceptance.BuildTestClient()
+	if err != nil {
+		return fmt.Errorf("building test client: %+v", err)
+	}
+
+	_, err = client.ResourceClient.Delete(context.Background(), id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func TestAccAzapiResourceUpgrade_basic(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")

@@ -14,19 +14,16 @@ This data source can read Azure data plane resources.
 
 ### Required
 
-- `parent_id` (String) The parent ID or endpoint prefix for the data plane resource being read.
+- `parent_id` (String) The ID of the azure resource in which this resource exists.
 
 	-> String length must be at least 1.
-- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 
 	-> Ensure this in resource type format: `<resource-type>@<api-version>`.
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request.
-- `identifiers` (Map of String) A mapping of identifier placeholder values for data plane resource types that require multiple path identifiers, for example composite keys.
-- `name` (String) Specifies the name (identifier segment) of the data plane resource when the selected resource type uses a single `name` path segment.
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
+- `name` (String) Specifies the name (identifier segment) of the data plane resource.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -60,7 +57,7 @@ This data source can read Azure data plane resources.
 
 ### Read-Only
 
-- `body` (Dynamic) A dynamic attribute that contains the request body.
+- `body` (Dynamic) A dynamic attribute that contains the response body.
 - `id` (String) The ID of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 

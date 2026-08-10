@@ -91,3 +91,20 @@ func DataPlaneResourcePlaceholderKeys(resourceType string) ([]string, error) {
 	}
 	return keys, nil
 }
+
+func hasIdentifierSegment(resourceType string, identifier string) bool {
+	if azureResourceType, _, err := utils.GetAzureResourceTypeApiVersion(resourceType); err == nil {
+		resourceType = azureResourceType
+	}
+	apiPath := findApiPathByResourceType(resourceType)
+	if apiPath == nil {
+		// Unknown type: assume it needs an identifier so validation isn't silently skipped.
+		return true
+	}
+	return strings.Contains(apiPath.UrlFormat, "{"+identifier+"}") ||
+		strings.Contains(apiPath.UrlFormat, "{"+identifier+"=")
+}
+
+func HasNameSegment(resourceType string) bool {
+	return hasIdentifierSegment(resourceType, "name")
+}

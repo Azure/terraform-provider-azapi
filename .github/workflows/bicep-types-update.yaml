@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - manual-push/bicep-types-update
+      - manual-push/bicep-types-update/**
 
 permissions:
   contents: write
@@ -20,15 +21,24 @@ jobs:
   generate_bicep_types_and_push_to_a_branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      - name: Checkout current repository
-        uses: actions/checkout@v4
+      - name: Read Terraform version
+        id: terraform-version
+        run: echo "version=$(cat .terraform-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
         with:
-          fetch-depth: 1
+          terraform_version: ${{ steps.terraform-version.outputs.version }}
 
       - name: Checkout azure-rest-api-specs
         uses: actions/checkout@v4
@@ -93,6 +103,13 @@ jobs:
           find . -type f -name "*.md" -delete
           find . -type f -name "*.out" -delete
 
+      - name: Sync generated docs to updated source
+        run: |
+          set -xe
+          go version
+          go build -buildvcs=false
+          go generate ./...
+
       - name: Configure git name and email
         run: |
           set -xe
@@ -103,6 +120,7 @@ jobs:
         id: commit
         run: |
           set -xe
+          git diff --name-status
           git add -A
           if git commit -m "Updated bicep types to Azure/azure-rest-api-specs revision $(git -C tools/bicep-types-update/azure-rest-api-specs rev-parse HEAD)"; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"

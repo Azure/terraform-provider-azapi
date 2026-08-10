@@ -91,20 +91,21 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	}
 
 	var responseBody interface{}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, err
+	}
+
 	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
 	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+		_, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
 		})
 		if err == nil {
-			return resp, nil
+			return responseBody, nil
 		}
 		if !client.shouldIgnorePollingError(err) {
 			return nil, err
 		}
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, err
 	}
 	return responseBody, nil
 }

@@ -73,11 +73,13 @@ type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
 
-var _ resource.Resource = &DataPlaneResource{}
-var _ resource.ResourceWithConfigure = &DataPlaneResource{}
-var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
-var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
-var _ resource.ResourceWithImportState = &DataPlaneResource{}
+var (
+	_ resource.Resource                 = &DataPlaneResource{}
+	_ resource.ResourceWithConfigure    = &DataPlaneResource{}
+	_ resource.ResourceWithModifyPlan   = &DataPlaneResource{}
+	_ resource.ResourceWithUpgradeState = &DataPlaneResource{}
+	_ resource.ResourceWithImportState  = &DataPlaneResource{}
+)
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
@@ -135,7 +137,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.DataPlaneType(),
 			},
 
 			"identifiers": schema.MapAttribute{
@@ -443,21 +445,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
-
-	customizedResource := customization.GetCustomization(plan.Type.ValueString())
-	createResultResource, hasCreateResult := func() (customization.DataPlaneResourceWithCreateResult, bool) {
-		if customizedResource == nil {
-			return nil, false
-		}
-		v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResult)
-		if !ok {
-			return nil, false
-		}
-		if v.CreateResultFunc() == nil {
-			return nil, false
-		}
-		return v, true
-	}()
+	createResultFunc, hasCreateResult := getCreateResultFunc(plan)
 
 	resourceName := strings.TrimSpace(plan.Name.ValueString())
 	if isNewResource && hasCreateResult {
@@ -501,6 +489,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 
 	client := r.ProviderData.DataPlaneClient
 
+	customizedResource := customization.GetCustomization(plan.Type.ValueString())
 	if isNewResource && !hasCreateResult {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
@@ -564,7 +553,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	switch {
 	case isNewResource && hasCreateResult:
 		var createdId parse.DataPlaneResourceId
-		createdId, _, err = createResultResource.CreateResultFunc()(ctx, *r.ProviderData, id, body, requestOptions)
+		createdId, _, err = createResultFunc(ctx, *r.ProviderData, id, body, requestOptions)
 		if err == nil {
 			id = createdId
 			ctx = tflog.SetField(ctx, "resource_id", id.ID())
@@ -632,6 +621,50 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	} else {
 		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
+}
+
+func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateResultFunc, bool) {
+	customizedResource := customization.GetCustomization(config.Type.ValueString())
+	if customizedResource == nil {
+		return nil, false
+	}
+	if v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResult); ok {
+		if fn := v.CreateResultFunc(); fn != nil {
+			return fn, true
+		}
+	}
+
+	return nil, false
+}
+
+func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	if config.Name.IsUnknown() {
+		return nil
+	}
+
+	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
+	resourceType := strings.Split(config.Type.ValueString(), "@")[0]
+	if _, ok := getCreateResultFunc(config); ok {
+		// A resource exposing CreateResultFunc has a service-generated name, so "name" must not be set. See PR #1053.
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, resourceType)
+		}
+		return nil
+	}
+	if !parse.HasNameSegment(config.Type.ValueString()) {
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
+		}
+		return nil
+	}
+	if nameIsEmpty {
+		return fmt.Errorf(`the argument "name" must be set for resource type %q`, resourceType)
+	}
+	return nil
 }
 
 func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {

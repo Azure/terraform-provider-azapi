@@ -5177,7 +5177,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/505"
+          "$ref": "#/517"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -5309,7 +5309,7 @@
       },
       "operationDetails": {
         "type": {
-          "$ref": "#/504"
+          "$ref": "#/516"
         },
         "flags": 2,
         "description": "operation status details for edge machine."
@@ -6438,21 +6438,21 @@
       },
       "osProfile": {
         "type": {
-          "$ref": "#/499"
+          "$ref": "#/509"
         },
         "flags": 2,
         "description": "OS Properties for edge machine."
       },
       "hardwareProfile": {
         "type": {
-          "$ref": "#/500"
+          "$ref": "#/510"
         },
         "flags": 2,
         "description": "Hardware related information for edge machine."
       },
       "storageProfile": {
         "type": {
-          "$ref": "#/501"
+          "$ref": "#/511"
         },
         "flags": 2,
         "description": "Storage related information for edge machine."
@@ -6471,9 +6471,16 @@
         "flags": 2,
         "description": "Extension details for edge machine."
       },
+      "confidentialVmProfile": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "CVM (Confidential VM) support details for the edge machine."
+      },
       "workloadInventory": {
         "type": {
-          "$ref": "#/503"
+          "$ref": "#/515"
         },
         "flags": 2,
         "description": "Read-only Hyper-V VM inventory reported by the device management extension for VMs visible on this node."
@@ -6504,6 +6511,20 @@
         },
         "flags": 2,
         "description": "List of switch Details of edge machine."
+      },
+      "hostNetwork": {
+        "type": {
+          "$ref": "#/499"
+        },
+        "flags": 2,
+        "description": "HostNetwork configuration reported for the edge machine."
+      },
+      "sdnProperties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Software Defined Networking (SDN) properties reported for the edge machine."
       }
     }
   },
@@ -6667,6 +6688,297 @@
   },
   {
     "$type": "ObjectType",
+    "name": "EdgeMachineHostNetwork",
+    "properties": {
+      "intents": {
+        "type": {
+          "$ref": "#/504"
+        },
+        "flags": 2,
+        "description": "The network intents assigned to the network reference pattern used for the deployment. Each intent will define its own name, traffic type, adapter names, and overrides as recommended by your OEM."
+      },
+      "storageNetworks": {
+        "type": {
+          "$ref": "#/508"
+        },
+        "flags": 2,
+        "description": "List of StorageNetworks config to deploy AzureStackHCI Cluster."
+      },
+      "storageConnectivitySwitchless": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Defines how the storage adapters between nodes are connected either switch or switch less."
+      },
+      "enableStorageAutoIp": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Optional parameter required only for 3 Nodes Switchless deployments. This allows users to specify IPs and Mask for Storage NICs when Network ATC is not assigning the IPs for storage automatically."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineHostNetworkIntent",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 2,
+        "description": "Scope for host network intent."
+      },
+      "intentType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 2,
+        "description": "IntentType for host network intent."
+      },
+      "isComputeIntentSet": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsComputeIntentSet for host network intent."
+      },
+      "isStorageIntentSet": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsStorageIntentSet for host network intent."
+      },
+      "isOnlyStorage": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IntentType for host network intent."
+      },
+      "isManagementIntentSet": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsManagementIntentSet for host network intent."
+      },
+      "isStretchIntentSet": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsStretchIntentSet for host network intent."
+      },
+      "isOnlyStretch": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsOnlyStretch for host network intent."
+      },
+      "isNetworkIntentType": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "IsNetworkIntentType for host network intent."
+      },
+      "intentName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Name of the network intent you wish to create."
+      },
+      "intentAdapters": {
+        "type": {
+          "$ref": "#/501"
+        },
+        "flags": 2,
+        "description": "Array of adapters used for the network intent."
+      },
+      "overrideVirtualSwitchConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation."
+      },
+      "virtualSwitchConfigurationOverrides": {
+        "type": {
+          "$ref": "#/502"
+        },
+        "flags": 2,
+        "description": "Set virtualSwitch ConfigurationOverrides for cluster."
+      },
+      "overrideQosPolicy": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation."
+      },
+      "qosPolicyOverrides": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Set QoS PolicyOverrides for cluster."
+      },
+      "overrideAdapterProperty": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation."
+      },
+      "adapterPropertyOverrides": {
+        "type": {
+          "$ref": "#/503"
+        },
+        "flags": 2,
+        "description": "Set Adapter PropertyOverrides for cluster."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineVirtualSwitchConfigurationOverrides",
+    "properties": {
+      "enableIov": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Enable IoV for Virtual Switch"
+      },
+      "loadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Load Balancing Algorithm for Virtual Switch"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineAdapterPropertyOverrides",
+    "properties": {
+      "jumboPacket": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation."
+      },
+      "networkDirect": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation."
+      },
+      "networkDirectTechnology": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation. Expected values are 'iWARP', 'RoCEv2', 'RoCE'"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/500"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineStorageNetwork",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Name of the storage network."
+      },
+      "networkAdapterName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Name of the storage network adapter."
+      },
+      "storageVlanId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ID specified for the VLAN storage network. This setting is applied to the network interfaces that route the storage and VM migration traffic."
+      },
+      "storageAdapterIPInfo": {
+        "type": {
+          "$ref": "#/507"
+        },
+        "flags": 2,
+        "description": "List of Storage adapter physical nodes config to deploy AzureStackHCI Cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineStorageAdapterIpInfo",
+    "properties": {
+      "physicalNode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "storage adapter physical node name."
+      },
+      "ipv4Address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The IPv4 address assigned to each storage adapter physical node on your Azure Stack HCI cluster."
+      },
+      "subnetMask": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The SubnetMask address assigned to each storage adapter physical node on your Azure Stack HCI cluster."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/506"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/505"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "OsProfile",
     "properties": {
       "bootType": {
@@ -6792,7 +7104,68 @@
         },
         "flags": 2,
         "description": "Number of storage disks in the device with $CanPool as true."
+      },
+      "disks": {
+        "type": {
+          "$ref": "#/513"
+        },
+        "flags": 2,
+        "description": "List of storage disks on the edge machine."
       }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeMachineDiskInfo",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The unique identifier of the disk."
+      },
+      "sizeInBytes": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The size of the disk in bytes."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the disk. For example, S2D or SAN."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Model number of the hardware."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The manufacturer of the disk."
+      },
+      "isSupported": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Indicates whether the manufacturer is supported."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/512"
     }
   },
   {
@@ -6853,7 +7226,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/502"
+      "$ref": "#/514"
     }
   },
   {
@@ -6907,21 +7280,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/507"
+          "$ref": "#/519"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/508"
+          "$ref": "#/520"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/510"
+          "$ref": "#/522"
         },
         "flags": 0,
         "description": "ArcSetting properties."
@@ -6941,7 +7314,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/529"
+          "$ref": "#/541"
         },
         "flags": 2,
         "description": "Provisioning state of the ArcSetting proxy resource."
@@ -6983,28 +7356,28 @@
       },
       "aggregateState": {
         "type": {
-          "$ref": "#/548"
+          "$ref": "#/560"
         },
         "flags": 2,
         "description": "Aggregate state of Arc agent across the nodes in this HCI cluster."
       },
       "perNodeDetails": {
         "type": {
-          "$ref": "#/569"
+          "$ref": "#/581"
         },
         "flags": 2,
         "description": "State of Arc agent in each of the nodes."
       },
       "connectivityProperties": {
         "type": {
-          "$ref": "#/570"
+          "$ref": "#/582"
         },
         "flags": 0,
         "description": "contains connectivity related configuration for ARC resources"
       },
       "defaultExtensions": {
         "type": {
-          "$ref": "#/576"
+          "$ref": "#/588"
         },
         "flags": 2,
         "description": "Properties for each of the default extensions category"
@@ -7087,42 +7460,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/511"
-      },
-      {
-        "$ref": "#/512"
-      },
-      {
-        "$ref": "#/513"
-      },
-      {
-        "$ref": "#/514"
-      },
-      {
-        "$ref": "#/515"
-      },
-      {
-        "$ref": "#/516"
-      },
-      {
-        "$ref": "#/517"
-      },
-      {
-        "$ref": "#/518"
-      },
-      {
-        "$ref": "#/519"
-      },
-      {
-        "$ref": "#/520"
-      },
-      {
-        "$ref": "#/521"
-      },
-      {
-        "$ref": "#/522"
-      },
-      {
         "$ref": "#/523"
       },
       {
@@ -7139,6 +7476,42 @@
       },
       {
         "$ref": "#/528"
+      },
+      {
+        "$ref": "#/529"
+      },
+      {
+        "$ref": "#/530"
+      },
+      {
+        "$ref": "#/531"
+      },
+      {
+        "$ref": "#/532"
+      },
+      {
+        "$ref": "#/533"
+      },
+      {
+        "$ref": "#/534"
+      },
+      {
+        "$ref": "#/535"
+      },
+      {
+        "$ref": "#/536"
+      },
+      {
+        "$ref": "#/537"
+      },
+      {
+        "$ref": "#/538"
+      },
+      {
+        "$ref": "#/539"
+      },
+      {
+        "$ref": "#/540"
       },
       {
         "$ref": "#/2"
@@ -7221,42 +7594,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/530"
-      },
-      {
-        "$ref": "#/531"
-      },
-      {
-        "$ref": "#/532"
-      },
-      {
-        "$ref": "#/533"
-      },
-      {
-        "$ref": "#/534"
-      },
-      {
-        "$ref": "#/535"
-      },
-      {
-        "$ref": "#/536"
-      },
-      {
-        "$ref": "#/537"
-      },
-      {
-        "$ref": "#/538"
-      },
-      {
-        "$ref": "#/539"
-      },
-      {
-        "$ref": "#/540"
-      },
-      {
-        "$ref": "#/541"
-      },
-      {
         "$ref": "#/542"
       },
       {
@@ -7273,6 +7610,42 @@
       },
       {
         "$ref": "#/547"
+      },
+      {
+        "$ref": "#/548"
+      },
+      {
+        "$ref": "#/549"
+      },
+      {
+        "$ref": "#/550"
+      },
+      {
+        "$ref": "#/551"
+      },
+      {
+        "$ref": "#/552"
+      },
+      {
+        "$ref": "#/553"
+      },
+      {
+        "$ref": "#/554"
+      },
+      {
+        "$ref": "#/555"
+      },
+      {
+        "$ref": "#/556"
+      },
+      {
+        "$ref": "#/557"
+      },
+      {
+        "$ref": "#/558"
+      },
+      {
+        "$ref": "#/559"
       },
       {
         "$ref": "#/2"
@@ -7306,7 +7679,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/568"
+          "$ref": "#/580"
         },
         "flags": 2,
         "description": "State of the Arc agent in this node. Indicates the current lifecycle status of the agent, such as whether it's being provisioned, connected, updated, or has encountered an error."
@@ -7389,42 +7762,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/550"
-      },
-      {
-        "$ref": "#/551"
-      },
-      {
-        "$ref": "#/552"
-      },
-      {
-        "$ref": "#/553"
-      },
-      {
-        "$ref": "#/554"
-      },
-      {
-        "$ref": "#/555"
-      },
-      {
-        "$ref": "#/556"
-      },
-      {
-        "$ref": "#/557"
-      },
-      {
-        "$ref": "#/558"
-      },
-      {
-        "$ref": "#/559"
-      },
-      {
-        "$ref": "#/560"
-      },
-      {
-        "$ref": "#/561"
-      },
-      {
         "$ref": "#/562"
       },
       {
@@ -7443,6 +7780,42 @@
         "$ref": "#/567"
       },
       {
+        "$ref": "#/568"
+      },
+      {
+        "$ref": "#/569"
+      },
+      {
+        "$ref": "#/570"
+      },
+      {
+        "$ref": "#/571"
+      },
+      {
+        "$ref": "#/572"
+      },
+      {
+        "$ref": "#/573"
+      },
+      {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
+        "$ref": "#/576"
+      },
+      {
+        "$ref": "#/577"
+      },
+      {
+        "$ref": "#/578"
+      },
+      {
+        "$ref": "#/579"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -7450,7 +7823,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/549"
+      "$ref": "#/561"
     }
   },
   {
@@ -7466,7 +7839,7 @@
       },
       "serviceConfigurations": {
         "type": {
-          "$ref": "#/574"
+          "$ref": "#/586"
         },
         "flags": 0,
         "description": "Service configurations associated with the connectivity resource. They are only processed by the server if 'enabled' property is set to 'true'."
@@ -7479,7 +7852,7 @@
     "properties": {
       "serviceName": {
         "type": {
-          "$ref": "#/573"
+          "$ref": "#/585"
         },
         "flags": 1,
         "description": "Specifies the name of the service associated with the update or operation. This helps identify which system component or tool is involved."
@@ -7501,7 +7874,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/572"
+        "$ref": "#/584"
       },
       {
         "$ref": "#/2"
@@ -7511,7 +7884,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/571"
+      "$ref": "#/583"
     }
   },
   {
@@ -7537,14 +7910,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/575"
+      "$ref": "#/587"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/arcSettings@2026-05-01-preview",
     "body": {
-      "$ref": "#/509"
+      "$ref": "#/521"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -7577,21 +7950,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/578"
+          "$ref": "#/590"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/579"
+          "$ref": "#/591"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/593"
         },
         "flags": 0,
         "description": "Describes Machine Extension Properties."
@@ -7611,35 +7984,35 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/600"
+          "$ref": "#/612"
         },
         "flags": 2,
         "description": "Provisioning state of the Extension proxy resource. Indicates the current lifecycle status of the resource, such as whether it's being created, updated, deleted, or has encountered an error."
       },
       "extensionParameters": {
         "type": {
-          "$ref": "#/601"
+          "$ref": "#/613"
         },
         "flags": 0,
         "description": "Parameters specific to this extension type."
       },
       "aggregateState": {
         "type": {
-          "$ref": "#/620"
+          "$ref": "#/632"
         },
         "flags": 2,
         "description": "Aggregate state of Arc Extensions across the nodes in this HCI cluster. This reflects the overall status of the extension deployment and operation across all nodes."
       },
       "perNodeExtensionDetails": {
         "type": {
-          "$ref": "#/646"
+          "$ref": "#/658"
         },
         "flags": 2,
         "description": "State of Arc Extension in each of the nodes."
       },
       "managedBy": {
         "type": {
-          "$ref": "#/649"
+          "$ref": "#/661"
         },
         "flags": 2,
         "description": "Indicates if the extension is managed by Azure or the user. This determines who controls the deployment and lifecycle of the extension."
@@ -7722,42 +8095,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/582"
-      },
-      {
-        "$ref": "#/583"
-      },
-      {
-        "$ref": "#/584"
-      },
-      {
-        "$ref": "#/585"
-      },
-      {
-        "$ref": "#/586"
-      },
-      {
-        "$ref": "#/587"
-      },
-      {
-        "$ref": "#/588"
-      },
-      {
-        "$ref": "#/589"
-      },
-      {
-        "$ref": "#/590"
-      },
-      {
-        "$ref": "#/591"
-      },
-      {
-        "$ref": "#/592"
-      },
-      {
-        "$ref": "#/593"
-      },
-      {
         "$ref": "#/594"
       },
       {
@@ -7774,6 +8111,42 @@
       },
       {
         "$ref": "#/599"
+      },
+      {
+        "$ref": "#/600"
+      },
+      {
+        "$ref": "#/601"
+      },
+      {
+        "$ref": "#/602"
+      },
+      {
+        "$ref": "#/603"
+      },
+      {
+        "$ref": "#/604"
+      },
+      {
+        "$ref": "#/605"
+      },
+      {
+        "$ref": "#/606"
+      },
+      {
+        "$ref": "#/607"
+      },
+      {
+        "$ref": "#/608"
+      },
+      {
+        "$ref": "#/609"
+      },
+      {
+        "$ref": "#/610"
+      },
+      {
+        "$ref": "#/611"
       },
       {
         "$ref": "#/2"
@@ -7918,42 +8291,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/602"
-      },
-      {
-        "$ref": "#/603"
-      },
-      {
-        "$ref": "#/604"
-      },
-      {
-        "$ref": "#/605"
-      },
-      {
-        "$ref": "#/606"
-      },
-      {
-        "$ref": "#/607"
-      },
-      {
-        "$ref": "#/608"
-      },
-      {
-        "$ref": "#/609"
-      },
-      {
-        "$ref": "#/610"
-      },
-      {
-        "$ref": "#/611"
-      },
-      {
-        "$ref": "#/612"
-      },
-      {
-        "$ref": "#/613"
-      },
-      {
         "$ref": "#/614"
       },
       {
@@ -7970,6 +8307,42 @@
       },
       {
         "$ref": "#/619"
+      },
+      {
+        "$ref": "#/620"
+      },
+      {
+        "$ref": "#/621"
+      },
+      {
+        "$ref": "#/622"
+      },
+      {
+        "$ref": "#/623"
+      },
+      {
+        "$ref": "#/624"
+      },
+      {
+        "$ref": "#/625"
+      },
+      {
+        "$ref": "#/626"
+      },
+      {
+        "$ref": "#/627"
+      },
+      {
+        "$ref": "#/628"
+      },
+      {
+        "$ref": "#/629"
+      },
+      {
+        "$ref": "#/630"
+      },
+      {
+        "$ref": "#/631"
       },
       {
         "$ref": "#/2"
@@ -8003,14 +8376,14 @@
       },
       "state": {
         "type": {
-          "$ref": "#/639"
+          "$ref": "#/651"
         },
         "flags": 2,
         "description": "State of Arc Extension in this node. Reflects the current lifecycle status of the extension on the individual node, such as whether it's being created, updated, deleted, or has encountered an error."
       },
       "instanceView": {
         "type": {
-          "$ref": "#/640"
+          "$ref": "#/652"
         },
         "flags": 2,
         "description": "The extension instance view."
@@ -8089,42 +8462,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/622"
-      },
-      {
-        "$ref": "#/623"
-      },
-      {
-        "$ref": "#/624"
-      },
-      {
-        "$ref": "#/625"
-      },
-      {
-        "$ref": "#/626"
-      },
-      {
-        "$ref": "#/627"
-      },
-      {
-        "$ref": "#/628"
-      },
-      {
-        "$ref": "#/629"
-      },
-      {
-        "$ref": "#/630"
-      },
-      {
-        "$ref": "#/631"
-      },
-      {
-        "$ref": "#/632"
-      },
-      {
-        "$ref": "#/633"
-      },
-      {
         "$ref": "#/634"
       },
       {
@@ -8138,6 +8475,42 @@
       },
       {
         "$ref": "#/638"
+      },
+      {
+        "$ref": "#/639"
+      },
+      {
+        "$ref": "#/640"
+      },
+      {
+        "$ref": "#/641"
+      },
+      {
+        "$ref": "#/642"
+      },
+      {
+        "$ref": "#/643"
+      },
+      {
+        "$ref": "#/644"
+      },
+      {
+        "$ref": "#/645"
+      },
+      {
+        "$ref": "#/646"
+      },
+      {
+        "$ref": "#/647"
+      },
+      {
+        "$ref": "#/648"
+      },
+      {
+        "$ref": "#/649"
+      },
+      {
+        "$ref": "#/650"
       },
       {
         "$ref": "#/2"
@@ -8171,7 +8544,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/641"
+          "$ref": "#/653"
         },
         "flags": 0,
         "description": "Instance view status."
@@ -8191,7 +8564,7 @@
       },
       "level": {
         "type": {
-          "$ref": "#/645"
+          "$ref": "#/657"
         },
         "flags": 0,
         "description": "The level code. Indicates the severity or importance of the status message."
@@ -8235,13 +8608,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/642"
+        "$ref": "#/654"
       },
       {
-        "$ref": "#/643"
+        "$ref": "#/655"
       },
       {
-        "$ref": "#/644"
+        "$ref": "#/656"
       },
       {
         "$ref": "#/2"
@@ -8251,7 +8624,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/621"
+      "$ref": "#/633"
     }
   },
   {
@@ -8266,10 +8639,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/647"
+        "$ref": "#/659"
       },
       {
-        "$ref": "#/648"
+        "$ref": "#/660"
       },
       {
         "$ref": "#/2"
@@ -8280,7 +8653,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions@2026-05-01-preview",
     "body": {
-      "$ref": "#/580"
+      "$ref": "#/592"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -8313,21 +8686,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/651"
+          "$ref": "#/663"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/652"
+          "$ref": "#/664"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/654"
+          "$ref": "#/666"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -8347,42 +8720,42 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/673"
+          "$ref": "#/685"
         },
         "flags": 2,
         "description": "DeploymentSetting provisioning state"
       },
       "arcNodeResourceIds": {
         "type": {
-          "$ref": "#/674"
+          "$ref": "#/686"
         },
         "flags": 1,
         "description": "Azure resource ids of Arc machines to be part of cluster."
       },
       "deploymentMode": {
         "type": {
-          "$ref": "#/677"
+          "$ref": "#/689"
         },
         "flags": 1,
         "description": "The deployment mode for cluster deployment."
       },
       "operationType": {
         "type": {
-          "$ref": "#/680"
+          "$ref": "#/692"
         },
         "flags": 0,
         "description": "The intended operation for a cluster."
       },
       "deploymentConfiguration": {
         "type": {
-          "$ref": "#/681"
+          "$ref": "#/693"
         },
         "flags": 1,
         "description": "Scale units will contains list of deployment data"
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/765"
+          "$ref": "#/777"
         },
         "flags": 2,
         "description": "Deployment Status reported from cluster."
@@ -8465,42 +8838,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/655"
-      },
-      {
-        "$ref": "#/656"
-      },
-      {
-        "$ref": "#/657"
-      },
-      {
-        "$ref": "#/658"
-      },
-      {
-        "$ref": "#/659"
-      },
-      {
-        "$ref": "#/660"
-      },
-      {
-        "$ref": "#/661"
-      },
-      {
-        "$ref": "#/662"
-      },
-      {
-        "$ref": "#/663"
-      },
-      {
-        "$ref": "#/664"
-      },
-      {
-        "$ref": "#/665"
-      },
-      {
-        "$ref": "#/666"
-      },
-      {
         "$ref": "#/667"
       },
       {
@@ -8517,6 +8854,42 @@
       },
       {
         "$ref": "#/672"
+      },
+      {
+        "$ref": "#/673"
+      },
+      {
+        "$ref": "#/674"
+      },
+      {
+        "$ref": "#/675"
+      },
+      {
+        "$ref": "#/676"
+      },
+      {
+        "$ref": "#/677"
+      },
+      {
+        "$ref": "#/678"
+      },
+      {
+        "$ref": "#/679"
+      },
+      {
+        "$ref": "#/680"
+      },
+      {
+        "$ref": "#/681"
+      },
+      {
+        "$ref": "#/682"
+      },
+      {
+        "$ref": "#/683"
+      },
+      {
+        "$ref": "#/684"
       },
       {
         "$ref": "#/2"
@@ -8541,10 +8914,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/675"
+        "$ref": "#/687"
       },
       {
-        "$ref": "#/676"
+        "$ref": "#/688"
       },
       {
         "$ref": "#/2"
@@ -8563,10 +8936,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/678"
+        "$ref": "#/690"
       },
       {
-        "$ref": "#/679"
+        "$ref": "#/691"
       },
       {
         "$ref": "#/2"
@@ -8586,7 +8959,7 @@
       },
       "scaleUnits": {
         "type": {
-          "$ref": "#/764"
+          "$ref": "#/776"
         },
         "flags": 1,
         "description": "Scale units will contains list of deployment data"
@@ -8599,14 +8972,14 @@
     "properties": {
       "deploymentData": {
         "type": {
-          "$ref": "#/683"
+          "$ref": "#/695"
         },
         "flags": 1,
         "description": "Deployment Data to deploy AzureStackHCI Cluster."
       },
       "sbePartnerInfo": {
         "type": {
-          "$ref": "#/758"
+          "$ref": "#/770"
         },
         "flags": 0,
         "description": "Solution builder extension (SBE) partner properties"
@@ -8619,42 +8992,42 @@
     "properties": {
       "securitySettings": {
         "type": {
-          "$ref": "#/684"
+          "$ref": "#/696"
         },
         "flags": 0,
         "description": "SecuritySettings to deploy AzureStackHCI Cluster."
       },
       "observability": {
         "type": {
-          "$ref": "#/685"
+          "$ref": "#/697"
         },
         "flags": 0,
         "description": "Observability config to deploy AzureStackHCI Cluster."
       },
       "cluster": {
         "type": {
-          "$ref": "#/686"
+          "$ref": "#/698"
         },
         "flags": 0,
         "description": "Observability config to deploy AzureStackHCI Cluster."
       },
       "identityProvider": {
         "type": {
-          "$ref": "#/696"
+          "$ref": "#/708"
         },
         "flags": 0,
         "description": "Identity Provider for the cluster"
       },
       "storage": {
         "type": {
-          "$ref": "#/697"
+          "$ref": "#/709"
         },
         "flags": 0,
         "description": "Storage config to deploy AzureStackHCI Cluster."
       },
       "namingPrefix": {
         "type": {
-          "$ref": "#/711"
+          "$ref": "#/723"
         },
         "flags": 0,
         "description": "naming prefix to deploy cluster."
@@ -8668,28 +9041,28 @@
       },
       "infrastructureNetwork": {
         "type": {
-          "$ref": "#/722"
+          "$ref": "#/734"
         },
         "flags": 0,
         "description": "InfrastructureNetwork config to deploy AzureStackHCI Cluster."
       },
       "physicalNodes": {
         "type": {
-          "$ref": "#/724"
+          "$ref": "#/736"
         },
         "flags": 0,
         "description": "list of physical nodes config to deploy AzureStackHCI Cluster."
       },
       "hostNetwork": {
         "type": {
-          "$ref": "#/725"
+          "$ref": "#/737"
         },
         "flags": 0,
         "description": "HostNetwork config to deploy AzureStackHCI Cluster."
       },
       "sdnIntegration": {
         "type": {
-          "$ref": "#/741"
+          "$ref": "#/753"
         },
         "flags": 0,
         "description": "SDN Integration config to deploy AzureStackHCI Cluster."
@@ -8717,28 +9090,28 @@
       },
       "secrets": {
         "type": {
-          "$ref": "#/749"
+          "$ref": "#/761"
         },
         "flags": 0,
         "description": "secrets used for cloud deployment."
       },
       "optionalServices": {
         "type": {
-          "$ref": "#/750"
+          "$ref": "#/762"
         },
         "flags": 0,
         "description": "OptionalServices config to deploy AzureStackHCI Cluster."
       },
       "localAvailabilityZones": {
         "type": {
-          "$ref": "#/754"
+          "$ref": "#/766"
         },
         "flags": 0,
         "description": "Local Availability Zone information for HCI cluster"
       },
       "assemblyInfo": {
         "type": {
-          "$ref": "#/755"
+          "$ref": "#/767"
         },
         "flags": 0,
         "description": "Assembly Package details for Validated Solution Recipe for AzureStackHCI Cluster"
@@ -8889,14 +9262,14 @@
       },
       "hardwareClass": {
         "type": {
-          "$ref": "#/690"
+          "$ref": "#/702"
         },
         "flags": 2,
         "description": "Hardware class of the cluster."
       },
       "clusterPattern": {
         "type": {
-          "$ref": "#/693"
+          "$ref": "#/705"
         },
         "flags": 0,
         "description": "Cluster Pattern supported."
@@ -8919,13 +9292,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/687"
+        "$ref": "#/699"
       },
       {
-        "$ref": "#/688"
+        "$ref": "#/700"
       },
       {
-        "$ref": "#/689"
+        "$ref": "#/701"
       },
       {
         "$ref": "#/2"
@@ -8944,10 +9317,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/691"
+        "$ref": "#/703"
       },
       {
-        "$ref": "#/692"
+        "$ref": "#/704"
       },
       {
         "$ref": "#/2"
@@ -8966,10 +9339,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/694"
+        "$ref": "#/706"
       },
       {
-        "$ref": "#/695"
+        "$ref": "#/707"
       },
       {
         "$ref": "#/2"
@@ -8989,21 +9362,21 @@
       },
       "storageType": {
         "type": {
-          "$ref": "#/701"
+          "$ref": "#/713"
         },
         "flags": 0,
         "description": "Storage type for the HCI Cluster. Allowed values are 'S2D', 'SAN', 'SANS2D'."
       },
       "s2d": {
         "type": {
-          "$ref": "#/702"
+          "$ref": "#/714"
         },
         "flags": 0,
         "description": "S2D (Storage Spaces Direct) configuration. Applicable when StorageType is 'S2D' or 'SANS2D'."
       },
       "san": {
         "type": {
-          "$ref": "#/710"
+          "$ref": "#/722"
         },
         "flags": 0,
         "description": "SAN (Storage Area Network) configuration. Applicable when StorageType is 'SAN' or 'SANS2D'."
@@ -9026,13 +9399,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/698"
+        "$ref": "#/710"
       },
       {
-        "$ref": "#/699"
+        "$ref": "#/711"
       },
       {
-        "$ref": "#/700"
+        "$ref": "#/712"
       },
       {
         "$ref": "#/2"
@@ -9045,14 +9418,14 @@
     "properties": {
       "volumeType": {
         "type": {
-          "$ref": "#/705"
+          "$ref": "#/717"
         },
         "flags": 0,
         "description": "Volume provisioning type. Allowed values are 'Fixed', 'ThinProvisioned'."
       },
       "overprovisioningRatio": {
         "type": {
-          "$ref": "#/709"
+          "$ref": "#/721"
         },
         "flags": 0,
         "description": "Overprovisioning ratio for S2D storage. Allowed values are '0', '1', '2'."
@@ -9071,10 +9444,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/703"
+        "$ref": "#/715"
       },
       {
-        "$ref": "#/704"
+        "$ref": "#/716"
       },
       {
         "$ref": "#/2"
@@ -9097,13 +9470,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/706"
+        "$ref": "#/718"
       },
       {
-        "$ref": "#/707"
+        "$ref": "#/719"
       },
       {
-        "$ref": "#/708"
+        "$ref": "#/720"
       },
       {
         "$ref": "#/2"
@@ -9154,28 +9527,28 @@
       },
       "ipPools": {
         "type": {
-          "$ref": "#/714"
+          "$ref": "#/726"
         },
         "flags": 0,
         "description": "Range of IP addresses from which addresses are allocated for nodes within a subnet."
       },
       "dnsServerConfig": {
         "type": {
-          "$ref": "#/717"
+          "$ref": "#/729"
         },
         "flags": 0,
         "description": "Specifies how DNS servers are configured for the infrastructure network. Allowed values are 'UseDnsServer' to use the provided DNS servers, and 'UseForwarder' to use DNS forwarders."
       },
       "dnsZones": {
         "type": {
-          "$ref": "#/720"
+          "$ref": "#/732"
         },
         "flags": 0,
         "description": "Details of the DNS Zones to be configured."
       },
       "dnsServers": {
         "type": {
-          "$ref": "#/721"
+          "$ref": "#/733"
         },
         "flags": 0,
         "description": "IPv4 address of the DNS servers in your environment."
@@ -9212,7 +9585,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/713"
+      "$ref": "#/725"
     }
   },
   {
@@ -9227,10 +9600,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/715"
+        "$ref": "#/727"
       },
       {
-        "$ref": "#/716"
+        "$ref": "#/728"
       },
       {
         "$ref": "#/2"
@@ -9250,7 +9623,7 @@
       },
       "dnsForwarder": {
         "type": {
-          "$ref": "#/719"
+          "$ref": "#/731"
         },
         "flags": 0,
         "description": "Forwarder details of the DNS Zone to be configured."
@@ -9266,7 +9639,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/718"
+      "$ref": "#/730"
     }
   },
   {
@@ -9278,7 +9651,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/712"
+      "$ref": "#/724"
     }
   },
   {
@@ -9304,7 +9677,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/723"
+      "$ref": "#/735"
     }
   },
   {
@@ -9313,21 +9686,21 @@
     "properties": {
       "intents": {
         "type": {
-          "$ref": "#/731"
+          "$ref": "#/743"
         },
         "flags": 0,
         "description": "The network intents assigned to the network reference pattern used for the deployment. Each intent will define its own name, traffic type, adapter names, and overrides as recommended by your OEM."
       },
       "storageNetworks": {
         "type": {
-          "$ref": "#/735"
+          "$ref": "#/747"
         },
         "flags": 0,
         "description": "List of StorageNetworks config to deploy AzureStackHCI Cluster."
       },
       "sanNetworks": {
         "type": {
-          "$ref": "#/736"
+          "$ref": "#/748"
         },
         "flags": 0,
         "description": "SAN network configuration for the host network. Applicable when StorageType is 'SAN' or 'SANS2D'."
@@ -9361,14 +9734,14 @@
       },
       "trafficType": {
         "type": {
-          "$ref": "#/727"
+          "$ref": "#/739"
         },
         "flags": 0,
         "description": "List of network traffic types. Only allowed values are 'Compute', 'Storage', 'Management'."
       },
       "adapter": {
         "type": {
-          "$ref": "#/728"
+          "$ref": "#/740"
         },
         "flags": 0,
         "description": "Array of network interfaces used for the network intent."
@@ -9382,7 +9755,7 @@
       },
       "virtualSwitchConfigurationOverrides": {
         "type": {
-          "$ref": "#/729"
+          "$ref": "#/741"
         },
         "flags": 0,
         "description": "Set virtualSwitch ConfigurationOverrides for cluster."
@@ -9410,7 +9783,7 @@
       },
       "adapterPropertyOverrides": {
         "type": {
-          "$ref": "#/730"
+          "$ref": "#/742"
         },
         "flags": 0,
         "description": "Set Adapter PropertyOverrides for cluster."
@@ -9479,7 +9852,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/726"
+      "$ref": "#/738"
     }
   },
   {
@@ -9509,7 +9882,7 @@
       },
       "storageAdapterIPInfo": {
         "type": {
-          "$ref": "#/734"
+          "$ref": "#/746"
         },
         "flags": 0,
         "description": "List of Storage adapter physical nodes config to deploy AzureStackHCI Cluster."
@@ -9546,13 +9919,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/733"
+      "$ref": "#/745"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/732"
+      "$ref": "#/744"
     }
   },
   {
@@ -9561,7 +9934,7 @@
     "properties": {
       "clusterNetworkConfig": {
         "type": {
-          "$ref": "#/737"
+          "$ref": "#/749"
         },
         "flags": 0,
         "description": "Cluster (CSV/LiveMig) network configuration for SAN deployments."
@@ -9574,14 +9947,14 @@
     "properties": {
       "adapterProperties": {
         "type": {
-          "$ref": "#/738"
+          "$ref": "#/750"
         },
         "flags": 0,
         "description": "QoS and adapter overrides for the cluster network."
       },
       "adapterIPConfig": {
         "type": {
-          "$ref": "#/740"
+          "$ref": "#/752"
         },
         "flags": 0,
         "description": "Per-adapter IP configuration for the cluster network."
@@ -9659,7 +10032,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/739"
+      "$ref": "#/751"
     }
   },
   {
@@ -9668,7 +10041,7 @@
     "properties": {
       "networkController": {
         "type": {
-          "$ref": "#/742"
+          "$ref": "#/754"
         },
         "flags": 0,
         "description": "network controller config for SDN Integration to deploy AzureStackHCI Cluster."
@@ -9715,7 +10088,7 @@
       },
       "eceSecretName": {
         "type": {
-          "$ref": "#/748"
+          "$ref": "#/760"
         },
         "flags": 0,
         "description": "Secret name expected for Enterprise Cloud Engine (ECE) deployment."
@@ -9749,16 +10122,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/744"
+        "$ref": "#/756"
       },
       {
-        "$ref": "#/745"
+        "$ref": "#/757"
       },
       {
-        "$ref": "#/746"
+        "$ref": "#/758"
       },
       {
-        "$ref": "#/747"
+        "$ref": "#/759"
       },
       {
         "$ref": "#/2"
@@ -9768,7 +10141,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/743"
+      "$ref": "#/755"
     }
   },
   {
@@ -9784,7 +10157,7 @@
       },
       "confidentialVmIntent": {
         "type": {
-          "$ref": "#/753"
+          "$ref": "#/765"
         },
         "flags": 0,
         "description": "Captures the customer's intent to enable or disable Confidential VM (CVM) support on the AzureStackHCI Cluster."
@@ -9803,10 +10176,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/751"
+        "$ref": "#/763"
       },
       {
-        "$ref": "#/752"
+        "$ref": "#/764"
       },
       {
         "$ref": "#/2"
@@ -9832,7 +10205,7 @@
       },
       "payload": {
         "type": {
-          "$ref": "#/757"
+          "$ref": "#/769"
         },
         "flags": 2,
         "description": "Payload properties for Validated Solution Recipe for AzureStackHCI Cluster"
@@ -9876,7 +10249,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/756"
+      "$ref": "#/768"
     }
   },
   {
@@ -9885,21 +10258,21 @@
     "properties": {
       "sbeDeploymentInfo": {
         "type": {
-          "$ref": "#/759"
+          "$ref": "#/771"
         },
         "flags": 0,
         "description": "SBE package and manifest information for the solution Builder Extension staged for AzureStackHCI cluster deployment."
       },
       "partnerProperties": {
         "type": {
-          "$ref": "#/761"
+          "$ref": "#/773"
         },
         "flags": 0,
         "description": "List of SBE partner properties for AzureStackHCI cluster deployment."
       },
       "credentialList": {
         "type": {
-          "$ref": "#/763"
+          "$ref": "#/775"
         },
         "flags": 0,
         "description": "SBE credentials list for AzureStackHCI cluster deployment."
@@ -9970,7 +10343,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/760"
+      "$ref": "#/772"
     }
   },
   {
@@ -10003,13 +10376,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/762"
+      "$ref": "#/774"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/682"
+      "$ref": "#/694"
     }
   },
   {
@@ -10036,7 +10409,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/deploymentSettings@2026-05-01-preview",
     "body": {
-      "$ref": "#/653"
+      "$ref": "#/665"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -10066,28 +10439,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/767"
+          "$ref": "#/779"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/768"
+          "$ref": "#/780"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/769"
+          "$ref": "#/781"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/771"
+          "$ref": "#/783"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -10108,14 +10481,14 @@
     "baseProperties": {
       "deploymentMode": {
         "type": {
-          "$ref": "#/774"
+          "$ref": "#/786"
         },
         "flags": 0,
         "description": "Deployment mode to trigger job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/793"
+          "$ref": "#/805"
         },
         "flags": 2,
         "description": "Job provisioning state"
@@ -10143,14 +10516,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/806"
+          "$ref": "#/818"
         },
         "flags": 2,
         "description": "Status of Cluster job."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/807"
+          "$ref": "#/819"
         },
         "flags": 2,
         "description": "Reported properties for job"
@@ -10158,28 +10531,28 @@
     },
     "elements": {
       "AddServer": {
-        "$ref": "#/808"
+        "$ref": "#/820"
       },
       "ConfigureCVM": {
-        "$ref": "#/816"
+        "$ref": "#/828"
       },
       "ConfigureSdnIntegration": {
-        "$ref": "#/821"
+        "$ref": "#/833"
       },
       "GpuCreatePartition": {
-        "$ref": "#/827"
+        "$ref": "#/839"
       },
       "GpuSwitchMode": {
-        "$ref": "#/829"
+        "$ref": "#/841"
       },
       "RepairServer": {
-        "$ref": "#/835"
+        "$ref": "#/847"
       },
       "VmConnectProvision": {
-        "$ref": "#/840"
+        "$ref": "#/852"
       },
       "VmConnectRemove": {
-        "$ref": "#/844"
+        "$ref": "#/856"
       }
     }
   },
@@ -10195,10 +10568,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/772"
+        "$ref": "#/784"
       },
       {
-        "$ref": "#/773"
+        "$ref": "#/785"
       },
       {
         "$ref": "#/2"
@@ -10281,42 +10654,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/775"
-      },
-      {
-        "$ref": "#/776"
-      },
-      {
-        "$ref": "#/777"
-      },
-      {
-        "$ref": "#/778"
-      },
-      {
-        "$ref": "#/779"
-      },
-      {
-        "$ref": "#/780"
-      },
-      {
-        "$ref": "#/781"
-      },
-      {
-        "$ref": "#/782"
-      },
-      {
-        "$ref": "#/783"
-      },
-      {
-        "$ref": "#/784"
-      },
-      {
-        "$ref": "#/785"
-      },
-      {
-        "$ref": "#/786"
-      },
-      {
         "$ref": "#/787"
       },
       {
@@ -10333,6 +10670,42 @@
       },
       {
         "$ref": "#/792"
+      },
+      {
+        "$ref": "#/793"
+      },
+      {
+        "$ref": "#/794"
+      },
+      {
+        "$ref": "#/795"
+      },
+      {
+        "$ref": "#/796"
+      },
+      {
+        "$ref": "#/797"
+      },
+      {
+        "$ref": "#/798"
+      },
+      {
+        "$ref": "#/799"
+      },
+      {
+        "$ref": "#/800"
+      },
+      {
+        "$ref": "#/801"
+      },
+      {
+        "$ref": "#/802"
+      },
+      {
+        "$ref": "#/803"
+      },
+      {
+        "$ref": "#/804"
       },
       {
         "$ref": "#/2"
@@ -10391,40 +10764,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/794"
+        "$ref": "#/806"
       },
       {
-        "$ref": "#/795"
+        "$ref": "#/807"
       },
       {
-        "$ref": "#/796"
+        "$ref": "#/808"
       },
       {
-        "$ref": "#/797"
+        "$ref": "#/809"
       },
       {
-        "$ref": "#/798"
+        "$ref": "#/810"
       },
       {
-        "$ref": "#/799"
+        "$ref": "#/811"
       },
       {
-        "$ref": "#/800"
+        "$ref": "#/812"
       },
       {
-        "$ref": "#/801"
+        "$ref": "#/813"
       },
       {
-        "$ref": "#/802"
+        "$ref": "#/814"
       },
       {
-        "$ref": "#/803"
+        "$ref": "#/815"
       },
       {
-        "$ref": "#/804"
+        "$ref": "#/816"
       },
       {
-        "$ref": "#/805"
+        "$ref": "#/817"
       },
       {
         "$ref": "#/2"
@@ -10464,21 +10837,21 @@
     "properties": {
       "addServerJobServerDetails": {
         "type": {
-          "$ref": "#/810"
+          "$ref": "#/822"
         },
         "flags": 1,
         "description": "Details of servers to be added to the cluster."
       },
       "secrets": {
         "type": {
-          "$ref": "#/811"
+          "$ref": "#/823"
         },
         "flags": 0,
         "description": "List of protected parameters to pass to trigger the job for the cluster."
       },
       "witnessType": {
         "type": {
-          "$ref": "#/814"
+          "$ref": "#/826"
         },
         "flags": 0,
         "description": "Use a cloud witness if you have internet access and if you use an Azure Storage account to provide a vote on cluster quorum. A cloud witness uses Azure Blob Storage to read or write a blob file and then uses it to arbitrate in split-brain resolution."
@@ -10499,7 +10872,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/815"
+          "$ref": "#/827"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10543,13 +10916,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/809"
+      "$ref": "#/821"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/743"
+      "$ref": "#/755"
     }
   },
   {
@@ -10564,10 +10937,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/812"
+        "$ref": "#/824"
       },
       {
-        "$ref": "#/813"
+        "$ref": "#/825"
       },
       {
         "$ref": "#/2"
@@ -10584,14 +10957,14 @@
     "properties": {
       "confidentialVmIntent": {
         "type": {
-          "$ref": "#/819"
+          "$ref": "#/831"
         },
         "flags": 1,
         "description": "Defines the customer's intent for updating confidential VM properties"
       },
       "jobType": {
         "type": {
-          "$ref": "#/820"
+          "$ref": "#/832"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10610,10 +10983,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/817"
+        "$ref": "#/829"
       },
       {
-        "$ref": "#/818"
+        "$ref": "#/830"
       },
       {
         "$ref": "#/2"
@@ -10630,21 +11003,21 @@
     "properties": {
       "sdnIntegrationIntent": {
         "type": {
-          "$ref": "#/824"
+          "$ref": "#/836"
         },
         "flags": 1,
         "description": "Defines the customer's intent for configuring SDN integration"
       },
       "sdnPrefix": {
         "type": {
-          "$ref": "#/825"
+          "$ref": "#/837"
         },
         "flags": 0,
         "description": "A string identifier used to construct the Network Controller (NC) REST resource name. This prefix helps group and distinguish SDN-managed network components and must follow specific formatting rules."
       },
       "jobType": {
         "type": {
-          "$ref": "#/826"
+          "$ref": "#/838"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10663,10 +11036,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/822"
+        "$ref": "#/834"
       },
       {
-        "$ref": "#/823"
+        "$ref": "#/835"
       },
       {
         "$ref": "#/2"
@@ -10695,7 +11068,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/828"
+          "$ref": "#/840"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10712,14 +11085,14 @@
     "properties": {
       "mode": {
         "type": {
-          "$ref": "#/833"
+          "$ref": "#/845"
         },
         "flags": 1,
         "description": "Desired GPU mode to switch to."
       },
       "jobType": {
         "type": {
-          "$ref": "#/834"
+          "$ref": "#/846"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10742,13 +11115,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/830"
+        "$ref": "#/842"
       },
       {
-        "$ref": "#/831"
+        "$ref": "#/843"
       },
       {
-        "$ref": "#/832"
+        "$ref": "#/844"
       },
       {
         "$ref": "#/2"
@@ -10765,21 +11138,21 @@
     "properties": {
       "repairServerJobServerDetails": {
         "type": {
-          "$ref": "#/837"
+          "$ref": "#/849"
         },
         "flags": 1,
         "description": "Details of servers to be repaired in the cluster."
       },
       "secrets": {
         "type": {
-          "$ref": "#/838"
+          "$ref": "#/850"
         },
         "flags": 0,
         "description": "List of protected parameters to pass to trigger job for cluster."
       },
       "jobType": {
         "type": {
-          "$ref": "#/839"
+          "$ref": "#/851"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10809,13 +11182,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/836"
+      "$ref": "#/848"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/743"
+      "$ref": "#/755"
     }
   },
   {
@@ -10828,14 +11201,14 @@
     "properties": {
       "vmConnectProvisionJobDetails": {
         "type": {
-          "$ref": "#/842"
+          "$ref": "#/854"
         },
         "flags": 1,
         "description": "Details of VM needed to enable VM Connect"
       },
       "jobType": {
         "type": {
-          "$ref": "#/843"
+          "$ref": "#/855"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10872,7 +11245,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/841"
+      "$ref": "#/853"
     }
   },
   {
@@ -10885,14 +11258,14 @@
     "properties": {
       "vmConnectRemoveJobDetails": {
         "type": {
-          "$ref": "#/845"
+          "$ref": "#/857"
         },
         "flags": 1,
         "description": "Details of VM needed to disable VM Connect"
       },
       "jobType": {
         "type": {
-          "$ref": "#/846"
+          "$ref": "#/858"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -10902,7 +11275,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/841"
+      "$ref": "#/853"
     }
   },
   {
@@ -10913,7 +11286,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/jobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/770"
+      "$ref": "#/782"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -10946,21 +11319,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/848"
+          "$ref": "#/860"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/849"
+          "$ref": "#/861"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/851"
+          "$ref": "#/863"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -10980,35 +11353,35 @@
     "properties": {
       "securedCoreComplianceAssignment": {
         "type": {
-          "$ref": "#/854"
+          "$ref": "#/866"
         },
         "flags": 0,
         "description": "Secured Core Compliance Assignment"
       },
       "wdacComplianceAssignment": {
         "type": {
-          "$ref": "#/857"
+          "$ref": "#/869"
         },
         "flags": 0,
         "description": "WDAC Compliance Assignment"
       },
       "smbEncryptionForIntraClusterTrafficComplianceAssignment": {
         "type": {
-          "$ref": "#/860"
+          "$ref": "#/872"
         },
         "flags": 0,
         "description": "SMB encryption for intra-cluster traffic Compliance Assignment"
       },
       "securityComplianceStatus": {
         "type": {
-          "$ref": "#/861"
+          "$ref": "#/873"
         },
         "flags": 2,
         "description": "Security Compliance Status"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/896"
+          "$ref": "#/908"
         },
         "flags": 2,
         "description": "The status of the last operation."
@@ -11027,32 +11400,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/852"
+        "$ref": "#/864"
       },
       {
-        "$ref": "#/853"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Audit"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ApplyAndAutoCorrect"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/855"
-      },
-      {
-        "$ref": "#/856"
+        "$ref": "#/865"
       },
       {
         "$ref": "#/2"
@@ -11071,10 +11422,32 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/858"
+        "$ref": "#/867"
       },
       {
-        "$ref": "#/859"
+        "$ref": "#/868"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Audit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplyAndAutoCorrect"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/870"
+      },
+      {
+        "$ref": "#/871"
       },
       {
         "$ref": "#/2"
@@ -11087,28 +11460,28 @@
     "properties": {
       "securedCoreCompliance": {
         "type": {
-          "$ref": "#/865"
+          "$ref": "#/877"
         },
         "flags": 2,
         "description": "Indicates whether HCI hosts meets secured-core server requirements."
       },
       "wdacCompliance": {
         "type": {
-          "$ref": "#/869"
+          "$ref": "#/881"
         },
         "flags": 2,
         "description": "Indicates whether HCI hosts have enforced consistent Windows Defender Application Control."
       },
       "dataAtRestEncrypted": {
         "type": {
-          "$ref": "#/873"
+          "$ref": "#/885"
         },
         "flags": 2,
         "description": "Indicates whether data at-rest encryption is enabled on Azure Stack HCI clustered volumes."
       },
       "dataInTransitProtected": {
         "type": {
-          "$ref": "#/877"
+          "$ref": "#/889"
         },
         "flags": 2,
         "description": "Indicates whether HCI cluster has data in-transit protection."
@@ -11138,93 +11511,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/862"
-      },
-      {
-        "$ref": "#/863"
-      },
-      {
-        "$ref": "#/864"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Compliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NonCompliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/866"
-      },
-      {
-        "$ref": "#/867"
-      },
-      {
-        "$ref": "#/868"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Compliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NonCompliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/870"
-      },
-      {
-        "$ref": "#/871"
-      },
-      {
-        "$ref": "#/872"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Compliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NonCompliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
         "$ref": "#/874"
       },
       {
@@ -11232,6 +11518,93 @@
       },
       {
         "$ref": "#/876"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/878"
+      },
+      {
+        "$ref": "#/879"
+      },
+      {
+        "$ref": "#/880"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/882"
+      },
+      {
+        "$ref": "#/883"
+      },
+      {
+        "$ref": "#/884"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/886"
+      },
+      {
+        "$ref": "#/887"
+      },
+      {
+        "$ref": "#/888"
       },
       {
         "$ref": "#/2"
@@ -11314,42 +11687,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/878"
-      },
-      {
-        "$ref": "#/879"
-      },
-      {
-        "$ref": "#/880"
-      },
-      {
-        "$ref": "#/881"
-      },
-      {
-        "$ref": "#/882"
-      },
-      {
-        "$ref": "#/883"
-      },
-      {
-        "$ref": "#/884"
-      },
-      {
-        "$ref": "#/885"
-      },
-      {
-        "$ref": "#/886"
-      },
-      {
-        "$ref": "#/887"
-      },
-      {
-        "$ref": "#/888"
-      },
-      {
-        "$ref": "#/889"
-      },
-      {
         "$ref": "#/890"
       },
       {
@@ -11368,6 +11705,42 @@
         "$ref": "#/895"
       },
       {
+        "$ref": "#/896"
+      },
+      {
+        "$ref": "#/897"
+      },
+      {
+        "$ref": "#/898"
+      },
+      {
+        "$ref": "#/899"
+      },
+      {
+        "$ref": "#/900"
+      },
+      {
+        "$ref": "#/901"
+      },
+      {
+        "$ref": "#/902"
+      },
+      {
+        "$ref": "#/903"
+      },
+      {
+        "$ref": "#/904"
+      },
+      {
+        "$ref": "#/905"
+      },
+      {
+        "$ref": "#/906"
+      },
+      {
+        "$ref": "#/907"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -11376,7 +11749,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/securitySettings@2026-05-01-preview",
     "body": {
-      "$ref": "#/850"
+      "$ref": "#/862"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -11406,28 +11779,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/898"
+          "$ref": "#/910"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/899"
+          "$ref": "#/911"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/900"
+          "$ref": "#/912"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/902"
+          "$ref": "#/914"
         },
         "flags": 0,
         "description": "Update summaries properties"
@@ -11454,7 +11827,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/921"
+          "$ref": "#/933"
         },
         "flags": 2,
         "description": "Provisioning state of the UpdateSummaries proxy resource. Indicates the current lifecycle status of the update summary operation, such as whether it has been accepted, is in progress, or has completed."
@@ -11482,7 +11855,7 @@
       },
       "packageVersions": {
         "type": {
-          "$ref": "#/923"
+          "$ref": "#/935"
         },
         "flags": 0,
         "description": "Current version of each updatable component."
@@ -11517,14 +11890,14 @@
       },
       "healthState": {
         "type": {
-          "$ref": "#/930"
+          "$ref": "#/942"
         },
         "flags": 0,
         "description": "Overall health state for update-specific health checks."
       },
       "healthCheckResult": {
         "type": {
-          "$ref": "#/951"
+          "$ref": "#/963"
         },
         "flags": 0,
         "description": "An array of pre-check result objects."
@@ -11538,7 +11911,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/960"
+          "$ref": "#/972"
         },
         "flags": 0,
         "description": "Overall update state of the stamp. Indicates the current status of update deployment across the stamp, including preparation, application, and any issues encountered."
@@ -11621,42 +11994,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/903"
-      },
-      {
-        "$ref": "#/904"
-      },
-      {
-        "$ref": "#/905"
-      },
-      {
-        "$ref": "#/906"
-      },
-      {
-        "$ref": "#/907"
-      },
-      {
-        "$ref": "#/908"
-      },
-      {
-        "$ref": "#/909"
-      },
-      {
-        "$ref": "#/910"
-      },
-      {
-        "$ref": "#/911"
-      },
-      {
-        "$ref": "#/912"
-      },
-      {
-        "$ref": "#/913"
-      },
-      {
-        "$ref": "#/914"
-      },
-      {
         "$ref": "#/915"
       },
       {
@@ -11673,6 +12010,42 @@
       },
       {
         "$ref": "#/920"
+      },
+      {
+        "$ref": "#/921"
+      },
+      {
+        "$ref": "#/922"
+      },
+      {
+        "$ref": "#/923"
+      },
+      {
+        "$ref": "#/924"
+      },
+      {
+        "$ref": "#/925"
+      },
+      {
+        "$ref": "#/926"
+      },
+      {
+        "$ref": "#/927"
+      },
+      {
+        "$ref": "#/928"
+      },
+      {
+        "$ref": "#/929"
+      },
+      {
+        "$ref": "#/930"
+      },
+      {
+        "$ref": "#/931"
+      },
+      {
+        "$ref": "#/932"
       },
       {
         "$ref": "#/2"
@@ -11709,7 +12082,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/922"
+      "$ref": "#/934"
     }
   },
   {
@@ -11740,22 +12113,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/924"
+        "$ref": "#/936"
       },
       {
-        "$ref": "#/925"
+        "$ref": "#/937"
       },
       {
-        "$ref": "#/926"
+        "$ref": "#/938"
       },
       {
-        "$ref": "#/927"
+        "$ref": "#/939"
       },
       {
-        "$ref": "#/928"
+        "$ref": "#/940"
       },
       {
-        "$ref": "#/929"
+        "$ref": "#/941"
       },
       {
         "$ref": "#/2"
@@ -11782,7 +12155,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/932"
+          "$ref": "#/944"
         },
         "flags": 0,
         "description": "Key-value pairs that allow grouping/filtering individual tests."
@@ -11803,14 +12176,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/945"
+          "$ref": "#/957"
         },
         "flags": 0,
         "description": "Represents the current status of the check being performed. Indicates whether the check has completed successfully, failed, or is still in progress."
       },
       "severity": {
         "type": {
-          "$ref": "#/950"
+          "$ref": "#/962"
         },
         "flags": 0,
         "description": "Indicates the importance or impact level of the result. Determines whether the result is informational, a warning, or a critical issue that may block updates."
@@ -11945,40 +12318,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/933"
+        "$ref": "#/945"
       },
       {
-        "$ref": "#/934"
+        "$ref": "#/946"
       },
       {
-        "$ref": "#/935"
+        "$ref": "#/947"
       },
       {
-        "$ref": "#/936"
+        "$ref": "#/948"
       },
       {
-        "$ref": "#/937"
+        "$ref": "#/949"
       },
       {
-        "$ref": "#/938"
+        "$ref": "#/950"
       },
       {
-        "$ref": "#/939"
+        "$ref": "#/951"
       },
       {
-        "$ref": "#/940"
+        "$ref": "#/952"
       },
       {
-        "$ref": "#/941"
+        "$ref": "#/953"
       },
       {
-        "$ref": "#/942"
+        "$ref": "#/954"
       },
       {
-        "$ref": "#/943"
+        "$ref": "#/955"
       },
       {
-        "$ref": "#/944"
+        "$ref": "#/956"
       },
       {
         "$ref": "#/2"
@@ -12005,16 +12378,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/946"
+        "$ref": "#/958"
       },
       {
-        "$ref": "#/947"
+        "$ref": "#/959"
       },
       {
-        "$ref": "#/948"
+        "$ref": "#/960"
       },
       {
-        "$ref": "#/949"
+        "$ref": "#/961"
       },
       {
         "$ref": "#/2"
@@ -12024,7 +12397,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/931"
+      "$ref": "#/943"
     }
   },
   {
@@ -12063,28 +12436,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/952"
+        "$ref": "#/964"
       },
       {
-        "$ref": "#/953"
+        "$ref": "#/965"
       },
       {
-        "$ref": "#/954"
+        "$ref": "#/966"
       },
       {
-        "$ref": "#/955"
+        "$ref": "#/967"
       },
       {
-        "$ref": "#/956"
+        "$ref": "#/968"
       },
       {
-        "$ref": "#/957"
+        "$ref": "#/969"
       },
       {
-        "$ref": "#/958"
+        "$ref": "#/970"
       },
       {
-        "$ref": "#/959"
+        "$ref": "#/971"
       },
       {
         "$ref": "#/2"
@@ -12095,7 +12468,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/updateSummaries@2026-05-01-preview",
     "body": {
-      "$ref": "#/901"
+      "$ref": "#/913"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -12128,21 +12501,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/962"
+          "$ref": "#/974"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/963"
+          "$ref": "#/975"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/965"
+          "$ref": "#/977"
         },
         "flags": 0,
         "description": "Update properties"
@@ -12169,7 +12542,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/984"
+          "$ref": "#/996"
         },
         "flags": 2,
         "description": "Provisioning state of the Updates proxy resource. Indicates the current lifecycle status of the update operation, such as whether it has been accepted, is in progress, or has completed."
@@ -12197,42 +12570,42 @@
       },
       "state": {
         "type": {
-          "$ref": "#/1006"
+          "$ref": "#/1018"
         },
         "flags": 0,
         "description": "Represents the current state of the update as it relates to this stamp. This includes phases such as preparation, installation, scanning, and error handling, providing insight into the update's progress and any issues encountered."
       },
       "prerequisites": {
         "type": {
-          "$ref": "#/1008"
+          "$ref": "#/1020"
         },
         "flags": 0,
         "description": "If update State is HasPrerequisite, this property contains an array of objects describing prerequisite updates before installing this update. Otherwise, it is empty."
       },
       "componentVersions": {
         "type": {
-          "$ref": "#/1009"
+          "$ref": "#/1021"
         },
         "flags": 0,
         "description": "An array of component versions for a Solution Bundle update, and an empty array otherwise."
       },
       "rebootRequired": {
         "type": {
-          "$ref": "#/1013"
+          "$ref": "#/1025"
         },
         "flags": 0,
         "description": "Indicates whether a reboot is required after the update or operation. Helps determine if a system restart is necessary to complete the process."
       },
       "healthState": {
         "type": {
-          "$ref": "#/1020"
+          "$ref": "#/1032"
         },
         "flags": 0,
         "description": "Overall health state for update-specific health checks."
       },
       "healthCheckResult": {
         "type": {
-          "$ref": "#/1021"
+          "$ref": "#/1033"
         },
         "flags": 0,
         "description": "An array of PrecheckResult objects."
@@ -12288,7 +12661,7 @@
       },
       "availabilityType": {
         "type": {
-          "$ref": "#/1025"
+          "$ref": "#/1037"
         },
         "flags": 0,
         "description": "Indicates how the update content is made available for download. This determines whether the update is sourced locally, from an online repository, or requires user notification."
@@ -12309,7 +12682,7 @@
       },
       "updateStateProperties": {
         "type": {
-          "$ref": "#/1026"
+          "$ref": "#/1038"
         },
         "flags": 0,
         "description": "Additional information regarding the state of the update. See definition of UpdateStateProperties type below for more details on this property."
@@ -12392,42 +12765,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/966"
-      },
-      {
-        "$ref": "#/967"
-      },
-      {
-        "$ref": "#/968"
-      },
-      {
-        "$ref": "#/969"
-      },
-      {
-        "$ref": "#/970"
-      },
-      {
-        "$ref": "#/971"
-      },
-      {
-        "$ref": "#/972"
-      },
-      {
-        "$ref": "#/973"
-      },
-      {
-        "$ref": "#/974"
-      },
-      {
-        "$ref": "#/975"
-      },
-      {
-        "$ref": "#/976"
-      },
-      {
-        "$ref": "#/977"
-      },
-      {
         "$ref": "#/978"
       },
       {
@@ -12444,6 +12781,42 @@
       },
       {
         "$ref": "#/983"
+      },
+      {
+        "$ref": "#/984"
+      },
+      {
+        "$ref": "#/985"
+      },
+      {
+        "$ref": "#/986"
+      },
+      {
+        "$ref": "#/987"
+      },
+      {
+        "$ref": "#/988"
+      },
+      {
+        "$ref": "#/989"
+      },
+      {
+        "$ref": "#/990"
+      },
+      {
+        "$ref": "#/991"
+      },
+      {
+        "$ref": "#/992"
+      },
+      {
+        "$ref": "#/993"
+      },
+      {
+        "$ref": "#/994"
+      },
+      {
+        "$ref": "#/995"
       },
       {
         "$ref": "#/2"
@@ -12538,42 +12911,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/985"
-      },
-      {
-        "$ref": "#/986"
-      },
-      {
-        "$ref": "#/987"
-      },
-      {
-        "$ref": "#/988"
-      },
-      {
-        "$ref": "#/989"
-      },
-      {
-        "$ref": "#/990"
-      },
-      {
-        "$ref": "#/991"
-      },
-      {
-        "$ref": "#/992"
-      },
-      {
-        "$ref": "#/993"
-      },
-      {
-        "$ref": "#/994"
-      },
-      {
-        "$ref": "#/995"
-      },
-      {
-        "$ref": "#/996"
-      },
-      {
         "$ref": "#/997"
       },
       {
@@ -12599,6 +12936,42 @@
       },
       {
         "$ref": "#/1005"
+      },
+      {
+        "$ref": "#/1006"
+      },
+      {
+        "$ref": "#/1007"
+      },
+      {
+        "$ref": "#/1008"
+      },
+      {
+        "$ref": "#/1009"
+      },
+      {
+        "$ref": "#/1010"
+      },
+      {
+        "$ref": "#/1011"
+      },
+      {
+        "$ref": "#/1012"
+      },
+      {
+        "$ref": "#/1013"
+      },
+      {
+        "$ref": "#/1014"
+      },
+      {
+        "$ref": "#/1015"
+      },
+      {
+        "$ref": "#/1016"
+      },
+      {
+        "$ref": "#/1017"
       },
       {
         "$ref": "#/2"
@@ -12635,13 +13008,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1007"
+      "$ref": "#/1019"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/922"
+      "$ref": "#/934"
     }
   },
   {
@@ -12660,13 +13033,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1010"
+        "$ref": "#/1022"
       },
       {
-        "$ref": "#/1011"
+        "$ref": "#/1023"
       },
       {
-        "$ref": "#/1012"
+        "$ref": "#/1024"
       },
       {
         "$ref": "#/2"
@@ -12701,22 +13074,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1014"
+        "$ref": "#/1026"
       },
       {
-        "$ref": "#/1015"
+        "$ref": "#/1027"
       },
       {
-        "$ref": "#/1016"
+        "$ref": "#/1028"
       },
       {
-        "$ref": "#/1017"
+        "$ref": "#/1029"
       },
       {
-        "$ref": "#/1018"
+        "$ref": "#/1030"
       },
       {
-        "$ref": "#/1019"
+        "$ref": "#/1031"
       },
       {
         "$ref": "#/2"
@@ -12726,7 +13099,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/931"
+      "$ref": "#/943"
     }
   },
   {
@@ -12745,13 +13118,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1022"
+        "$ref": "#/1034"
       },
       {
-        "$ref": "#/1023"
+        "$ref": "#/1035"
       },
       {
-        "$ref": "#/1024"
+        "$ref": "#/1036"
       },
       {
         "$ref": "#/2"
@@ -12782,7 +13155,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/updates@2026-05-01-preview",
     "body": {
-      "$ref": "#/964"
+      "$ref": "#/976"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -12815,21 +13188,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1028"
+          "$ref": "#/1040"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1029"
+          "$ref": "#/1041"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1031"
+          "$ref": "#/1043"
         },
         "flags": 0,
         "description": "Describes Update Run Properties."
@@ -12856,7 +13229,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/1050"
+          "$ref": "#/1062"
         },
         "flags": 2,
         "description": "Provisioning state of the UpdateRuns proxy resource. Indicates the current lifecycle status of the update operation, such as whether it has been accepted, is in progress, or has completed."
@@ -12884,14 +13257,14 @@
       },
       "state": {
         "type": {
-          "$ref": "#/1055"
+          "$ref": "#/1067"
         },
         "flags": 2,
         "description": "Represents the current state of the update run. Indicates whether the update is in progress, has completed successfully, failed, or is in an unknown state."
       },
       "progress": {
         "type": {
-          "$ref": "#/1056"
+          "$ref": "#/1068"
         },
         "flags": 0,
         "description": "Progress representation of the update run steps."
@@ -12974,42 +13347,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1032"
-      },
-      {
-        "$ref": "#/1033"
-      },
-      {
-        "$ref": "#/1034"
-      },
-      {
-        "$ref": "#/1035"
-      },
-      {
-        "$ref": "#/1036"
-      },
-      {
-        "$ref": "#/1037"
-      },
-      {
-        "$ref": "#/1038"
-      },
-      {
-        "$ref": "#/1039"
-      },
-      {
-        "$ref": "#/1040"
-      },
-      {
-        "$ref": "#/1041"
-      },
-      {
-        "$ref": "#/1042"
-      },
-      {
-        "$ref": "#/1043"
-      },
-      {
         "$ref": "#/1044"
       },
       {
@@ -13026,6 +13363,42 @@
       },
       {
         "$ref": "#/1049"
+      },
+      {
+        "$ref": "#/1050"
+      },
+      {
+        "$ref": "#/1051"
+      },
+      {
+        "$ref": "#/1052"
+      },
+      {
+        "$ref": "#/1053"
+      },
+      {
+        "$ref": "#/1054"
+      },
+      {
+        "$ref": "#/1055"
+      },
+      {
+        "$ref": "#/1056"
+      },
+      {
+        "$ref": "#/1057"
+      },
+      {
+        "$ref": "#/1058"
+      },
+      {
+        "$ref": "#/1059"
+      },
+      {
+        "$ref": "#/1060"
+      },
+      {
+        "$ref": "#/1061"
       },
       {
         "$ref": "#/2"
@@ -13052,16 +13425,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1051"
+        "$ref": "#/1063"
       },
       {
-        "$ref": "#/1052"
+        "$ref": "#/1064"
       },
       {
-        "$ref": "#/1053"
+        "$ref": "#/1065"
       },
       {
-        "$ref": "#/1054"
+        "$ref": "#/1066"
       },
       {
         "$ref": "#/2"
@@ -13130,7 +13503,7 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/1057"
+          "$ref": "#/1069"
         },
         "flags": 0,
         "description": "Recursive model for child steps of this step."
@@ -13140,14 +13513,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1056"
+      "$ref": "#/1068"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/updates/updateRuns@2026-05-01-preview",
     "body": {
-      "$ref": "#/1030"
+      "$ref": "#/1042"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -13180,21 +13553,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1059"
+          "$ref": "#/1071"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1060"
+          "$ref": "#/1072"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1062"
+          "$ref": "#/1074"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -13214,21 +13587,21 @@
     "properties": {
       "diskConfiguration": {
         "type": {
-          "$ref": "#/1063"
+          "$ref": "#/1075"
         },
         "flags": 0,
         "description": "The authoritative desired configuration for this disk."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1074"
+          "$ref": "#/1086"
         },
         "flags": 2,
         "description": "The actual state of the disk as reported by the device."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1110"
+          "$ref": "#/1122"
         },
         "flags": 2,
         "description": "Provisioning state of the disk resource."
@@ -13241,7 +13614,7 @@
     "properties": {
       "volumes": {
         "type": {
-          "$ref": "#/1073"
+          "$ref": "#/1085"
         },
         "flags": 0,
         "description": "List of desired volumes on this disk."
@@ -13268,7 +13641,7 @@
       },
       "fileSystem": {
         "type": {
-          "$ref": "#/1072"
+          "$ref": "#/1084"
         },
         "flags": 0,
         "description": "File system type to format the volume with."
@@ -13307,25 +13680,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1065"
+        "$ref": "#/1077"
       },
       {
-        "$ref": "#/1066"
+        "$ref": "#/1078"
       },
       {
-        "$ref": "#/1067"
+        "$ref": "#/1079"
       },
       {
-        "$ref": "#/1068"
+        "$ref": "#/1080"
       },
       {
-        "$ref": "#/1069"
+        "$ref": "#/1081"
       },
       {
-        "$ref": "#/1070"
+        "$ref": "#/1082"
       },
       {
-        "$ref": "#/1071"
+        "$ref": "#/1083"
       },
       {
         "$ref": "#/2"
@@ -13335,7 +13708,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1064"
+      "$ref": "#/1076"
     }
   },
   {
@@ -13393,7 +13766,7 @@
       },
       "diskType": {
         "type": {
-          "$ref": "#/1083"
+          "$ref": "#/1095"
         },
         "flags": 2,
         "description": "Type of the disk."
@@ -13414,14 +13787,14 @@
       },
       "state": {
         "type": {
-          "$ref": "#/1089"
+          "$ref": "#/1101"
         },
         "flags": 2,
         "description": "Current state of the disk."
       },
       "volumes": {
         "type": {
-          "$ref": "#/1091"
+          "$ref": "#/1103"
         },
         "flags": 2,
         "description": "List of volumes on this disk."
@@ -13464,28 +13837,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1075"
+        "$ref": "#/1087"
       },
       {
-        "$ref": "#/1076"
+        "$ref": "#/1088"
       },
       {
-        "$ref": "#/1077"
+        "$ref": "#/1089"
       },
       {
-        "$ref": "#/1078"
+        "$ref": "#/1090"
       },
       {
-        "$ref": "#/1079"
+        "$ref": "#/1091"
       },
       {
-        "$ref": "#/1080"
+        "$ref": "#/1092"
       },
       {
-        "$ref": "#/1081"
+        "$ref": "#/1093"
       },
       {
-        "$ref": "#/1082"
+        "$ref": "#/1094"
       },
       {
         "$ref": "#/2"
@@ -13516,19 +13889,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1084"
+        "$ref": "#/1096"
       },
       {
-        "$ref": "#/1085"
+        "$ref": "#/1097"
       },
       {
-        "$ref": "#/1086"
+        "$ref": "#/1098"
       },
       {
-        "$ref": "#/1087"
+        "$ref": "#/1099"
       },
       {
-        "$ref": "#/1088"
+        "$ref": "#/1100"
       },
       {
         "$ref": "#/2"
@@ -13614,7 +13987,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1090"
+      "$ref": "#/1102"
     }
   },
   {
@@ -13693,42 +14066,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1092"
-      },
-      {
-        "$ref": "#/1093"
-      },
-      {
-        "$ref": "#/1094"
-      },
-      {
-        "$ref": "#/1095"
-      },
-      {
-        "$ref": "#/1096"
-      },
-      {
-        "$ref": "#/1097"
-      },
-      {
-        "$ref": "#/1098"
-      },
-      {
-        "$ref": "#/1099"
-      },
-      {
-        "$ref": "#/1100"
-      },
-      {
-        "$ref": "#/1101"
-      },
-      {
-        "$ref": "#/1102"
-      },
-      {
-        "$ref": "#/1103"
-      },
-      {
         "$ref": "#/1104"
       },
       {
@@ -13747,6 +14084,42 @@
         "$ref": "#/1109"
       },
       {
+        "$ref": "#/1110"
+      },
+      {
+        "$ref": "#/1111"
+      },
+      {
+        "$ref": "#/1112"
+      },
+      {
+        "$ref": "#/1113"
+      },
+      {
+        "$ref": "#/1114"
+      },
+      {
+        "$ref": "#/1115"
+      },
+      {
+        "$ref": "#/1116"
+      },
+      {
+        "$ref": "#/1117"
+      },
+      {
+        "$ref": "#/1118"
+      },
+      {
+        "$ref": "#/1119"
+      },
+      {
+        "$ref": "#/1120"
+      },
+      {
+        "$ref": "#/1121"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -13755,7 +14128,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/disks@2026-05-01-preview",
     "body": {
-      "$ref": "#/1061"
+      "$ref": "#/1073"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -13788,21 +14161,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1112"
+          "$ref": "#/1124"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1113"
+          "$ref": "#/1125"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1115"
+          "$ref": "#/1127"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -13823,14 +14196,14 @@
     "baseProperties": {
       "deploymentMode": {
         "type": {
-          "$ref": "#/1118"
+          "$ref": "#/1130"
         },
         "flags": 0,
         "description": "Deployment mode to trigger job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1137"
+          "$ref": "#/1149"
         },
         "flags": 2,
         "description": "Job provisioning state."
@@ -13858,7 +14231,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1150"
+          "$ref": "#/1162"
         },
         "flags": 2,
         "description": "Status of disk job."
@@ -13872,7 +14245,7 @@
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1151"
+          "$ref": "#/1163"
         },
         "flags": 2,
         "description": "Properties reported by the job execution."
@@ -13880,10 +14253,10 @@
     },
     "elements": {
       "CreateVolume": {
-        "$ref": "#/1157"
+        "$ref": "#/1169"
       },
       "SyncConfiguration": {
-        "$ref": "#/1167"
+        "$ref": "#/1179"
       }
     }
   },
@@ -13899,10 +14272,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1116"
+        "$ref": "#/1128"
       },
       {
-        "$ref": "#/1117"
+        "$ref": "#/1129"
       },
       {
         "$ref": "#/2"
@@ -13985,42 +14358,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1119"
-      },
-      {
-        "$ref": "#/1120"
-      },
-      {
-        "$ref": "#/1121"
-      },
-      {
-        "$ref": "#/1122"
-      },
-      {
-        "$ref": "#/1123"
-      },
-      {
-        "$ref": "#/1124"
-      },
-      {
-        "$ref": "#/1125"
-      },
-      {
-        "$ref": "#/1126"
-      },
-      {
-        "$ref": "#/1127"
-      },
-      {
-        "$ref": "#/1128"
-      },
-      {
-        "$ref": "#/1129"
-      },
-      {
-        "$ref": "#/1130"
-      },
-      {
         "$ref": "#/1131"
       },
       {
@@ -14037,6 +14374,42 @@
       },
       {
         "$ref": "#/1136"
+      },
+      {
+        "$ref": "#/1137"
+      },
+      {
+        "$ref": "#/1138"
+      },
+      {
+        "$ref": "#/1139"
+      },
+      {
+        "$ref": "#/1140"
+      },
+      {
+        "$ref": "#/1141"
+      },
+      {
+        "$ref": "#/1142"
+      },
+      {
+        "$ref": "#/1143"
+      },
+      {
+        "$ref": "#/1144"
+      },
+      {
+        "$ref": "#/1145"
+      },
+      {
+        "$ref": "#/1146"
+      },
+      {
+        "$ref": "#/1147"
+      },
+      {
+        "$ref": "#/1148"
       },
       {
         "$ref": "#/2"
@@ -14095,40 +14468,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1138"
+        "$ref": "#/1150"
       },
       {
-        "$ref": "#/1139"
+        "$ref": "#/1151"
       },
       {
-        "$ref": "#/1140"
+        "$ref": "#/1152"
       },
       {
-        "$ref": "#/1141"
+        "$ref": "#/1153"
       },
       {
-        "$ref": "#/1142"
+        "$ref": "#/1154"
       },
       {
-        "$ref": "#/1143"
+        "$ref": "#/1155"
       },
       {
-        "$ref": "#/1144"
+        "$ref": "#/1156"
       },
       {
-        "$ref": "#/1145"
+        "$ref": "#/1157"
       },
       {
-        "$ref": "#/1146"
+        "$ref": "#/1158"
       },
       {
-        "$ref": "#/1147"
+        "$ref": "#/1159"
       },
       {
-        "$ref": "#/1148"
+        "$ref": "#/1160"
       },
       {
-        "$ref": "#/1149"
+        "$ref": "#/1161"
       },
       {
         "$ref": "#/2"
@@ -14148,14 +14521,14 @@
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/1152"
+          "$ref": "#/1164"
         },
         "flags": 2,
         "description": "Validation status of Disk Job."
       },
       "deploymentStatus": {
         "type": {
-          "$ref": "#/1152"
+          "$ref": "#/1164"
         },
         "flags": 2,
         "description": "Deployment status of Disk Job."
@@ -14175,7 +14548,7 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/1156"
+          "$ref": "#/1168"
         },
         "flags": 2,
         "description": "List of steps of Disk Job."
@@ -14230,14 +14603,14 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/1154"
+          "$ref": "#/1166"
         },
         "flags": 2,
         "description": "List of nested steps."
       },
       "exception": {
         "type": {
-          "$ref": "#/1155"
+          "$ref": "#/1167"
         },
         "flags": 2,
         "description": "List of exceptions."
@@ -14247,7 +14620,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1153"
+      "$ref": "#/1165"
     }
   },
   {
@@ -14259,7 +14632,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1153"
+      "$ref": "#/1165"
     }
   },
   {
@@ -14282,7 +14655,7 @@
       },
       "fileSystem": {
         "type": {
-          "$ref": "#/1165"
+          "$ref": "#/1177"
         },
         "flags": 4,
         "description": "File system type to format the volume with."
@@ -14296,7 +14669,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/1166"
+          "$ref": "#/1178"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -14335,25 +14708,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1158"
+        "$ref": "#/1170"
       },
       {
-        "$ref": "#/1159"
+        "$ref": "#/1171"
       },
       {
-        "$ref": "#/1160"
+        "$ref": "#/1172"
       },
       {
-        "$ref": "#/1161"
+        "$ref": "#/1173"
       },
       {
-        "$ref": "#/1162"
+        "$ref": "#/1174"
       },
       {
-        "$ref": "#/1163"
+        "$ref": "#/1175"
       },
       {
-        "$ref": "#/1164"
+        "$ref": "#/1176"
       },
       {
         "$ref": "#/2"
@@ -14370,14 +14743,14 @@
     "properties": {
       "resolutionStrategy": {
         "type": {
-          "$ref": "#/1170"
+          "$ref": "#/1182"
         },
         "flags": 5,
         "description": "The strategy to use for resolving the configuration drift."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1171"
+          "$ref": "#/1183"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -14396,10 +14769,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1168"
+        "$ref": "#/1180"
       },
       {
-        "$ref": "#/1169"
+        "$ref": "#/1181"
       },
       {
         "$ref": "#/2"
@@ -14414,7 +14787,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/disks/jobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/1114"
+      "$ref": "#/1126"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -14447,21 +14820,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1173"
+          "$ref": "#/1185"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1174"
+          "$ref": "#/1186"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1176"
+          "$ref": "#/1188"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -14482,14 +14855,14 @@
     "baseProperties": {
       "deploymentMode": {
         "type": {
-          "$ref": "#/1179"
+          "$ref": "#/1191"
         },
         "flags": 0,
         "description": "Deployment mode to trigger job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1198"
+          "$ref": "#/1210"
         },
         "flags": 2,
         "description": "Job provisioning state."
@@ -14517,7 +14890,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1211"
+          "$ref": "#/1223"
         },
         "flags": 2,
         "description": "Status of disk job."
@@ -14531,7 +14904,7 @@
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1151"
+          "$ref": "#/1163"
         },
         "flags": 2,
         "description": "Properties reported by the job execution."
@@ -14539,7 +14912,7 @@
     },
     "elements": {
       "DeleteVolume": {
-        "$ref": "#/1212"
+        "$ref": "#/1224"
       }
     }
   },
@@ -14555,10 +14928,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1177"
+        "$ref": "#/1189"
       },
       {
-        "$ref": "#/1178"
+        "$ref": "#/1190"
       },
       {
         "$ref": "#/2"
@@ -14641,42 +15014,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1180"
-      },
-      {
-        "$ref": "#/1181"
-      },
-      {
-        "$ref": "#/1182"
-      },
-      {
-        "$ref": "#/1183"
-      },
-      {
-        "$ref": "#/1184"
-      },
-      {
-        "$ref": "#/1185"
-      },
-      {
-        "$ref": "#/1186"
-      },
-      {
-        "$ref": "#/1187"
-      },
-      {
-        "$ref": "#/1188"
-      },
-      {
-        "$ref": "#/1189"
-      },
-      {
-        "$ref": "#/1190"
-      },
-      {
-        "$ref": "#/1191"
-      },
-      {
         "$ref": "#/1192"
       },
       {
@@ -14693,6 +15030,42 @@
       },
       {
         "$ref": "#/1197"
+      },
+      {
+        "$ref": "#/1198"
+      },
+      {
+        "$ref": "#/1199"
+      },
+      {
+        "$ref": "#/1200"
+      },
+      {
+        "$ref": "#/1201"
+      },
+      {
+        "$ref": "#/1202"
+      },
+      {
+        "$ref": "#/1203"
+      },
+      {
+        "$ref": "#/1204"
+      },
+      {
+        "$ref": "#/1205"
+      },
+      {
+        "$ref": "#/1206"
+      },
+      {
+        "$ref": "#/1207"
+      },
+      {
+        "$ref": "#/1208"
+      },
+      {
+        "$ref": "#/1209"
       },
       {
         "$ref": "#/2"
@@ -14751,40 +15124,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1199"
+        "$ref": "#/1211"
       },
       {
-        "$ref": "#/1200"
+        "$ref": "#/1212"
       },
       {
-        "$ref": "#/1201"
+        "$ref": "#/1213"
       },
       {
-        "$ref": "#/1202"
+        "$ref": "#/1214"
       },
       {
-        "$ref": "#/1203"
+        "$ref": "#/1215"
       },
       {
-        "$ref": "#/1204"
+        "$ref": "#/1216"
       },
       {
-        "$ref": "#/1205"
+        "$ref": "#/1217"
       },
       {
-        "$ref": "#/1206"
+        "$ref": "#/1218"
       },
       {
-        "$ref": "#/1207"
+        "$ref": "#/1219"
       },
       {
-        "$ref": "#/1208"
+        "$ref": "#/1220"
       },
       {
-        "$ref": "#/1209"
+        "$ref": "#/1221"
       },
       {
-        "$ref": "#/1210"
+        "$ref": "#/1222"
       },
       {
         "$ref": "#/2"
@@ -14811,7 +15184,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/1213"
+          "$ref": "#/1225"
         },
         "flags": 1,
         "description": "Privileged Job Type to support polymorphic resource."
@@ -14826,7 +15199,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/disks/privilegedJobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/1175"
+      "$ref": "#/1187"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -14856,28 +15229,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1215"
+          "$ref": "#/1227"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1216"
+          "$ref": "#/1228"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1217"
+          "$ref": "#/1229"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1219"
+          "$ref": "#/1231"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -14897,7 +15270,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/1238"
+          "$ref": "#/1250"
         },
         "flags": 2,
         "description": "The provisioning state of the GPU."
@@ -14967,21 +15340,21 @@
       },
       "gpuMode": {
         "type": {
-          "$ref": "#/1242"
+          "$ref": "#/1254"
         },
         "flags": 2,
         "description": "Specified by admin whether this GPU can be used as DDA, GPU-P with LM. Can only be updated when the GPU is not attached to any VM."
       },
       "ddaDetails": {
         "type": {
-          "$ref": "#/1243"
+          "$ref": "#/1255"
         },
         "flags": 2,
         "description": "Details of the workload using DDA mode."
       },
       "partitionDetails": {
         "type": {
-          "$ref": "#/1245"
+          "$ref": "#/1257"
         },
         "flags": 2,
         "description": "Details of the GPU specifically in GPU-P mode."
@@ -15085,42 +15458,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1220"
-      },
-      {
-        "$ref": "#/1221"
-      },
-      {
-        "$ref": "#/1222"
-      },
-      {
-        "$ref": "#/1223"
-      },
-      {
-        "$ref": "#/1224"
-      },
-      {
-        "$ref": "#/1225"
-      },
-      {
-        "$ref": "#/1226"
-      },
-      {
-        "$ref": "#/1227"
-      },
-      {
-        "$ref": "#/1228"
-      },
-      {
-        "$ref": "#/1229"
-      },
-      {
-        "$ref": "#/1230"
-      },
-      {
-        "$ref": "#/1231"
-      },
-      {
         "$ref": "#/1232"
       },
       {
@@ -15137,6 +15474,42 @@
       },
       {
         "$ref": "#/1237"
+      },
+      {
+        "$ref": "#/1238"
+      },
+      {
+        "$ref": "#/1239"
+      },
+      {
+        "$ref": "#/1240"
+      },
+      {
+        "$ref": "#/1241"
+      },
+      {
+        "$ref": "#/1242"
+      },
+      {
+        "$ref": "#/1243"
+      },
+      {
+        "$ref": "#/1244"
+      },
+      {
+        "$ref": "#/1245"
+      },
+      {
+        "$ref": "#/1246"
+      },
+      {
+        "$ref": "#/1247"
+      },
+      {
+        "$ref": "#/1248"
+      },
+      {
+        "$ref": "#/1249"
       },
       {
         "$ref": "#/2"
@@ -15159,13 +15532,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1239"
+        "$ref": "#/1251"
       },
       {
-        "$ref": "#/1240"
+        "$ref": "#/1252"
       },
       {
-        "$ref": "#/1241"
+        "$ref": "#/1253"
       },
       {
         "$ref": "#/2"
@@ -15185,7 +15558,7 @@
       },
       "workloadDetail": {
         "type": {
-          "$ref": "#/1244"
+          "$ref": "#/1256"
         },
         "flags": 2,
         "description": "The workload to which this GPU is assigned."
@@ -15302,14 +15675,14 @@
       },
       "validPartitionCount": {
         "type": {
-          "$ref": "#/1246"
+          "$ref": "#/1258"
         },
         "flags": 2,
         "description": "IA set of valid partition counts that's predefined to configure."
       },
       "partitions": {
         "type": {
-          "$ref": "#/1248"
+          "$ref": "#/1260"
         },
         "flags": 2,
         "description": "partition details to which GPU is assigned."
@@ -15363,7 +15736,7 @@
       },
       "workloadDetail": {
         "type": {
-          "$ref": "#/1244"
+          "$ref": "#/1256"
         },
         "flags": 2,
         "description": "The workload to which this partition is assigned."
@@ -15373,14 +15746,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1247"
+      "$ref": "#/1259"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/gpus@2026-05-01-preview",
     "body": {
-      "$ref": "#/1218"
+      "$ref": "#/1230"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -15410,28 +15783,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1250"
+          "$ref": "#/1262"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1251"
+          "$ref": "#/1263"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1252"
+          "$ref": "#/1264"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1254"
+          "$ref": "#/1266"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -15459,14 +15832,14 @@
       },
       "deploymentMode": {
         "type": {
-          "$ref": "#/1257"
+          "$ref": "#/1269"
         },
         "flags": 0,
         "description": "Deployment mode for the GPU job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1276"
+          "$ref": "#/1288"
         },
         "flags": 2,
         "description": "Job provisioning state"
@@ -15494,7 +15867,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1289"
+          "$ref": "#/1301"
         },
         "flags": 2,
         "description": "Status of GPU job."
@@ -15508,7 +15881,7 @@
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/807"
+          "$ref": "#/819"
         },
         "flags": 2,
         "description": "Reported properties specific to the GPU job."
@@ -15516,16 +15889,16 @@
     },
     "elements": {
       "AssignPartition": {
-        "$ref": "#/1290"
+        "$ref": "#/1302"
       },
       "CreatePartition": {
-        "$ref": "#/1292"
+        "$ref": "#/1304"
       },
       "RemovePartition": {
-        "$ref": "#/1294"
+        "$ref": "#/1306"
       },
       "SwitchMode": {
-        "$ref": "#/1296"
+        "$ref": "#/1308"
       }
     }
   },
@@ -15541,10 +15914,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1255"
+        "$ref": "#/1267"
       },
       {
-        "$ref": "#/1256"
+        "$ref": "#/1268"
       },
       {
         "$ref": "#/2"
@@ -15627,42 +16000,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1258"
-      },
-      {
-        "$ref": "#/1259"
-      },
-      {
-        "$ref": "#/1260"
-      },
-      {
-        "$ref": "#/1261"
-      },
-      {
-        "$ref": "#/1262"
-      },
-      {
-        "$ref": "#/1263"
-      },
-      {
-        "$ref": "#/1264"
-      },
-      {
-        "$ref": "#/1265"
-      },
-      {
-        "$ref": "#/1266"
-      },
-      {
-        "$ref": "#/1267"
-      },
-      {
-        "$ref": "#/1268"
-      },
-      {
-        "$ref": "#/1269"
-      },
-      {
         "$ref": "#/1270"
       },
       {
@@ -15681,61 +16018,8 @@
         "$ref": "#/1275"
       },
       {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotSpecified"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ValidationInProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ValidationSuccess"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ValidationFailed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DeploymentInProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DeploymentFailed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DeploymentSuccess"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Paused"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Scheduled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/1276"
+      },
       {
         "$ref": "#/1277"
       },
@@ -15770,7 +16054,96 @@
         "$ref": "#/1287"
       },
       {
-        "$ref": "#/1288"
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationSuccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeploymentInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeploymentFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeploymentSuccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/1289"
+      },
+      {
+        "$ref": "#/1290"
+      },
+      {
+        "$ref": "#/1291"
+      },
+      {
+        "$ref": "#/1292"
+      },
+      {
+        "$ref": "#/1293"
+      },
+      {
+        "$ref": "#/1294"
+      },
+      {
+        "$ref": "#/1295"
+      },
+      {
+        "$ref": "#/1296"
+      },
+      {
+        "$ref": "#/1297"
+      },
+      {
+        "$ref": "#/1298"
+      },
+      {
+        "$ref": "#/1299"
+      },
+      {
+        "$ref": "#/1300"
       },
       {
         "$ref": "#/2"
@@ -15790,7 +16163,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/1291"
+          "$ref": "#/1303"
         },
         "flags": 1,
         "description": "Type of GPU job to be performed."
@@ -15814,7 +16187,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/1293"
+          "$ref": "#/1305"
         },
         "flags": 1,
         "description": "Type of GPU job to be performed."
@@ -15838,7 +16211,7 @@
       },
       "jobType": {
         "type": {
-          "$ref": "#/1295"
+          "$ref": "#/1307"
         },
         "flags": 1,
         "description": "Type of GPU job to be performed."
@@ -15855,14 +16228,14 @@
     "properties": {
       "mode": {
         "type": {
-          "$ref": "#/1300"
+          "$ref": "#/1312"
         },
         "flags": 1,
         "description": "Desired GPU mode to switch to."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1301"
+          "$ref": "#/1313"
         },
         "flags": 1,
         "description": "Type of GPU job to be performed."
@@ -15885,13 +16258,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1297"
+        "$ref": "#/1309"
       },
       {
-        "$ref": "#/1298"
+        "$ref": "#/1310"
       },
       {
-        "$ref": "#/1299"
+        "$ref": "#/1311"
       },
       {
         "$ref": "#/2"
@@ -15906,7 +16279,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/gpus/jobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/1253"
+      "$ref": "#/1265"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -15939,21 +16312,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1303"
+          "$ref": "#/1315"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1304"
+          "$ref": "#/1316"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1306"
+          "$ref": "#/1318"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -15974,14 +16347,14 @@
     "baseProperties": {
       "deploymentMode": {
         "type": {
-          "$ref": "#/1309"
+          "$ref": "#/1321"
         },
         "flags": 0,
         "description": "Deployment mode to trigger job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1328"
+          "$ref": "#/1340"
         },
         "flags": 2,
         "description": "Job provisioning state"
@@ -16009,7 +16382,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1341"
+          "$ref": "#/1353"
         },
         "flags": 2,
         "description": "Status of Edge device job."
@@ -16024,16 +16397,16 @@
     },
     "elements": {
       "CollectLog": {
-        "$ref": "#/1342"
-      },
-      "DownloadOs": {
-        "$ref": "#/1346"
-      },
-      "ProvisionOs": {
         "$ref": "#/1354"
       },
+      "DownloadOs": {
+        "$ref": "#/1358"
+      },
+      "ProvisionOs": {
+        "$ref": "#/1366"
+      },
       "RemoteSupport": {
-        "$ref": "#/1364"
+        "$ref": "#/1376"
       }
     }
   },
@@ -16049,10 +16422,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1307"
+        "$ref": "#/1319"
       },
       {
-        "$ref": "#/1308"
+        "$ref": "#/1320"
       },
       {
         "$ref": "#/2"
@@ -16135,42 +16508,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1310"
-      },
-      {
-        "$ref": "#/1311"
-      },
-      {
-        "$ref": "#/1312"
-      },
-      {
-        "$ref": "#/1313"
-      },
-      {
-        "$ref": "#/1314"
-      },
-      {
-        "$ref": "#/1315"
-      },
-      {
-        "$ref": "#/1316"
-      },
-      {
-        "$ref": "#/1317"
-      },
-      {
-        "$ref": "#/1318"
-      },
-      {
-        "$ref": "#/1319"
-      },
-      {
-        "$ref": "#/1320"
-      },
-      {
-        "$ref": "#/1321"
-      },
-      {
         "$ref": "#/1322"
       },
       {
@@ -16187,6 +16524,42 @@
       },
       {
         "$ref": "#/1327"
+      },
+      {
+        "$ref": "#/1328"
+      },
+      {
+        "$ref": "#/1329"
+      },
+      {
+        "$ref": "#/1330"
+      },
+      {
+        "$ref": "#/1331"
+      },
+      {
+        "$ref": "#/1332"
+      },
+      {
+        "$ref": "#/1333"
+      },
+      {
+        "$ref": "#/1334"
+      },
+      {
+        "$ref": "#/1335"
+      },
+      {
+        "$ref": "#/1336"
+      },
+      {
+        "$ref": "#/1337"
+      },
+      {
+        "$ref": "#/1338"
+      },
+      {
+        "$ref": "#/1339"
       },
       {
         "$ref": "#/2"
@@ -16245,40 +16618,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1329"
+        "$ref": "#/1341"
       },
       {
-        "$ref": "#/1330"
+        "$ref": "#/1342"
       },
       {
-        "$ref": "#/1331"
+        "$ref": "#/1343"
       },
       {
-        "$ref": "#/1332"
+        "$ref": "#/1344"
       },
       {
-        "$ref": "#/1333"
+        "$ref": "#/1345"
       },
       {
-        "$ref": "#/1334"
+        "$ref": "#/1346"
       },
       {
-        "$ref": "#/1335"
+        "$ref": "#/1347"
       },
       {
-        "$ref": "#/1336"
+        "$ref": "#/1348"
       },
       {
-        "$ref": "#/1337"
+        "$ref": "#/1349"
       },
       {
-        "$ref": "#/1338"
+        "$ref": "#/1350"
       },
       {
-        "$ref": "#/1339"
+        "$ref": "#/1351"
       },
       {
-        "$ref": "#/1340"
+        "$ref": "#/1352"
       },
       {
         "$ref": "#/2"
@@ -16312,14 +16685,14 @@
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1343"
+          "$ref": "#/1355"
         },
         "flags": 2,
         "description": "log collection job reported properties."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1345"
+          "$ref": "#/1357"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -16353,7 +16726,7 @@
       },
       "logCollectionSessionDetails": {
         "type": {
-          "$ref": "#/1344"
+          "$ref": "#/1356"
         },
         "flags": 2,
         "description": "Details of the log collection session."
@@ -16376,21 +16749,21 @@
     "properties": {
       "downloadRequest": {
         "type": {
-          "$ref": "#/1347"
+          "$ref": "#/1359"
         },
         "flags": 1,
         "description": "Download OS request."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1352"
+          "$ref": "#/1364"
         },
         "flags": 0,
         "description": "Reported Properties for Download Os job"
       },
       "jobType": {
         "type": {
-          "$ref": "#/1353"
+          "$ref": "#/1365"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -16403,14 +16776,14 @@
     "properties": {
       "target": {
         "type": {
-          "$ref": "#/1350"
+          "$ref": "#/1362"
         },
         "flags": 1,
         "description": "Target operating system to support polymorphic resource."
       },
       "osProfile": {
         "type": {
-          "$ref": "#/1351"
+          "$ref": "#/1363"
         },
         "flags": 1,
         "description": "Operating system profile."
@@ -16429,10 +16802,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1348"
+        "$ref": "#/1360"
       },
       {
-        "$ref": "#/1349"
+        "$ref": "#/1361"
       },
       {
         "$ref": "#/2"
@@ -16531,21 +16904,21 @@
     "properties": {
       "provisioningRequest": {
         "type": {
-          "$ref": "#/1355"
+          "$ref": "#/1367"
         },
         "flags": 1,
         "description": "Os Provisioning request."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1352"
+          "$ref": "#/1364"
         },
         "flags": 0,
         "description": "Reported Properties for Provision Os job"
       },
       "jobType": {
         "type": {
-          "$ref": "#/1363"
+          "$ref": "#/1375"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -16558,7 +16931,7 @@
     "properties": {
       "target": {
         "type": {
-          "$ref": "#/1358"
+          "$ref": "#/1370"
         },
         "flags": 1,
         "description": "Target operating system to support polymorphic resource."
@@ -16572,14 +16945,14 @@
       },
       "userDetails": {
         "type": {
-          "$ref": "#/1359"
+          "$ref": "#/1371"
         },
         "flags": 0,
         "description": "User configuration."
       },
       "onboardingConfiguration": {
         "type": {
-          "$ref": "#/1360"
+          "$ref": "#/1372"
         },
         "flags": 0,
         "description": "Onboarding configuration."
@@ -16612,10 +16985,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1356"
+        "$ref": "#/1368"
       },
       {
-        "$ref": "#/1357"
+        "$ref": "#/1369"
       },
       {
         "$ref": "#/2"
@@ -16634,7 +17007,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1362"
+          "$ref": "#/1374"
         },
         "flags": 0,
         "description": "Type of the onboarding resource to support polymorphic resource."
@@ -16677,7 +17050,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1361"
+        "$ref": "#/1373"
       },
       {
         "$ref": "#/2"
@@ -16694,7 +17067,7 @@
     "properties": {
       "accessLevel": {
         "type": {
-          "$ref": "#/1368"
+          "$ref": "#/1380"
         },
         "flags": 1,
         "description": "Remote support access level."
@@ -16708,21 +17081,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1371"
+          "$ref": "#/1383"
         },
         "flags": 1,
         "description": "Remote support type."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1372"
+          "$ref": "#/1384"
         },
         "flags": 2,
         "description": "log collection job reported properties."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1375"
+          "$ref": "#/1387"
         },
         "flags": 1,
         "description": "Job Type to support polymorphic resource."
@@ -16745,13 +17118,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1365"
+        "$ref": "#/1377"
       },
       {
-        "$ref": "#/1366"
+        "$ref": "#/1378"
       },
       {
-        "$ref": "#/1367"
+        "$ref": "#/1379"
       },
       {
         "$ref": "#/2"
@@ -16770,10 +17143,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1369"
+        "$ref": "#/1381"
       },
       {
-        "$ref": "#/1370"
+        "$ref": "#/1382"
       },
       {
         "$ref": "#/2"
@@ -16807,14 +17180,14 @@
       },
       "nodeSettings": {
         "type": {
-          "$ref": "#/1373"
+          "$ref": "#/1385"
         },
         "flags": 2,
         "description": "Optional settings for configuring the node for remote support."
       },
       "sessionDetails": {
         "type": {
-          "$ref": "#/1374"
+          "$ref": "#/1386"
         },
         "flags": 2,
         "description": "Details of the remote support session."
@@ -16876,7 +17249,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/jobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/1305"
+      "$ref": "#/1317"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -16909,21 +17282,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1377"
+          "$ref": "#/1389"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1378"
+          "$ref": "#/1390"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1380"
+          "$ref": "#/1392"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -16944,14 +17317,14 @@
     "baseProperties": {
       "deploymentMode": {
         "type": {
-          "$ref": "#/1383"
+          "$ref": "#/1395"
         },
         "flags": 0,
         "description": "Deployment mode to trigger job."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1402"
+          "$ref": "#/1414"
         },
         "flags": 2,
         "description": "Provisioning state of the job."
@@ -16979,7 +17352,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1415"
+          "$ref": "#/1427"
         },
         "flags": 2,
         "description": "Status of Edge device job."
@@ -16993,7 +17366,7 @@
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1416"
+          "$ref": "#/1428"
         },
         "flags": 2,
         "description": "Reported properties for Network Adapter Job."
@@ -17001,13 +17374,13 @@
     },
     "elements": {
       "ApplyConfiguration": {
-        "$ref": "#/1422"
+        "$ref": "#/1434"
       },
       "ForcePush": {
-        "$ref": "#/1449"
+        "$ref": "#/1461"
       },
       "SyncConfiguration": {
-        "$ref": "#/1451"
+        "$ref": "#/1463"
       }
     }
   },
@@ -17023,10 +17396,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1381"
+        "$ref": "#/1393"
       },
       {
-        "$ref": "#/1382"
+        "$ref": "#/1394"
       },
       {
         "$ref": "#/2"
@@ -17109,42 +17482,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1384"
-      },
-      {
-        "$ref": "#/1385"
-      },
-      {
-        "$ref": "#/1386"
-      },
-      {
-        "$ref": "#/1387"
-      },
-      {
-        "$ref": "#/1388"
-      },
-      {
-        "$ref": "#/1389"
-      },
-      {
-        "$ref": "#/1390"
-      },
-      {
-        "$ref": "#/1391"
-      },
-      {
-        "$ref": "#/1392"
-      },
-      {
-        "$ref": "#/1393"
-      },
-      {
-        "$ref": "#/1394"
-      },
-      {
-        "$ref": "#/1395"
-      },
-      {
         "$ref": "#/1396"
       },
       {
@@ -17161,6 +17498,42 @@
       },
       {
         "$ref": "#/1401"
+      },
+      {
+        "$ref": "#/1402"
+      },
+      {
+        "$ref": "#/1403"
+      },
+      {
+        "$ref": "#/1404"
+      },
+      {
+        "$ref": "#/1405"
+      },
+      {
+        "$ref": "#/1406"
+      },
+      {
+        "$ref": "#/1407"
+      },
+      {
+        "$ref": "#/1408"
+      },
+      {
+        "$ref": "#/1409"
+      },
+      {
+        "$ref": "#/1410"
+      },
+      {
+        "$ref": "#/1411"
+      },
+      {
+        "$ref": "#/1412"
+      },
+      {
+        "$ref": "#/1413"
       },
       {
         "$ref": "#/2"
@@ -17219,40 +17592,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1403"
+        "$ref": "#/1415"
       },
       {
-        "$ref": "#/1404"
+        "$ref": "#/1416"
       },
       {
-        "$ref": "#/1405"
+        "$ref": "#/1417"
       },
       {
-        "$ref": "#/1406"
+        "$ref": "#/1418"
       },
       {
-        "$ref": "#/1407"
+        "$ref": "#/1419"
       },
       {
-        "$ref": "#/1408"
+        "$ref": "#/1420"
       },
       {
-        "$ref": "#/1409"
+        "$ref": "#/1421"
       },
       {
-        "$ref": "#/1410"
+        "$ref": "#/1422"
       },
       {
-        "$ref": "#/1411"
+        "$ref": "#/1423"
       },
       {
-        "$ref": "#/1412"
+        "$ref": "#/1424"
       },
       {
-        "$ref": "#/1413"
+        "$ref": "#/1425"
       },
       {
-        "$ref": "#/1414"
+        "$ref": "#/1426"
       },
       {
         "$ref": "#/2"
@@ -17272,14 +17645,14 @@
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/1417"
+          "$ref": "#/1429"
         },
         "flags": 2,
         "description": "Validation status of Network Adapter Job."
       },
       "deploymentStatus": {
         "type": {
-          "$ref": "#/1417"
+          "$ref": "#/1429"
         },
         "flags": 2,
         "description": "Deployment status of Network Adapter Job."
@@ -17299,7 +17672,7 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/1421"
+          "$ref": "#/1433"
         },
         "flags": 2,
         "description": "List of steps of Network Adapter Job."
@@ -17354,14 +17727,14 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/1419"
+          "$ref": "#/1431"
         },
         "flags": 2,
         "description": "List of nested steps."
       },
       "exception": {
         "type": {
-          "$ref": "#/1420"
+          "$ref": "#/1432"
         },
         "flags": 2,
         "description": "List of exceptions."
@@ -17371,7 +17744,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1418"
+      "$ref": "#/1430"
     }
   },
   {
@@ -17383,7 +17756,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1418"
+      "$ref": "#/1430"
     }
   },
   {
@@ -17392,14 +17765,14 @@
     "properties": {
       "targetConfiguration": {
         "type": {
-          "$ref": "#/1423"
+          "$ref": "#/1435"
         },
         "flags": 1,
         "description": "The desired network configuration to apply."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1448"
+          "$ref": "#/1460"
         },
         "flags": 1,
         "description": "Type of operation."
@@ -17440,14 +17813,14 @@
       },
       "dnsServers": {
         "type": {
-          "$ref": "#/1424"
+          "$ref": "#/1436"
         },
         "flags": 0,
         "description": "List of DNS servers."
       },
       "ipInterfaceType": {
         "type": {
-          "$ref": "#/1427"
+          "$ref": "#/1439"
         },
         "flags": 0,
         "description": "IP configuration type (Dhcp or Static)."
@@ -17461,14 +17834,14 @@
       },
       "interfaceState": {
         "type": {
-          "$ref": "#/1430"
+          "$ref": "#/1442"
         },
         "flags": 0,
         "description": "Administrative state of the interface (up or down)."
       },
       "wifiConfiguration": {
         "type": {
-          "$ref": "#/1431"
+          "$ref": "#/1443"
         },
         "flags": 0,
         "description": "WiFi configuration desired properties."
@@ -17493,10 +17866,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1425"
+        "$ref": "#/1437"
       },
       {
-        "$ref": "#/1426"
+        "$ref": "#/1438"
       },
       {
         "$ref": "#/2"
@@ -17515,10 +17888,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1428"
+        "$ref": "#/1440"
       },
       {
-        "$ref": "#/1429"
+        "$ref": "#/1441"
       },
       {
         "$ref": "#/2"
@@ -17538,14 +17911,14 @@
       },
       "authenticationType": {
         "type": {
-          "$ref": "#/1437"
+          "$ref": "#/1449"
         },
         "flags": 0,
         "description": "WiFi authentication type."
       },
       "eapMethod": {
         "type": {
-          "$ref": "#/1442"
+          "$ref": "#/1454"
         },
         "flags": 0,
         "description": "EAP method used for authentication."
@@ -17559,7 +17932,7 @@
       },
       "wifiSecret": {
         "type": {
-          "$ref": "#/1443"
+          "$ref": "#/1455"
         },
         "flags": 0,
         "description": "WiFi secret reference."
@@ -17590,19 +17963,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1432"
+        "$ref": "#/1444"
       },
       {
-        "$ref": "#/1433"
+        "$ref": "#/1445"
       },
       {
-        "$ref": "#/1434"
+        "$ref": "#/1446"
       },
       {
-        "$ref": "#/1435"
+        "$ref": "#/1447"
       },
       {
-        "$ref": "#/1436"
+        "$ref": "#/1448"
       },
       {
         "$ref": "#/2"
@@ -17629,16 +18002,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1438"
+        "$ref": "#/1450"
       },
       {
-        "$ref": "#/1439"
+        "$ref": "#/1451"
       },
       {
-        "$ref": "#/1440"
+        "$ref": "#/1452"
       },
       {
-        "$ref": "#/1441"
+        "$ref": "#/1453"
       },
       {
         "$ref": "#/2"
@@ -17665,7 +18038,7 @@
       },
       "secretType": {
         "type": {
-          "$ref": "#/1447"
+          "$ref": "#/1459"
         },
         "flags": 0,
         "description": "Type of the WiFi secret."
@@ -17688,13 +18061,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1444"
+        "$ref": "#/1456"
       },
       {
-        "$ref": "#/1445"
+        "$ref": "#/1457"
       },
       {
-        "$ref": "#/1446"
+        "$ref": "#/1458"
       },
       {
         "$ref": "#/2"
@@ -17711,7 +18084,7 @@
     "properties": {
       "jobType": {
         "type": {
-          "$ref": "#/1450"
+          "$ref": "#/1462"
         },
         "flags": 1,
         "description": "Type of operation."
@@ -17728,14 +18101,14 @@
     "properties": {
       "resolutionStrategy": {
         "type": {
-          "$ref": "#/1454"
+          "$ref": "#/1466"
         },
         "flags": 5,
         "description": "The strategy to use for resolving the configuration drift."
       },
       "jobType": {
         "type": {
-          "$ref": "#/1455"
+          "$ref": "#/1467"
         },
         "flags": 1,
         "description": "Type of operation."
@@ -17754,10 +18127,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1452"
+        "$ref": "#/1464"
       },
       {
-        "$ref": "#/1453"
+        "$ref": "#/1465"
       },
       {
         "$ref": "#/2"
@@ -17772,7 +18145,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/jobs@2026-05-01-preview",
     "body": {
-      "$ref": "#/1379"
+      "$ref": "#/1391"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -17805,21 +18178,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1457"
+          "$ref": "#/1469"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1458"
+          "$ref": "#/1470"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1460"
+          "$ref": "#/1472"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -17839,21 +18212,21 @@
     "properties": {
       "solutionType": {
         "type": {
-          "$ref": "#/1463"
+          "$ref": "#/1475"
         },
         "flags": 0,
         "description": "The solution type for the available updates."
       },
       "values": {
         "type": {
-          "$ref": "#/1465"
+          "$ref": "#/1477"
         },
         "flags": 1,
         "description": "The list of available updates."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1484"
+          "$ref": "#/1496"
         },
         "flags": 2,
         "description": "Provisioning state of the updates resource."
@@ -17872,10 +18245,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1461"
+        "$ref": "#/1473"
       },
       {
-        "$ref": "#/1462"
+        "$ref": "#/1474"
       },
       {
         "$ref": "#/2"
@@ -17947,7 +18320,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1464"
+      "$ref": "#/1476"
     }
   },
   {
@@ -18026,42 +18399,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1466"
-      },
-      {
-        "$ref": "#/1467"
-      },
-      {
-        "$ref": "#/1468"
-      },
-      {
-        "$ref": "#/1469"
-      },
-      {
-        "$ref": "#/1470"
-      },
-      {
-        "$ref": "#/1471"
-      },
-      {
-        "$ref": "#/1472"
-      },
-      {
-        "$ref": "#/1473"
-      },
-      {
-        "$ref": "#/1474"
-      },
-      {
-        "$ref": "#/1475"
-      },
-      {
-        "$ref": "#/1476"
-      },
-      {
-        "$ref": "#/1477"
-      },
-      {
         "$ref": "#/1478"
       },
       {
@@ -18080,6 +18417,42 @@
         "$ref": "#/1483"
       },
       {
+        "$ref": "#/1484"
+      },
+      {
+        "$ref": "#/1485"
+      },
+      {
+        "$ref": "#/1486"
+      },
+      {
+        "$ref": "#/1487"
+      },
+      {
+        "$ref": "#/1488"
+      },
+      {
+        "$ref": "#/1489"
+      },
+      {
+        "$ref": "#/1490"
+      },
+      {
+        "$ref": "#/1491"
+      },
+      {
+        "$ref": "#/1492"
+      },
+      {
+        "$ref": "#/1493"
+      },
+      {
+        "$ref": "#/1494"
+      },
+      {
+        "$ref": "#/1495"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -18088,7 +18461,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/updates@2026-05-01-preview",
     "body": {
-      "$ref": "#/1459"
+      "$ref": "#/1471"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -18121,21 +18494,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1486"
+          "$ref": "#/1498"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1487"
+          "$ref": "#/1499"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1489"
+          "$ref": "#/1501"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -18155,21 +18528,21 @@
     "properties": {
       "volumeConfiguration": {
         "type": {
-          "$ref": "#/1490"
+          "$ref": "#/1502"
         },
         "flags": 0,
         "description": "Desired configuration for this volume."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1491"
+          "$ref": "#/1503"
         },
         "flags": 2,
         "description": "The actual state of the volume as reported by the device."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1510"
+          "$ref": "#/1522"
         },
         "flags": 2,
         "description": "Provisioning state of the volume resource."
@@ -18334,42 +18707,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1492"
-      },
-      {
-        "$ref": "#/1493"
-      },
-      {
-        "$ref": "#/1494"
-      },
-      {
-        "$ref": "#/1495"
-      },
-      {
-        "$ref": "#/1496"
-      },
-      {
-        "$ref": "#/1497"
-      },
-      {
-        "$ref": "#/1498"
-      },
-      {
-        "$ref": "#/1499"
-      },
-      {
-        "$ref": "#/1500"
-      },
-      {
-        "$ref": "#/1501"
-      },
-      {
-        "$ref": "#/1502"
-      },
-      {
-        "$ref": "#/1503"
-      },
-      {
         "$ref": "#/1504"
       },
       {
@@ -18388,6 +18725,42 @@
         "$ref": "#/1509"
       },
       {
+        "$ref": "#/1510"
+      },
+      {
+        "$ref": "#/1511"
+      },
+      {
+        "$ref": "#/1512"
+      },
+      {
+        "$ref": "#/1513"
+      },
+      {
+        "$ref": "#/1514"
+      },
+      {
+        "$ref": "#/1515"
+      },
+      {
+        "$ref": "#/1516"
+      },
+      {
+        "$ref": "#/1517"
+      },
+      {
+        "$ref": "#/1518"
+      },
+      {
+        "$ref": "#/1519"
+      },
+      {
+        "$ref": "#/1520"
+      },
+      {
+        "$ref": "#/1521"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -18396,7 +18769,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/volumes@2026-05-01-preview",
     "body": {
-      "$ref": "#/1488"
+      "$ref": "#/1500"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -18426,28 +18799,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1512"
+          "$ref": "#/1524"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1513"
+          "$ref": "#/1525"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1514"
+          "$ref": "#/1526"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1516"
+          "$ref": "#/1528"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -18499,7 +18872,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/locations/osImages@2026-05-01-preview",
     "body": {
-      "$ref": "#/1515"
+      "$ref": "#/1527"
     },
     "readableScopes": 4,
     "writableScopes": 0
@@ -18525,28 +18898,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1512"
+          "$ref": "#/1524"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1518"
+          "$ref": "#/1530"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1519"
+          "$ref": "#/1531"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1521"
+          "$ref": "#/1533"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -18566,7 +18939,7 @@
     "properties": {
       "platformUpdateDetails": {
         "type": {
-          "$ref": "#/1525"
+          "$ref": "#/1537"
         },
         "flags": 1,
         "description": "Represents applicable platform updates."
@@ -18593,7 +18966,7 @@
       },
       "platformPayloads": {
         "type": {
-          "$ref": "#/1524"
+          "$ref": "#/1536"
         },
         "flags": 1,
         "description": "Represents the platform payloads of a platform update."
@@ -18637,20 +19010,20 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1523"
+      "$ref": "#/1535"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1522"
+      "$ref": "#/1534"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/locations/platformUpdates@2026-05-01-preview",
     "body": {
-      "$ref": "#/1520"
+      "$ref": "#/1532"
     },
     "readableScopes": 4,
     "writableScopes": 0
@@ -18676,28 +19049,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1512"
+          "$ref": "#/1524"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1527"
+          "$ref": "#/1539"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1528"
+          "$ref": "#/1540"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1530"
+          "$ref": "#/1542"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -18717,7 +19090,7 @@
     "properties": {
       "updatePayloads": {
         "type": {
-          "$ref": "#/1532"
+          "$ref": "#/1544"
         },
         "flags": 1,
         "description": "Represents the payloads of a update content resource."
@@ -18782,14 +19155,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1531"
+      "$ref": "#/1543"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/locations/updateContents@2026-05-01-preview",
     "body": {
-      "$ref": "#/1529"
+      "$ref": "#/1541"
     },
     "readableScopes": 4,
     "writableScopes": 0
@@ -18815,28 +19188,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1512"
+          "$ref": "#/1524"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1534"
+          "$ref": "#/1546"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1535"
+          "$ref": "#/1547"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1537"
+          "$ref": "#/1549"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -18856,7 +19229,7 @@
     "properties": {
       "recipeContent": {
         "type": {
-          "$ref": "#/1538"
+          "$ref": "#/1550"
         },
         "flags": 1,
         "description": "Represents contents of a validated solution recipe."
@@ -18876,21 +19249,21 @@
     "properties": {
       "info": {
         "type": {
-          "$ref": "#/1539"
+          "$ref": "#/1551"
         },
         "flags": 1,
         "description": "Represents information about a validated solution recipe."
       },
       "capabilities": {
         "type": {
-          "$ref": "#/1540"
+          "$ref": "#/1552"
         },
         "flags": 0,
         "description": "Represents capabilities available in a validated solution recipe."
       },
       "components": {
         "type": {
-          "$ref": "#/1549"
+          "$ref": "#/1561"
         },
         "flags": 1,
         "description": "Represents components available in a validated solution recipe."
@@ -18923,14 +19296,14 @@
     "properties": {
       "clusterCapabilities": {
         "type": {
-          "$ref": "#/1542"
+          "$ref": "#/1554"
         },
         "flags": 1,
         "description": "Represents the cluster capabilities."
       },
       "nodeCapabilities": {
         "type": {
-          "$ref": "#/1543"
+          "$ref": "#/1555"
         },
         "flags": 1,
         "description": "Represents the node capabilities."
@@ -18953,13 +19326,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1541"
+      "$ref": "#/1553"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1541"
+      "$ref": "#/1553"
     }
   },
   {
@@ -18996,21 +19369,21 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/1545"
+          "$ref": "#/1557"
         },
         "flags": 1,
         "description": "Represents the component's tags."
       },
       "payloads": {
         "type": {
-          "$ref": "#/1547"
+          "$ref": "#/1559"
         },
         "flags": 0,
         "description": "Represents the component's payloads."
       },
       "metadata": {
         "type": {
-          "$ref": "#/1548"
+          "$ref": "#/1560"
         },
         "flags": 0,
         "description": "Represents the component's metadata."
@@ -19060,7 +19433,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1546"
+      "$ref": "#/1558"
     }
   },
   {
@@ -19149,14 +19522,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1544"
+      "$ref": "#/1556"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/locations/validatedSolutionRecipes@2026-05-01-preview",
     "body": {
-      "$ref": "#/1536"
+      "$ref": "#/1548"
     },
     "readableScopes": 4,
     "writableScopes": 0
@@ -19189,21 +19562,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1551"
+          "$ref": "#/1563"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1552"
+          "$ref": "#/1564"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1554"
+          "$ref": "#/1566"
         },
         "flags": 2,
         "description": "Offer properties."
@@ -19251,7 +19624,7 @@
       },
       "skuMappings": {
         "type": {
-          "$ref": "#/1557"
+          "$ref": "#/1569"
         },
         "flags": 0,
         "description": "Array of SKU mappings"
@@ -19278,7 +19651,7 @@
       },
       "marketplaceSkuVersions": {
         "type": {
-          "$ref": "#/1556"
+          "$ref": "#/1568"
         },
         "flags": 0,
         "description": "Array of SKU versions available"
@@ -19294,14 +19667,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1555"
+      "$ref": "#/1567"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/publishers/offers@2026-05-01-preview",
     "body": {
-      "$ref": "#/1553"
+      "$ref": "#/1565"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -19334,21 +19707,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1559"
+          "$ref": "#/1571"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1560"
+          "$ref": "#/1572"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1562"
+          "$ref": "#/1574"
         },
         "flags": 2,
         "description": "Publisher properties."
@@ -19379,7 +19752,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/publishers@2026-05-01-preview",
     "body": {
-      "$ref": "#/1561"
+      "$ref": "#/1573"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -19412,21 +19785,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1564"
+          "$ref": "#/1576"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1565"
+          "$ref": "#/1577"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1567"
+          "$ref": "#/1579"
         },
         "flags": 2,
         "description": "SKU properties."
@@ -19481,7 +19854,7 @@
       },
       "skuMappings": {
         "type": {
-          "$ref": "#/1568"
+          "$ref": "#/1580"
         },
         "flags": 0,
         "description": "Array of SKU mappings"
@@ -19491,14 +19864,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1555"
+      "$ref": "#/1567"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/clusters/publishers/offers/skus@2026-05-01-preview",
     "body": {
-      "$ref": "#/1566"
+      "$ref": "#/1578"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -19531,21 +19904,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1570"
+          "$ref": "#/1582"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1571"
+          "$ref": "#/1583"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1573"
+          "$ref": "#/1585"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -19565,21 +19938,21 @@
     "properties": {
       "networkConfiguration": {
         "type": {
-          "$ref": "#/1423"
+          "$ref": "#/1435"
         },
         "flags": 0,
         "description": "The authoritative desired configuration for this specific interface."
       },
       "reportedProperties": {
         "type": {
-          "$ref": "#/1574"
+          "$ref": "#/1586"
         },
         "flags": 2,
         "description": "The actual applied configuration reported by the device."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/1632"
+          "$ref": "#/1644"
         },
         "flags": 2,
         "description": "Provisioning state of the network adapter resource."
@@ -19620,7 +19993,7 @@
       },
       "dnsServers": {
         "type": {
-          "$ref": "#/1575"
+          "$ref": "#/1587"
         },
         "flags": 0,
         "description": "List of DNS servers."
@@ -19676,7 +20049,7 @@
       },
       "interfaceType": {
         "type": {
-          "$ref": "#/1578"
+          "$ref": "#/1590"
         },
         "flags": 2,
         "description": "Type of network interface."
@@ -19690,7 +20063,7 @@
       },
       "interfaceState": {
         "type": {
-          "$ref": "#/1581"
+          "$ref": "#/1593"
         },
         "flags": 2,
         "description": "Current state of the interface."
@@ -19711,14 +20084,14 @@
       },
       "ipInterfaceType": {
         "type": {
-          "$ref": "#/1584"
+          "$ref": "#/1596"
         },
         "flags": 2,
         "description": "IP configuration type."
       },
       "vlanId": {
         "type": {
-          "$ref": "#/1585"
+          "$ref": "#/1597"
         },
         "flags": 2,
         "description": "VLAN identifier (0-4096)."
@@ -19732,21 +20105,21 @@
       },
       "rdmaCapability": {
         "type": {
-          "$ref": "#/1588"
+          "$ref": "#/1600"
         },
         "flags": 2,
         "description": "RDMA capability of the network adapter."
       },
       "networkAdapterStatus": {
         "type": {
-          "$ref": "#/1589"
+          "$ref": "#/1601"
         },
         "flags": 2,
         "description": "The observed state of network adapter."
       },
       "wifiConfiguration": {
         "type": {
-          "$ref": "#/1595"
+          "$ref": "#/1607"
         },
         "flags": 2,
         "description": "WiFi configuration reported properties."
@@ -19771,10 +20144,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1576"
+        "$ref": "#/1588"
       },
       {
-        "$ref": "#/1577"
+        "$ref": "#/1589"
       },
       {
         "$ref": "#/2"
@@ -19793,10 +20166,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1579"
+        "$ref": "#/1591"
       },
       {
-        "$ref": "#/1580"
+        "$ref": "#/1592"
       },
       {
         "$ref": "#/2"
@@ -19815,10 +20188,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1582"
+        "$ref": "#/1594"
       },
       {
-        "$ref": "#/1583"
+        "$ref": "#/1595"
       },
       {
         "$ref": "#/2"
@@ -19842,10 +20215,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1586"
+        "$ref": "#/1598"
       },
       {
-        "$ref": "#/1587"
+        "$ref": "#/1599"
       },
       {
         "$ref": "#/2"
@@ -19872,7 +20245,7 @@
       },
       "provisioningStatus": {
         "type": {
-          "$ref": "#/1590"
+          "$ref": "#/1602"
         },
         "flags": 2,
         "description": "Network adapter provisioning status."
@@ -19892,7 +20265,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/1594"
+          "$ref": "#/1606"
         },
         "flags": 2,
         "description": "The status of the operation performed on the network adapter."
@@ -19915,13 +20288,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1591"
+        "$ref": "#/1603"
       },
       {
-        "$ref": "#/1592"
+        "$ref": "#/1604"
       },
       {
-        "$ref": "#/1593"
+        "$ref": "#/1605"
       },
       {
         "$ref": "#/2"
@@ -19941,14 +20314,14 @@
       },
       "authenticationType": {
         "type": {
-          "$ref": "#/1601"
+          "$ref": "#/1613"
         },
         "flags": 0,
         "description": "WiFi authentication type."
       },
       "eapMethod": {
         "type": {
-          "$ref": "#/1606"
+          "$ref": "#/1618"
         },
         "flags": 0,
         "description": "EAP method used for authentication."
@@ -19969,7 +20342,7 @@
       },
       "connectionState": {
         "type": {
-          "$ref": "#/1613"
+          "$ref": "#/1625"
         },
         "flags": 2,
         "description": "Current WiFi connection state."
@@ -20007,19 +20380,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1596"
+        "$ref": "#/1608"
       },
       {
-        "$ref": "#/1597"
+        "$ref": "#/1609"
       },
       {
-        "$ref": "#/1598"
+        "$ref": "#/1610"
       },
       {
-        "$ref": "#/1599"
+        "$ref": "#/1611"
       },
       {
-        "$ref": "#/1600"
+        "$ref": "#/1612"
       },
       {
         "$ref": "#/2"
@@ -20046,16 +20419,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1602"
+        "$ref": "#/1614"
       },
       {
-        "$ref": "#/1603"
+        "$ref": "#/1615"
       },
       {
-        "$ref": "#/1604"
+        "$ref": "#/1616"
       },
       {
-        "$ref": "#/1605"
+        "$ref": "#/1617"
       },
       {
         "$ref": "#/2"
@@ -20090,22 +20463,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1607"
+        "$ref": "#/1619"
       },
       {
-        "$ref": "#/1608"
+        "$ref": "#/1620"
       },
       {
-        "$ref": "#/1609"
+        "$ref": "#/1621"
       },
       {
-        "$ref": "#/1610"
+        "$ref": "#/1622"
       },
       {
-        "$ref": "#/1611"
+        "$ref": "#/1623"
       },
       {
-        "$ref": "#/1612"
+        "$ref": "#/1624"
       },
       {
         "$ref": "#/2"
@@ -20188,42 +20561,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1614"
-      },
-      {
-        "$ref": "#/1615"
-      },
-      {
-        "$ref": "#/1616"
-      },
-      {
-        "$ref": "#/1617"
-      },
-      {
-        "$ref": "#/1618"
-      },
-      {
-        "$ref": "#/1619"
-      },
-      {
-        "$ref": "#/1620"
-      },
-      {
-        "$ref": "#/1621"
-      },
-      {
-        "$ref": "#/1622"
-      },
-      {
-        "$ref": "#/1623"
-      },
-      {
-        "$ref": "#/1624"
-      },
-      {
-        "$ref": "#/1625"
-      },
-      {
         "$ref": "#/1626"
       },
       {
@@ -20242,6 +20579,42 @@
         "$ref": "#/1631"
       },
       {
+        "$ref": "#/1632"
+      },
+      {
+        "$ref": "#/1633"
+      },
+      {
+        "$ref": "#/1634"
+      },
+      {
+        "$ref": "#/1635"
+      },
+      {
+        "$ref": "#/1636"
+      },
+      {
+        "$ref": "#/1637"
+      },
+      {
+        "$ref": "#/1638"
+      },
+      {
+        "$ref": "#/1639"
+      },
+      {
+        "$ref": "#/1640"
+      },
+      {
+        "$ref": "#/1641"
+      },
+      {
+        "$ref": "#/1642"
+      },
+      {
+        "$ref": "#/1643"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -20250,7 +20623,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.AzureStackHCI/edgeMachines/networkAdapters@2026-05-01-preview",
     "body": {
-      "$ref": "#/1572"
+      "$ref": "#/1584"
     },
     "readableScopes": 8,
     "writableScopes": 0
@@ -20261,7 +20634,7 @@
     "properties": {
       "edgeDeviceIds": {
         "type": {
-          "$ref": "#/1635"
+          "$ref": "#/1647"
         },
         "flags": 1,
         "description": "Node Ids against which, current node has to be validated."
@@ -20300,10 +20673,10 @@
     "resourceType": "Microsoft.AzureStackHCI/edgeDevices",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1636"
+      "$ref": "#/1648"
     },
     "input": {
-      "$ref": "#/1634"
+      "$ref": "#/1646"
     }
   },
   {
@@ -20312,7 +20685,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1639"
+          "$ref": "#/1651"
         },
         "flags": 1,
         "description": "Properties of the change-ring request."
@@ -20359,7 +20732,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/1641"
+          "$ref": "#/1653"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -20415,10 +20788,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1640"
+      "$ref": "#/1652"
     },
     "input": {
-      "$ref": "#/1638"
+      "$ref": "#/1650"
     }
   },
   {
@@ -20427,7 +20800,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1644"
+          "$ref": "#/1656"
         },
         "flags": 0,
         "description": "Properties for Remote Support Request"
@@ -20440,7 +20813,7 @@
     "properties": {
       "accessLevel": {
         "type": {
-          "$ref": "#/1647"
+          "$ref": "#/1659"
         },
         "flags": 2,
         "description": "Remote Support Access Level"
@@ -20454,7 +20827,7 @@
       },
       "remoteSupportType": {
         "type": {
-          "$ref": "#/1650"
+          "$ref": "#/1662"
         },
         "flags": 0,
         "description": "Remote Support Type for cluster"
@@ -20473,10 +20846,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1645"
+        "$ref": "#/1657"
       },
       {
-        "$ref": "#/1646"
+        "$ref": "#/1658"
       },
       {
         "$ref": "#/2"
@@ -20495,10 +20868,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1648"
+        "$ref": "#/1660"
       },
       {
-        "$ref": "#/1649"
+        "$ref": "#/1661"
       },
       {
         "$ref": "#/2"
@@ -20511,10 +20884,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1640"
+      "$ref": "#/1652"
     },
     "input": {
-      "$ref": "#/1643"
+      "$ref": "#/1655"
     }
   },
   {
@@ -20523,7 +20896,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1653"
+          "$ref": "#/1665"
         },
         "flags": 2,
         "description": "Cluster identity properties."
@@ -20566,7 +20939,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1652"
+      "$ref": "#/1664"
     }
   },
   {
@@ -20575,7 +20948,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1656"
+          "$ref": "#/1668"
         },
         "flags": 0
       }
@@ -20587,7 +20960,7 @@
     "properties": {
       "softwareAssuranceIntent": {
         "type": {
-          "$ref": "#/1659"
+          "$ref": "#/1671"
         },
         "flags": 0,
         "description": "Customer Intent for Software Assurance Benefit. This indicates whether the customer wishes to opt in or out of the Software Assurance program, which provides licensing and support benefits."
@@ -20606,10 +20979,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1657"
+        "$ref": "#/1669"
       },
       {
-        "$ref": "#/1658"
+        "$ref": "#/1670"
       },
       {
         "$ref": "#/2"
@@ -20622,10 +20995,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1640"
+      "$ref": "#/1652"
     },
     "input": {
-      "$ref": "#/1655"
+      "$ref": "#/1667"
     }
   },
   {
@@ -20634,7 +21007,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1662"
+          "$ref": "#/1674"
         },
         "flags": 0,
         "description": "Properties for Log Collection Request"
@@ -20667,10 +21040,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1640"
+      "$ref": "#/1652"
     },
     "input": {
-      "$ref": "#/1661"
+      "$ref": "#/1673"
     }
   },
   {
@@ -20679,7 +21052,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1665"
+          "$ref": "#/1677"
         },
         "flags": 0,
         "description": "List of secret locations"
@@ -20698,10 +21071,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1640"
+      "$ref": "#/1652"
     },
     "input": {
-      "$ref": "#/1664"
+      "$ref": "#/1676"
     }
   },
   {
@@ -20710,7 +21083,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1668"
+          "$ref": "#/1680"
         },
         "flags": 0
       }
@@ -20722,7 +21095,7 @@
     "properties": {
       "certificates": {
         "type": {
-          "$ref": "#/1669"
+          "$ref": "#/1681"
         },
         "flags": 0
       }
@@ -20740,7 +21113,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters",
     "apiVersion": "2026-05-01-preview",
     "input": {
-      "$ref": "#/1667"
+      "$ref": "#/1679"
     }
   },
   {
@@ -20749,7 +21122,7 @@
     "properties": {
       "devices": {
         "type": {
-          "$ref": "#/1672"
+          "$ref": "#/1684"
         },
         "flags": 1,
         "description": "List of resource ids of the devices to be modified"
@@ -20775,7 +21148,7 @@
     "resourceType": "Microsoft.AzureStackHCI/devicePools",
     "apiVersion": "2026-05-01-preview",
     "input": {
-      "$ref": "#/1671"
+      "$ref": "#/1683"
     }
   },
   {
@@ -20784,7 +21157,7 @@
     "properties": {
       "devices": {
         "type": {
-          "$ref": "#/1675"
+          "$ref": "#/1687"
         },
         "flags": 1,
         "description": "List of resource ids of the devices to be modified"
@@ -20803,7 +21176,7 @@
     "resourceType": "Microsoft.AzureStackHCI/devicePools",
     "apiVersion": "2026-05-01-preview",
     "input": {
-      "$ref": "#/1674"
+      "$ref": "#/1686"
     }
   },
   {
@@ -20812,7 +21185,7 @@
     "properties": {
       "edgeMachineIds": {
         "type": {
-          "$ref": "#/1678"
+          "$ref": "#/1690"
         },
         "flags": 1,
         "description": "Machine Ids against which, current machine has to be validated."
@@ -20851,10 +21224,10 @@
     "resourceType": "Microsoft.AzureStackHCI/edgeMachines",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1679"
+      "$ref": "#/1691"
     },
     "input": {
-      "$ref": "#/1677"
+      "$ref": "#/1689"
     }
   },
   {
@@ -20863,7 +21236,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/510"
+          "$ref": "#/522"
         },
         "flags": 0,
         "description": "ArcSetting properties."
@@ -20904,7 +21277,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/arcSettings",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1681"
+      "$ref": "#/1693"
     }
   },
   {
@@ -20913,7 +21286,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1684"
+          "$ref": "#/1696"
         },
         "flags": 2,
         "description": "ArcIdentity properties."
@@ -20956,7 +21329,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/arcSettings",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1683"
+      "$ref": "#/1695"
     }
   },
   {
@@ -20995,7 +21368,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/arcSettings",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1686"
+      "$ref": "#/1698"
     }
   },
   {
@@ -21010,7 +21383,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1690"
+          "$ref": "#/1702"
         },
         "flags": 0,
         "description": "List of Arc Nodes in the cluster"
@@ -21023,7 +21396,7 @@
     "properties": {
       "clusterNodes": {
         "type": {
-          "$ref": "#/1691"
+          "$ref": "#/1703"
         },
         "flags": 0
       }
@@ -21041,10 +21414,10 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/arcSettings",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1681"
+      "$ref": "#/1693"
     },
     "input": {
-      "$ref": "#/1689"
+      "$ref": "#/1701"
     }
   },
   {
@@ -21066,7 +21439,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
     "apiVersion": "2026-05-01-preview",
     "input": {
-      "$ref": "#/1693"
+      "$ref": "#/1705"
     }
   },
   {
@@ -21094,7 +21467,7 @@
     "resourceType": "Microsoft.AzureStackHCI/clusters/updateSummaries",
     "apiVersion": "2026-05-01-preview",
     "input": {
-      "$ref": "#/1696"
+      "$ref": "#/1708"
     }
   },
   {
@@ -21115,7 +21488,7 @@
     "properties": {
       "ownershipVoucherDetails": {
         "type": {
-          "$ref": "#/1701"
+          "$ref": "#/1713"
         },
         "flags": 1,
         "description": "Ownership Voucher Details."
@@ -21135,7 +21508,7 @@
     "properties": {
       "ownershipVoucherValidationDetails": {
         "type": {
-          "$ref": "#/1703"
+          "$ref": "#/1715"
         },
         "flags": 1,
         "description": "Ownership Voucher Validation Details."
@@ -21154,10 +21527,10 @@
     "resourceType": "Microsoft.AzureStackHCI/locations",
     "apiVersion": "2026-05-01-preview",
     "output": {
-      "$ref": "#/1702"
+      "$ref": "#/1714"
     },
     "input": {
-      "$ref": "#/1700"
+      "$ref": "#/1712"
     }
   }
 ]

@@ -534,10 +534,16 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 
-	model.ID = basetypes.NewStringValue(id.ID())
+	priorID := ""
+	priorResourceID := ""
+	if stateModel != nil {
+		priorID = stateModel.ID.ValueString()
+		priorResourceID = stateModel.ResourceID.ValueString()
+	}
+	model.ID = basetypes.NewStringValue(preserveCasing(priorID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
-	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
+	model.ResourceID = basetypes.NewStringValue(preserveCasing(priorResourceID, id.AzureResourceId, r.ProviderData.Features.PreserveResourceIDCasing))
 
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
@@ -605,10 +611,10 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	}
 
 	state := model
-	state.ID = basetypes.NewStringValue(id.ID())
+	state.ID = basetypes.NewStringValue(preserveCasing(model.ID.ValueString(), id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 	state.Name = basetypes.NewStringValue(id.Name)
 	state.ParentID = basetypes.NewStringValue(id.ParentId)
-	state.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
+	state.ResourceID = basetypes.NewStringValue(preserveCasing(model.ResourceID.ValueString(), id.AzureResourceId, r.ProviderData.Features.PreserveResourceIDCasing))
 	state.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	requestBody := make(map[string]interface{})

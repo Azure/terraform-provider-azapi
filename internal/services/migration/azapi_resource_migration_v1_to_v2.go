@@ -151,6 +151,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
 				SensitiveBodyVersion          types.Map           `tfsdk:"sensitive_body_version"`
 				Locks                         types.List          `tfsdk:"locks"`
+				IgnoreBodyChanges             types.List          `tfsdk:"ignore_body_changes"`
 				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
@@ -205,6 +206,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				Identity:                      oldState.Identity,
 				Body:                          bodyVal,
 				Locks:                         oldState.Locks,
+				IgnoreBodyChanges:             types.ListNull(types.StringType),
 				SchemaValidationEnabled:       oldState.SchemaValidationEnabled,
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
