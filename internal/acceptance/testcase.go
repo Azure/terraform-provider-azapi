@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/vcr"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/provider"
@@ -63,6 +64,10 @@ func BuildTestData(t *testing.T, resourceType string, resourceLabel string) Test
 		t.Helper()
 	}
 
+	if vcr.Enabled() {
+		return buildVCRTestData(t, resourceType, resourceLabel)
+	}
+
 	testLocation := os.Getenv("ARM_TEST_LOCATION")
 	testLocationAlt := os.Getenv("ARM_TEST_LOCATION_ALT")
 	testLocationAlt2 := os.Getenv("ARM_TEST_LOCATION_ALT2")
@@ -108,7 +113,27 @@ func BuildTestData(t *testing.T, resourceType string, resourceLabel string) Test
 	}
 }
 
-// RandomIntOfLength is a random 8 to 18 digit integer which is unique to this test case
+func buildVCRTestData(t *testing.T, resourceType, resourceLabel string) TestData {
+	name := "acctest"
+	if t != nil {
+		name = t.Name()
+	}
+
+	return TestData{
+		RandomInteger: vcr.RandInt(name),
+		RandomString:  vcr.RandString(name, 5),
+		ResourceName:  fmt.Sprintf("%s.%s", resourceType, resourceLabel),
+
+		ResourceType:       resourceType,
+		resourceLabel:      resourceLabel,
+		LocationPrimary:    location.Normalize(vcr.LocationPrimary),
+		LocationSecondary:  location.Normalize(vcr.LocationSecondary),
+		LocationTernary:    location.Normalize(vcr.LocationTernary),
+		ReaderClientID:     os.Getenv("ARM_READER_CLIENT_ID"),
+		ReaderClientSecret: os.Getenv("ARM_READER_CLIENT_SECRET"),
+	}
+}
+
 func (td *TestData) RandomInt() int {
 	return RandTimeInt()
 }
@@ -196,6 +221,35 @@ func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps [
 		Steps: steps,
 	}
 	td.runAcceptanceTest(t, testCase)
+}
+
+func (td TestData) VcrResourceTest(t *testing.T, testResource TestResource, steps []resource.TestStep) {
+	rec := vcr.New(t)
+	defer rec.Stop()
+
+	if !rec.Enabled() {
+		t.Skipf("VCR is disabled; set %s=record or %s=replay to run this test", vcr.EnvVarMode, vcr.EnvVarMode)
+		return
+	}
+
+	testCase := resource.TestCase{
+		PreCheck: func() { PreCheck(t) },
+		CheckDestroy: func(s *terraform.State) error {
+			client, err := BuildTestClient()
+			if err != nil {
+				return fmt.Errorf("building client: %+v", err)
+			}
+			return CheckDestroyedFunc(client, testResource, td.ResourceType, td.ResourceName)(s)
+		},
+		Steps: steps,
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"azapi": providerserver.NewProtocol6WithError(provider.AzureProviderWithConfigure(rec.ConfigureOption)),
+		},
+	}
+
+	// This has to be sequential Test, not ParallelTest because the active VCR recorder is a global variable. It's
+	// designed as such so that various BuildTestClient() calls can access it.
+	resource.Test(t, testCase)
 }
 
 func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
