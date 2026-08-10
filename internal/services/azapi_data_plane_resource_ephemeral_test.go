@@ -34,6 +34,18 @@ func TestAccDataPlaneResourceEphemeral_keyVaultCertificate(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResourceEphemeral_keyVaultCertificateContact(t *testing.T) {
+	data := acceptance.BuildTestData(t, "ephemeral.azapi_data_plane_resource", "test")
+	r := DataPlaneResourceEphemeral{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.keyVaultCertificateContact(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func TestAccDataPlaneResourceEphemeral_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "ephemeral.azapi_data_plane_resource", "test")
 	r := DataPlaneResourceEphemeral{}
@@ -70,6 +82,18 @@ ephemeral "azapi_data_plane_resource" "test" {
   response_export_values = ["*"]
 }
 `, DataPlaneResource{}.keyVaultCertificate(data))
+}
+
+func (r DataPlaneResourceEphemeral) keyVaultCertificateContact(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+ephemeral "azapi_data_plane_resource" "test" {
+  parent_id              = azapi_data_plane_resource.contact.parent_id
+  type                   = azapi_data_plane_resource.contact.type
+  response_export_values = ["*"]
+}
+`, DataPlaneResource{}.keyVaultCertificateContact(data))
 }
 
 func (r DataPlaneResourceEphemeral) timeouts(data acceptance.TestData) string {

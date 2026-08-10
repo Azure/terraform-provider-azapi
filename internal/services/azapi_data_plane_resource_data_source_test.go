@@ -41,6 +41,20 @@ func TestAccDataPlaneResourceDataSource_keyVaultCertificate(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResourceDataSource_keyVaultCertificateContact(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_data_plane_resource", "test")
+	d := DataPlaneResourceDataSource{}
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: d.keyVaultCertificateContact(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("type").HasValue("Microsoft.KeyVault/vaults/certificates/contacts@7.4"),
+				check.That(data.ResourceName).Key("output.contacts.0.email").HasValue("foo@contoso.com"),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResourceDataSource_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "data.azapi_data_plane_resource", "test")
 	d := DataPlaneResourceDataSource{}
@@ -81,6 +95,18 @@ func (d DataPlaneResourceDataSource) keyVaultCertificate(data acceptance.TestDat
   		response_export_values = ["*"]
 	}
 	`, DataPlaneResource{}.keyVaultCertificate(data))
+}
+
+func (d DataPlaneResourceDataSource) keyVaultCertificateContact(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+	%s
+
+	data "azapi_data_plane_resource" "test"{
+  		parent_id              = azapi_data_plane_resource.contact.parent_id
+  		type                   = azapi_data_plane_resource.contact.type
+  		response_export_values = ["*"]
+	}
+	`, DataPlaneResource{}.keyVaultCertificateContact(data))
 }
 
 func (d DataPlaneResourceDataSource) timeouts(data acceptance.TestData) string {
