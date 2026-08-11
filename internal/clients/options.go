@@ -20,18 +20,26 @@ var DefaultRetryableStatusCodes = []int{
 	http.StatusServiceUnavailable,  // 503
 	http.StatusGatewayTimeout,      // 504
 }
+
 var DefaultRetryableReadAfterCreateStatusCodes = []int{
 	http.StatusNotFound,  // 404
 	http.StatusForbidden, // 403
 }
 
 type RequestOptions struct {
-	Headers                         map[string]string
-	QueryParameters                 map[string]string
-	RetryOptions                    *policy.RetryOptions
-	LastRetryError                  *LastRetryError
+	Headers         map[string]string
+	QueryParameters map[string]string
+	RetryOptions    *policy.RetryOptions
+	LastRetryError  *LastRetryError
+
+	// DisableAPIVersionQueryParameter, when true, omits the `api-version` query
+	// parameter from the URL. Some data-plane APIs (e.g. Azure Storage's OData APIs)
+	// send the API version in a request header instead of the query string.
 	DisableAPIVersionQueryParameter bool
-	APIVersionHeaderName            string
+
+	// APIVersionHeaderName is the header used to send the API version (e.g. `x-ms-version`),
+	// used by APIs like Azure Storage that expect it in a header rather than the URL.
+	APIVersionHeaderName string
 }
 
 // CombineRetryOptions combines multiple RequestOptions into a single policy.RetryOptions.

@@ -14,7 +14,10 @@ type DataPlaneResourceId struct {
 	AzureResourceType string
 	Name              string
 	ParentId          string
-	Identifiers       map[string]string
+	// Identifiers holds extra URL placeholder values (beyond name, parentId and apiVersion)
+	// needed to build the resource ID, e.g. the keys in Azure Storage's OData URLs like
+	// https://mystorage.table.core.windows.net/Customers(PartitionKey='Sales',RowKey='1').
+	Identifiers map[string]string
 }
 
 func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResourceId, error) {
