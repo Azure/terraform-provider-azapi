@@ -400,6 +400,7 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 		}
 		if len(actual.Identifiers) != len(v.Expected.Identifiers) {
 			t.Fatalf("Expected identifiers %#v but got %#v", v.Expected.Identifiers, actual.Identifiers)
+		}
 		if actual.Name != v.Expected.Name {
 			t.Fatalf("Expected %q but got %q for Name", v.Expected.Name, actual.Name)
 		}
