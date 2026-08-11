@@ -10,48 +10,48 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-// serverFarmsCasing matches the casing azurerm writes into state for an App Service Plan.
-var serverFarmsCasing = regexp.MustCompile(`/Microsoft\.Web/serverFarms/`)
+// userAssignedIdentitiesCasing matches the casing azurerm writes into state for a user-assigned identity.
+var userAssignedIdentitiesCasing = regexp.MustCompile(`/Microsoft\.ManagedIdentity/userAssignedIdentities/`)
 
 // TestAccGenericResource_preserveResourceIDCasingAzurermMigration covers the migration
-// reported in GH-1120: azurerm_service_plan stores its id as `.../Microsoft.Web/serverFarms/...`,
-// the resource is then adopted by azapi_resource whose type is `Microsoft.Web/serverfarms`,
+// reported in GH-1120: an azurerm resource stores its id using the API's canonical casing,
+// the resource is then adopted by azapi_resource whose type uses different casing,
 // and a later update rebuilds the id from the type, flipping the casing in state and identity.
 func TestAccGenericResource_preserveResourceIDCasingAzurermMigration(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
-	const servicePlan = "azapi_resource.servicePlan"
+	const userAssignedIdentity = "azapi_resource.userAssignedIdentity"
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			ExternalProviders: externalProvidersAzurerm(),
-			Config:            r.azurermServicePlan(data),
+			Config:            r.azurermUserAssignedIdentity(data),
 			Check: resource.ComposeTestCheckFunc(
-				resource.TestMatchResourceAttr("azurerm_service_plan.test", "id", serverFarmsCasing),
+				resource.TestMatchResourceAttr("azurerm_user_assigned_identity.test", "id", userAssignedIdentitiesCasing),
 			),
 		},
 		{
 			ExternalProviders: externalProvidersAzurerm(),
-			Config:            r.azurermServicePlanAdoptedByAzapi(data, ""),
+			Config:            r.azurermUserAssignedIdentityAdoptedByAzapi(data, ""),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(servicePlan).ExistsInAzure(r),
-				resource.TestMatchResourceAttr(servicePlan, "id", serverFarmsCasing),
+				check.That(userAssignedIdentity).ExistsInAzure(r),
+				resource.TestMatchResourceAttr(userAssignedIdentity, "id", userAssignedIdentitiesCasing),
 			),
 		},
 		{
 			// Forces an update so CreateUpdate recomputes the id from the type.
 			ExternalProviders: externalProvidersAzurerm(),
-			Config:            r.azurermServicePlanAdoptedByAzapi(data, "acctest"),
+			Config:            r.azurermUserAssignedIdentityAdoptedByAzapi(data, "acctest"),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(servicePlan).ExistsInAzure(r),
-				resource.TestMatchResourceAttr(servicePlan, "id", serverFarmsCasing),
+				check.That(userAssignedIdentity).ExistsInAzure(r),
+				resource.TestMatchResourceAttr(userAssignedIdentity, "id", userAssignedIdentitiesCasing),
 			),
 		},
 	})
 }
 
-func (r GenericResource) azurermServicePlan(data acceptance.TestData) string {
+func (r GenericResource) azurermUserAssignedIdentity(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
@@ -62,17 +62,15 @@ resource "azurerm_resource_group" "test" {
   location = "%[2]s"
 }
 
-resource "azurerm_service_plan" "test" {
-  name                = "acctestsp%[1]s"
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctestid%[1]s"
   resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
-  os_type             = "Windows"
-  sku_name            = "P1v3"
 }
 `, data.RandomString, data.LocationPrimary)
 }
 
-func (r GenericResource) azurermServicePlanAdoptedByAzapi(data acceptance.TestData, tag string) string {
+func (r GenericResource) azurermUserAssignedIdentityAdoptedByAzapi(data acceptance.TestData, tag string) string {
 	tags := ""
 	if tag != "" {
 		tags = fmt.Sprintf(`
@@ -97,41 +95,29 @@ resource "azurerm_resource_group" "test" {
 }
 
 removed {
-  from = azurerm_service_plan.test
+  from = azurerm_user_assigned_identity.test
   lifecycle {
     destroy = false
   }
 }
 
 locals {
-  // Matches the id azurerm wrote to state for azurerm_service_plan.test.
-  service_plan_id = "${azurerm_resource_group.test.id}/providers/Microsoft.Web/serverFarms/acctestsp%[1]s"
+  // Matches the id azurerm wrote to state for azurerm_user_assigned_identity.test.
+  user_assigned_identity_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctestid%[1]s"
 }
 
 import {
-  to = azapi_resource.servicePlan
+  to = azapi_resource.userAssignedIdentity
   identity = {
-    id = local.service_plan_id
+    id = local.user_assigned_identity_id
   }
 }
 
-resource "azapi_resource" "servicePlan" {
-  type      = "Microsoft.Web/serverfarms@2023-12-01"
-  name      = "acctestsp%[1]s"
+resource "azapi_resource" "userAssignedIdentity" {
+  type      = "Microsoft.ManagedIdentity/userassignedidentities@2023-01-31"
+  name      = "acctestid%[1]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-
-  body = {
-    properties = {
-      hyperV         = false
-      perSiteScaling = false
-      reserved       = false
-      zoneRedundant  = false
-    }
-    sku = {
-      name = "P1v3"
-    }
-  }
 %[3]s
 }
 `, data.RandomString, data.LocationPrimary, tags)
