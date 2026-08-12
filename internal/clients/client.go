@@ -2,6 +2,7 @@ package clients
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
+	"github.com/Azure/terraform-provider-azapi/internal/vcr"
 )
 
 type Client struct {
@@ -42,6 +44,10 @@ type Option struct {
 	MaxGoSdkRetries             int32
 	AlwaysAcquirePolicyToken    bool
 	Transport                   policy.Transporter
+
+	// TestName, when set together with the TC_TEST_VIA_VCR environment variable,
+	// wires this client through a go-vcr recorder for the named test.
+	TestName string
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -98,6 +104,23 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	resourceManagerEndpoint := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := o.CloudCfg.Services[cloud.ResourceManager]; ok {
 		resourceManagerEndpoint = c.Endpoint
+	}
+
+	// go-vcr integration. When TC_TEST_VIA_VCR is set and a test name is provided,
+	// route every client through the shared recorder for that test. During replay
+	// we additionally swap in a fake credential and canonical subscription/tenant
+	// so the pipeline never contacts Azure and requests match the sanitized cassette.
+	if vcr.Enabled() && o.TestName != "" {
+		rec, err := vcr.GetRecorder(o.TestName, o.SubscriptionId)
+		if err != nil {
+			return fmt.Errorf("getting vcr recorder: %w", err)
+		}
+		o.Transport = vcr.Transport(rec)
+		if vcr.IsReplaying() {
+			o.Cred = vcr.FakeCredential()
+			o.SubscriptionId = vcr.CanonicalSubscriptionID
+			o.TenantId = vcr.CanonicalTenantID
+		}
 	}
 
 	acquirePipeline, err := armruntime.NewPipeline(moduleName, moduleVersion, o.Cred, runtime.PipelineOptions{}, &arm.ClientOptions{

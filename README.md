@@ -196,21 +196,21 @@ The `ARM_READER_CLIENT_ID` and `ARM_READER_CLIENT_SECRET` follow the same proces
 
 ### VCR (record / replay) tests
 
-VCR tests wrap [`dnaeon/go-vcr`](https://github.com/dnaeon/go-vcr) so an acceptance test can record its HTTP conversation with Azure once and then replay it later with **no network access and no credentials**. Replaying is deterministic, which makes VCR tests ideal for CI. See `internal/acceptance/vcr` for the harness details.
+VCR tests wrap [`dnaeon/go-vcr`](https://github.com/dnaeon/go-vcr) so an acceptance test can record its HTTP conversation with Azure once and then replay it later with **no network access and no credentials**. Replaying is deterministic, which makes VCR tests ideal for CI. See `internal/vcr` for the harness details.
 
-Behavior is controlled by the `AZAPI_VCR_MODE` environment variable:
+Behavior is controlled by the `TC_TEST_VIA_VCR` environment variable (named to match the sibling [`terraform-provider-azurerm`](https://github.com/hashicorp/terraform-provider-azurerm) harness):
 
-| `AZAPI_VCR_MODE` | Behavior |
-| ---------------- | -------- |
-| unset / `off`    | VCR is disabled. VCR tests (those using `VcrResourceTest`) are **skipped**, live tests are unaffected. |
-| `record`         | The test runs live against Azure and every HTTP interaction is written to a sanitized cassette under `internal/services/testdata/cassettes/<TestName>.yaml`. |
-| `replay`         | The test runs entirely from the cassette using a fake credential. No network calls are made. |
+| `TC_TEST_VIA_VCR`        | Behavior |
+| ------------------------ | -------- |
+| unset / anything else    | Passthrough: VCR is disabled. VCR tests (those using `VcrResourceTest`) are **skipped**, live tests are unaffected. |
+| `record`                 | The test runs live against Azure and every HTTP interaction is written to a sanitized cassette under `internal/services/testdata/cassettes/<TestName>.yaml`. |
+| `replay` / `true`        | The test runs entirely from the cassette using a fake credential. No network calls are made. |
 
-Cassettes are safe to commit: a `BeforeSave` hook strips sensitive information and rewrites real subscription/tenant IDs to canonical placeholders. VCR runs serially and uses fixed, name-derived locations and values so recorded and replayed requests match byte-for-byte.
+Cassettes are safe to commit: a `BeforeSave` hook strips sensitive information and rewrites real subscription/tenant IDs to canonical placeholders. Recorders are keyed per test name, and tests use fixed, name-derived locations and values so recorded and replayed requests match.
 
-Because that hook is a denylist (it only removes what it already knows about), recording also runs a **fail-closed audit** as a safety net: after redaction, every interaction is re-scanned for high-signal secret shapes (JWTs, PEM private keys, SAS `sig=` tokens, connection-string keys/passwords, secret JSON fields, and high-entropy key blobs). If anything survives, the recording **fails and no cassette is written**, so an unrecognized secret cannot be committed by accident. The audit is defined in `internal/acceptance/vcr/audit_interaction.go`.
+Because that hook is a denylist (it only removes what it already knows about), recording also runs a **fail-closed audit** as a safety net: after redaction, every interaction is re-scanned for high-signal secret shapes (JWTs, PEM private keys, SAS `sig=` tokens, connection-string keys/passwords, secret JSON fields, and high-entropy key blobs). If anything survives, the recording **fails and no cassette is written**, so an unrecognized secret cannot be committed by accident. The audit is defined in `internal/vcr/audit_interaction.go`.
 
-If a legitimate recording trips the audit, either add a redaction rule in `internal/acceptance/vcr/sanitize_interaction.go`, or — for a value your test reads back from Azure at runtime (e.g. a storage account key) — register it so it is scrubbed:
+If a legitimate recording trips the audit, either add a redaction rule in `internal/vcr/sanitize_interaction.go`, or — for a value your test reads back from Azure at runtime (e.g. a storage account key) — register it so it is scrubbed:
 
 ```go
 key := /* value returned by Azure */

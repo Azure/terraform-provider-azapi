@@ -49,12 +49,14 @@ func AzureProvider() provider.Provider {
 	return &Provider{}
 }
 
-func AzureProviderWithConfigure(configure func(*clients.Option)) provider.Provider {
-	return &Provider{configureOption: configure}
+func AzureProviderWithTestName(testName string) provider.Provider {
+	return &Provider{testName: testName}
 }
 
 type Provider struct {
-	configureOption func(*clients.Option)
+	// testName is set for acceptance tests running under go-vcr so the client
+	// build can look up the recorder registered for that test.
+	testName string
 }
 
 type providerData struct {
@@ -720,9 +722,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		AlwaysAcquirePolicyToken:    model.AlwaysAcquirePolicyToken.ValueBool(),
 	}
 
-	if p.configureOption != nil {
-		p.configureOption(copt)
-	}
+	copt.TestName = p.testName
 
 	client := &clients.Client{}
 	if err = client.Build(ctx, copt); err != nil {

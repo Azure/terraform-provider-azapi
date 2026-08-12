@@ -151,7 +151,7 @@ func auditInteraction(i *cassette.Interaction, replacements map[string]string) e
 
 	return fmt.Errorf(
 		"vcr: refusing to save cassette interaction %d because potential secret(s) survived sanitization:\n  - %s\n"+
-			"Redact these in internal/acceptance/vcr/sanitize_interaction.go, or register the value at runtime with vcr.RegisterSecret(...).",
+			"Redact these in internal/vcr/sanitize_interaction.go, or register the value at runtime with vcr.RegisterSecret(...).",
 		i.ID, strings.Join(sorted, "\n  - "),
 	)
 }

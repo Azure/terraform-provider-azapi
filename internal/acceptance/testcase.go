@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/vcr"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/provider"
+	"github.com/Azure/terraform-provider-azapi/internal/vcr"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
@@ -224,48 +224,56 @@ func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps [
 }
 
 func (td TestData) VcrResourceTest(t *testing.T, testResource TestResource, steps []resource.TestStep) {
-	rec := vcr.New(t)
-	defer rec.Stop()
-
-	if !rec.Enabled() {
-		t.Skipf("VCR is disabled; set %s=record or %s=replay to run this test", vcr.EnvVarMode, vcr.EnvVarMode)
+	if !vcr.Enabled() {
+		t.Skipf("VCR is disabled; set %s=record or %s=replay to run this test", vcr.EnvVar, vcr.EnvVar)
 		return
 	}
+
+	// Register the running test so helpers invoked on this goroutine (e.g.
+	// ExistsInAzure -> BuildTestClient) can resolve the recorder, and make sure
+	// the cassette is flushed and the recorder released when the test ends.
+	vcr.RegisterTestT(t)
+	defer vcr.UnregisterTestT()
+	defer func() { _ = vcr.StopRecorder(t.Name()) }()
 
 	testCase := resource.TestCase{
 		PreCheck: func() { PreCheck(t) },
 		CheckDestroy: func(s *terraform.State) error {
-			client, err := BuildTestClient()
+			client, err := BuildTestClientWithTestName(t.Name())
 			if err != nil {
 				return fmt.Errorf("building client: %+v", err)
 			}
 			return CheckDestroyedFunc(client, testResource, td.ResourceType, td.ResourceName)(s)
 		},
-		Steps: steps,
-		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"azapi": providerserver.NewProtocol6WithError(provider.AzureProviderWithConfigure(rec.ConfigureOption)),
-		},
+		Steps:                    steps,
+		ProtoV6ProviderFactories: td.ProvidersWithTestName(t.Name()),
 	}
 
-	// This has to be sequential Test, not ParallelTest because the active VCR recorder is a global variable. It's
-	// designed as such so that various BuildTestClient() calls can access it.
-	resource.Test(t, testCase)
+	// Recorders are keyed per test name, so tests remain independent and can run
+	// in parallel just like the sibling terraform-provider-azurerm suite.
+	resource.ParallelTest(t, testCase)
 }
 
 func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
+	if vcr.Enabled() {
+		vcr.RegisterTestT(t)
+		defer vcr.UnregisterTestT()
+		defer func() { _ = vcr.StopRecorder(t.Name()) }()
+	}
+
 	testCase.ExternalProviders = td.externalProviders()
 	// If any test steps require their own external providers, then we need to clear the global list
 	providersInTestStep := false
 	for i, step := range testCase.Steps {
 		if step.ExternalProviders != nil {
 			testCase.ExternalProviders = nil
-			step.ProtoV6ProviderFactories = td.Providers()
+			step.ProtoV6ProviderFactories = td.ProvidersWithTestName(t.Name())
 			testCase.Steps[i] = step
 			providersInTestStep = true
 		}
 	}
 	if !providersInTestStep {
-		testCase.ProtoV6ProviderFactories = td.Providers()
+		testCase.ProtoV6ProviderFactories = td.ProvidersWithTestName(t.Name())
 	}
 
 	resource.ParallelTest(t, testCase)
@@ -274,6 +282,15 @@ func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 func (td TestData) Providers() map[string]func() (tfprotov6.ProviderServer, error) {
 	return map[string]func() (tfprotov6.ProviderServer, error){
 		"azapi": providerserver.NewProtocol6WithError(provider.AzureProvider()),
+	}
+}
+
+// ProvidersWithTestName returns provider factories bound to testName so that,
+// when VCR is enabled, the provider's client is wired through the recorder
+// registered for that test. When VCR is disabled the test name is ignored.
+func (td TestData) ProvidersWithTestName(testName string) map[string]func() (tfprotov6.ProviderServer, error) {
+	return map[string]func() (tfprotov6.ProviderServer, error){
+		"azapi": providerserver.NewProtocol6WithError(provider.AzureProviderWithTestName(testName)),
 	}
 }
 

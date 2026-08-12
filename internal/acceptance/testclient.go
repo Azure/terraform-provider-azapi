@@ -9,74 +9,45 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/vcr"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
+	"github.com/Azure/terraform-provider-azapi/internal/vcr"
 )
 
 var (
-	_client    *clients.Client
+	_clients   = make(map[string]*clients.Client)
 	clientLock = &sync.Mutex{}
 )
 
-type TestClientOptions struct {
-	Transport policy.Transporter
-
-	Credential azcore.TokenCredential
-
-	SubscriptionID string
-	TenantID       string
+// BuildTestClient returns a client for the test executing on the current
+// goroutine. Under go-vcr the test name (resolved from the goroutine-to-test
+// registry) selects the recorder wired into the client; outside VCR the name is
+// empty and a single shared client is reused, preserving the historical
+// behaviour.
+func BuildTestClient() (*clients.Client, error) {
+	return BuildTestClientWithTestName(vcr.CurrentTestName())
 }
 
-func BuildTestClient() (*clients.Client, error) {
-	if vcr.Enabled() {
-		if rec := vcr.Active(); rec != nil {
-			return BuildTestClientWithOptions(TestClientOptions{
-				Transport:      rec.Transport(),
-				Credential:     rec.Credential(),
-				SubscriptionID: rec.SubscriptionID(),
-				TenantID:       rec.TenantID(),
-			})
-		}
-	}
-
+// BuildTestClientWithTestName returns (creating and caching if necessary) the
+// client associated with testName. When VCR is enabled the client's Build wires
+// it through the recorder registered for testName.
+func BuildTestClientWithTestName(testName string) (*clients.Client, error) {
 	clientLock.Lock()
 	defer clientLock.Unlock()
 
-	if _client == nil {
-		client, err := BuildTestClientWithOptions(TestClientOptions{})
-		if err != nil {
-			return nil, err
-		}
-		_client = client
+	if c, ok := _clients[testName]; ok {
+		return c, nil
 	}
 
-	return _client, nil
-}
-
-func BuildTestClientWithOptions(o TestClientOptions) (*clients.Client, error) {
 	cloudConfig, err := testCloudConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	cred := o.Credential
-	if cred == nil {
-		cred, err = buildTestCredential(cloudConfig)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	subscriptionID := o.SubscriptionID
-	if subscriptionID == "" {
-		subscriptionID = os.Getenv("ARM_SUBSCRIPTION_ID")
-	}
-	tenantID := o.TenantID
-	if tenantID == "" {
-		tenantID = os.Getenv("ARM_TENANT_ID")
+	cred, err := buildTestCredential(cloudConfig)
+	if err != nil {
+		return nil, err
 	}
 
 	copt := &clients.Option{
@@ -84,9 +55,9 @@ func BuildTestClientWithOptions(o TestClientOptions) (*clients.Client, error) {
 		CloudCfg:                 cloudConfig,
 		Features:                 features.Default(),
 		SkipProviderRegistration: true,
-		TenantId:                 tenantID,
-		SubscriptionId:           subscriptionID,
-		Transport:                o.Transport,
+		TenantId:                 os.Getenv("ARM_TENANT_ID"),
+		SubscriptionId:           os.Getenv("ARM_SUBSCRIPTION_ID"),
+		TestName:                 testName,
 	}
 
 	client := &clients.Client{}
@@ -94,6 +65,7 @@ func BuildTestClientWithOptions(o TestClientOptions) (*clients.Client, error) {
 		return nil, err
 	}
 
+	_clients[testName] = client
 	return client, nil
 }
 
