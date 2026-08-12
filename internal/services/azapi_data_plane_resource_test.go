@@ -220,6 +220,26 @@ func TestAccDataPlaneResource_searchServiceSynonymMap(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_synapseLinkedService(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.synapseLinkedService(data),
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"time": {
+					Source:            "hashicorp/time",
+					VersionConstraint: "0.13.0",
+				},
+			},
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_headers(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -1523,6 +1543,102 @@ resource "azapi_data_plane_resource" "test" {
 
   depends_on = [
     azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) synapseLinkedService(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    sku = {
+      name = "Standard_LRS"
+    }
+    properties = {
+      isHnsEnabled = true
+    }
+  }
+}
+
+resource "azapi_resource" "storageContainer" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01"
+  parent_id = "${azapi_resource.storageAccount.id}/blobServices/default"
+  name      = "synapse"
+  body = {
+    properties = {}
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.Synapse/workspaces@2021-06-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      defaultDataLakeStorage = {
+        accountUrl = "https://${azapi_resource.storageAccount.name}.dfs.core.windows.net"
+        filesystem = azapi_resource.storageContainer.name
+      }
+      publicNetworkAccess           = "Enabled"
+      sqlAdministratorLogin         = "sqladminuser"
+      sqlAdministratorLoginPassword = "P@ssword-%[2]s-1234"
+    }
+  }
+  schema_validation_enabled = false
+}
+
+resource "azapi_resource" "workspaceFirewallRule" {
+  type      = "Microsoft.Synapse/workspaces/firewallRules@2021-06-01"
+  parent_id = azapi_resource.workspace.id
+  name      = "AllowAll"
+  body = {
+    properties = {
+      startIpAddress = "0.0.0.0"
+      endIpAddress   = "255.255.255.255"
+    }
+  }
+}
+
+resource "time_sleep" "workspaceFirewallRule" {
+  create_duration = "2m"
+  depends_on = [
+    azapi_resource.workspaceFirewallRule,
+  ]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Synapse/workspaces/linkedServices@2019-11-01-preview"
+  parent_id = "${azapi_resource.workspace.name}.dev.azuresynapse.net"
+  name      = "acctest"
+  body = {
+    properties = {
+      type = "HttpServer"
+      typeProperties = {
+        url                               = "https://example.com"
+        authenticationType                = "Anonymous"
+        enableServerCertificateValidation = true
+      }
+    }
+  }
+
+  depends_on = [
+    time_sleep.workspaceFirewallRule,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
