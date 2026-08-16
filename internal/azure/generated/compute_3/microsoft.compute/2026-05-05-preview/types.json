@@ -495,7 +495,7 @@
       },
       "instanceDescription": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/62"
         },
         "flags": 1,
         "description": "Describes how the service should choose candidate VM sizes."
@@ -544,7 +544,7 @@
         "type": {
           "$ref": "#/51"
         },
-        "flags": 1,
+        "flags": 0,
         "description": "The allocation strategy for determining the optimal SKU split."
       },
       "osType": {
@@ -677,14 +677,14 @@
     "properties": {
       "distributionStrategy": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Distribution strategy for allocating capacity across zones."
       },
       "zonePreferences": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "Per-zone allocation preferences. Used with the Prioritized strategy."
@@ -700,6 +700,10 @@
     "value": "Prioritized"
   },
   {
+    "$type": "StringLiteralType",
+    "value": "BestEffortSingleZone"
+  },
+  {
     "$type": "UnionType",
     "elements": [
       {
@@ -707,6 +711,9 @@
       },
       {
         "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
       },
       {
         "$ref": "#/2"
@@ -730,63 +737,34 @@
         },
         "flags": 0,
         "description": "Rank of the zone. Lower values = higher priority (0 is highest)."
+      },
+      "targetMaxCapacity": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Best-effort limit to avoid allocating more than this count within the zone. Used with the Prioritized strategy."
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/59"
+      "$ref": "#/60"
     }
   },
   {
     "$type": "ObjectType",
     "name": "SkuMixPlacementInstanceDescription",
     "properties": {
-      "type": {
+      "vmSizes": {
         "type": {
           "$ref": "#/64"
         },
         "flags": 1,
-        "description": "The type of instance description."
-      },
-      "vmSizes": {
-        "type": {
-          "$ref": "#/66"
-        },
-        "flags": 0,
-        "description": "The list of VM sizes. Required when type is VMSizes."
-      },
-      "vmAttributes": {
-        "type": {
-          "$ref": "#/67"
-        },
-        "flags": 0,
-        "description": "VM attribute constraints. Required when type is VMAttributes."
+        "description": "The list of VM sizes to consider for placement."
       }
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "VMSizes"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "VMAttributes"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/62"
-      },
-      {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -811,587 +789,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/65"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "VmAttributes",
-    "properties": {
-      "vCpuCount": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 1,
-        "description": "vCPU count range. Required."
-      },
-      "memoryInGiB": {
-        "type": {
-          "$ref": "#/69"
-        },
-        "flags": 1,
-        "description": "Memory range in GiB. Required."
-      },
-      "architectureTypes": {
-        "type": {
-          "$ref": "#/73"
-        },
-        "flags": 1,
-        "description": "Supported VM architectures. Required."
-      },
-      "memoryInGiBPerVCpu": {
-        "type": {
-          "$ref": "#/69"
-        },
-        "flags": 0,
-        "description": "Memory-per-vCPU range in GiB."
-      },
-      "dataDiskCount": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 0,
-        "description": "Data disk count range."
-      },
-      "networkInterfaceCount": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 0,
-        "description": "NIC count range."
-      },
-      "networkBandwidthInMbps": {
-        "type": {
-          "$ref": "#/69"
-        },
-        "flags": 0,
-        "description": "Network bandwidth range in Mbps."
-      },
-      "localStorageSupport": {
-        "type": {
-          "$ref": "#/77"
-        },
-        "flags": 0,
-        "description": "Whether local storage support should be excluded, included, or required."
-      },
-      "localStorageInGiB": {
-        "type": {
-          "$ref": "#/69"
-        },
-        "flags": 0,
-        "description": "Local storage capacity range in GiB."
-      },
-      "localStorageDiskTypes": {
-        "type": {
-          "$ref": "#/81"
-        },
-        "flags": 0,
-        "description": "Allowed local storage disk types."
-      },
-      "rdmaSupport": {
-        "type": {
-          "$ref": "#/85"
-        },
-        "flags": 0,
-        "description": "Whether RDMA support should be excluded, included, or required."
-      },
-      "rdmaNetworkInterfaceCount": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 0,
-        "description": "RDMA NIC count range."
-      },
-      "acceleratorSupport": {
-        "type": {
-          "$ref": "#/89"
-        },
-        "flags": 0,
-        "description": "Whether accelerator support should be excluded, included, or required."
-      },
-      "acceleratorManufacturers": {
-        "type": {
-          "$ref": "#/94"
-        },
-        "flags": 0,
-        "description": "Allowed accelerator manufacturers."
-      },
-      "acceleratorTypes": {
-        "type": {
-          "$ref": "#/98"
-        },
-        "flags": 0,
-        "description": "Allowed accelerator types."
-      },
-      "acceleratorCount": {
-        "type": {
-          "$ref": "#/68"
-        },
-        "flags": 0,
-        "description": "Accelerator count range."
-      },
-      "vmCategories": {
-        "type": {
-          "$ref": "#/107"
-        },
-        "flags": 0,
-        "description": "Allowed VM categories."
-      },
-      "cpuManufacturers": {
-        "type": {
-          "$ref": "#/113"
-        },
-        "flags": 0,
-        "description": "Allowed CPU manufacturers."
-      },
-      "burstableSupport": {
-        "type": {
-          "$ref": "#/117"
-        },
-        "flags": 0,
-        "description": "Whether burstable SKUs should be excluded, included, or required."
-      },
-      "hyperVGenerations": {
-        "type": {
-          "$ref": "#/121"
-        },
-        "flags": 0,
-        "description": "Allowed Hyper-V generations."
-      },
-      "excludedVMSizes": {
-        "type": {
-          "$ref": "#/122"
-        },
-        "flags": 0,
-        "description": "VM sizes to explicitly exclude."
-      },
-      "allowedVMSizes": {
-        "type": {
-          "$ref": "#/123"
-        },
-        "flags": 0,
-        "description": "VM sizes to explicitly allow; attribute filtering applied only to this set."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "VmAttributeMinMaxInteger",
-    "properties": {
-      "min": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 0,
-        "description": "Minimum value."
-      },
-      "max": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 0,
-        "description": "Maximum value."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "VmAttributeMinMaxDouble",
-    "properties": {
-      "min": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 0,
-        "description": "Minimum value."
-      },
-      "max": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 0,
-        "description": "Maximum value."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ARM64"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "X64"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/70"
-      },
-      {
-        "$ref": "#/71"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/72"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Excluded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Included"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Required"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/74"
-      },
-      {
-        "$ref": "#/75"
-      },
-      {
-        "$ref": "#/76"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "HDD"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SSD"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/78"
-      },
-      {
-        "$ref": "#/79"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/80"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Excluded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Included"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Required"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/84"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Excluded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Included"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Required"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/86"
-      },
-      {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AMD"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Nvidia"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Xilinx"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/90"
-      },
-      {
-        "$ref": "#/91"
-      },
-      {
-        "$ref": "#/92"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/93"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GPU"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "FPGA"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/95"
-      },
-      {
-        "$ref": "#/96"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/97"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GeneralPurpose"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ComputeOptimized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "MemoryOptimized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "StorageOptimized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GpuAccelerated"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "FpgaAccelerated"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "HighPerformanceCompute"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/99"
-      },
-      {
-        "$ref": "#/100"
-      },
-      {
-        "$ref": "#/101"
-      },
-      {
-        "$ref": "#/102"
-      },
-      {
-        "$ref": "#/103"
-      },
-      {
-        "$ref": "#/104"
-      },
-      {
-        "$ref": "#/105"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/106"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Intel"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AMD"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Ampere"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/108"
-      },
-      {
-        "$ref": "#/109"
-      },
-      {
-        "$ref": "#/110"
-      },
-      {
-        "$ref": "#/111"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/112"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Excluded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Included"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Required"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/114"
-      },
-      {
-        "$ref": "#/115"
-      },
-      {
-        "$ref": "#/116"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Gen1"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Gen2"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/118"
-      },
-      {
-        "$ref": "#/119"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/120"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
+      "$ref": "#/63"
     }
   },
   {
@@ -1400,14 +798,21 @@
     "properties": {
       "placementChoices": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/73"
         },
         "flags": 1,
         "description": "List of placement choice recommendations."
       },
+      "validUntil": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date/time until which the recommendations are valid. Callers should request fresh recommendations after this time."
+      },
       "partialFulfillmentReason": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/77"
         },
         "flags": 1,
         "description": "Indicates whether the response is a complete or partial fulfillment."
@@ -1427,14 +832,14 @@
       },
       "score": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/67"
         },
         "flags": 1,
-        "description": "Placement score from 1 to 10 (inclusive). Higher is better."
+        "description": "Placement score from 0 to 9 (inclusive). Higher is better."
       },
       "skuSplit": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/72"
         },
         "flags": 1,
         "description": "The list of VM size / zone allocations that make up this deployment choice."
@@ -1443,8 +848,8 @@
   },
   {
     "$type": "IntegerType",
-    "minValue": 1,
-    "maxValue": 10
+    "minValue": 0,
+    "maxValue": 9
   },
   {
     "$type": "ObjectType",
@@ -1459,7 +864,7 @@
       },
       "priority": {
         "type": {
-          "$ref": "#/130"
+          "$ref": "#/71"
         },
         "flags": 1,
         "description": "Priority of this allocation (Regular or Spot)."
@@ -1469,7 +874,14 @@
           "$ref": "#/30"
         },
         "flags": 1,
-        "description": "Recommended allocation capacity."
+        "description": "Lower range of recommended allocation capacity."
+      },
+      "capacityMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Upper range of recommended allocation capacity."
       },
       "zone": {
         "type": {
@@ -1492,10 +904,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/128"
+        "$ref": "#/69"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/70"
       },
       {
         "$ref": "#/2"
@@ -1505,13 +917,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/127"
+      "$ref": "#/68"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/125"
+      "$ref": "#/66"
     }
   },
   {
@@ -1530,13 +942,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/133"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/75"
       },
       {
-        "$ref": "#/135"
+        "$ref": "#/76"
       },
       {
         "$ref": "#/2"
@@ -1549,7 +961,7 @@
     "resourceType": "Microsoft.Compute/locations/skuMixPlacementScores",
     "apiVersion": "2026-05-05-preview",
     "output": {
-      "$ref": "#/124"
+      "$ref": "#/65"
     },
     "input": {
       "$ref": "#/38"
