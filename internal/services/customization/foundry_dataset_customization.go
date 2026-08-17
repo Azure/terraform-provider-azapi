@@ -21,7 +21,7 @@ import (
 // FoundryDatasetCustomization manages a Foundry dataset version and its
 // provider-side source upload.
 //
-// The request body uses Foundry API field names:
+// The request body uses Foundry API fields:
 //
 //	name
 //	version
@@ -30,17 +30,14 @@ import (
 //	format
 //	dataUri
 //
-// The provider-only fields are:
+// The following fields are provider-side fields:
 //
 //	source_url
 //	source_sha256
-//	computed_sha256
-//	pending_upload_id
-//	connection_name
 //
-// The downloaded file is streamed through a temporary file, verified, and
-// uploaded to the container SAS returned by startPendingUpload. The file
-// contents are never placed in the Foundry API request body.
+// computed_sha256 is exposed in the resource output. It is intentionally not
+// added to body because body is a Terraform dynamic object whose attribute
+// type is determined by configuration.
 type FoundryDatasetCustomization struct{}
 
 func (c FoundryDatasetCustomization) GetResourceType() string {
@@ -152,7 +149,7 @@ func datasetSourceInfo(
 		return "", "", false, err
 	}
 
-	sourceURL, sourceURLField, exists, err := datasetStringField(
+	sourceURL, _, exists, err := datasetStringField(
 		values,
 		"source_url",
 		"sourceUrl",
@@ -168,14 +165,6 @@ func datasetSourceInfo(
 		)
 	}
 
-	if err := validateDatasetSourceURL(sourceURL); err != nil {
-		return "", "", false, fmt.Errorf(
-			`dataset body field %q: %w`,
-			sourceURLField,
-			err,
-		)
-	}
-
 	expectedSHA256, _, hasSHA256, err := datasetStringField(
 		values,
 		"source_sha256",
@@ -185,7 +174,8 @@ func datasetSourceInfo(
 		return "", "", false, err
 	}
 
-	// An omitted or empty checksum disables checksum verification.
+	// An empty checksum disables verification. The provider still calculates
+	// and exposes the actual checksum in output.computed_sha256.
 	if !hasSHA256 || strings.TrimSpace(expectedSHA256) == "" {
 		return sourceURL, "", false, nil
 	}
@@ -206,44 +196,6 @@ func datasetSourceInfo(
 	}
 
 	return sourceURL, expectedSHA256, true, nil
-}
-
-func validateDatasetSourceURL(rawURL string) error {
-	parsedURL, err := url.ParseRequestURI(rawURL)
-	if err != nil {
-		return fmt.Errorf("must be an HTTPS URL")
-	}
-
-	if !strings.EqualFold(parsedURL.Scheme, "https") ||
-		parsedURL.Hostname() == "" ||
-		parsedURL.User != nil ||
-		parsedURL.Fragment != "" ||
-		(parsedURL.Port() != "" && parsedURL.Port() != "443") {
-		return fmt.Errorf("must be an HTTPS URL")
-	}
-
-	host := strings.ToLower(parsedURL.Hostname())
-
-	if host == "raw.github.kp.org" || isAzureBlobHost(host) {
-		return nil
-	}
-
-	return fmt.Errorf(
-		"must use raw.github.kp.org or an Azure Blob Storage host",
-	)
-}
-
-func isAzureBlobHost(host string) bool {
-	for _, suffix := range []string{
-		".blob.core.windows.net",
-	} {
-		if strings.HasSuffix(host, suffix) &&
-			len(host) > len(suffix) {
-			return true
-		}
-	}
-
-	return false
 }
 
 func datasetPendingUploadBody(
@@ -290,9 +242,6 @@ func setDatasetDefaults(
 		return fmt.Errorf("dataset body must be a mutable object")
 	}
 
-	// The Foundry API field is "version". The resource path version is used
-	// as the fallback because the generic AzAPI resource uses "name" for the
-	// final path segment.
 	version, _, exists, err := datasetStringField(values, "version")
 	if err != nil {
 		return err
@@ -304,7 +253,9 @@ func setDatasetDefaults(
 		version = strings.TrimSpace(versionFallback)
 
 		if version == "" || version == "__generated__" {
-			version = "1"
+			return fmt.Errorf(
+				`resource-level "name" must contain the dataset version`,
+			)
 		}
 
 		values["version"] = version
@@ -319,7 +270,6 @@ func setDatasetDefaults(
 		values["type"] = "uri_file"
 	}
 
-	// Format is a required Foundry API field.
 	format, _, exists, err := datasetStringField(values, "format")
 	if err != nil {
 		return err
@@ -344,13 +294,11 @@ func datasetVersionRequestBody(
 		return nil, "", err
 	}
 
-	// Foundry API field: name
 	name, err := datasetRequiredString(values, "name")
 	if err != nil {
 		return nil, "", err
 	}
 
-	// Foundry API field: version
 	version, _, exists, err := datasetStringField(values, "version")
 	if err != nil {
 		return nil, "", err
@@ -362,19 +310,19 @@ func datasetVersionRequestBody(
 		version = strings.TrimSpace(versionFallback)
 
 		if version == "" || version == "__generated__" {
-			version = "1"
+			return nil, "", fmt.Errorf(
+				`resource-level "name" must contain the dataset version`,
+			)
 		}
 
 		values["version"] = version
 	}
 
-	// Foundry API field: description
 	description, err := datasetRequiredString(values, "description")
 	if err != nil {
 		return nil, "", err
 	}
 
-	// Foundry API field: type
 	datasetType, _, exists, err := datasetStringField(values, "type")
 	if err != nil {
 		return nil, "", err
@@ -392,14 +340,13 @@ func datasetVersionRequestBody(
 		)
 	}
 
-	// Foundry API field: format
 	format, err := datasetRequiredString(values, "format")
 	if err != nil {
 		return nil, "", err
 	}
 
-	// Provider-only fields such as source_url and source_sha256 are
-	// intentionally excluded from the Foundry API request body.
+	// source_url and source_sha256 are provider-only fields and are not sent
+	// to the Foundry API.
 	return map[string]interface{}{
 		"name":        name,
 		"version":     version,
@@ -483,13 +430,6 @@ func datasetUploadDetails(
 		return "", "", err
 	}
 
-	if err := validateDatasetSASURL(uploadURL); err != nil {
-		return "", "", fmt.Errorf(
-			"dataset response field blobReference.credential.sasUri: %w",
-			err,
-		)
-	}
-
 	dataURIValues := values
 
 	if consumption, ok := values["blobReferenceForConsumption"]; ok &&
@@ -511,20 +451,9 @@ func datasetUploadDetails(
 	return uploadURL, dataURI, nil
 }
 
-func validateDatasetSASURL(rawURL string) error {
-	parsedURL, err := url.Parse(rawURL)
-	if err != nil ||
-		!strings.EqualFold(parsedURL.Scheme, "https") ||
-		parsedURL.Hostname() == "" ||
-		parsedURL.RawQuery == "" {
-		return fmt.Errorf("must be an HTTPS SAS URL")
-	}
-
-	return nil
-}
-
 func datasetSourceFilename(sourceURL string) (string, error) {
 	parsedURL, err := url.Parse(sourceURL)
+	// err is always non-nil for invalid URLs.
 	if err != nil {
 		return "", fmt.Errorf("parsing source_url: %w", err)
 	}
@@ -560,8 +489,6 @@ func datasetBlobUploadURL(
 		return parsedURL.String(), nil
 	}
 
-	// Otherwise, the returned SAS URL identifies a container. Append the
-	// source filename to create the blob-level upload URL.
 	parsedURL.Path = strings.TrimSuffix(parsedURL.Path, "/") +
 		"/" +
 		filename
@@ -573,17 +500,12 @@ func datasetBlobUploadURL(
 func datasetSourceHTTPClient() *http.Client {
 	return &http.Client{
 		CheckRedirect: func(
-			request *http.Request,
-			_ []*http.Request,
+			*http.Request,
+			[]*http.Request,
 		) error {
-			if err := validateDatasetSourceURL(request.URL.String()); err != nil {
-				return fmt.Errorf(
-					"refusing redirect for source_url: %w",
-					err,
-				)
-			}
-
-			return nil
+			return fmt.Errorf(
+				"refusing redirect for source_url; validate and use the final URL",
+			)
 		},
 	}
 }
@@ -599,6 +521,52 @@ func datasetUploadHTTPClient() *http.Client {
 			)
 		},
 	}
+}
+
+func downloadDatasetSHA256(sourceURL string) (string, error) {
+	request, err := http.NewRequestWithContext(
+		context.Background(),
+		http.MethodGet,
+		sourceURL,
+		nil,
+	)
+	if err != nil {
+		return "", fmt.Errorf(
+			"creating dataset checksum request: %w",
+			err,
+		)
+	}
+
+	request.Header.Set("Accept-Encoding", "identity")
+
+	response, err := datasetSourceHTTPClient().Do(request)
+	if err != nil {
+		return "", fmt.Errorf(
+			"downloading dataset for checksum: %w",
+			err,
+		)
+	}
+
+	defer response.Body.Close()
+
+	if response.StatusCode < http.StatusOK ||
+		response.StatusCode >= http.StatusMultipleChoices {
+		return "", fmt.Errorf(
+			"downloading dataset for checksum returned HTTP %s",
+			response.Status,
+		)
+	}
+
+	hasher := sha256.New()
+
+	if _, err := io.Copy(hasher, response.Body); err != nil {
+		return "", fmt.Errorf(
+			"calculating dataset checksum: %w",
+			err,
+		)
+	}
+
+	return hex.EncodeToString(hasher.Sum(nil)), nil
 }
 
 func streamDatasetToUpload(
@@ -761,13 +729,8 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		)
 	}
 
-	// Never mutate the body supplied by Terraform. The body is a dynamic
-	// Terraform object whose attribute set is determined by configuration.
-	// Adding fields to it during apply causes:
-	//
-	//   .body: wrong final value type: incorrect object attributes
-	//
-	// Use a detached request copy for defaults and provider-side processing.
+	// Work on a detached copy. The original Terraform body must not be
+	// mutated because its object type is determined by the configuration.
 	requestBody, err := datasetMap(body)
 	if err != nil {
 		return nil, err
@@ -807,12 +770,11 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		return nil, err
 	}
 
-	_, _, err = datasetVersionRequestBody(
+	if _, _, err := datasetVersionRequestBody(
 		requestBody,
 		resourceVersion,
 		"",
-	)
-	if err != nil {
+	); err != nil {
 		return nil, err
 	}
 
@@ -879,15 +841,18 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		)
 	}
 
-	// Add the checksum only to the response/output object. Do not add it to
-	// the Terraform body object because computed_sha256 was not part of the
-	// configured body's object type.
-	if responseValues, err := datasetMap(responseBody); err == nil {
-		responseValues["computed_sha256"] = computedSHA256
-		responseBody = responseValues
+	// computed_sha256 belongs in output, not body.
+	responseValues, err := datasetMap(responseBody)
+	if err != nil {
+		return nil, fmt.Errorf(
+			"invalid dataset version response: %w",
+			err,
+		)
 	}
 
-	return responseBody, nil
+	responseValues["computed_sha256"] = computedSHA256
+
+	return responseValues, nil
 }
 
 func (c FoundryDatasetCustomization) CreateFunc() CreateFunc {
@@ -942,6 +907,7 @@ func (c FoundryDatasetCustomization) DeleteFunc() DeleteFunc {
 
 func (c FoundryDatasetCustomization) StateBodyFunc() StateBodyFunc {
 	return func(body interface{}) (interface{}, error) {
+		// Preserve the configured body, including source_sha256.
 		return body, nil
 	}
 }
@@ -961,8 +927,7 @@ func (c FoundryDatasetCustomization) PlanBodyFunc() PlanBodyFunc {
 			return planValues, nil
 		}
 
-		// Only copy fields that are defaults or API fields. Do not copy
-		// computed_sha256 into the configured body object.
+		// Do not copy computed_sha256 into body. It belongs in output.
 		for _, field := range []string{
 			"version",
 			"type",
@@ -993,27 +958,38 @@ func (c FoundryDatasetCustomization) AugmentReadOutput(
 	responseBody interface{},
 	stateBody interface{},
 ) (interface{}, error) {
-	stateValues, err := datasetMap(stateBody)
-	if err != nil {
-		return responseBody, nil
-	}
-
-	computedSHA256, _, exists, err := datasetStringField(
-		stateValues,
-		"computed_sha256",
-	)
-	if err != nil ||
-		!exists ||
-		strings.TrimSpace(computedSHA256) == "" {
-		return responseBody, nil
-	}
-
 	outputValues, err := datasetMap(responseBody)
 	if err != nil {
 		return responseBody, nil
 	}
 
+	// Preserve a checksum already returned by another provider operation.
+	if _, _, exists := datasetField(
+		outputValues,
+		"computed_sha256",
+	); exists {
+		return outputValues, nil
+	}
+
+	sourceURL, _, _, err := datasetSourceInfo(stateBody)
+	if err != nil {
+		// Imported resources or older state may not contain source_url.
+		// The missing checksum must not prevent refresh or deletion.
+		outputValues["computed_sha256"] = nil
+		return outputValues, nil
+	}
+
+	// Calculate the checksum for output. This is best effort during reads:
+	// source_url can expire, be deleted, or become unavailable after the
+	// Azure AI asset has already been created.
+	computedSHA256, err := downloadDatasetSHA256(sourceURL)
+	if err != nil {
+		outputValues["computed_sha256"] = nil
+		return outputValues, nil
+	}
+
 	outputValues["computed_sha256"] = computedSHA256
+
 	return outputValues, nil
 }
 
