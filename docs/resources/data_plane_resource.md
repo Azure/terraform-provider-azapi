@@ -250,6 +250,7 @@ Optional:
 | Microsoft.DigitalTwins/digitalTwinsInstances/eventroutes | /eventroutes/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.DigitalTwins/digitalTwinsInstances/jobs/imports | /jobs/imports/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.Foundry/agents | /agents/{agentName} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
+| Microsoft.Foundry/datasets/versions | /datasets/{datasetName}/versions/{version} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}/datasets/{datasetName}      |
 | Microsoft.IoTCentral/IoTApps/organizations | /organizations/{organizationId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/scheduledJobs | /scheduledJobs/{scheduledJobId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/users | /users/{userId} | {appSubdomain}.azureiotcentral.com                                                          |
@@ -561,6 +562,51 @@ output "foundry_host" {
 
 output "project_name" {
   value = azapi_resource.foundry_project.name
+}
+```
+
+### Microsoft.Foundry/datasets/versions
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {}
+
+variable "project_endpoint" {
+  type        = string
+  description = "Foundry project endpoint, for example contoso.services.ai.azure.com/api/projects/example."
+}
+
+variable "source_url" {
+  type        = string
+  description = "HTTPS raw GitHub or Azure Blob Storage URL for the dataset file."
+}
+
+variable "source_sha256" {
+  type        = string
+  default     = null
+  description = "Optional SHA-256 checksum for source_url."
+}
+
+resource "azapi_data_plane_resource" "dataset_version" {
+  type      = "Microsoft.Foundry/datasets/versions@v1"
+  parent_id = "${var.project_endpoint}/datasets/example-dataset"
+
+  body = {
+    name          = "example-dataset"
+    description   = "Dataset uploaded by the AzAPI provider"
+    type          = "uri_file"
+    version       = "1"
+    format        = "jsonl"
+    source_url    = var.source_url
+    source_sha256 = var.source_sha256
+  }
 }
 ```
 
