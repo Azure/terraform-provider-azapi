@@ -133,6 +133,25 @@ func NewRetryOptionsForReadAfterCreate() (*policy.RetryOptions, *LastRetryError)
 	}, lastRetryErr
 }
 
+// NewRetryOptionsForResourceExistenceCheck applies user-configured retries while
+// allowing an expected 404 response to complete the existence check immediately.
+func NewRetryOptionsForResourceExistenceCheck(rtry retry.RetryValue) (*policy.RetryOptions, *LastRetryError) {
+	retryOptions, lastRetryErr := NewRetryOptions(rtry)
+	if retryOptions == nil {
+		return nil, nil
+	}
+
+	shouldRetry := retryOptions.ShouldRetry
+	retryOptions.ShouldRetry = func(resp *http.Response, err error) bool {
+		if resp != nil && resp.StatusCode == http.StatusNotFound {
+			return false
+		}
+		return shouldRetry(resp, err)
+	}
+
+	return retryOptions, lastRetryErr
+}
+
 // NewRetryOptions creates a RetryOptions based on the provided retry.RetryValue.
 func NewRetryOptions(rtry retry.RetryValue) (*policy.RetryOptions, *LastRetryError) {
 	if rtry.IsNull() || rtry.IsUnknown() {
