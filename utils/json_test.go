@@ -1959,6 +1959,60 @@ func Test_UpdateObject_ListUniqueIdProperty_NestedPath(t *testing.T) {
 			},
 		},
 		{
+			Name: "A changed nested identifier is still applied rather than matched away",
+			OldJson: `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/a" } },
+      { "subnet": { "id": "/subnets/b" } }
+    ]
+  }
+}`,
+			NewJson: `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/b" } },
+      { "subnet": { "id": "/subnets/d" } }
+    ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/b" } },
+      { "subnet": { "id": "/subnets/d" } }
+    ]
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"properties.virtualNetworkRules": "subnet.id",
+			},
+		},
+		{
+			Name: "Composite key mixing a nested path and a top-level field",
+			OldJson: `{
+  "items": [
+    { "priority": "high", "subnet": { "id": "/subnets/b" }, "enabled": false },
+    { "priority": "high", "subnet": { "id": "/subnets/a" }, "enabled": false }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "priority": "high", "subnet": { "id": "/subnets/a" }, "enabled": true },
+    { "priority": "high", "subnet": { "id": "/subnets/b" }, "enabled": true }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "priority": "high", "subnet": { "id": "/subnets/b" }, "enabled": true },
+    { "priority": "high", "subnet": { "id": "/subnets/a" }, "enabled": true }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "subnet.id, priority",
+			},
+		},
+		{
 			Name: "Unresolvable nested path falls back to positional matching",
 			OldJson: `{
   "items": [
@@ -2008,5 +2062,120 @@ func Test_UpdateObject_ListUniqueIdProperty_NestedPath(t *testing.T) {
 				t.Fatalf("unexpected result:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
 			}
 		})
+	}
+}
+
+func Test_UpdateObject_ListUniqueIdProperty_NestedPath_IgnoreOtherItemsInList(t *testing.T) {
+	oldJson := `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/b" }, "ignoreMissingVnetServiceEndpoint": false },
+      { "subnet": { "id": "/subnets/a" }, "ignoreMissingVnetServiceEndpoint": false }
+    ]
+  }
+}`
+	newJson := `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/a" }, "ignoreMissingVnetServiceEndpoint": true },
+      { "subnet": { "id": "/subnets/c" }, "ignoreMissingVnetServiceEndpoint": true }
+    ]
+  }
+}`
+	expectJson := `{
+  "properties": {
+    "virtualNetworkRules": [
+      { "subnet": { "id": "/subnets/a" }, "ignoreMissingVnetServiceEndpoint": true }
+    ]
+  }
+}`
+
+	var oldObj, newObj, expected interface{}
+	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
+		t.Fatalf("failed to unmarshal oldJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(newJson), &newObj); err != nil {
+		t.Fatalf("failed to unmarshal newJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(expectJson), &expected); err != nil {
+		t.Fatalf("failed to unmarshal expectJson: %v", err)
+	}
+
+	got := utils.UpdateObject(oldObj, newObj, utils.UpdateJsonOption{
+		ListUniqueIdProperty: map[string]string{
+			"properties.virtualNetworkRules": "subnet.id",
+		},
+		IgnoreOtherItemsInList: map[string]bool{
+			"properties.virtualNetworkRules": true,
+		},
+	})
+
+	if !reflect.DeepEqual(got, expected) {
+		gotBytes, _ := json.MarshalIndent(got, "", "  ")
+		expBytes, _ := json.MarshalIndent(expected, "", "  ")
+		t.Fatalf("unexpected result:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
+	}
+}
+
+func Test_MergeObjectWithOption_ListUniqueIdProperty_NestedPath(t *testing.T) {
+	oldJson := `
+{
+  "properties": {
+    "virtualNetworkRules": [
+      {
+        "subnet": { "id": "/subnets/a" },
+        "x": 1
+      }
+    ]
+  }
+}
+`
+	newJson := `
+{
+  "properties": {
+    "virtualNetworkRules": [
+      {
+        "subnet": { "id": "/subnets/b" }
+      },
+      {
+        "subnet": { "id": "/subnets/a" },
+        "x": 2
+      }
+    ]
+  }
+}
+`
+
+	var oldObj interface{}
+	var newObj interface{}
+	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
+		t.Fatalf("failed to unmarshal oldJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(newJson), &newObj); err != nil {
+		t.Fatalf("failed to unmarshal newJson: %v", err)
+	}
+
+	got := utils.MergeObjectWithOption(oldObj, newObj, utils.UpdateJsonOption{
+		ListUniqueIdProperty: map[string]string{
+			"properties.virtualNetworkRules": "subnet.id",
+		},
+	})
+
+	gotMap := got.(map[string]interface{})
+	props := gotMap["properties"].(map[string]interface{})
+	rules := props["virtualNetworkRules"].([]interface{})
+	if len(rules) != 2 {
+		t.Fatalf("expected 2 rules, got %d", len(rules))
+	}
+	first := rules[0].(map[string]interface{})
+	second := rules[1].(map[string]interface{})
+	if id := first["subnet"].(map[string]interface{})["id"]; id != "/subnets/a" {
+		t.Fatalf("expected the existing item to be matched by subnet.id and kept first, got %v", id)
+	}
+	if first["x"] != float64(2) {
+		t.Fatalf("expected /subnets/a x to be overwritten to 2, got %v", first["x"])
+	}
+	if id := second["subnet"].(map[string]interface{})["id"]; id != "/subnets/b" {
+		t.Fatalf("expected the new item to be appended second, got %v", id)
 	}
 }
