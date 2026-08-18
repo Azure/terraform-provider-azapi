@@ -225,6 +225,35 @@ func areSameArrayItemsByKey(a, b interface{}, key string) bool {
 	return aId == bId
 }
 
+// stringAtPath resolves key against input and returns the value when it is a string.
+// key may be a dot-separated path (e.g. "subnet.id") to address a nested field.
+func stringAtPath(input map[string]interface{}, key string) string {
+	// A literal key match wins, so field names that contain dots keep working.
+	if v, exists := input[key]; exists {
+		if strVal, ok := v.(string); ok {
+			return strVal
+		}
+	}
+
+	var current interface{} = input
+	for _, part := range strings.Split(key, ".") {
+		currentMap, ok := current.(map[string]interface{})
+		if !ok {
+			return ""
+		}
+		next, exists := currentMap[part]
+		if !exists || next == nil {
+			return ""
+		}
+		current = next
+	}
+
+	if strVal, ok := current.(string); ok {
+		return strVal
+	}
+	return ""
+}
+
 // identifierOfArrayItemByKey extracts an identifier from an array item using key (e.g. "name").
 // Supports composite keys via comma separation (e.g. "category, categoryGroup"), joined with underscore.
 func identifierOfArrayItemByKey(input interface{}, key string) string {
@@ -247,12 +276,7 @@ func identifierOfArrayItemByKey(input interface{}, key string) string {
 			continue
 		}
 
-		value := ""
-		if v, exists := inputMap[k]; exists && v != nil {
-			if strVal, ok := v.(string); ok {
-				value = strVal
-			}
-		}
+		value := stringAtPath(inputMap, k)
 
 		if value != "" {
 			hasNonEmpty = true
