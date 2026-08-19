@@ -96,7 +96,7 @@ resource "azapi_data_plane_resource" "dataset" {
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
-- `name` (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
+- `name` (String) Specifies the name (identifier segment) of the data plane resource. For resource types with service-generated identifiers, omit this attribute. For Microsoft.Foundry dataset versions, set it to the dataset version. Changing this forces a new resource to be created.
 
 	~> Once set, the value of this attribute in state will not change.
 
@@ -599,13 +599,13 @@ variable "dataset_description" {
 }
 
 variable "dataset_type" {
-  description = "The dataset type. The current upload workflow supports uri_file."
+  description = "The dataset type. Supported values are uri-file and uri-folder. The current upload workflow is file-oriented."
   type        = string
-  default     = "uri_file"
+  default     = "uri-file"
 
   validation {
-    condition     = var.dataset_type == "uri_file"
-    error_message = "dataset_type must be uri_file because folder uploads are not supported by this workflow."
+    condition     = contains(["uri-file", "uri-folder"], var.dataset_type)
+    error_message = "dataset_type must be uri-file or uri-folder."
   }
 }
 
@@ -620,8 +620,8 @@ variable "source_url" {
   description = "URL for the dataset file. Add module-specific host allowlist validation as appropriate."
 
   validation {
-    condition     = can(regex("^https://[^/]+/.+", var.source_url))
-    error_message = "source_url must be an HTTPS URL that identifies a file."
+    condition     = can(regex("^https://", var.source_url))
+    error_message = "source_url must be an HTTPS URL."
   }
 }
 
@@ -1446,3 +1446,12 @@ import {
 }
 ```
 
+
+### Foundry dataset version imports
+
+Foundry dataset versions use the same import format. The resource ID includes
+the dataset name and version, while the resource type includes the API version:
+
+```shell
+$ terraform import azapi_data_plane_resource.dataset "contoso.services.ai.azure.com/api/projects/example/datasets/training/versions/1|Microsoft.Foundry/datasets/versions@2025-05-01"
+```

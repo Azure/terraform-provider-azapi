@@ -29,13 +29,13 @@ variable "dataset_description" {
 }
 
 variable "dataset_type" {
-  description = "The dataset type. The current upload workflow supports uri_file."
+  description = "The dataset type. Supported values are uri-file and uri-folder."
   type        = string
-  default     = "uri_file"
+  default     = "uri-file"
 
   validation {
-    condition     = var.dataset_type == "uri_file"
-    error_message = "dataset_type must be uri_file because folder uploads are not supported by this workflow."
+    condition     = contains(["uri-file", "uri-folder"], var.dataset_type)
+    error_message = "dataset_type must be uri-file or uri-folder."
   }
 }
 

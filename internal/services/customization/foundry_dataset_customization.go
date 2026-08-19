@@ -254,13 +254,14 @@ func setDatasetDefaults(
 		values["version"] = version
 	}
 
-	datasetType, _, exists, err := datasetStringField(values, "type")
+	datasetType, _, _, err := datasetStringField(values, "type")
 	if err != nil {
 		return err
 	}
 
-	if !exists || strings.TrimSpace(datasetType) == "" {
-		values["type"] = "uri_file"
+	datasetType = strings.TrimSpace(datasetType)
+	if datasetType == "" {
+		values["type"] = "uri-file"
 	}
 
 	format, _, exists, err := datasetStringField(values, "format")
@@ -316,20 +317,19 @@ func datasetVersionRequestBody(
 		return nil, "", err
 	}
 
-	datasetType, _, exists, err := datasetStringField(values, "type")
+	datasetType, _, _, err := datasetStringField(values, "type")
 	if err != nil {
 		return nil, "", err
 	}
 
 	datasetType = strings.TrimSpace(datasetType)
-
-	if !exists || datasetType == "" {
-		datasetType = "uri_file"
+	if datasetType == "" {
+		datasetType = "uri-file"
 	}
 
-	if datasetType != "uri_file" && datasetType != "uri_folder" {
+	if datasetType != "uri-file" && datasetType != "uri-folder" {
 		return nil, "", fmt.Errorf(
-			`dataset body field "type" must be "uri_file" or "uri_folder"`,
+			`dataset body field "type" must be "uri-file" or "uri-folder"`,
 		)
 	}
 
@@ -779,7 +779,7 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		options,
 	)
 	if err != nil {
-		return "", datasetSafeError("downloading dataset", err)
+		return "", datasetSafeError("starting dataset upload", err)
 	}
 
 	uploadSASURL, dataURI, err := datasetUploadDetails(pendingResponse)

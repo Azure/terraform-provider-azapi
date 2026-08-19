@@ -10,6 +10,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 )
 
 func TestDatasetUploadDetails(t *testing.T) {
@@ -102,7 +105,7 @@ func TestDatasetVersionRequestBody(t *testing.T) {
 		"name":        "example-dataset",
 		"version":     "1",
 		"description": "example",
-		"type":        "uri_file",
+		"type":        "uri-file",
 		"dataUri":     "https://storage.blob.core.windows.net/container",
 		"format":      "jsonl",
 	}
@@ -302,7 +305,7 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 		},
 		map[string]interface{}{
 			"version":         "1",
-			"type":            "uri_file",
+			"type":            "uri-file",
 			"format":          "jsonl",
 			"computed_sha256": "abc",
 		},
@@ -315,7 +318,7 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected plan body type: %#v", planBody)
 	}
-	if values["version"] != "1" || values["type"] != "uri_file" {
+	if values["version"] != "1" || values["type"] != "uri-file" {
 		t.Fatalf("state defaults were not copied into plan body: %#v", values)
 	}
 	if _, exists := values["computed_sha256"]; exists {
@@ -323,7 +326,7 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 	}
 }
 
-func TestDatasetDefaultsAndValidation(t *testing.T) {
+func TestDatasetDefaults(t *testing.T) {
 	t.Run("sets defaults", func(t *testing.T) {
 		body := map[string]interface{}{
 			"format": "jsonl",
@@ -336,7 +339,7 @@ func TestDatasetDefaultsAndValidation(t *testing.T) {
 		if body["version"] != "1" {
 			t.Fatalf("unexpected version: %#v", body["version"])
 		}
-		if body["type"] != "uri_file" {
+		if body["type"] != "uri-file" {
 			t.Fatalf("unexpected type: %#v", body["type"])
 		}
 	})
@@ -358,6 +361,23 @@ func TestDatasetDefaultsAndValidation(t *testing.T) {
 		)
 		if err == nil {
 			t.Fatal("expected generated version to return an error")
+		}
+	})
+
+	t.Run("allows folder uploads", func(t *testing.T) {
+		body := map[string]interface{}{
+			"format": "jsonl",
+			"type":   "uri-folder",
+		}
+
+		if err := setDatasetDefaults(
+			body,
+			"1",
+		); err != nil {
+			t.Fatalf("setDatasetDefaults returned an error: %v", err)
+		}
+		if body["type"] != "uri-folder" {
+			t.Fatalf("unexpected type: %#v", body["type"])
 		}
 	})
 }
@@ -410,6 +430,48 @@ func TestDatasetVersionRequestBodyRejectsInvalidValues(t *testing.T) {
 				t.Fatal("expected validation error")
 			}
 		})
+	}
+}
+
+func TestDatasetVersionRequestBodyAllowsFolderType(t *testing.T) {
+	body, _, err := datasetVersionRequestBody(map[string]interface{}{
+		"name":        "example-dataset",
+		"description": "example",
+		"format":      "jsonl",
+		"type":        "uri-folder",
+	}, "1", "https://storage.blob.core.windows.net/container")
+	if err != nil {
+		t.Fatalf("datasetVersionRequestBody returned an error: %v", err)
+	}
+	if body["type"] != "uri-folder" {
+		t.Fatalf("unexpected dataset type: %#v", body["type"])
+	}
+}
+
+func TestFoundryDatasetCustomizationLifecycle(t *testing.T) {
+	customization := FoundryDatasetCustomization{}
+
+	if customization.GetResourceType() != "Microsoft.Foundry/datasets/versions" {
+		t.Fatalf("unexpected resource type: %q", customization.GetResourceType())
+	}
+	if customization.CreateFunc() == nil ||
+		customization.ReadFunc() == nil ||
+		customization.UpdateFunc() == nil {
+		t.Fatal("dataset customization must define create, read, and update behavior")
+	}
+	if customization.DeleteFunc() != nil {
+		t.Fatal("dataset customization should use the generic delete behavior")
+	}
+
+	err := customization.UpdateFunc()(
+		t.Context(),
+		clients.Client{},
+		parse.DataPlaneResourceId{},
+		nil,
+		clients.RequestOptions{},
+	)
+	if err == nil || !strings.Contains(err.Error(), "immutable") {
+		t.Fatalf("unexpected immutable update error: %v", err)
 	}
 }
 

@@ -68,6 +68,11 @@ type DataPlaneResourceModel struct {
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
+type DataPlaneResourceIdentityModel struct {
+	ID   types.String `tfsdk:"id"`
+	Type types.String `tfsdk:"type"`
+}
+
 type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
@@ -117,7 +122,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. For resource types with service-generated identifiers, omit this attribute. For Microsoft.Foundry dataset versions, set it to the dataset version. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -832,10 +837,32 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 }
 
 func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
-	resourceID, resourceType, err := parseDataPlaneImportID(request.ID)
-	if err != nil {
-		response.Diagnostics.AddError("Invalid import ID", err.Error())
-		return
+	resourceID := request.ID
+	resourceType := ""
+
+	if request.Identity != nil && !request.Identity.Raw.IsNull() {
+		var identityData DataPlaneResourceIdentityModel
+		diags := request.Identity.Get(ctx, &identityData)
+		response.Diagnostics.Append(diags...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+
+		if !identityData.ID.IsNull() && identityData.ID.ValueString() != "" {
+			resourceID = identityData.ID.ValueString()
+		}
+		if !identityData.Type.IsNull() && identityData.Type.ValueString() != "" {
+			resourceType = identityData.Type.ValueString()
+		}
+	}
+
+	if resourceType == "" {
+		var err error
+		resourceID, resourceType, err = parseDataPlaneImportID(resourceID)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid import ID", err.Error())
+			return
+		}
 	}
 
 	id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)

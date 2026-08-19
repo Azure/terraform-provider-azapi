@@ -17,15 +17,15 @@ func TestBuildDataPlaneActionURL(t *testing.T) {
 	}{
 		{
 			name:        "action uses query parameter",
-			resourceID:  "https://example.com/versions/1",
+			resourceID:  "example.com/versions/1",
 			action:      "startPendingUpload",
 			apiVersion:  "2025-05-01",
 			wantPath:    "/versions/1/startPendingUpload",
 			wantVersion: "2025-05-01",
 		},
 		{
-			name:        "resource action without suffix",
-			resourceID:  "https://example.com/versions/1",
+			name:        "resource action preserves query parameters",
+			resourceID:  "example.com/versions/1?foo=bar",
 			action:      "",
 			apiVersion:  "2025-05-01",
 			wantPath:    "/versions/1",
@@ -65,7 +65,17 @@ func TestBuildDataPlaneActionURL(t *testing.T) {
 				)
 			}
 
-			if strings.Contains(rawURL, "/api-version=") {
+			if parsedURL.Scheme != "https" {
+				t.Fatalf("unexpected scheme: got %q, want %q", parsedURL.Scheme, "https")
+			}
+			if parsedURL.Host != "example.com" {
+				t.Fatalf("unexpected host: got %q, want %q", parsedURL.Host, "example.com")
+			}
+			if test.name == "resource action preserves query parameters" &&
+				parsedURL.Query().Get("foo") != "bar" {
+				t.Fatalf("existing query parameter was not preserved: %s", rawURL)
+			}
+			if strings.Contains(parsedURL.Path, "api-version") {
 				t.Fatalf("API version was appended as a path segment: %s", rawURL)
 			}
 		})

@@ -233,16 +233,15 @@ func (client *DataPlaneClient) action(ctx context.Context, resourceID string, ac
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
-	urlPath := fmt.Sprintf("https://%s", resourceID)
-	if action != "" {
-		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
+	urlPath, err := buildDataPlaneActionURL(resourceID, action, apiVersion)
+	if err != nil {
+		return nil, err
 	}
 	req, err := runtime.NewRequest(ctx, method, urlPath)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
@@ -307,15 +306,24 @@ func buildDataPlaneActionURL(
 	action string,
 	apiVersion string,
 ) (string, error) {
-	parsedURL, err := url.Parse(strings.TrimRight(resourceID, "/"))
+	rawURL := strings.TrimRight(resourceID, "/")
+	if !strings.Contains(rawURL, "://") {
+		rawURL = "https://" + rawURL
+	}
+
+	parsedURL, err := url.Parse(rawURL)
 	if err != nil {
 		return "", err
 	}
+	if parsedURL.Scheme == "" || parsedURL.Host == "" {
+		return "", fmt.Errorf("invalid data plane resource ID %q", resourceID)
+	}
 
+	action = strings.Trim(action, "/")
 	if action != "" {
 		parsedURL.Path = strings.TrimRight(parsedURL.Path, "/") +
 			"/" +
-			strings.Trim(action, "/")
+			action
 		parsedURL.RawPath = ""
 	}
 
@@ -327,6 +335,3 @@ func buildDataPlaneActionURL(
 
 	return parsedURL.String(), nil
 }
-
-// Action and ActionWithContentType must call buildDataPlaneActionURL.
-// Do not append apiVersion using path.Join.
