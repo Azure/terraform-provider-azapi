@@ -44,13 +44,6 @@ func (c FoundryDatasetCustomization) GetResourceType() string {
 	return "Microsoft.Foundry/datasets/versions"
 }
 
-func datasetVersionAction(
-	id parse.DataPlaneResourceId,
-	action string,
-) string {
-	return strings.TrimSuffix(id.AzureResourceId, "/") + "/" + action
-}
-
 func datasetMap(value interface{}) (map[string]interface{}, error) {
 	data, err := json.Marshal(value)
 	if err != nil {
@@ -500,12 +493,10 @@ func datasetBlobUploadURL(
 func datasetSourceHTTPClient() *http.Client {
 	return &http.Client{
 		CheckRedirect: func(
-			*http.Request,
-			[]*http.Request,
+			_ *http.Request,
+			_ []*http.Request,
 		) error {
-			return fmt.Errorf(
-				"refusing redirect for source_url; validate and use the final URL",
-			)
+			return fmt.Errorf("dataset source redirects are disabled")
 		},
 	}
 }
@@ -513,12 +504,10 @@ func datasetSourceHTTPClient() *http.Client {
 func datasetUploadHTTPClient() *http.Client {
 	return &http.Client{
 		CheckRedirect: func(
-			*http.Request,
-			[]*http.Request,
+			_ *http.Request,
+			_ []*http.Request,
 		) error {
-			return fmt.Errorf(
-				"refusing redirect from dataset upload SAS URL",
-			)
+			return fmt.Errorf("dataset upload redirects are disabled")
 		},
 	}
 }
@@ -648,9 +637,7 @@ func streamDatasetToUpload(
 	if verifySHA256 &&
 		!strings.EqualFold(actualSHA256, expectedSHA256) {
 		return "", fmt.Errorf(
-			"dataset SHA-256 mismatch: expected %s, got %s",
-			expectedSHA256,
-			actualSHA256,
+			"SHA-256 mismatch. Supplied SHA-256 does not match computed SHA-256.",
 		)
 	}
 
@@ -750,8 +737,7 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 
 	if !exists || strings.TrimSpace(version) == "" {
 		return nil, fmt.Errorf(
-			`dataset body field "version" must match resource-level "name" %q`,
-			resourceVersion,
+			`dataset body field "version" must match resource-level "name"`,
 		)
 	}
 
@@ -785,18 +771,15 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 
 	pendingResponse, err := client.DataPlaneClient.Action(
 		ctx,
-		datasetVersionAction(id, "startPendingUpload"),
-		"",
+		id.AzureResourceId,
+		"startPendingUpload",
 		id.ApiVersion,
 		http.MethodPost,
 		pendingBody,
 		options,
 	)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"starting pending dataset upload: %w",
-			err,
-		)
+		return "", datasetSafeError("downloading dataset", err)
 	}
 
 	uploadSASURL, dataURI, err := datasetUploadDetails(pendingResponse)
@@ -829,14 +812,14 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		id.AzureResourceId,
 		"",
 		id.ApiVersion,
-		http.MethodPatch,
+		http.MethodPut,
 		versionBody,
 		options,
-		"application/merge-patch+json",
+		"application/json",
 	)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"creating dataset version: %w",
+		return "", datasetSafeError(
+			"creating dataset version",
 			err,
 		)
 	}
@@ -895,8 +878,7 @@ func (c FoundryDatasetCustomization) UpdateFunc() UpdateFunc {
 		_ clients.RequestOptions,
 	) error {
 		return fmt.Errorf(
-			"Foundry dataset version %q is immutable; create a new dataset version instead",
-			id.Name,
+			"Foundry dataset versions are immutable; create a new dataset version instead",
 		)
 	}
 }
@@ -991,6 +973,24 @@ func (c FoundryDatasetCustomization) AugmentReadOutput(
 	outputValues["computed_sha256"] = computedSHA256
 
 	return outputValues, nil
+}
+
+type datasetRedactedError struct {
+	operation string
+}
+
+func (e datasetRedactedError) Error() string {
+	if e.operation == "" {
+		return "request failed"
+	}
+
+	return e.operation + ": request failed"
+}
+
+func datasetSafeError(operation string, _ error) error {
+	return datasetRedactedError{
+		operation: operation,
+	}
 }
 
 var _ DataPlaneResource = &FoundryDatasetCustomization{}

@@ -3,6 +3,7 @@ package customization
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -319,5 +320,261 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 	}
 	if _, exists := values["computed_sha256"]; exists {
 		t.Fatalf("computed_sha256 must not be copied into plan body: %#v", values)
+	}
+}
+
+func TestDatasetDefaultsAndValidation(t *testing.T) {
+	t.Run("sets defaults", func(t *testing.T) {
+		body := map[string]interface{}{
+			"format": "jsonl",
+		}
+
+		if err := setDatasetDefaults(body, "1"); err != nil {
+			t.Fatalf("setDatasetDefaults returned an error: %v", err)
+		}
+
+		if body["version"] != "1" {
+			t.Fatalf("unexpected version: %#v", body["version"])
+		}
+		if body["type"] != "uri_file" {
+			t.Fatalf("unexpected type: %#v", body["type"])
+		}
+	})
+
+	t.Run("requires format", func(t *testing.T) {
+		err := setDatasetDefaults(
+			map[string]interface{}{},
+			"1",
+		)
+		if err == nil {
+			t.Fatal("expected missing format to return an error")
+		}
+	})
+
+	t.Run("rejects generated version", func(t *testing.T) {
+		err := setDatasetDefaults(
+			map[string]interface{}{},
+			"__generated__",
+		)
+		if err == nil {
+			t.Fatal("expected generated version to return an error")
+		}
+	})
+}
+
+func TestDatasetVersionRequestBodyRejectsInvalidValues(t *testing.T) {
+	tests := []struct {
+		name string
+		body map[string]interface{}
+	}{
+		{
+			name: "missing name",
+			body: map[string]interface{}{
+				"description": "example",
+				"format":      "jsonl",
+			},
+		},
+		{
+			name: "missing description",
+			body: map[string]interface{}{
+				"name":   "example",
+				"format": "jsonl",
+			},
+		},
+		{
+			name: "missing format",
+			body: map[string]interface{}{
+				"name":        "example",
+				"description": "example",
+			},
+		},
+		{
+			name: "invalid type",
+			body: map[string]interface{}{
+				"name":        "example",
+				"description": "example",
+				"format":      "jsonl",
+				"type":        "invalid",
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			_, _, err := datasetVersionRequestBody(
+				test.body,
+				"1",
+				"https://storage.example/data.jsonl",
+			)
+			if err == nil {
+				t.Fatal("expected validation error")
+			}
+		})
+	}
+}
+
+func TestDatasetUploadDetailsRejectsMalformedResponses(t *testing.T) {
+	tests := []struct {
+		name     string
+		response interface{}
+	}{
+		{
+			name:     "nil response",
+			response: nil,
+		},
+		{
+			name:     "missing blob reference",
+			response: map[string]interface{}{},
+		},
+		{
+			name: "missing credential",
+			response: map[string]interface{}{
+				"blobReference": map[string]interface{}{},
+			},
+		},
+		{
+			name: "missing SAS URI",
+			response: map[string]interface{}{
+				"blobReference": map[string]interface{}{
+					"credential": map[string]interface{}{},
+				},
+			},
+		},
+		{
+			name: "missing blob URI",
+			response: map[string]interface{}{
+				"blobReference": map[string]interface{}{
+					"credential": map[string]interface{}{
+						"sasUri": "https://storage.example/container?sr=c",
+					},
+				},
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			_, _, err := datasetUploadDetails(test.response)
+			if err == nil {
+				t.Fatal("expected malformed response to return an error")
+			}
+		})
+	}
+}
+
+func TestStreamDatasetToUploadRejectsChecksumMismatch(
+	t *testing.T,
+) {
+	const contents = "dataset contents"
+
+	sourceServer := httptest.NewServer(http.HandlerFunc(
+		func(response http.ResponseWriter, _ *http.Request) {
+			_, _ = io.WriteString(response, contents)
+		},
+	))
+	defer sourceServer.Close()
+
+	uploadCalled := false
+	uploadServer := httptest.NewServer(http.HandlerFunc(
+		func(response http.ResponseWriter, _ *http.Request) {
+			uploadCalled = true
+			response.WriteHeader(http.StatusCreated)
+		},
+	))
+	defer uploadServer.Close()
+
+	_, err := streamDatasetToUpload(
+		t.Context(),
+		sourceServer.URL+"/dataset.jsonl",
+		uploadServer.URL+"/container?sr=c&sig=test",
+		strings.Repeat("0", sha256.Size*2),
+		true,
+	)
+	if err == nil {
+		t.Fatal("expected checksum mismatch error")
+	}
+
+	if !strings.Contains(err.Error(), "SHA-256 mismatch") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if uploadCalled {
+		t.Fatal("upload must not occur after checksum mismatch")
+	}
+}
+
+func TestStreamDatasetToUploadRejectsUploadFailure(t *testing.T) {
+	const contents = "dataset contents"
+
+	sourceServer := httptest.NewServer(http.HandlerFunc(
+		func(response http.ResponseWriter, _ *http.Request) {
+			_, _ = io.WriteString(response, contents)
+		},
+	))
+	defer sourceServer.Close()
+
+	uploadServer := httptest.NewServer(http.HandlerFunc(
+		func(response http.ResponseWriter, _ *http.Request) {
+			response.WriteHeader(http.StatusInternalServerError)
+		},
+	))
+	defer uploadServer.Close()
+
+	sum := sha256.Sum256([]byte(contents))
+	checksum := hex.EncodeToString(sum[:])
+
+	_, err := streamDatasetToUpload(
+		t.Context(),
+		sourceServer.URL+"/dataset.jsonl",
+		uploadServer.URL+"/container?sr=c&sig=test",
+		checksum,
+		true,
+	)
+	if err == nil {
+		t.Fatal("expected upload failure")
+	}
+
+	if !strings.Contains(err.Error(), "uploading dataset returned HTTP") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestDatasetSafeErrorRedactsCause(t *testing.T) {
+	const sensitiveValue = "https://storage.example/container?sig=secret"
+
+	actualError := errors.New(
+		"request failed for " + sensitiveValue,
+	)
+
+	redactedError := datasetSafeError(
+		"uploading dataset",
+		actualError,
+	)
+
+	const expectedMessage = "uploading dataset: request failed"
+
+	if got := redactedError.Error(); got != expectedMessage {
+		t.Fatalf("unexpected redacted error: got %q, want %q", got, expectedMessage)
+	}
+
+	if strings.Contains(redactedError.Error(), sensitiveValue) {
+		t.Fatal("redacted error contains sensitive information")
+	}
+
+	if errors.Is(redactedError, actualError) {
+		t.Fatal("original error must not be recoverable")
+	}
+
+	if errors.Unwrap(redactedError) != nil {
+		t.Fatal("redacted error must not unwrap to the original error")
+	}
+
+	var typedError datasetRedactedError
+	if !errors.As(redactedError, &typedError) {
+		t.Fatal("expected datasetRedactedError")
+	}
+
+	if typedError.operation != "uploading dataset" {
+		t.Fatalf("unexpected operation: %q", typedError.operation)
 	}
 }

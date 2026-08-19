@@ -38,36 +38,128 @@ func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOption
 	}, nil
 }
 
-func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error) {
-	urlPath := buildURL(id.AzureResourceId, "")
+func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, error) {
+	client.syncMux.Lock()
+	defer client.syncMux.Unlock()
 
-	req, err := buildRequest(ctx, options, urlPath, http.MethodPut, id.ApiVersion)
+	parsedUrl, err := url.Parse(rawUrl)
+	if err != nil {
+		return runtime.Pipeline{}, err
+	}
+	serviceName := cloud.ResourceManager
+	cloud := client.clientOptions.Cloud
+	host := parsedUrl.Host
+	for name, serviceConfiguration := range cloud.Services {
+		if strings.HasSuffix(host, strings.TrimPrefix(serviceConfiguration.Endpoint, "https://")) {
+			serviceName = name
+			break
+		}
+	}
+
+	if pipeline, ok := client.cachedPipelines[string(serviceName)]; ok {
+		return pipeline, nil
+	}
+
+	plOpt := runtime.PipelineOptions{}
+	plOpt.APIVersion.Name = "api-version"
+	authPolicy := armruntime.NewBearerTokenPolicy(client.credential, &armpolicy.BearerTokenOptions{Scopes: []string{cloud.Services[serviceName].Audience + "/.default"}})
+	plOpt.PerRetry = append(plOpt.PerRetry, authPolicy)
+	pl := runtime.NewPipeline(moduleName, moduleVersion, plOpt, &client.clientOptions.ClientOptions)
+
+	client.cachedPipelines[string(serviceName)] = pl
+	return pl, nil
+}
+
+func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error) {
+	// build request
+	if options.RetryOptions != nil {
+		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+	}
+	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
+	req, err := runtime.NewRequest(ctx, http.MethodPut, urlPath)
 	if err != nil {
 		return nil, err
 	}
-
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 	err = runtime.MarshalAsJSON(req, body)
 	if err != nil {
 		return nil, err
 	}
 
-	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent}
-	return client.sendRequestThenPoll(ctx, req, urlPath, options, successCodes)
+	// send request
+	pipeline, err := client.cachedPipeline(urlPath)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		return nil, WrapContextError(err, options.LastRetryError)
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+
+	// poll until done
+	pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil)
+	if err == nil {
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
+	}
+
+	// unmarshal response
+	var responseBody interface{}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, err
+	}
+	return responseBody, nil
 }
 
 func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
-	urlPath := buildURL(id.AzureResourceId, "")
-	req, err := buildRequest(ctx, options, urlPath, http.MethodGet, id.ApiVersion)
+	// build request
+	if options.RetryOptions != nil {
+		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+	}
+	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, urlPath)
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 
-	successCodes := []int{http.StatusOK}
-	resp, _, err := client.sendRequest(req, urlPath, options, successCodes)
+	// send request
+	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err
 	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		return nil, WrapContextError(err, options.LastRetryError)
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return nil, runtime.NewResponseError(resp)
+	}
 
+	// unmarshal response
 	var responseBody interface{}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
@@ -76,14 +168,54 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 }
 
 func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
-	urlPath := buildURL(id.AzureResourceId, "")
-	req, err := buildRequest(ctx, options, urlPath, http.MethodDelete, id.ApiVersion)
+	// build request
+	if options.RetryOptions != nil {
+		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+	}
+	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, urlPath)
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 
-	successCodes := []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}
-	return client.sendRequestThenPoll(ctx, req, urlPath, options, successCodes)
+	// send request
+	pipeline, err := client.cachedPipeline(urlPath)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		return nil, WrapContextError(err, options.LastRetryError)
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+
+	// poll until done
+	pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil)
+	if err == nil {
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
+	}
+
+	// unmarshal response
+	var responseBody interface{}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, err
+	}
+	return responseBody, nil
 }
 
 func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
@@ -109,7 +241,16 @@ func (client *DataPlaneClient) action(ctx context.Context, resourceID string, ac
 	if err != nil {
 		return nil, err
 	}
-
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 	if method != "GET" && body != nil {
 		err = runtime.MarshalAsJSON(req, body)
 		if err == nil && contentType != "" {
@@ -120,14 +261,20 @@ func (client *DataPlaneClient) action(ctx context.Context, resourceID string, ac
 		return nil, err
 	}
 
-	// Action does not use sendRequestThenPoll because it parses the response body
-	// based on Content-Type (text/plain vs application/json) rather than always as JSON.
-	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted}
-	resp, pipeline, err := client.sendRequest(req, urlPath, options, successCodes)
+	// send request
+	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err
 	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		return nil, WrapContextError(err, options.LastRetryError)
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
 
+	// poll until done
 	pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil)
 	if err == nil {
 		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
@@ -136,6 +283,7 @@ func (client *DataPlaneClient) action(ctx context.Context, resourceID string, ac
 		return resp, err
 	}
 
+	// unmarshal response
 	var responseBody interface{}
 	responseContentType := resp.Header.Get("Content-Type")
 	switch {
@@ -154,99 +302,31 @@ func (client *DataPlaneClient) action(ctx context.Context, resourceID string, ac
 	return responseBody, nil
 }
 
-func buildURL(resourceId string, action string) (urlPath string) {
-	urlPath = fmt.Sprintf("https://%s", resourceId)
+func buildDataPlaneActionURL(
+	resourceID string,
+	action string,
+	apiVersion string,
+) (string, error) {
+	parsedURL, err := url.Parse(strings.TrimRight(resourceID, "/"))
+	if err != nil {
+		return "", err
+	}
+
 	if action != "" {
-		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
+		parsedURL.Path = strings.TrimRight(parsedURL.Path, "/") +
+			"/" +
+			strings.Trim(action, "/")
+		parsedURL.RawPath = ""
 	}
-	return
+
+	query := parsedURL.Query()
+	if apiVersion != "" {
+		query.Set("api-version", apiVersion)
+	}
+	parsedURL.RawQuery = query.Encode()
+
+	return parsedURL.String(), nil
 }
 
-func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, apiVersion string) (*policy.Request, error) {
-	if options.RetryOptions != nil {
-		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
-	}
-	req, err := runtime.NewRequest(ctx, method, urlPath)
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
-	for key, value := range options.QueryParameters {
-		reqQP.Set(key, value)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	for key, value := range options.Headers {
-		req.Raw().Header.Set(key, value)
-	}
-
-	return req, nil
-}
-
-func (client *DataPlaneClient) sendRequest(req *policy.Request, urlPath string, options RequestOptions, statusCodes []int) (*http.Response, runtime.Pipeline, error) {
-	pipeline, err := client.cachedPipeline(urlPath)
-	if err != nil {
-		return nil, runtime.Pipeline{}, err
-	}
-	resp, err := pipeline.Do(req)
-	if err != nil {
-		return nil, runtime.Pipeline{}, WrapContextError(err, options.LastRetryError)
-	}
-	if !runtime.HasStatusCode(resp, statusCodes...) {
-		return nil, runtime.Pipeline{}, runtime.NewResponseError(resp)
-	}
-	return resp, pipeline, nil
-}
-
-func (client *DataPlaneClient) sendRequestThenPoll(ctx context.Context, req *policy.Request, urlPath string, options RequestOptions, statusCodes []int) (interface{}, error) {
-	resp, pipeline, err := client.sendRequest(req, urlPath, options, statusCodes)
-	if err != nil {
-		return nil, err
-	}
-
-	if pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil); err == nil {
-		return pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
-			Frequency: 10 * time.Second,
-		})
-	}
-
-	// if NewPoller returned an error, return the original resp body directly.
-	var responseBody interface{}
-	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, err
-	}
-	return responseBody, nil
-}
-
-func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, error) {
-	client.syncMux.Lock()
-	defer client.syncMux.Unlock()
-
-	parsedUrl, err := url.Parse(rawUrl)
-	if err != nil {
-		return runtime.Pipeline{}, err
-	}
-	serviceName := cloud.ResourceManager
-	cloudConfig := client.clientOptions.Cloud
-	host := parsedUrl.Host
-	for name, serviceConfiguration := range cloudConfig.Services {
-		if strings.HasSuffix(host, strings.TrimPrefix(serviceConfiguration.Endpoint, "https://")) {
-			serviceName = name
-			break
-		}
-	}
-
-	if pipeline, ok := client.cachedPipelines[string(serviceName)]; ok {
-		return pipeline, nil
-	}
-
-	plOpt := runtime.PipelineOptions{}
-	plOpt.APIVersion.Name = "api-version"
-	authPolicy := armruntime.NewBearerTokenPolicy(client.credential, &armpolicy.BearerTokenOptions{Scopes: []string{cloudConfig.Services[serviceName].Audience + "/.default"}})
-	plOpt.PerRetry = append(plOpt.PerRetry, authPolicy)
-	pl := runtime.NewPipeline(moduleName, moduleVersion, plOpt, &client.clientOptions.ClientOptions)
-
-	client.cachedPipelines[string(serviceName)] = pl
-	return pl, nil
-}
+// Action and ActionWithContentType must call buildDataPlaneActionURL.
+// Do not append apiVersion using path.Join.

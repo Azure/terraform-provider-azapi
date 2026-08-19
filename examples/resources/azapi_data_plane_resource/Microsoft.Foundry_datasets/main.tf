@@ -50,8 +50,8 @@ variable "source_url" {
   description = "URL for the dataset file. Add module-specific host allowlist validation as appropriate."
 
   validation {
-    condition     = can(regex("^https://[^/]+/.+", var.source_url))
-    error_message = "source_url must be an HTTPS URL that identifies a file."
+    condition     = can(regex("^https://", var.source_url))
+    error_message = "source_url must be an HTTPS URL."
   }
 }
 
