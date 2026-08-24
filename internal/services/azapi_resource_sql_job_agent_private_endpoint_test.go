@@ -16,12 +16,6 @@ func TestAccGenericResource_sqlJobAgentPrivateEndpoint(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.sqlJobAgentPrivateEndpoint(data),
-			ExternalProviders: map[string]resource.ExternalProvider{
-				"time": {
-					Source:            "hashicorp/time",
-					VersionConstraint: "0.12.0",
-				},
-			},
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("output.properties.privateEndpointId").Exists(),
@@ -128,9 +122,38 @@ resource "azapi_resource" "test" {
 }
 
 # The private endpoint resource polls until the connection is approved, so this
-# delay must run in parallel rather than depend on azapi_resource.test.
-resource "time_sleep" "wait_for_private_endpoint" {
-  create_duration = "1m"
+# poller must run in parallel rather than depend on azapi_resource.test.
+resource "terraform_data" "wait_for_private_endpoint" {
+  input = azapi_resource.targetServer.id
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = <<-EOT
+      set -u -o pipefail
+
+      for ((attempt = 1; attempt <= 60; attempt++)); do
+        if connection_id="$(
+          az network private-endpoint-connection list \
+            --id "${azapi_resource.targetServer.id}" \
+            --query "[?properties.privateLinkServiceConnectionState.status == 'Pending'].id | [0]" \
+            --output tsv \
+            --only-show-errors
+        )"; then
+          if [[ -n "$connection_id" ]]; then
+            echo "Private endpoint connection is ready for approval: $connection_id"
+            exit 0
+          fi
+        else
+          echo "Attempt $attempt: failed to query private endpoint connections" >&2
+        fi
+
+        sleep 5
+      done
+
+      echo "Timed out waiting for a pending private endpoint connection" >&2
+      exit 1
+    EOT
+  }
 
   depends_on = [
     azapi_resource.jobAgent,
@@ -145,7 +168,7 @@ data "azapi_resource_list" "private_endpoint_connections" {
     private_endpoint_connection_id = "value[0].id"
   }
 
-  depends_on = [time_sleep.wait_for_private_endpoint]
+  depends_on = [terraform_data.wait_for_private_endpoint]
 }
 
 action "azapi_resource_action" "approve_private_endpoint" {
