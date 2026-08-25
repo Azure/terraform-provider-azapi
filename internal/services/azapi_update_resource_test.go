@@ -77,7 +77,7 @@ func TestAccGenericUpdateResource_readActionAppSettings(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			// GET on config/appsettings returns empty properties (values only come from POST .../list),
-			// so with ignore_missing_property = false this reproduces the #1167 drift unless read_action fires.
+			// so with ignore_missing_property = false this reproduces the #1167 drift unless read_override fires.
 			Config: r.readActionAppSettings(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
@@ -95,7 +95,7 @@ func TestAccGenericUpdateResource_readActionAppSettingsExplicitList(t *testing.T
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			// Force the POST list read path via read_action = "list".
+			// Force the POST list read path via read_override.
 			Config: r.readActionAppSettingsExplicitList(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
@@ -585,7 +585,10 @@ resource "azapi_update_resource" "test" {
   }
   ignore_casing           = false
   ignore_missing_property = false
-  read_action             = "list"
+  read_override = {
+    method = "POST"
+    action = "list"
+  }
 }
 `, r.readActionAppSettingsTemplate(data))
 }
