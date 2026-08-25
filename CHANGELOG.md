@@ -1,3 +1,20 @@
+## v2.12.0
+
+ENHANCEMENTS:
+
+- `azapi` provider: Support `preserve_resource_id_casing` feature flag (default `false`). When enabled, if the resource ID the provider would write back to state differs from the existing state value only by casing, the existing casing is preserved. This avoids spurious `Unexpected Identity Change` errors and diffs when consumers (or upstream modules) rely on a specific casing the Azure API may not preserve. Only the `id` and `resource_id` attributes are affected. Can also be sourced from the `ARM_PRESERVE_RESOURCE_ID_CASING` environment variable (GH-1122).
+- `azapi` provider: Publish official windows_arm64 provider binaries (GH-1148).
+- `azapi_resource` resource: Re-introduce the `ignore_body_changes` property to ignore changes to specified fields in the request body (GH-1192).
+- `azapi_data_plane_resource` resource: Allow `name` to be optional based on the URL format (GH-1178).
+- `azapi_data_plane_resource` resource: Support Key Vault certificates (GH-1174).
+
+BUG FIXES:
+
+- Strip UTF-8 BOM prefix from JSON responses (GH-1190).
+- Preserve `azapi_resource` state for an in-flight Create interrupted by SIGINT (GH-1183).
+- Fix `MoveState` target identity for `azurerm` resource moves (GH-1175).
+- Fix OIDC token file path logic (GH-1164).
+
 ## v2.11.0
 
 ENHANCEMENTS:

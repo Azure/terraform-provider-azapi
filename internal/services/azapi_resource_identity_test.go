@@ -102,6 +102,82 @@ func TestAzapiResourceReadSetsIdentityWhenArmReturnsNotFound(t *testing.T) {
 	}
 }
 
+func TestAzapiResourceMoveStateSetsTargetIdentityForAzurermResources(t *testing.T) {
+	ctx := context.Background()
+	sourceID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctest-rg"
+
+	azapiResource := &services.AzapiResource{}
+	stateMovers := azapiResource.MoveState(ctx)
+	if len(stateMovers) == 0 {
+		t.Fatal("expected at least one state mover")
+	}
+
+	stateMover := stateMovers[0]
+
+	sourceState := tfsdk.State{Schema: *stateMover.SourceSchema}
+	diags := sourceState.Set(ctx, azurermResourceGroupMoveState{
+		ID:                    types.StringValue(sourceID),
+		ResourceManagerID:     types.StringNull(),
+		ResourceID:            types.StringNull(),
+		ResourceVersionlessID: types.StringNull(),
+	})
+	if diags.HasError() {
+		t.Fatalf("setting source state: %+v", diags)
+	}
+
+	var schemaResponse resource.SchemaResponse
+	azapiResource.Schema(ctx, resource.SchemaRequest{}, &schemaResponse)
+	if schemaResponse.Diagnostics.HasError() {
+		t.Fatalf("reading azapi schema: %+v", schemaResponse.Diagnostics)
+	}
+
+	var identitySchemaResponse resource.IdentitySchemaResponse
+	azapiResource.IdentitySchema(ctx, resource.IdentitySchemaRequest{}, &identitySchemaResponse)
+	if identitySchemaResponse.Diagnostics.HasError() {
+		t.Fatalf("reading azapi identity schema: %+v", identitySchemaResponse.Diagnostics)
+	}
+
+	moveRequest := resource.MoveStateRequest{
+		SourceTypeName: "azurerm_resource_group",
+		SourceState:    &sourceState,
+	}
+
+	moveResponse := resource.MoveStateResponse{
+		TargetState: tfsdk.State{
+			Schema: schemaResponse.Schema,
+		},
+		TargetIdentity: &tfsdk.ResourceIdentity{
+			Schema: identitySchemaResponse.IdentitySchema,
+			Raw:    tftypes.NewValue(identitySchemaResponse.IdentitySchema.Type().TerraformType(ctx), nil),
+		},
+	}
+	setEmptyMoveStateTargetPrivate(&moveResponse)
+
+	stateMover.StateMover(ctx, moveRequest, &moveResponse)
+	if moveResponse.Diagnostics.HasError() {
+		t.Fatalf("moving state: %+v", moveResponse.Diagnostics)
+	}
+
+	var movedState services.AzapiResourceModel
+	diags = moveResponse.TargetState.Get(ctx, &movedState)
+	if diags.HasError() {
+		t.Fatalf("reading moved state: %+v", diags)
+	}
+
+	var movedIdentity services.AzapiResourceIdentityModel
+	diags = moveResponse.TargetIdentity.Get(ctx, &movedIdentity)
+	if diags.HasError() {
+		t.Fatalf("reading moved identity: %+v", diags)
+	}
+
+	if movedIdentity.ID.ValueString() != movedState.ID.ValueString() {
+		t.Fatalf("expected moved identity ID %q, got %q", movedState.ID.ValueString(), movedIdentity.ID.ValueString())
+	}
+	if movedIdentity.Type.ValueString() != movedState.Type.ValueString() {
+		t.Fatalf("expected moved identity type %q, got %q", movedState.Type.ValueString(), movedIdentity.Type.ValueString())
+	}
+}
+
 type staticTokenCredential struct{}
 
 func (staticTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
@@ -130,4 +206,16 @@ func (t staticTransport) Do(req *http.Request) (*http.Response, error) {
 func setEmptyPrivateState(target any) {
 	field := reflect.ValueOf(target).Elem().FieldByName("Private")
 	field.Set(reflect.New(field.Type().Elem()))
+}
+
+func setEmptyMoveStateTargetPrivate(target any) {
+	field := reflect.ValueOf(target).Elem().FieldByName("TargetPrivate")
+	field.Set(reflect.New(field.Type().Elem()))
+}
+
+type azurermResourceGroupMoveState struct {
+	ID                    types.String `tfsdk:"id"`
+	ResourceManagerID     types.String `tfsdk:"resource_manager_id"`
+	ResourceID            types.String `tfsdk:"resource_id"`
+	ResourceVersionlessID types.String `tfsdk:"resource_versionless_id"`
 }

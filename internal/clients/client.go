@@ -65,6 +65,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	}
 	perRetryPolicies := make([]policy.Policy, 0)
 	perRetryPolicies = append(perRetryPolicies, NewLiveTrafficLogPolicy())
+	perRetryPolicies = append(perRetryPolicies, newUTF8BOMPolicy())
 
 	allowedHeaders := []string{
 		"Access-Control-Allow-Methods",

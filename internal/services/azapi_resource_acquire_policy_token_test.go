@@ -18,48 +18,57 @@ import (
 
 type ResourceWithAcquirePolicyToken struct{}
 
+func acquirePolicyTokenExternalProviders() map[string]resource.ExternalProvider {
+	providers := common.ExternalProvidersAzurermVersionFour()
+	providers["time"] = resource.ExternalProvider{
+		Source:            "hashicorp/time",
+		VersionConstraint: "0.12.0",
+	}
+	return providers
+}
+
 func TestAccResourceWithAcquirePolicyToken_allowedByPolicy(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "storage")
 	r := ResourceWithAcquirePolicyToken{}
 
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config:            r.basic(data, true),
-			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
+	step := resource.TestStep{
+		Config:            r.basic(data, true),
+		ExternalProviders: acquirePolicyTokenExternalProviders(),
+		Check: resource.ComposeTestCheckFunc(
+			check.That(data.ResourceName).ExistsInAzure(r),
+		),
+	}
+
+	data.ResourceTest(t, r, []resource.TestStep{step})
 }
 
 func TestAccResourceWithAcquirePolicyToken_disallowedByPolicy(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "storage")
 	r := ResourceWithAcquirePolicyToken{}
 
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config:            r.basic(data, false),
-			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-			ExpectError:       regexp.MustCompile("RequestDisallowedByPolicy"),
-		},
-	})
+	step := resource.TestStep{
+		Config:            r.basic(data, false),
+		ExternalProviders: acquirePolicyTokenExternalProviders(),
+		ExpectError:       regexp.MustCompile("RequestDisallowedByPolicy"),
+	}
+
+	data.ResourceTest(t, r, []resource.TestStep{step})
 }
 
 func TestAccResourceWithAcquirePolicyToken_alwaysAcquire(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "storage")
 	r := ResourceWithAcquirePolicyToken{}
 
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config:            r.alwaysAcquire(data),
-			ExternalProviders: common.ExternalProvidersAzurermVersionFour(),
-			Check: resource.ComposeTestCheckFunc(
-				check.That("azapi_resource.storage").ExistsInAzure(r),
-				check.That("azapi_resource.virtual_network").ExistsInAzure(r),
-			),
-		},
-	})
+	step := resource.TestStep{
+		Config:            r.alwaysAcquire(data),
+		ExternalProviders: acquirePolicyTokenExternalProviders(),
+		Check: resource.ComposeTestCheckFunc(
+			check.That("azapi_resource.storage").ExistsInAzure(r),
+			check.That("azapi_resource.virtual_network").ExistsInAzure(r),
+		),
+	}
+
+	data.ResourceTest(t, r, []resource.TestStep{step})
 }
 
 func (r ResourceWithAcquirePolicyToken) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
@@ -159,6 +168,12 @@ resource "azurerm_resource_group_policy_assignment" "test" {
   }
 }
 
+resource "time_sleep" "wait_for_policy_assignment" {
+  create_duration = "1m"
+
+  depends_on = [azurerm_resource_group_policy_assignment.test]
+}
+
 resource "azapi_resource" "storage" {
   type      = "Microsoft.Storage/storageAccounts@2023-05-01"
   name      = "acctestsa%[3]s"
@@ -188,7 +203,7 @@ resource "azapi_resource" "storage" {
     }
   }
 
-  depends_on = [azurerm_resource_group_policy_assignment.test]
+  depends_on = [time_sleep.wait_for_policy_assignment]
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString, claimValue)
 }
@@ -264,6 +279,12 @@ resource "azurerm_resource_group_policy_assignment" "test" {
   }
 }
 
+resource "time_sleep" "wait_for_policy_assignment" {
+  create_duration = "5m"
+
+  depends_on = [azurerm_resource_group_policy_assignment.test]
+}
+
 resource "azapi_resource" "storage" {
   type      = "Microsoft.Storage/storageAccounts@2023-05-01"
   name      = "acctestsa%[3]s"
@@ -293,7 +314,7 @@ resource "azapi_resource" "storage" {
     }
   }
 
-  depends_on = [azurerm_resource_group_policy_assignment.test]
+  depends_on = [time_sleep.wait_for_policy_assignment]
 }
 
 resource "azapi_resource" "virtual_network" {
@@ -310,7 +331,7 @@ resource "azapi_resource" "virtual_network" {
     }
   }
 
-  depends_on = [azurerm_resource_group_policy_assignment.test]
+  depends_on = [time_sleep.wait_for_policy_assignment]
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }
