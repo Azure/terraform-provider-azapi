@@ -1150,7 +1150,19 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+	apiVersion := id.ApiVersion
+	var responseBody interface{}
+	if v, _ := request.Private.GetKey(ctx, FlagMoveState); v != nil && string(v) == "true" {
+		responseBody, err = withApiVersionFallback(ctx, func(candidateApiVersion string) (interface{}, error) {
+			body, err := client.Get(ctx, id.AzureResourceId, candidateApiVersion, requestOptions)
+			if err == nil {
+				apiVersion = candidateApiVersion
+			}
+			return body, err
+		}, "", azure.GetApiVersions(id.AzureResourceType))
+	} else {
+		responseBody, err = client.Get(ctx, id.AzureResourceId, apiVersion, requestOptions)
+	}
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -1160,11 +1172,18 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 		return
 	}
+	if apiVersion != id.ApiVersion {
+		id, err = parse.ResourceIDWithResourceType(model.ID.ValueString(), fmt.Sprintf("%s@%s", id.AzureResourceType, apiVersion))
+		if err != nil {
+			response.Diagnostics.AddError("Error parsing ID", err.Error())
+			return
+		}
+	}
 
 	state := model
 	state.Name = types.StringValue(id.Name)
 	state.ParentID = types.StringValue(id.ParentId)
-	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, apiVersion))
 	if state.IgnoreNullProperty.IsNull() {
 		state.IgnoreNullProperty = types.BoolValue(false)
 	}
