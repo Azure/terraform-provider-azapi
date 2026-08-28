@@ -1159,7 +1159,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 				apiVersion = candidateApiVersion
 			}
 			return body, err
-		}, "", azure.GetApiVersions(id.AzureResourceType))
+		}, "", apiVersionsWithPreferred(id.ApiVersion, azure.GetApiVersions(id.AzureResourceType)))
 	} else {
 		responseBody, err = client.Get(ctx, id.AzureResourceId, apiVersion, requestOptions)
 	}
@@ -1304,10 +1304,16 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			return
 		}
 		state.Body = payload
-		response.Diagnostics.Append(response.Private.SetKey(ctx, FlagMoveState, []byte("false"))...)
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	if v, _ := request.Private.GetKey(ctx, FlagMoveState); v != nil && string(v) == "true" {
+		response.Diagnostics.Append(response.Private.SetKey(ctx, FlagMoveState, []byte("false"))...)
+	}
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
@@ -1492,6 +1498,16 @@ func withApiVersionFallback(ctx context.Context, operation func(apiVersion strin
 		}
 	}
 	return result, err
+}
+
+func apiVersionsWithPreferred(preferredApiVersion string, candidateApiVersions []string) []string {
+	apiVersions := make([]string, 0, len(candidateApiVersions)+1)
+	for _, apiVersion := range candidateApiVersions {
+		if apiVersion != preferredApiVersion {
+			apiVersions = append(apiVersions, apiVersion)
+		}
+	}
+	return append(apiVersions, preferredApiVersion)
 }
 
 func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {

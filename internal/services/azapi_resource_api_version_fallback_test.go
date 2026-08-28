@@ -130,3 +130,11 @@ func Test_withApiVersionFallback(t *testing.T) {
 		})
 	}
 }
+
+func Test_apiVersionsWithPreferred(t *testing.T) {
+	apiVersions := apiVersionsWithPreferred("2019-01-01", []string{"2018-01-01", "2019-01-01", "2020-01-01"})
+	expected := []string{"2018-01-01", "2020-01-01", "2019-01-01"}
+	if !reflect.DeepEqual(apiVersions, expected) {
+		t.Fatalf("expected API versions %v but got %v", expected, apiVersions)
+	}
+}
