@@ -151,7 +151,9 @@ func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
+	if apiVersion != "" {
+		reqQP.Set("api-version", apiVersion)
+	}
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
