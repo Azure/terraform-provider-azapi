@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -32,62 +33,16 @@ func Test_readOverrideFromObject(t *testing.T) {
 	}
 }
 
-func Test_countCoveredLeaves(t *testing.T) {
-	testcases := []struct {
-		Name          string
-		Body          string
-		Response      string
-		ExpectTotal   int
-		ExpectCovered int
-	}{
-		{
-			Name:          "empty get response drops every configured leaf",
-			Body:          `{"properties":{"MY_SETTING":"value1","OTHER":"value2"}}`,
-			Response:      `{"properties":{},"name":"appsettings","kind":null}`,
-			ExpectTotal:   2,
-			ExpectCovered: 0,
-		},
-		{
-			Name:          "list response covers every configured leaf",
-			Body:          `{"properties":{"MY_SETTING":"value1","OTHER":"value2"}}`,
-			Response:      `{"properties":{"MY_SETTING":"value1","OTHER":"value2"},"name":"appsettings"}`,
-			ExpectTotal:   2,
-			ExpectCovered: 2,
-		},
-		{
-			Name:          "partial coverage still counts as covered",
-			Body:          `{"properties":{"MY_SETTING":"value1","OTHER":"value2"}}`,
-			Response:      `{"properties":{"MY_SETTING":"value1"}}`,
-			ExpectTotal:   2,
-			ExpectCovered: 1,
-		},
-		{
-			Name:          "nil response covers nothing",
-			Body:          `{"properties":{"MY_SETTING":"value1"}}`,
-			Response:      `null`,
-			ExpectTotal:   1,
-			ExpectCovered: 0,
-		},
-		{
-			Name:          "empty body has no leaves",
-			Body:          `{}`,
-			Response:      `{"properties":{"MY_SETTING":"value1"}}`,
-			ExpectTotal:   0,
-			ExpectCovered: 0,
-		},
+func Test_resolveReadResponseWithoutOverride(t *testing.T) {
+	var getResponse interface{}
+	_ = json.Unmarshal([]byte(`{"properties":{},"name":"appsettings"}`), &getResponse)
+
+	result, diags := resolveReadResponse(context.Background(), nil, "", "", getResponse, nil, clients.RequestOptions{})
+	if diags.HasError() {
+		t.Fatalf("unexpected diagnostics: %v", diags)
 	}
-
-	for _, testcase := range testcases {
-		t.Run(testcase.Name, func(t *testing.T) {
-			var body, response interface{}
-			_ = json.Unmarshal([]byte(testcase.Body), &body)
-			_ = json.Unmarshal([]byte(testcase.Response), &response)
-
-			total, covered := countCoveredLeaves(body, response)
-			if total != testcase.ExpectTotal || covered != testcase.ExpectCovered {
-				t.Fatalf("expected total=%d covered=%d but got total=%d covered=%d", testcase.ExpectTotal, testcase.ExpectCovered, total, covered)
-			}
-		})
+	if !reflect.DeepEqual(result, getResponse) {
+		t.Fatalf("expected the GET response to be returned unchanged")
 	}
 }
 

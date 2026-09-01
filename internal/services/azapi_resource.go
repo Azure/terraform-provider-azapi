@@ -1255,7 +1255,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	if response.Diagnostics.HasError() {
 		return
 	}
-	mergeResponseBody, readDiags := resolveReadResponse(ctx, client, id.AzureResourceId, id.AzureResourceType, id.ApiVersion, requestBody, responseBody, readOverride, requestOptions)
+	mergeResponseBody, readDiags := resolveReadResponse(ctx, client, id.AzureResourceId, id.ApiVersion, responseBody, readOverride, requestOptions)
 	response.Diagnostics.Append(readDiags...)
 	if response.Diagnostics.HasError() {
 		return

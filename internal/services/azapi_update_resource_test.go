@@ -70,25 +70,6 @@ func TestAccGenericUpdateResource_siteConfigSlotConfigNames(t *testing.T) {
 	})
 }
 
-func TestAccGenericUpdateResource_readActionAppSettings(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			// GET on config/appsettings returns empty properties (values only come from POST .../list),
-			// so with ignore_missing_property = false this reproduces the #1167 drift unless read_override fires.
-			Config: r.readActionAppSettings(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("resource_id").Exists(),
-				check.That(data.ResourceName).Key("parent_id").Exists(),
-				check.That(data.ResourceName).Key("name").Exists(),
-			),
-		},
-	})
-}
-
 func TestAccGenericUpdateResource_readActionAppSettingsExplicitList(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -545,27 +526,6 @@ resource "azapi_resource" "site" {
   depends_on = [azapi_resource.container]
 }
 `, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) readActionAppSettings(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azapi_update_resource" "test" {
-  type      = "Microsoft.Web/sites/config@2023-12-01"
-  name      = "appsettings"
-  parent_id = azapi_resource.site.id
-  body = {
-    properties = {
-      KEY1 = "value1"
-      KEY2 = "value2"
-      KEY3 = "value3"
-    }
-  }
-  ignore_casing           = false
-  ignore_missing_property = false
-}
-`, r.readActionAppSettingsTemplate(data))
 }
 
 func (r GenericUpdateResource) readActionAppSettingsExplicitList(data acceptance.TestData) string {

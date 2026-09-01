@@ -133,7 +133,7 @@ output "quarantine_policy" {
 
 	-> Ensure this in resource ID format.
 - `read_headers` (Map of String) A mapping of headers to be sent with the read request.
-- `read_override` (Object) Overrides the request used to read resource values when a plain `GET` does not return them. When unset, the provider automatically attempts a `POST {resource_id}/list` fallback when supported and the `GET` response contains none of the configured `body` values. See [below for nested schema](#nested--read_override).
+- `read_override` (Object) Overrides the request used to read resource values when a plain `GET` does not return them. When unset, the provider uses the response from the default `GET` request. See [below for nested schema](#nested--read_override).
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
 	If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
