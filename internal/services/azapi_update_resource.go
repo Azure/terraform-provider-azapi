@@ -602,7 +602,12 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
+	response.Diagnostics.Append(readDiags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	responseBody, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -640,17 +645,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		}
 		option.IgnoreOtherItemsInList = m
 	}
-	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
-	response.Diagnostics.Append(readDiags...)
-	if response.Diagnostics.HasError() {
-		return
-	}
-	mergeResponseBody, readDiags := resolveReadResponse(ctx, client, id.AzureResourceId, id.ApiVersion, responseBody, readOverride, requestOptions)
-	response.Diagnostics.Append(readDiags...)
-	if response.Diagnostics.HasError() {
-		return
-	}
-	body := utils.UpdateObject(requestBody, mergeResponseBody, option)
+	body := utils.UpdateObject(requestBody, responseBody, option)
 
 	data, err := json.Marshal(body)
 	if err != nil {

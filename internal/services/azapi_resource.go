@@ -88,7 +88,6 @@ type AzapiResourceModel struct {
 	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
-	ReadOverride                  types.Object     `tfsdk:"read_override" skip_on:"update"`
 }
 
 // AzapiResourceIdentityModel represents the identity data for importing a resource
@@ -137,7 +136,6 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		DeleteQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
 		ReadHeaders:           types.MapNull(types.StringType),
 		ReadQueryParameters:   types.MapNull(types.ListType{ElemType: types.StringType}),
-		ReadOverride:          types.ObjectNull(readOverrideAttributeTypes()),
 	}
 }
 
@@ -429,8 +427,6 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
-
-			"read_override": readOverrideSchema(),
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
@@ -1250,17 +1246,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		}
 		option.IgnoreOtherItemsInList = m
 	}
-	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
-	response.Diagnostics.Append(readDiags...)
-	if response.Diagnostics.HasError() {
-		return
-	}
-	mergeResponseBody, readDiags := resolveReadResponse(ctx, client, id.AzureResourceId, id.ApiVersion, responseBody, readOverride, requestOptions)
-	response.Diagnostics.Append(readDiags...)
-	if response.Diagnostics.HasError() {
-		return
-	}
-	body := utils.UpdateObject(requestBody, mergeResponseBody, option)
+	body := utils.UpdateObject(requestBody, responseBody, option)
 
 	data, err := json.Marshal(body)
 	if err != nil {
