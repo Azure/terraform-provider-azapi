@@ -3,14 +3,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
   }
 }
 
@@ -28,8 +20,7 @@ variable "location" {
   default = "westeurope"
 }
 
-data "azurerm_client_config" "current" {
-}
+data "azapi_client_config" "current" {}
 
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
@@ -38,33 +29,15 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2021-10-01"
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
   body = {
     properties = {
-      accessPolicies = [
-        {
-          objectId = data.azurerm_client_config.current.object_id
-          permissions = {
-            certificates = [
-              "ManageContacts",
-            ]
-            keys = [
-              "Create",
-            ]
-            secrets = [
-              "Set",
-            ]
-            storage = [
-            ]
-          }
-          tenantId = data.azurerm_client_config.current.tenant_id
-        },
-      ]
+      accessPolicies               = []
       createMode                   = "default"
-      enableRbacAuthorization      = false
+      enableRbacAuthorization      = true
       enableSoftDelete             = true
       enabledForDeployment         = false
       enabledForDiskEncryption     = false
@@ -75,10 +48,8 @@ resource "azapi_resource" "vault" {
         name   = "standard"
       }
       softDeleteRetentionInDays = 7
-      tenantId                  = data.azurerm_client_config.current.tenant_id
+      tenantId                  = data.azapi_client_config.current.tenant_id
     }
   }
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
+  response_export_values = ["*"]
 }
-
