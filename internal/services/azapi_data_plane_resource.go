@@ -462,13 +462,12 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
 	if isNewResource && !hasCreateResult {
-		// check if the resource already exists using the non-retry client to avoid issue where user specifies
-		// a FooResourceNotFound error as a retryable error
-
+		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
+		requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptionsForResourceExistenceCheck(plan.Retry)
 		if customizedResource != nil && (*customizedResource).ReadFunc() != nil {
 			_, err = (*customizedResource).ReadFunc()(ctx, *r.ProviderData, id, requestOptions)
 		} else {
