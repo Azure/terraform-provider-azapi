@@ -118,7 +118,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. For resource types where the service generates the identifier, this argument must not be set. Changing this forces a new resource to be created.",
 			},
 
 			"evaluation_id": schema.StringAttribute{
@@ -634,40 +634,33 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 	return nil, false
 }
 
-func isFoundryEvaluationType(typeValue string) bool {
-	typeValue = strings.TrimSpace(typeValue)
-
-	if index := strings.IndexByte(typeValue, '@'); index >= 0 {
-		typeValue = typeValue[:index]
-	}
-
-	switch strings.ToLower(typeValue) {
-	case "microsoft.foundry/evaluation/versions",
-		"microsoft.foundry/evaluation/runs":
-		return true
-	default:
-		return false
-	}
-}
-
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
 	if config.Name.IsUnknown() {
 		return nil
 	}
 
-	if config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == "" {
-		// Foundry evaluations are created with POST /openai/v1/evals.
-		// The service generates the evaluation ID.
-		if isFoundryEvaluationType(config.Type.ValueString()) {
-			return nil
+	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
+	resourceType := strings.SplitN(config.Type.ValueString(), "@", 2)[0]
+	if _, ok := getCreateResultFunc(config); ok {
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, resourceType)
 		}
-
-		return fmt.Errorf(
-			`the argument "name" must be set for resource type "%s"`,
-			strings.SplitN(config.Type.ValueString(), "@", 2)[0],
-		)
+		return nil
 	}
 
+	if !parse.HasNameSegment(config.Type.ValueString()) {
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
+		}
+		return nil
+	}
+	if nameIsEmpty {
+		return fmt.Errorf(`the argument "name" must be set for resource type %q`, resourceType)
+	}
 	return nil
 }
 
@@ -823,13 +816,7 @@ func validateDataPlaneResourceEvaluationID(config *DataPlaneResourceModel) error
 	}
 
 	if config.EvaluationID.IsNull() || strings.TrimSpace(config.EvaluationID.ValueString()) == "" {
-		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
-	}
-
-	return nil
-
-	if config.EvaluationID.IsNull() || strings.TrimSpace(config.EvaluationID.ValueString()) == "" {
-		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
+		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, strings.SplitN(config.Type.ValueString(), "@", 2)[0])
 	}
 
 	return nil

@@ -172,10 +172,9 @@ func (c FoundryEvaluationRunCustomization) CreateResultFunc() CreateResultFunc {
 			return parse.DataPlaneResourceId{}, nil, err
 		}
 
-		responseBody, err := client.DataPlaneClient.Action(
+		responseBody, err := client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			foundryEvaluationRunCollectionID(id.ParentId, evaluationID),
-			"",
 			"",
 			http.MethodPost,
 			requestBody,
@@ -211,10 +210,9 @@ func (c FoundryEvaluationRunCustomization) ReadFunc() ReadFunc {
 		id parse.DataPlaneResourceId,
 		options clients.RequestOptions,
 	) (interface{}, error) {
-		return client.DataPlaneClient.Action(
+		return client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			id.AzureResourceId,
-			"",
 			"",
 			http.MethodGet,
 			nil,
@@ -244,10 +242,9 @@ func (c FoundryEvaluationRunCustomization) DeleteFunc() DeleteFunc {
 		id parse.DataPlaneResourceId,
 		options clients.RequestOptions,
 	) error {
-		_, err := client.DataPlaneClient.Action(
+		_, err := client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			id.AzureResourceId,
-			"",
 			"",
 			http.MethodDelete,
 			nil,

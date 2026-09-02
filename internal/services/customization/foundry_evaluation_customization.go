@@ -80,11 +80,10 @@ func (c FoundryEvaluationCustomization) CreateResultFunc() CreateResultFunc {
 		body interface{},
 		options clients.RequestOptions,
 	) (parse.DataPlaneResourceId, interface{}, error) {
-		responseBody, err := client.DataPlaneClient.Action(
+		responseBody, err := client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			foundryEvaluationCollectionID(id.ParentId),
 			"",
-			"", // /openai/v1 endpoints must not receive api-version
 			http.MethodPost,
 			body,
 			options,
@@ -118,11 +117,10 @@ func (c FoundryEvaluationCustomization) ReadFunc() ReadFunc {
 		id parse.DataPlaneResourceId,
 		options clients.RequestOptions,
 	) (interface{}, error) {
-		return client.DataPlaneClient.Action(
+		return client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			id.AzureResourceId,
 			"",
-			"", // /openai/v1 endpoints must not receive api-version
 			http.MethodGet,
 			nil,
 			options,
@@ -143,11 +141,10 @@ func (c FoundryEvaluationCustomization) UpdateFunc() UpdateFunc {
 			return err
 		}
 
-		_, err = client.DataPlaneClient.Action(
+		_, err = client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			id.AzureResourceId,
 			"",
-			"", // /openai/v1 endpoints must not receive api-version
 			http.MethodPost,
 			requestBody,
 			options,
@@ -163,11 +160,10 @@ func (c FoundryEvaluationCustomization) DeleteFunc() DeleteFunc {
 		id parse.DataPlaneResourceId,
 		options clients.RequestOptions,
 	) error {
-		_, err := client.DataPlaneClient.Action(
+		_, err := client.DataPlaneClient.ActionWithoutAPIVersion(
 			ctx,
 			id.AzureResourceId,
 			"",
-			"", // /openai/v1 endpoints must not receive api-version
 			http.MethodDelete,
 			nil,
 			options,
