@@ -150,4 +150,34 @@ func TestValidateDataPlaneResourceEvaluationID(t *testing.T) {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
+
+	t.Run("evaluation version rejects evaluation ID", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type:         types.StringValue("Microsoft.Foundry/evaluation/versions@2025-05-01"),
+			EvaluationID: types.StringValue("eval_123"),
+		}
+
+		err := validateDataPlaneResourceEvaluationID(config)
+		if err == nil {
+			t.Fatal("expected validation error")
+		}
+		if !strings.Contains(err.Error(), "should not be set") {
+			t.Fatalf("expected unsupported evaluation ID error, got: %v", err)
+		}
+	})
+
+	t.Run("non-Foundry resource rejects evaluation ID", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type:         types.StringValue("Microsoft.KeyVault/vaults/secrets@7.4"),
+			EvaluationID: types.StringValue("eval_123"),
+		}
+
+		err := validateDataPlaneResourceEvaluationID(config)
+		if err == nil {
+			t.Fatal("expected validation error")
+		}
+		if !strings.Contains(err.Error(), "should not be set") {
+			t.Fatalf("expected unsupported evaluation ID error, got: %v", err)
+		}
+	})
 }

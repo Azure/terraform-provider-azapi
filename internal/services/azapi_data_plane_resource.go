@@ -806,17 +806,21 @@ func validateDataPlaneResourceEvaluationID(config *DataPlaneResourceModel) error
 		return nil
 	}
 
-	resourceType := strings.ToLower(strings.Split(config.Type.ValueString(), "@")[0])
-	if resourceType != "microsoft.foundry/evaluation/runs" {
-		return nil
-	}
-
 	if config.EvaluationID.IsUnknown() {
 		return nil
 	}
 
-	if config.EvaluationID.IsNull() || strings.TrimSpace(config.EvaluationID.ValueString()) == "" {
-		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, strings.SplitN(config.Type.ValueString(), "@", 2)[0])
+	evaluationIDIsEmpty := config.EvaluationID.IsNull() || strings.TrimSpace(config.EvaluationID.ValueString()) == ""
+	resourceType := strings.SplitN(config.Type.ValueString(), "@", 2)[0]
+	if !parse.HasEvaluationIdSegment(config.Type.ValueString()) {
+		if !evaluationIDIsEmpty {
+			return fmt.Errorf(`the argument "evaluation_id" should not be set for resource type %q because this resource type does not use an evaluation ID`, resourceType)
+		}
+		return nil
+	}
+
+	if evaluationIDIsEmpty {
+		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, resourceType)
 	}
 
 	return nil
