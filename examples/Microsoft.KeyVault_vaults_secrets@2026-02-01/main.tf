@@ -7,6 +7,7 @@ terraform {
 }
 
 provider "azapi" {
+  skip_provider_registration = false
 }
 
 variable "resource_name" {
@@ -35,24 +36,20 @@ resource "azapi_resource" "vault" {
   type      = "Microsoft.KeyVault/vaults@2026-02-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
-  location  = azapi_resource.resourceGroup.location
+  location  = var.location
   body = {
     properties = {
       sku = {
         family = "A"
         name   = "standard"
       }
-      tenantId                  = data.azapi_client_config.current.tenant_id
-      enableRbacAuthorization   = true
-      enableSoftDelete          = true
-      softDeleteRetentionInDays = 7
-      enablePurgeProtection     = true
-      accessPolicies            = []
+      accessPolicies          = []
+      enableRbacAuthorization = true
+      enableSoftDelete        = true
+      tenantId                = data.azapi_client_config.current.tenant_id
     }
   }
-  response_export_values = {
-    "vaultUri" = "properties.vaultUri"
-  }
+  response_export_values = ["*"]
 }
 
 resource "azapi_resource" "keyVaultSecretsOfficer" {
@@ -67,24 +64,26 @@ resource "azapi_resource" "keyVaultSecretsOfficer" {
   }
 }
 
-resource "azapi_data_plane_resource" "secret" {
-  type      = "Microsoft.KeyVault/vaults/secrets@7.5"
-  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+data "azapi_resource_id" "secret" {
+  type      = "Microsoft.KeyVault/vaults/secrets@2026-02-01"
+  parent_id = azapi_resource.vault.id
   name      = var.resource_name
+}
+
+resource "azapi_resource_action" "put_secret" {
+  type        = "Microsoft.KeyVault/vaults/secrets@2026-02-01"
+  resource_id = data.azapi_resource_id.secret.id
+  method      = "PUT"
   body = {
-    value = "my-secret-value"
-    attributes = {
-      enabled = true
+    properties = {
+      value = "szechuan"
     }
   }
-
+  response_export_values = ["*"]
   retry = {
     error_message_regex  = ["Forbidden", "Unauthorized", "authorization"]
     interval_seconds     = 10
     max_interval_seconds = 60
   }
-
-  depends_on = [
-    azapi_resource.keyVaultSecretsOfficer
-  ]
+  depends_on = [azapi_resource.keyVaultSecretsOfficer]
 }

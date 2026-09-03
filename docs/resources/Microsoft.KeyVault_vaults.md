@@ -9,11 +9,11 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Key Vault resource in Azure.
 
-
+Azure role-based access control (RBAC) is the recommended security best practice for authorizing access to Azure Key Vault.
 
 ## Example Usage
 
-### default
+### access_policy
 
 ```hcl
 terraform {
@@ -21,14 +21,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
   }
 }
 
@@ -46,8 +38,7 @@ variable "location" {
   default = "westeurope"
 }
 
-data "azurerm_client_config" "current" {
-}
+data "azapi_client_config" "current" {}
 
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
@@ -56,7 +47,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2021-10-01"
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -64,7 +55,7 @@ resource "azapi_resource" "vault" {
     properties = {
       accessPolicies = [
         {
-          objectId = data.azurerm_client_config.current.object_id
+          objectId = data.azapi_client_config.current.object_id
           permissions = {
             certificates = [
               "ManageContacts",
@@ -75,10 +66,9 @@ resource "azapi_resource" "vault" {
             secrets = [
               "Set",
             ]
-            storage = [
-            ]
+            storage = []
           }
-          tenantId = data.azurerm_client_config.current.tenant_id
+          tenantId = data.azapi_client_config.current.tenant_id
         },
       ]
       createMode                   = "default"
@@ -93,13 +83,72 @@ resource "azapi_resource" "vault" {
         name   = "standard"
       }
       softDeleteRetentionInDays = 7
-      tenantId                  = data.azurerm_client_config.current.tenant_id
+      tenantId                  = data.azapi_client_config.current.tenant_id
     }
   }
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
+  response_export_values = ["*"]
 }
 
+```
+
+### rbac
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+  skip_provider_registration = false
+}
+
+variable "resource_name" {
+  type    = string
+  default = "acctest0001"
+}
+
+variable "location" {
+  type    = string
+  default = "westeurope"
+}
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
+  body = {
+    properties = {
+      accessPolicies               = []
+      createMode                   = "default"
+      enableRbacAuthorization      = true
+      enableSoftDelete             = true
+      enabledForDeployment         = false
+      enabledForDiskEncryption     = false
+      enabledForTemplateDeployment = false
+      publicNetworkAccess          = "Enabled"
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      softDeleteRetentionInDays = 7
+      tenantId                  = data.azapi_client_config.current.tenant_id
+    }
+  }
+  response_export_values = ["*"]
+}
 
 ```
 

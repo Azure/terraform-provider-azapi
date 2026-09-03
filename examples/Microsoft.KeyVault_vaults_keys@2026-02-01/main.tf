@@ -1,21 +1,3 @@
----
-subcategory: "Microsoft.KeyVault - Key Vault"
-page_title: "vaults/keys"
-description: |-
-  Manages a Key Vault Keys.
----
-
-# Microsoft.KeyVault/vaults/keys - Key Vault Keys
-
-This article demonstrates how to use `azapi` provider to manage the Key Vault Keys resource in Azure.
-
-
-
-## Example Usage
-
-### default
-
-```hcl
 terraform {
   required_providers {
     azapi = {
@@ -108,32 +90,3 @@ resource "azapi_resource_action" "put_key" {
   }
   depends_on = [azapi_resource.keyVaultCryptoOfficer]
 }
-
-```
-
-
-
-## Arguments Reference
-
-The following arguments are supported:
-
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.KeyVault/vaults/keys@api-version`. The available api-versions for this resource are: [`2019-09-01`, `2020-04-01-preview`, `2021-04-01-preview`, `2021-06-01-preview`, `2021-10-01`, `2021-11-01-preview`, `2022-02-01-preview`, `2022-07-01`, `2022-11-01`, `2023-02-01`, `2023-07-01`, `2024-04-01-preview`, `2024-11-01`, `2024-12-01-preview`, `2025-05-01`, `2026-02-01`, `2026-03-01-preview`].
-
-* `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
-  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}`
-
-* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
-
-* `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/vaults/keys?pivots=deployment-language-terraform).
-
-For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
-
-## Import
-
- ```shell
- # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}/keys/{resourceName}
- 
- # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}/keys/{resourceName}?api-version=2026-03-01-preview
- ```
