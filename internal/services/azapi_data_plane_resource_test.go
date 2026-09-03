@@ -1370,8 +1370,8 @@ data "azapi_resource_list" "roleDefinitions" {
   type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
   parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
   response_export_values = {
-    cognitiveServicesUserRoleId = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
-    azureAIUserRoleId           = "value[?properties.roleName == 'Azure AI User'].id | [0]"
+    cognitiveServicesUserRoleId     = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
+    contentUnderstandingOwnerRoleId = "value[?properties.roleName == 'Cognitive Services Content Understanding Owner'].id | [0]"
   }
 }
 
@@ -1390,14 +1390,14 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
-resource "azapi_resource" "aiUserRoleAssignment" {
+resource "azapi_resource" "contentUnderstandingOwnerRoleAssignment" {
   type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
   parent_id = azapi_resource.cognitiveAccount.id
   name      = uuid()
   body = {
     properties = {
       principalId      = data.azapi_client_config.current.object_id
-      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.azureAIUserRoleId
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.contentUnderstandingOwnerRoleId
     }
   }
   lifecycle {
@@ -1405,21 +1405,21 @@ resource "azapi_resource" "aiUserRoleAssignment" {
   }
 }
 
-resource "azapi_resource" "gpt41Deployment" {
+resource "azapi_resource" "gpt5Deployment" {
   type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
   parent_id = azapi_resource.cognitiveAccount.id
-  name      = "gpt-4.1"
+  name      = "gpt-5"
   body = {
     properties = {
       model = {
         format  = "OpenAI"
-        name    = "gpt-4.1"
-        version = "2025-04-14"
+        name    = "gpt-5"
+        version = "2025-08-07"
       }
       versionUpgradeOption = "OnceNewDefaultVersionAvailable"
     }
     sku = {
-      name     = "Standard"
+      name     = "GlobalStandard"
       capacity = 1
     }
   }
@@ -1439,19 +1439,19 @@ resource "azapi_resource" "textEmbedding3LargeDeployment" {
       versionUpgradeOption = "OnceNewDefaultVersionAvailable"
     }
     sku = {
-      name     = "Standard"
+      name     = "GlobalStandard"
       capacity = 1
     }
   }
-  depends_on = [azapi_resource.gpt41Deployment]
+  depends_on = [azapi_resource.gpt5Deployment]
 }
 
 # Set Content Understanding defaults via data plane PATCH API
 resource "terraform_data" "contentUnderstandingDefaults" {
   triggers_replace = [
     azapi_resource.cognitiveAccount.id,
-    azapi_resource.aiUserRoleAssignment,
-    azapi_resource.gpt41Deployment,
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
+    azapi_resource.gpt5Deployment,
     azapi_resource.textEmbedding3LargeDeployment,
   ]
 
@@ -1465,7 +1465,7 @@ resource "terraform_data" "contentUnderstandingDefaults" {
       }
       $body = @{
         modelDeployments = @{
-          "gpt-4.1"                = "gpt-4.1"
+          "gpt-5"                  = "gpt-5"
           "text-embedding-3-large" = "text-embedding-3-large"
         }
       } | ConvertTo-Json
@@ -1477,8 +1477,8 @@ resource "terraform_data" "contentUnderstandingDefaults" {
 
   depends_on = [
     azapi_resource.roleAssignment,
-    azapi_resource.aiUserRoleAssignment,
-    azapi_resource.gpt41Deployment,
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
+    azapi_resource.gpt5Deployment,
     azapi_resource.textEmbedding3LargeDeployment,
   ]
 }
@@ -1491,14 +1491,14 @@ resource "azapi_data_plane_resource" "test" {
     description    = "My test analyzer"
     baseAnalyzerId = "prebuilt-document",
     models : {
-      completion : "gpt-4.1",
+      completion : "gpt-5",
       embedding : "text-embedding-3-large"
     }
   }
 
   depends_on = [
     azapi_resource.roleAssignment,
-    azapi_resource.aiUserRoleAssignment,
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
     terraform_data.contentUnderstandingDefaults,
   ]
 }
