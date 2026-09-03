@@ -47,8 +47,8 @@ data "azapi_resource_list" "roleDefinitions" {
   type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
   parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
   response_export_values = {
-    cognitiveServicesUserRoleId = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
-    azureAIUserRoleId           = "value[?properties.roleName == 'Azure AI User'].id | [0]"
+    cognitiveServicesUserRoleId     = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
+    contentUnderstandingOwnerRoleId = "value[?properties.roleName == 'Cognitive Services Content Understanding Owner'].id | [0]"
   }
 }
 
@@ -67,14 +67,14 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
-resource "azapi_resource" "aiUserRoleAssignment" {
+resource "azapi_resource" "contentUnderstandingOwnerRoleAssignment" {
   type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
   parent_id = azurerm_ai_services.cognitiveAccount.id
   name      = uuid()
   body = {
     properties = {
       principalId      = data.azapi_client_config.current.object_id
-      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.azureAIUserRoleId
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.contentUnderstandingOwnerRoleId
     }
   }
   lifecycle {
@@ -82,36 +82,19 @@ resource "azapi_resource" "aiUserRoleAssignment" {
   }
 }
 
-resource "azurerm_cognitive_deployment" "gpt_41_mini" {
-  name                   = "gpt-4.1-mini"
+resource "azurerm_cognitive_deployment" "gpt_5" {
+  name                   = "gpt-5"
   cognitive_account_id   = azurerm_ai_services.cognitiveAccount.id
   version_upgrade_option = "OnceNewDefaultVersionAvailable"
 
   model {
     format  = "OpenAI"
-    name    = "gpt-4.1-mini"
-    version = "2025-04-14"
+    name    = "gpt-5"
+    version = "2025-08-07"
   }
 
   sku {
     name     = "GlobalStandard"
-    capacity = 1
-  }
-}
-
-resource "azurerm_cognitive_deployment" "gpt_41" {
-  name                   = "gpt-4.1"
-  cognitive_account_id   = azurerm_ai_services.cognitiveAccount.id
-  version_upgrade_option = "OnceNewDefaultVersionAvailable"
-
-  model {
-    format  = "OpenAI"
-    name    = "gpt-4.1"
-    version = "2025-04-14"
-  }
-
-  sku {
-    name     = "Standard"
     capacity = 1
   }
 }
@@ -137,8 +120,7 @@ resource "azurerm_cognitive_deployment" "text_embedding_3_large" {
 resource "terraform_data" "contentUnderstandingDefaults" {
   triggers_replace = [
     azurerm_ai_services.cognitiveAccount.id,
-    azurerm_cognitive_deployment.gpt_41.id,
-    azurerm_cognitive_deployment.gpt_41_mini.id,
+    azurerm_cognitive_deployment.gpt_5.id,
     azurerm_cognitive_deployment.text_embedding_3_large.id
   ]
 
@@ -152,7 +134,7 @@ resource "terraform_data" "contentUnderstandingDefaults" {
       }
       $body = @{
         modelDeployments = @{
-          "gpt-4.1"                = "gpt-4.1"
+          "gpt-5"                = "gpt-5"
           "text-embedding-3-large" = "text-embedding-3-large"
         }
       } | ConvertTo-Json
@@ -165,8 +147,7 @@ resource "terraform_data" "contentUnderstandingDefaults" {
   depends_on = [
     azapi_resource.roleAssignment,
     azapi_resource.aiUserRoleAssignment,
-    azurerm_cognitive_deployment.gpt_41,
-    azurerm_cognitive_deployment.gpt_41_mini,
+    azurerm_cognitive_deployment.gpt_5,
     azurerm_cognitive_deployment.text_embedding_3_large
   ]
 }
@@ -179,7 +160,7 @@ resource "azapi_data_plane_resource" "example" {
     description    = "My test analyzer"
     baseAnalyzerId = "prebuilt-document",
     models : {
-      completion : "gpt-4.1",
+      completion : "gpt-5",
       embedding : "text-embedding-3-large"
     },
   }
