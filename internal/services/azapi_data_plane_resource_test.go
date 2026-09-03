@@ -1648,13 +1648,6 @@ data "azapi_client_config" "current" {}
 
 locals {
   content_understanding_owner_role_definition_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/4b42bd01-da42-4c92-9b07-15ea5bd6a602"
-  content_understanding_owner_assignment_id = format("%%s-%%s-%%s-%%s-%%s",
-    substr(md5("content-understanding-owner-%[1]s"), 0, 8),
-    substr(md5("content-understanding-owner-%[1]s"), 8, 4),
-    substr(md5("content-understanding-owner-%[1]s"), 12, 4),
-    substr(md5("content-understanding-owner-%[1]s"), 16, 4),
-    substr(md5("content-understanding-owner-%[1]s"), 20, 12)
-  )
 }
 
 resource "azapi_resource" "resource_group" {
@@ -1690,7 +1683,7 @@ resource "azapi_resource" "foundry" {
 resource "azapi_resource" "contentUnderstandingOwnerRoleAssignment" {
   type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
   parent_id = azapi_resource.foundry.id
-  name      = local.content_understanding_owner_assignment_id
+  name      = uuid()
   body = {
     properties = {
       principalId      = data.azapi_client_config.current.object_id
