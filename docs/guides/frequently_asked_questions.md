@@ -47,7 +47,7 @@ its request body won't contain any subnets definitions, so existing subnets will
 
 ## How to use API/properties which is not in embeded schema?
 
-`AzApi` provider will use embedded schema to verify the inputs, to skip the validation, please add `schema_validation_enabled = false` to the resource block.
+`AzAPI` provider will use embedded schema to verify the inputs, to skip the validation, please add `schema_validation_enabled = false` to the resource block.
 
 
 ## How to manage properties which can only be set during update?

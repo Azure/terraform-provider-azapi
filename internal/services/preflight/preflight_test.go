@@ -24,7 +24,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				ScopeTypes: nil,
+				ReadableScopes: nil,
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "",
@@ -33,8 +33,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.Tenant},
+				Name:           "Microsoft.Billing/billingAccounts@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.Tenant},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "/",
@@ -43,8 +43,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.ManagementGroup},
+				Name:           "Microsoft.Billing/billingAccounts@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.ManagementGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			ExpectedReg:    "/providers/Microsoft.Management/managementGroups/.+",
@@ -53,8 +53,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Resources/resourceGroups@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.Subscription},
+				Name:           "Microsoft.Resources/resourceGroups@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.Subscription},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "/subscriptions/00000000-0000-0000-0000-000000000000",
@@ -63,8 +63,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Network/virtualNetworks@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
+				Name:           "Microsoft.Network/virtualNetworks@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.ResourceGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/.+",
@@ -73,8 +73,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.Tenant, aztypes.ManagementGroup},
+				Name:           "Microsoft.Billing/billingAccounts@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.Tenant, aztypes.ManagementGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "",
@@ -83,8 +83,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.Extension},
+				Name:           "Microsoft.Billing/billingAccounts@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.Extension},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "",
@@ -93,8 +93,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Network/virtualNetworks/subnets@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
+				Name:           "Microsoft.Network/virtualNetworks/subnets@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.ResourceGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/.+/providers/Microsoft.Network/virtualNetworks/.+",
@@ -103,8 +103,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
+				Name:           "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.ResourceGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/.+/providers/Microsoft.Network/virtualNetworks/.+/subnets/.+",
@@ -113,8 +113,8 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
-				Name:       "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
-				ScopeTypes: []aztypes.ScopeType{aztypes.Subscription},
+				Name:           "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
+				ReadableScopes: []aztypes.ScopeType{aztypes.Subscription},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/virtualNetworks/.+/subnets/.+",

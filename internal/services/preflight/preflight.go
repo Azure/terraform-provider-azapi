@@ -20,22 +20,23 @@ import (
 )
 
 type RequestBodyModel struct {
-	Provider  string                   `json:"provider"`
-	Type      string                   `json:"type"`
-	Location  string                   `json:"location"`
-	Scope     string                   `json:"scope"`
-	Resources []map[string]interface{} `json:"resources"`
+	Provider                              string                   `json:"provider"`
+	Type                                  string                   `json:"type"`
+	Location                              string                   `json:"location"`
+	Scope                                 string                   `json:"scope"`
+	Resources                             []map[string]interface{} `json:"resources"`
+	PerformPreflightWithoutRbacWriteCheck bool                     `json:"performPreflightWithoutRbacWriteCheck"`
 }
 
 // ParentIdPlaceholder generates a placeholder for the parentID based on the resource definition and subscription ID
 func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId string) (string, error) {
 	// since the parentID is faked, there should exist only one scope type
-	if resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
+	if resourceDef == nil || len(resourceDef.ReadableScopes) != 1 {
 		return "", fmt.Errorf("failed to generate parentID placeholder because the resource definition is invalid")
 	}
 
 	scopeId := ""
-	switch resourceDef.ScopeTypes[0] {
+	switch resourceDef.ReadableScopes[0] {
 	case aztypes.Tenant:
 		scopeId = "/"
 	case aztypes.ManagementGroup:
@@ -109,6 +110,8 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 
 	payload.Resources = []map[string]interface{}{resource}
 
+	payload.PerformPreflightWithoutRbacWriteCheck = true
+
 	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", payload, clients.DefaultRequestOptions())
 	return err
 }
@@ -173,7 +176,7 @@ func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *m
 	if out == nil {
 		out = &map[string]interface{}{}
 	}
-	// make sure that there's no unknown value outside the properties bag
+	// make sure that there's no unknown value outside the properties bag, preflight API could return false negatives otherwise
 	for k, v := range *out {
 		if k == "properties" {
 			continue

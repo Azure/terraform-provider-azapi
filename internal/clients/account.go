@@ -154,7 +154,7 @@ func jsonUnmarshalAzCmd(i interface{}, arg ...string) error {
 	var stdout bytes.Buffer
 
 	arg = append(arg, "-o=json")
-	cmd := exec.Command("az", arg...)
+	cmd := exec.Command("az", arg...) // #nosec G204 -- arguments are hardcoded at call sites
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 

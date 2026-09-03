@@ -51,6 +51,13 @@
           "$ref": "#/5"
         },
         "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -196,6 +203,13 @@
         },
         "flags": 2,
         "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -220,13 +234,133 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.KubernetesConfiguration/locations/extensionTypes@2024-11-01-preview",
-    "scopeType": 4,
     "body": {
       "$ref": "#/4"
     },
-    "flags": 1
+    "readableScopes": 4,
+    "writableScopes": 0
   },
   {
     "$type": "StringLiteralType",
@@ -256,23 +390,30 @@
       },
       "type": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/24"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/25"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/27"
         },
         "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -289,14 +430,14 @@
       },
       "unsupportedKubernetesVersions": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The list of supported Kubernetes cluster versions for this extension type"
       },
       "supportedClusterTypes": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "A list of supported cluster types for this version of the Extension Type"
@@ -309,25 +450,25 @@
     "properties": {
       "connectedCluster": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/32"
         },
         "flags": 0
       },
       "appliances": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/33"
         },
         "flags": 0
       },
       "provisionedCluster": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/34"
         },
         "flags": 0
       },
       "managedCluster": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/35"
         },
         "flags": 0
       }
@@ -339,14 +480,14 @@
     "properties": {
       "distributions": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "The list of Kubernetes Cluster Distribution Names not supported"
       },
       "unsupportedVersions": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The list of Kubernetes Versions not supported by the list of Kubernetes Cluster Distribution names in this object"
@@ -368,25 +509,25 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/18"
+      "$ref": "#/29"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/18"
+      "$ref": "#/29"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/18"
+      "$ref": "#/29"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/18"
+      "$ref": "#/29"
     }
   },
   {
@@ -398,11 +539,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KubernetesConfiguration/locations/extensionTypes/versions@2024-11-01-preview",
-    "scopeType": 4,
     "body": {
-      "$ref": "#/15"
+      "$ref": "#/26"
     },
-    "flags": 1
+    "readableScopes": 4,
+    "writableScopes": 0
   },
   {
     "$type": "StringLiteralType",
@@ -432,14 +573,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/38"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/39"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -449,17 +590,24 @@
           "$ref": "#/5"
         },
         "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.KubernetesConfiguration/extensionTypes@2024-11-01-preview",
-    "scopeType": 16,
     "body": {
-      "$ref": "#/29"
+      "$ref": "#/40"
     },
-    "flags": 1
+    "readableScopes": 16,
+    "writableScopes": 0
   },
   {
     "$type": "StringLiteralType",
@@ -489,33 +637,40 @@
       },
       "type": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/42"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/43"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/27"
         },
         "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.KubernetesConfiguration/extensionTypes/versions@2024-11-01-preview",
-    "scopeType": 16,
     "body": {
-      "$ref": "#/33"
+      "$ref": "#/44"
     },
-    "flags": 1
+    "readableScopes": 16,
+    "writableScopes": 0
   }
 ]

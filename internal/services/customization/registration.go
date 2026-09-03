@@ -7,6 +7,12 @@ var customizations = make(map[string]DataPlaneResource)
 func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
+
+	var keyVaultCertificateCustomization DataPlaneResource = KeyVaultCertificateCustomization{}
+	customizations[strings.ToLower(keyVaultCertificateCustomization.GetResourceType())] = keyVaultCertificateCustomization
+
+	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
+	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {

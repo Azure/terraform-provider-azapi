@@ -2,6 +2,7 @@ package defaults
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/defaults"
@@ -13,11 +14,11 @@ type dynamicDefault struct {
 }
 
 func (s dynamicDefault) Description(ctx context.Context) string {
-	return "Return the default value"
+	return fmt.Sprintf("defaults to %s", s.defaultValue.String())
 }
 
 func (s dynamicDefault) MarkdownDescription(ctx context.Context) string {
-	return "Return the default value"
+	return fmt.Sprintf("defaults to `%s`", s.defaultValue.String())
 }
 
 func (s dynamicDefault) DefaultDynamic(ctx context.Context, request defaults.DynamicRequest, response *defaults.DynamicResponse) {

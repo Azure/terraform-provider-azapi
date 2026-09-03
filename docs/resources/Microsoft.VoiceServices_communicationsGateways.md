@@ -104,10 +104,10 @@ resource "azapi_resource" "communicationsGateway" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.VoiceServices/communicationsGateways@api-version`. The available api-versions for this resource are: [`2022-12-01-preview`, `2023-01-31`, `2023-04-03`, `2023-09-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.VoiceServices/communicationsGateways@api-version`. The available api-versions for this resource are: [].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
-  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
+  
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
@@ -119,8 +119,8 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{resourceName}
+ terraform import azapi_resource.example 
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VoiceServices/communicationsGateways/{resourceName}?api-version=2023-09-01
+ terraform import azapi_resource.example ?api-version=API_VERSION
  ```

@@ -1,0 +1,63 @@
+# Purpose: Make the `output` field of a ResourceFunctionType optional so that
+# resource functions/actions which return nothing (e.g. POST-style actions with
+# no meaningful response body) can be represented. This relaxes the previous
+# requirement that every resource function declare an output type, and updates
+# the markdown writer to skip the "Output" bullet and its nested type traversal
+# when no output is present. Enables modeling the full range of resource actions.
+#
+commit 6d43bf04bac42ada9c6c8208807026d7d6f20304
+Author: Heng Lu <henglu@microsoft.com>
+Date:   Thu Mar 23 13:57:16 2023 +0800
+
+    support all actions
+
+diff --git a/src/bicep-types/src/types.ts b/src/bicep-types/src/types.ts
+index cf53cc7..72a9a16 100644
+--- a/src/bicep-types/src/types.ts
++++ b/src/bicep-types/src/types.ts
+@@ -179,7 +179,7 @@ export type ResourceFunctionType = TypeBase<TypeBaseKind.ResourceFunctionType, {
+   name: string;
+   resourceType: string;
+   apiVersion: string;
+-  output: TypeReference;
++  output?: TypeReference;
+   input?: TypeReference;
+ }>
+ 
+@@ -409,7 +409,7 @@ export class TypeFactory {
+     return this.addType(resource);
+   }
+ 
+-  public addResourceFunctionType(name: string, resourceType: string, apiVersion: string, output: TypeReference, input?: TypeReference) {
++  public addResourceFunctionType(name: string, resourceType: string, apiVersion: string, output?: TypeReference, input?: TypeReference) {
+     return this.addType({
+       type: TypeBaseKind.ResourceFunctionType,
+       name: name,
+diff --git a/src/bicep-types/src/writers/markdown.ts b/src/bicep-types/src/writers/markdown.ts
+index 7640fcf..f235c2a 100644
+--- a/src/bicep-types/src/writers/markdown.ts
++++ b/src/bicep-types/src/writers/markdown.ts
+@@ -213,7 +213,9 @@ export function writeMarkdown(types: BicepType[], fileHeading?: string) {
+         if (resourceFunctionType.input !== undefined) {
+           md.writeBullet("Input", getTypeName(types, resourceFunctionType.input));
+         }
+-        md.writeBullet("Output", getTypeName(types, resourceFunctionType.output));
++        if (resourceFunctionType.output !== undefined) {
++          md.writeBullet("Output", getTypeName(types, resourceFunctionType.output));
++        }
+ 
+         md.writeNewLine();
+         return;
+@@ -303,8 +305,10 @@ export function writeMarkdown(types: BicepType[], fileHeading?: string) {
+         typesToWrite.push(types[resourceFunctionType.input.index]);
+         findTypesToWrite(types, typesToWrite, resourceFunctionType.input);
+       }
+-      typesToWrite.push(types[resourceFunctionType.output.index]);
+-      findTypesToWrite(types, typesToWrite, resourceFunctionType.output);
++      if (resourceFunctionType.output !== undefined) {
++        typesToWrite.push(types[resourceFunctionType.output.index]);
++        findTypesToWrite(types, typesToWrite, resourceFunctionType.output);
++      }
+     }
+ 
+     for (const namespaceFunctionType of namespaceFunctionTypes) {

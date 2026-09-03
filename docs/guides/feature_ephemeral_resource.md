@@ -54,7 +54,7 @@ The below example demonstrates how to use the `sensitive_body` attribute to crea
 
 The `properties.storageAccount.key` acceptes the storage account key, which is sensitive information. To avoid storing this key in the state file, it was retrieved using the `azapi_resource_action` ephemeral resource, and passed to the `sensitive_body` attribute.
 
-The `sensitive_body` and `body` attributes will be merged into the request body.
+The `sensitive_body` and `body` attributes will be merged into the request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 
 
 ```hcl

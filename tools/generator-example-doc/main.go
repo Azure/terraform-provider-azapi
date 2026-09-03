@@ -243,7 +243,7 @@ func getParentIds(resourceType string) []string {
 
 	if utils.IsTopLevelResourceType(resourceType) {
 		scopeIds := make([]string, 0)
-		for _, scope := range resourceDef.ScopeTypes {
+		for _, scope := range resourceDef.WritableScopes {
 			switch scope {
 			case types.Tenant:
 				scopeIds = append(scopeIds, "/")

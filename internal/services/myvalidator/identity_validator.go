@@ -18,7 +18,7 @@ func (v identityValidator) MarkdownDescription(ctx context.Context) string {
 	return "validate the identity block"
 }
 
-func (_ identityValidator) ValidateObject(ctx context.Context, req validator.ObjectRequest, resp *validator.ObjectResponse) {
+func (identityValidator) ValidateObject(ctx context.Context, req validator.ObjectRequest, resp *validator.ObjectResponse) {
 	value := req.ConfigValue
 
 	if value.IsUnknown() || value.IsNull() {

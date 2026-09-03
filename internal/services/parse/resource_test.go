@@ -919,3 +919,61 @@ func Test_NewResourceIDWithNestedResourceNames(t *testing.T) {
 		})
 	}
 }
+
+func Test_ResourceIDWithApiVersionInfo(t *testing.T) {
+	testData := []struct {
+		Name                          string
+		Input                         string
+		Error                         bool
+		ExpectedHasExplicitApiVersion bool
+		ExpectedApiVersion            string
+	}{
+		{
+			Name:                          "explicit api-version provided",
+			Input:                         "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/test?api-version=2020-11-01-preview",
+			ExpectedHasExplicitApiVersion: true,
+			ExpectedApiVersion:            "2020-11-01-preview",
+		},
+		{
+			Name:                          "explicit api-version provided for tenant scope",
+			Input:                         "/?api-version=2021-04-01",
+			ExpectedHasExplicitApiVersion: true,
+			ExpectedApiVersion:            "2021-04-01",
+		},
+		{
+			Name:                          "api-version omitted, falls back to latest from schema",
+			Input:                         "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/test",
+			ExpectedHasExplicitApiVersion: false,
+		},
+		{
+			Name:  "api-version omitted and resource type unknown",
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.Foo/bars/test",
+			Error: true,
+		},
+		{
+			Name:  "empty input",
+			Input: "",
+			Error: true,
+		},
+	}
+
+	for _, v := range testData {
+		t.Run(v.Name, func(t *testing.T) {
+			actual, explicitApiVersion, _, err := ResourceIDWithApiVersionInfo(v.Input)
+			if v.Error {
+				assert.Error(t, err)
+				assert.Empty(t, explicitApiVersion)
+				return
+			}
+
+			assert.NoError(t, err)
+			assert.Equal(t, v.ExpectedHasExplicitApiVersion, explicitApiVersion != "")
+
+			if v.ExpectedHasExplicitApiVersion {
+				assert.Equal(t, v.ExpectedApiVersion, actual.ApiVersion)
+			} else {
+				assert.NotEmpty(t, actual.ApiVersion)
+			}
+		})
+	}
+}

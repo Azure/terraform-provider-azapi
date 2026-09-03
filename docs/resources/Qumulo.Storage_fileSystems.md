@@ -140,7 +140,7 @@ resource "azapi_resource" "qumuloFileSystem" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Qumulo.Storage/fileSystems@api-version`. The available api-versions for this resource are: [`2022-06-27-preview`, `2022-10-12`, `2022-10-12-preview`, `2024-06-19`].
+* `type` - (Required) The type of the resource. This should be set to `Qumulo.Storage/fileSystems@api-version`. The available api-versions for this resource are: [`2022-06-27-preview`, `2022-10-12`, `2022-10-12-preview`, `2024-06-19`, `2025-10-01-preview`, `2026-02-17-preview`, `2026-04-16`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -158,5 +158,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{resourceName}?api-version=2024-06-19
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{resourceName}?api-version=2026-04-16
  ```

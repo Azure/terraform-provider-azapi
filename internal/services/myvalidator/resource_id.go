@@ -10,14 +10,14 @@ import (
 type stringIsResourceID struct{}
 
 func (v stringIsResourceID) Description(ctx context.Context) string {
-	return "validate this in resource ID format"
+	return "ensure this in resource ID format"
 }
 
 func (v stringIsResourceID) MarkdownDescription(ctx context.Context) string {
-	return "validate this in resource ID format"
+	return "ensure this in resource ID format"
 }
 
-func (_ stringIsResourceID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
+func (stringIsResourceID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
 	str := req.ConfigValue
 
 	if str.IsUnknown() || str.IsNull() {

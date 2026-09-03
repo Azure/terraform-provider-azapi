@@ -10,12 +10,11 @@ import (
 var _ TypeBase = &ResourceType{}
 
 type ResourceType struct {
-	Type               string
-	Name               string
-	ScopeTypes         []ScopeType
-	ReadOnlyScopeTypes []ScopeType
-	Body               *TypeReference
-	Flags              []ResourceTypeFlag
+	Type           string
+	Name           string
+	ReadableScopes []ScopeType
+	WritableScopes []ScopeType
+	Body           *TypeReference
 }
 
 func (t *ResourceType) GetReadOnly(i interface{}) interface{} {
@@ -55,12 +54,16 @@ func (t *ResourceType) AsTypeBase() *TypeBase {
 }
 
 func (t *ResourceType) IsReadOnly() bool {
-	for _, value := range t.Flags {
-		if value == ResourceTypeFlagReadOnly {
-			return true
+	// A resource is read-only if WritableScopes is empty or only contains Unknown (None)
+	if len(t.WritableScopes) == 0 {
+		return true
+	}
+	for _, scope := range t.WritableScopes {
+		if scope != Unknown {
+			return false
 		}
 	}
-	return false
+	return true
 }
 
 func (t *ResourceType) UnmarshalJSON(body []byte) error {
@@ -89,7 +92,7 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 				}
 				t.Name = name
 			}
-		case "scopeType":
+		case "scopeType", "readableScopes":
 			if v != nil {
 				var scopeType int
 				err := json.Unmarshal(*v, &scopeType)
@@ -105,26 +108,29 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 				if scopeType == 0 {
 					scopeTypes = append(scopeTypes, Unknown)
 				}
-				t.ScopeTypes = scopeTypes
+				t.ReadableScopes = scopeTypes
+			}
+		case "writableScopes":
+			if v != nil {
+				var scopeType int
+				err := json.Unmarshal(*v, &scopeType)
+				if err != nil {
+					return err
+				}
+				scopeTypes := make([]ScopeType, 0)
+				for _, f := range PossibleScopeTypeValues() {
+					if scopeType&int(f) != 0 {
+						scopeTypes = append(scopeTypes, f)
+					}
+				}
+				if scopeType == 0 {
+					scopeTypes = append(scopeTypes, Unknown)
+				}
+				t.WritableScopes = scopeTypes
 			}
 		case "readOnlyScopes":
-			if v != nil {
-				var scopeType int
-				err := json.Unmarshal(*v, &scopeType)
-				if err != nil {
-					return err
-				}
-				scopeTypes := make([]ScopeType, 0)
-				for _, f := range PossibleScopeTypeValues() {
-					if scopeType&int(f) != 0 {
-						scopeTypes = append(scopeTypes, f)
-					}
-				}
-				if scopeType == 0 {
-					scopeTypes = append(scopeTypes, Unknown)
-				}
-				t.ReadOnlyScopeTypes = scopeTypes
-			}
+			// Legacy field, ignored in modern format
+			// ReadableScopes already includes these scopes
 		case "body":
 			if v != nil {
 				var typeRef TypeReference
@@ -135,20 +141,8 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 				t.Body = &typeRef
 			}
 		case "flags":
-			if v != nil {
-				var flag int
-				err := json.Unmarshal(*v, &flag)
-				if err != nil {
-					return err
-				}
-				flags := make([]ResourceTypeFlag, 0)
-				for _, f := range PossibleResourceTypeFlagValues() {
-					if flag&int(f) != 0 {
-						flags = append(flags, f)
-					}
-				}
-				t.Flags = flags
-			}
+			// Legacy field, ignored in modern format
+			// Read-only status is now determined by WritableScopes == 0
 		default:
 			return fmt.Errorf("unmarshalling resource type, unrecognized key: %s", k)
 		}
@@ -197,16 +191,4 @@ func (scope ScopeType) String() string {
 
 func PossibleScopeTypeValues() []ScopeType {
 	return []ScopeType{Unknown, Tenant, ManagementGroup, Subscription, ResourceGroup, Extension}
-}
-
-type ResourceTypeFlag int
-
-const (
-	ResourceTypeFlagNone ResourceTypeFlag = 0
-
-	ResourceTypeFlagReadOnly ResourceTypeFlag = 1 << 0
-)
-
-func PossibleResourceTypeFlagValues() []ResourceTypeFlag {
-	return []ResourceTypeFlag{ResourceTypeFlagNone, ResourceTypeFlagReadOnly}
 }

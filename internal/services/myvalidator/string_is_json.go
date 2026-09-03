@@ -18,7 +18,7 @@ func (v stringIsJSON) MarkdownDescription(ctx context.Context) string {
 	return "validate this in JSON format"
 }
 
-func (_ stringIsJSON) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
+func (stringIsJSON) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
 	str := req.ConfigValue
 
 	if str.IsUnknown() || str.IsNull() {

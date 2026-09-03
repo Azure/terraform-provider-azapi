@@ -7,10 +7,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // TenantResourceIdFunction builds resource IDs for tenant scope
 type TenantResourceIdFunction struct{}
+
+var _ function.Function = &TenantResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &TenantResourceIdFunction{}
 
 func (f *TenantResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "tenant_resource_id"
@@ -61,4 +65,22 @@ func (f *TenantResourceIdFunction) Run(ctx context.Context, request function.Run
 	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
-var _ function.Function = &TenantResourceIdFunction{}
+func (f *TenantResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  resource_type  = "Microsoft.Billing/billingAccounts/billingProfiles"
+  resource_names = ["ba1", "bp1"]
+}
+
+// it will output "/providers/Microsoft.Billing/billingAccounts/ba1/billingProfiles/bp1"
+output "tenant_resource_id" {
+  value = provider::azapi::tenant_resource_id(local.resource_type, local.resource_names)
+}
+`,
+			},
+		},
+	}
+}

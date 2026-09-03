@@ -1,0 +1,1339 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9-]{3,32}[^-]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Monitor/pipelineGroups"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Monitor/pipelineGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The complex type of the extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PipelineGroupProperties",
+    "properties": {
+      "replicas": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Defines the amount of replicas of the pipeline group instance."
+      },
+      "receivers": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "The receivers specified for a pipeline group instance."
+      },
+      "processors": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The processors specified for a pipeline group instance."
+      },
+      "exporters": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 1,
+        "description": "The exporters specified for a pipeline group instance."
+      },
+      "service": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "The service section for a given pipeline group instance."
+      },
+      "executionPlacement": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Constraints for guiding the execution environment of the pipeline group."
+      },
+      "tlsConfigurations": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "TLS configurations for the pipeline group instance."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 2,
+        "description": "The provisioning state of a pipeline group instance. Set to Succeeded if everything is healthy."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Receiver",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The type of receiver."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of receiver."
+      },
+      "tlsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to a named TLS configuration. If not specified, default TLS configuration is used."
+      },
+      "syslog": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Syslog configurations. This field is mandatory for syslog type receivers."
+      },
+      "otlp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "OTLP receiver configurations. This field is mandatory for OTLP receivers."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Syslog"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OTLP"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SyslogReceiver",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Syslog receiver endpoint definition. Example: 0.0.0.0:<port>."
+      },
+      "allowedFormats": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "List of allowed message formats for syslog/CEF ingestion. Default 'all'."
+      },
+      "transportProtocol": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Transport protocol. Default tcp."
+      },
+      "allowSkipPriHeader": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Configure the receiver to allow parsing of messages without the PRI header. Default false."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-\\.]+:[0-9]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "all"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "syslogRfc3164"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "syslogRfc5424"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cefRfc3164"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cefRfc5424"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rawCef"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "udp"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OtlpReceiver",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "OTLP GRPC endpoint definition. Example: 0.0.0.0:<port>."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/7"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Processor",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "The type of processor."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of processor."
+      },
+      "batch": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Batch processor configurations."
+      },
+      "transformLanguage": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Transform language processor configurations."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Batch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TransformLanguage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MicrosoftSyslog"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MicrosoftCommonSecurityLog"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BatchProcessor",
+    "properties": {
+      "batchSize": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Size of the batch."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Timeout in milliseconds."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 10,
+    "maxValue": 100000
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 10,
+    "maxValue": 300000
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransformLanguageProcessor",
+    "properties": {
+      "transformStatement": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "Transform statement to execute over the data passing through the processor."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 10000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/27"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Exporter",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The type of exporter."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of exporter."
+      },
+      "azureMonitorWorkspaceLogs": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Azure Monitor Workspace Logs specific configurations."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureMonitorWorkspaceLogs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMonitorWorkspaceLogsExporter",
+    "properties": {
+      "api": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "API configurations for Azure Monitor workspace exporter."
+      },
+      "persistence": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Persistence options for the exporter."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMonitorWorkspaceLogsApiConfig",
+    "properties": {
+      "dataCollectionEndpointUrl": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "Data collection endpoint ingestion url."
+      },
+      "stream": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Stream name in destination. Azure Monitor stream is related to the destination table."
+      },
+      "dataCollectionRule": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Data Collection Rule (DCR) immutable id."
+      },
+      "schema": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The schema mapping for incoming data."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(https?)://[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9._-]{1,1000}[^-]$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9.-]{1,1000}[^-]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaMap",
+    "properties": {
+      "recordMap": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "Record Map."
+      },
+      "resourceMap": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Resource Map captures information about the entity for which telemetry is recorded. For example, metrics exposed by a Kubernetes container can be linked to a resource that specifies the cluster, namespace, pod, and container name.Resource may capture an entire hierarchy of entity identification. It may describe the host in the cloud and specific container or an application running in the process."
+      },
+      "scopeMap": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "A scope map is a logical unit of the application code with which the emitted telemetry can be associated."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecordMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Record Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Record Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScopeMap",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Scope Map Key."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Scope Map Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExporterPersistenceConfiguration",
+    "properties": {
+      "maxStorageUsage": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Max storage usage in gigabytes."
+      },
+      "retentionPeriod": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Retention period in minutes."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Service",
+    "properties": {
+      "pipelines": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "Pipelines belonging to a given pipeline group."
+      },
+      "persistence": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Persistence options to all pipelines in the instance."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Pipeline",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the pipeline."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "The type of pipeline"
+      },
+      "receivers": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Reference to receivers configured for the pipeline."
+      },
+      "processors": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "Reference to processors configured for the pipeline."
+      },
+      "exporters": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 1,
+        "description": "Reference to exporters configured for the pipeline."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Logs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/57"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PersistenceConfigurations",
+    "properties": {
+      "persistentVolumeName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the mounted persistent volume."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecutionPlacement",
+    "properties": {
+      "constraints": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "A list of placement constraints to guide where pipelineGroup instances should run."
+      },
+      "distribution": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Distribution policy for spreading instances across compute units (nodes/VMs)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementConstraint",
+    "properties": {
+      "capability": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The capability or attribute key used to match compute unit properties."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 1,
+        "description": "The match operator, e.g., In, NotIn, Exists, DoesNotExist."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The values to match against. Not required for Exists/DoesNotExist."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotIn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DoesNotExist"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/66"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DistributionPolicy",
+    "properties": {
+      "maxInstancesPerHost": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Maximum number of instances allowed per compute unit (node/VM). If not specified, default scheduling applies."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TlsConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the TLS configuration."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The TLS security mode for receivers using this configuration. Default is 'mutualTls'."
+      },
+      "tlsCertificate": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "TLS certificate and its private key. If not specified, default TLS certificate is used."
+      },
+      "clientCa": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Certificate source configuration for the client CA certificate for validating client certificates. If not specified, default CA certificates are used."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "serverOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "mutualTls"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CertificateWithKey",
+    "properties": {
+      "certificate": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "Source configuration for the TLS certificate."
+      },
+      "privateKey": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "Source configuration for the private key. Private keys must be stored in Kubernetes secrets for security reasons."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CertificateSource",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 1,
+        "description": "The type of certificate source."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Location of the certificate source."
+      },
+      "subLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Sub-location within the certificate source."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kubernetesSecret"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kubernetesConfigMap"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateKeySource",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 1,
+        "description": "The type of private key source. Only kubernetesSecret is supported for security reasons."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Location of the private key source."
+      },
+      "subLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Sub-location within the private key source."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kubernetesSecret"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/75"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceManagerCommonTypesExtendedLocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the extended location."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "The type of the extended location."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EdgeZone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomLocation"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Monitor/pipelineGroups@2026-04-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  }
+]

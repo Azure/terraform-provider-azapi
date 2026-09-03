@@ -17,7 +17,7 @@ tools:
 	go install github.com/katbyte/terrafmt@latest
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install mvdan.cc/gofumpt@latest
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH || $$GOPATH)/bin v1.64.6
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH || $$GOPATH)/bin v2.11.4
 
 build: fmtcheck generate
 	go install
@@ -86,7 +86,7 @@ tflint:
 
 whitespace:
 	@echo "==> Fixing source code with whitespace linter..."
-	golangci-lint run ./... --no-config --disable-all --enable=whitespace --fix
+	golangci-lint run ./... --no-config --default=none --enable=whitespace --fix
 
 test-docker:
 	docker run --rm -v $$(pwd):/go/src/github.com/Azure/terraform-provider-azapi -w /go/src/github.com/Azure/terraform-provider-azapi golang:1.13 make test

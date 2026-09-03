@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -48,6 +49,20 @@ func Test_RequiresReplaceIfNotNull(t *testing.T) {
 			planValue:      types.DynamicValue(types.StringValue("plan")),
 			stateValue:     types.DynamicValue(types.StringValue("state")),
 			expectedResult: true,
+		},
+		{
+			// When HCL evaluates `condition ? [...] : null` for a DynamicAttribute,
+			// it produces a DynamicValue wrapping a null tuple, not a DynamicNull.
+			name:           "plan value is dynamic wrapping null tuple",
+			planValue:      types.DynamicValue(types.TupleNull([]attr.Type{types.StringType})),
+			stateValue:     types.DynamicValue(types.StringValue("state")),
+			expectedResult: false,
+		},
+		{
+			name:           "state value is dynamic wrapping null tuple",
+			planValue:      types.DynamicValue(types.StringValue("plan")),
+			stateValue:     types.DynamicValue(types.TupleNull([]attr.Type{types.StringType})),
+			expectedResult: false,
 		},
 	}
 

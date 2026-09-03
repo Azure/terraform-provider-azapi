@@ -54,7 +54,7 @@
           "$ref": "#/14"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -235,14 +235,14 @@
           "$ref": "#/19"
         },
         "flags": 0,
-        "description": "The type of identity that created the resource"
+        "description": "The type of identity that created the resource."
       },
       "createdAt": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The timestamp of resource creation (UTC)"
+        "description": "The timestamp of resource creation (UTC)."
       },
       "lastModifiedBy": {
         "type": {
@@ -256,7 +256,7 @@
           "$ref": "#/24"
         },
         "flags": 0,
-        "description": "The type of identity that last modified the resource"
+        "description": "The type of identity that last modified the resource."
       },
       "lastModifiedAt": {
         "type": {
@@ -342,15 +342,15 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Marketplace/privateStores@2025-01-01",
-    "scopeType": 1,
     "body": {
       "$ref": "#/3"
     },
-    "flags": 0
+    "readableScopes": 1,
+    "writableScopes": 1
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Marketplace/privateStores/requestApprovals"
+    "value": "Microsoft.Marketplace/privateStores/adminRequestApprovals"
   },
   {
     "$type": "StringLiteralType",
@@ -358,7 +358,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Marketplace/privateStores/requestApprovals",
+    "name": "Microsoft.Marketplace/privateStores/adminRequestApprovals",
     "properties": {
       "id": {
         "type": {
@@ -393,215 +393,6 @@
           "$ref": "#/29"
         },
         "flags": 0,
-        "description": "The privateStore approval request data structure."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RequestApprovalProperties",
-    "properties": {
-      "offerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets unique offer id."
-      },
-      "offerDisplayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Gets offer display name"
-      },
-      "publisherId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The offer's publisher id"
-      },
-      "plansDetails": {
-        "type": {
-          "$ref": "#/37"
-        },
-        "flags": 0,
-        "description": "Gets or sets the plans details"
-      },
-      "isClosed": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 2,
-        "description": "Gets a value indicating whether the request is closed"
-      },
-      "messageCode": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "Gets or sets the request approval message code"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PlanDetails",
-    "properties": {
-      "planId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets Plan Id"
-      },
-      "status": {
-        "type": {
-          "$ref": "#/35"
-        },
-        "flags": 2,
-        "description": "Gets the plan status"
-      },
-      "requestDate": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 2,
-        "description": "Gets request date"
-      },
-      "justification": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets user's justification for the plan's request"
-      },
-      "subscriptionId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the subscription id that the user is requesting to add the plan to"
-      },
-      "subscriptionName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the subscription name that the user is requesting to add the plan to"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Rejected"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Approved"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "AnyType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/30"
-    }
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Marketplace/privateStores/requestApprovals@2025-01-01",
-    "scopeType": 1,
-    "body": {
-      "$ref": "#/28"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Marketplace/privateStores/adminRequestApprovals"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-01-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Marketplace/privateStores/adminRequestApprovals",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/40"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/43"
-        },
-        "flags": 0,
         "description": "The privateStore admin Approval request data structure."
       },
       "systemData": {
@@ -609,7 +400,7 @@
           "$ref": "#/14"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -640,14 +431,14 @@
       },
       "adminAction": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "Gets or sets admin action"
       },
       "approvedPlans": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "Gets or sets Approved plans ids, empty in case of rejected"
@@ -668,14 +459,14 @@
       },
       "plans": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Gets list of plans with requesters details"
       },
       "collectionIds": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Gets or sets list of associated collection ids"
@@ -701,10 +492,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/44"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/31"
       },
       {
         "$ref": "#/0"
@@ -737,7 +528,7 @@
       },
       "requesters": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/36"
         },
         "flags": 2,
         "description": "Gets requesters details list"
@@ -788,13 +579,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/49"
+      "$ref": "#/35"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/48"
+      "$ref": "#/34"
     }
   },
   {
@@ -806,11 +597,220 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Marketplace/privateStores/adminRequestApprovals@2025-01-01",
-    "scopeType": 1,
+    "body": {
+      "$ref": "#/28"
+    },
+    "readableScopes": 0,
+    "writableScopes": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Marketplace/privateStores/requestApprovals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Marketplace/privateStores/requestApprovals",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The privateStore approval request data structure."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RequestApprovalProperties",
+    "properties": {
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets unique offer id."
+      },
+      "offerDisplayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets offer display name"
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The offer's publisher id"
+      },
+      "plansDetails": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Gets or sets the plans details"
+      },
+      "isClosed": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "Gets a value indicating whether the request is closed"
+      },
+      "messageCode": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Gets or sets the request approval message code"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlanDetails",
+    "properties": {
+      "planId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets Plan Id"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Gets the plan status"
+      },
+      "requestDate": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 2,
+        "description": "Gets request date"
+      },
+      "justification": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets user's justification for the plan's request"
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the subscription id that the user is requesting to add the plan to"
+      },
+      "subscriptionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the subscription name that the user is requesting to add the plan to"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Marketplace/privateStores/requestApprovals@2025-01-01",
     "body": {
       "$ref": "#/42"
     },
-    "flags": 0
+    "readableScopes": 1,
+    "writableScopes": 1
   },
   {
     "$type": "StringLiteralType",
@@ -864,7 +864,7 @@
           "$ref": "#/14"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -930,7 +930,7 @@
       },
       "numberOfOffers": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/52"
         },
         "flags": 2,
         "description": "Gets the number of offers associated with the collection."
@@ -1006,11 +1006,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Marketplace/privateStores/collections@2025-01-01",
-    "scopeType": 1,
     "body": {
       "$ref": "#/56"
     },
-    "flags": 0
+    "readableScopes": 1,
+    "writableScopes": 1
   },
   {
     "$type": "StringLiteralType",
@@ -1064,7 +1064,7 @@
           "$ref": "#/14"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1272,11 +1272,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Marketplace/privateStores/collections/offers@2025-01-01",
-    "scopeType": 1,
     "body": {
       "$ref": "#/68"
     },
-    "flags": 0
+    "readableScopes": 1,
+    "writableScopes": 1
   },
   {
     "$type": "ObjectType",
@@ -1302,102 +1302,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "QueryOffers",
-    "properties": {
-      "value": {
-        "type": {
-          "$ref": "#/83"
-        },
-        "flags": 0
-      },
-      "nextLink": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "URL to get the next set of PrivateStore list results if there are any."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/69"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "queryOffers",
-    "resourceType": "Microsoft.Marketplace/privateStores",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/82"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryUserOffersProperties",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/86"
-        },
-        "flags": 0,
-        "description": "Query user's offers details"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryUserOffersDetails",
-    "properties": {
-      "offerIds": {
-        "type": {
-          "$ref": "#/87"
-        },
-        "flags": 0,
-        "description": "List of offer IDs"
-      },
-      "subscriptionIds": {
-        "type": {
-          "$ref": "#/88"
-        },
-        "flags": 0,
-        "description": "List of subscription IDs"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "queryUserOffers",
-    "resourceType": "Microsoft.Marketplace/privateStores",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/82"
-    },
-    "input": {
-      "$ref": "#/85"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "BillingAccountsResponse",
     "properties": {
       "billingAccounts": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Billing accounts list"
@@ -1416,7 +1325,110 @@
     "resourceType": "Microsoft.Marketplace/privateStores",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/90"
+      "$ref": "#/82"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BulkCollectionsPayload",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "bulk collections properties details"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BulkCollectionsDetails",
+    "properties": {
+      "collectionIds": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "collection ids list that the action is performed on"
+      },
+      "action": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Action to perform (For example: EnableCollections, DisableCollections)"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BulkCollectionsResponse",
+    "properties": {
+      "succeeded": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Succeeded collections"
+      },
+      "failed": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Failed collections"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CollectionsDetails",
+    "properties": {
+      "collectionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Collection name."
+      },
+      "collectionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Collection id."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "bulkCollectionsAction",
+    "resourceType": "Microsoft.Marketplace/privateStores",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/88"
+    },
+    "input": {
+      "$ref": "#/85"
     }
   },
   {
@@ -1492,7 +1504,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "CollectionsToSubscriptionsMappingResponseProperties",
+    "name": "CollectionsToSubscriptionsMappingResponseDetails",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/97"
@@ -1512,463 +1524,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "QueryApprovedPlansPayload",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/102"
-        },
-        "flags": 0,
-        "description": "Query approved plans details"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryApprovedPlans",
-    "properties": {
-      "offerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Offer id"
-      },
-      "planIds": {
-        "type": {
-          "$ref": "#/103"
-        },
-        "flags": 0,
-        "description": "Offer plan ids"
-      },
-      "subscriptionIds": {
-        "type": {
-          "$ref": "#/104"
-        },
-        "flags": 0,
-        "description": "List of subscription IDs"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryApprovedPlansResponse",
-    "properties": {
-      "details": {
-        "type": {
-          "$ref": "#/108"
-        },
-        "flags": 0,
-        "description": "A list indicating for each plan which subscriptions are approved. Plan Id is unique"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryApprovedPlansDetails",
-    "properties": {
-      "planId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Plan id"
-      },
-      "subscriptionIds": {
-        "type": {
-          "$ref": "#/107"
-        },
-        "flags": 0,
-        "description": "Approved subscription ids list. In case all subscriptions are approved for a plan, allSubscriptions flag is true and list is empty ( else flag is set to false). In case both subscriptions list is empty and allSubscriptions flag is false, the plan is not approved for any subscription."
-      },
-      "allSubscriptions": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "Indicates whether all subscriptions are approved for this plan"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/106"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "queryApprovedPlans",
-    "resourceType": "Microsoft.Marketplace/privateStores",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/105"
-    },
-    "input": {
-      "$ref": "#/101"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "BulkCollectionsPayload",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/111"
-        },
-        "flags": 0,
-        "description": "bulk collections properties details"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "BulkCollectionsDetails",
-    "properties": {
-      "collectionIds": {
-        "type": {
-          "$ref": "#/112"
-        },
-        "flags": 0,
-        "description": "collection ids list that the action is performed on"
-      },
-      "action": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Action to perform (For example: EnableCollections, DisableCollections)"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "BulkCollectionsResponse",
-    "properties": {
-      "succeeded": {
-        "type": {
-          "$ref": "#/115"
-        },
-        "flags": 0,
-        "description": "Succeeded collections"
-      },
-      "failed": {
-        "type": {
-          "$ref": "#/116"
-        },
-        "flags": 0,
-        "description": "Failed collections"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CollectionsDetails",
-    "properties": {
-      "collectionName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Collection name."
-      },
-      "collectionId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Collection id."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/114"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/114"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "bulkCollectionsAction",
-    "resourceType": "Microsoft.Marketplace/privateStores",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/113"
-    },
-    "input": {
-      "$ref": "#/110"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PrivateStoreNotificationsState",
-    "properties": {
-      "stopSellNotifications": {
-        "type": {
-          "$ref": "#/122"
-        },
-        "flags": 0
-      },
-      "newNotifications": {
-        "type": {
-          "$ref": "#/125"
-        },
-        "flags": 0
-      },
-      "approvalRequests": {
-        "type": {
-          "$ref": "#/128"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "StopSellNotifications",
-    "properties": {
-      "offerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer id"
-      },
-      "displayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer display name"
-      },
-      "isEntire": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "Gets a value indicating whether entire offer is in stop sell or only few of its plans"
-      },
-      "messageCode": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "Gets or sets the notification message id"
-      },
-      "icon": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the icon url"
-      },
-      "plans": {
-        "type": {
-          "$ref": "#/121"
-        },
-        "flags": 0,
-        "description": "Gets or sets removed plans notifications"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PlanNotificationDetails",
-    "properties": {
-      "planId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the plan id"
-      },
-      "planDisplayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the plan display name"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/120"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/119"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NewNotifications",
-    "properties": {
-      "offerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer id"
-      },
-      "displayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer display name"
-      },
-      "isFuturePlansEnabled": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "Gets a value indicating whether future plans is enabled."
-      },
-      "messageCode": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "Gets or sets the notification message id"
-      },
-      "icon": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the icon url"
-      },
-      "plans": {
-        "type": {
-          "$ref": "#/124"
-        },
-        "flags": 0,
-        "description": "Gets or sets removed plans notifications"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/120"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/123"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RequestApprovalsDetails",
-    "properties": {
-      "offerId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer id"
-      },
-      "displayName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets offer display name"
-      },
-      "publisherId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets publisher id"
-      },
-      "messageCode": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "Gets or sets the notification message id"
-      },
-      "icon": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the icon url"
-      },
-      "plans": {
-        "type": {
-          "$ref": "#/127"
-        },
-        "flags": 0,
-        "description": "Gets or sets removed plans notifications"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/120"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/126"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "queryNotificationsState",
-    "resourceType": "Microsoft.Marketplace/privateStores",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/118"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "SubscriptionsResponse",
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/109"
         },
         "flags": 2,
         "description": "An array of subscriptions."
@@ -1982,7 +1542,7 @@
       },
       "count": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/52"
         },
         "flags": 2,
         "description": "Number of subscriptions on the page"
@@ -2016,7 +1576,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/108"
         },
         "flags": 2,
         "description": "The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted."
@@ -2047,19 +1607,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/132"
+        "$ref": "#/103"
       },
       {
-        "$ref": "#/133"
+        "$ref": "#/104"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/105"
       },
       {
-        "$ref": "#/135"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/136"
+        "$ref": "#/107"
       },
       {
         "$ref": "#/0"
@@ -2069,7 +1629,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/131"
+      "$ref": "#/102"
     }
   },
   {
@@ -2078,7 +1638,7 @@
     "resourceType": "Microsoft.Marketplace/privateStores",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/130"
+      "$ref": "#/101"
     }
   },
   {
@@ -2087,16 +1647,90 @@
     "properties": {
       "newPlansNotifications": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/115"
         },
         "flags": 0
       }
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "NewNotifications",
+    "properties": {
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer id"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer display name"
+      },
+      "isFuturePlansEnabled": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Gets a value indicating whether future plans is enabled."
+      },
+      "messageCode": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Gets or sets the notification message id"
+      },
+      "icon": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the icon url"
+      },
+      "plans": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "Gets or sets removed plans notifications"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlanNotificationDetails",
+    "properties": {
+      "planId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the plan id"
+      },
+      "planDisplayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the plan display name"
+      }
+    }
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/123"
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/112"
     }
   },
   {
@@ -2105,7 +1739,7 @@
     "resourceType": "Microsoft.Marketplace/privateStores",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/140"
+      "$ref": "#/111"
     }
   },
   {
@@ -2114,7 +1748,7 @@
     "properties": {
       "subscriptions": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/118"
         },
         "flags": 0
       }
@@ -2132,7 +1766,7 @@
     "properties": {
       "stopSellNotifications": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/123"
         },
         "flags": 0
       }
@@ -2165,7 +1799,7 @@
       },
       "messageCode": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/52"
         },
         "flags": 2,
         "description": "The notification message code"
@@ -2179,7 +1813,7 @@
       },
       "plans": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/121"
         },
         "flags": 2,
         "description": "The list of removed plans notifications"
@@ -2193,7 +1827,7 @@
       },
       "subscriptionsIds": {
         "type": {
-          "$ref": "#/148"
+          "$ref": "#/122"
         },
         "flags": 2,
         "description": "The subscriptions related to private plans"
@@ -2203,7 +1837,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/120"
+      "$ref": "#/113"
     }
   },
   {
@@ -2215,7 +1849,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/146"
+      "$ref": "#/120"
     }
   },
   {
@@ -2224,10 +1858,10 @@
     "resourceType": "Microsoft.Marketplace/privateStores",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/145"
+      "$ref": "#/119"
     },
     "input": {
-      "$ref": "#/143"
+      "$ref": "#/117"
     }
   },
   {
@@ -2236,7 +1870,7 @@
     "properties": {
       "subscriptionsIds": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/126"
         },
         "flags": 0
       }
@@ -2254,7 +1888,373 @@
     "resourceType": "Microsoft.Marketplace/privateStores",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/151"
+      "$ref": "#/125"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryApprovedPlansPayload",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Query approved plans details"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryApprovedPlans",
+    "properties": {
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Offer id"
+      },
+      "planIds": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Offer plan ids"
+      },
+      "subscriptionIds": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "List of subscription IDs"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryApprovedPlansResponse",
+    "properties": {
+      "details": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "A list indicating for each plan which subscriptions are approved. Plan Id is unique"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryApprovedPlansDetails",
+    "properties": {
+      "planId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Plan id"
+      },
+      "subscriptionIds": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "Approved subscription ids list. In case all subscriptions are approved for a plan, allSubscriptions flag is true and list is empty ( else flag is set to false). In case both subscriptions list is empty and allSubscriptions flag is false, the plan is not approved for any subscription."
+      },
+      "allSubscriptions": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Indicates whether all subscriptions are approved for this plan"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryApprovedPlans",
+    "resourceType": "Microsoft.Marketplace/privateStores",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/132"
+    },
+    "input": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateStoreNotificationsState",
+    "properties": {
+      "stopSellNotifications": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0
+      },
+      "newNotifications": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0
+      },
+      "approvalRequests": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StopSellNotifications",
+    "properties": {
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer id"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer display name"
+      },
+      "isEntire": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Gets a value indicating whether entire offer is in stop sell or only few of its plans"
+      },
+      "messageCode": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Gets or sets the notification message id"
+      },
+      "icon": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the icon url"
+      },
+      "plans": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "Gets or sets removed plans notifications"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/138"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/112"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RequestApprovalsDetails",
+    "properties": {
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer id"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets offer display name"
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets publisher id"
+      },
+      "messageCode": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Gets or sets the notification message id"
+      },
+      "icon": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the icon url"
+      },
+      "plans": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "Gets or sets removed plans notifications"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/142"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryNotificationsState",
+    "resourceType": "Microsoft.Marketplace/privateStores",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/137"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryOffers",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "URL to get the next set of PrivateStore list results if there are any."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryOffers",
+    "resourceType": "Microsoft.Marketplace/privateStores",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/146"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryUserOffersProperties",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "Query user's offers details"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryUserOffersDetails",
+    "properties": {
+      "offerIds": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "List of offer IDs"
+      },
+      "subscriptionIds": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "List of subscription IDs"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryUserOffers",
+    "resourceType": "Microsoft.Marketplace/privateStores",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/146"
+    },
+    "input": {
+      "$ref": "#/149"
     }
   },
   {
@@ -2328,153 +2328,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "QueryRequestApprovalProperties",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/161"
-        },
-        "flags": 0,
-        "description": "The details to get the request plans statuses"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RequestDetails",
-    "properties": {
-      "publisherId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The offer's publisher id"
-      },
-      "planIds": {
-        "type": {
-          "$ref": "#/162"
-        },
-        "flags": 0,
-        "description": "Current plans list"
-      },
-      "subscriptionId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets the subscription id"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryRequestApproval",
-    "properties": {
-      "uniqueOfferId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets unique offer id."
-      },
-      "plansDetails": {
-        "type": {
-          "$ref": "#/164"
-        },
-        "flags": 0,
-        "description": "Gets or sets the plans details"
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets e-tag field"
-      },
-      "messageCode": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "Gets or sets the notification message id"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "QueryRequestApprovalPlansDetails",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/30"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "query",
-    "resourceType": "Microsoft.Marketplace/privateStores/requestApprovals",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/163"
-    },
-    "input": {
-      "$ref": "#/160"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "WithdrawProperties",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/167"
-        },
-        "flags": 0,
-        "description": "Withdraw properties details"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "WithdrawDetails",
-    "properties": {
-      "planId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Gets or sets Plan Id"
-      },
-      "publisherId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The offer's publisher id"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "withdrawPlan",
-    "resourceType": "Microsoft.Marketplace/privateStores/requestApprovals",
-    "apiVersion": "2025-01-01",
-    "input": {
-      "$ref": "#/166"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "AcknowledgeOfferNotificationProperties",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/161"
         },
         "flags": 0,
         "description": "Notification update request payload details"
@@ -2508,14 +2366,14 @@
       },
       "addPlans": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/162"
         },
         "flags": 0,
         "description": "Gets or sets added plans"
       },
       "removePlans": {
         "type": {
-          "$ref": "#/172"
+          "$ref": "#/163"
         },
         "flags": 0,
         "description": "Gets or sets remove plans"
@@ -2540,50 +2398,208 @@
     "resourceType": "Microsoft.Marketplace/privateStores/offers",
     "apiVersion": "2025-01-01",
     "input": {
-      "$ref": "#/169"
+      "$ref": "#/160"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "SetRulesRequest",
+    "name": "QueryRequestApprovalProperties",
     "properties": {
-      "value": {
+      "properties": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/166"
         },
-        "flags": 0
-      },
-      "nextLink": {
+        "flags": 0,
+        "description": "The details to get the request plans statuses"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RequestDetails",
+    "properties": {
+      "publisherId": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "URL to get the next set of rules list results if there are any."
+        "description": "The offer's publisher id"
+      },
+      "planIds": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 0,
+        "description": "Current plans list"
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the subscription id"
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/59"
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryRequestApproval",
+    "properties": {
+      "uniqueOfferId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets unique offer id."
+      },
+      "plansDetails": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "Gets or sets the plans details"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets e-tag field"
+      },
+      "messageCode": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Gets or sets the notification message id"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryRequestApprovalPlansDetails",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/44"
     }
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "setRules",
-    "resourceType": "Microsoft.Marketplace/privateStores/collections",
+    "name": "query",
+    "resourceType": "Microsoft.Marketplace/privateStores/requestApprovals",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/168"
+    },
+    "input": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WithdrawProperties",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "Withdraw properties details"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WithdrawDetails",
+    "properties": {
+      "planId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets Plan Id"
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The offer's publisher id"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "withdrawPlan",
+    "resourceType": "Microsoft.Marketplace/privateStores/requestApprovals",
     "apiVersion": "2025-01-01",
     "input": {
+      "$ref": "#/171"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Collection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The collection data structure."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approveAllItems",
+    "resourceType": "Microsoft.Marketplace/privateStores/collections",
+    "apiVersion": "2025-01-01",
+    "output": {
       "$ref": "#/174"
     }
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "queryRules",
+    "name": "disableApproveAllItems",
     "resourceType": "Microsoft.Marketplace/privateStores/collections",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/157"
+      "$ref": "#/174"
     }
   },
   {
@@ -2592,7 +2608,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/178"
         },
         "flags": 0,
         "description": "transfer offers properties details"
@@ -2605,7 +2621,7 @@
     "properties": {
       "targetCollections": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/179"
         },
         "flags": 0,
         "description": "Target collections ids"
@@ -2619,7 +2635,7 @@
       },
       "offerIdsList": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/180"
         },
         "flags": 0,
         "description": "Offers ids list to transfer from source collection to target collection(s)"
@@ -2644,14 +2660,14 @@
     "properties": {
       "succeeded": {
         "type": {
-          "$ref": "#/183"
+          "$ref": "#/182"
         },
         "flags": 0,
         "description": "Succeeded collections"
       },
       "failed": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/183"
         },
         "flags": 0,
         "description": "Failed collections"
@@ -2661,13 +2677,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/114"
+      "$ref": "#/89"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/114"
+      "$ref": "#/89"
     }
   },
   {
@@ -2676,69 +2692,10 @@
     "resourceType": "Microsoft.Marketplace/privateStores/collections",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/182"
+      "$ref": "#/181"
     },
     "input": {
-      "$ref": "#/178"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Collection",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/57"
-        },
-        "flags": 0,
-        "description": "The collection data structure."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The resource ID."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "approveAllItems",
-    "resourceType": "Microsoft.Marketplace/privateStores/collections",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/186"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "disableApproveAllItems",
-    "resourceType": "Microsoft.Marketplace/privateStores/collections",
-    "apiVersion": "2025-01-01",
-    "output": {
-      "$ref": "#/186"
+      "$ref": "#/177"
     }
   },
   {
@@ -2747,7 +2704,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/186"
         },
         "flags": 0,
         "description": "Subscriptions ids list"
@@ -2760,7 +2717,7 @@
     "properties": {
       "subscriptionIds": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/187"
         },
         "flags": 0,
         "description": "Subscription ids list"
@@ -2779,7 +2736,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/192"
         },
         "flags": 2
       },
@@ -2805,7 +2762,7 @@
       },
       "offers": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/190"
         },
         "flags": 0,
         "description": "List of offers"
@@ -2818,7 +2775,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/191"
         },
         "flags": 0
       }
@@ -2833,7 +2790,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/193"
+      "$ref": "#/189"
     }
   },
   {
@@ -2842,10 +2799,53 @@
     "resourceType": "Microsoft.Marketplace/privateStores/collections",
     "apiVersion": "2025-01-01",
     "output": {
-      "$ref": "#/192"
+      "$ref": "#/188"
     },
     "input": {
-      "$ref": "#/189"
+      "$ref": "#/185"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryRules",
+    "resourceType": "Microsoft.Marketplace/privateStores/collections",
+    "apiVersion": "2025-01-01",
+    "output": {
+      "$ref": "#/157"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SetRulesRequest",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "URL to get the next set of rules list results if there are any."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "setRules",
+    "resourceType": "Microsoft.Marketplace/privateStores/collections",
+    "apiVersion": "2025-01-01",
+    "input": {
+      "$ref": "#/195"
     }
   },
   {
@@ -2864,28 +2864,28 @@
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "The resource ID."
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
       },
       "name": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "The name of the resource."
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "The type of the resource."
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
           "$ref": "#/14"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2898,7 +2898,7 @@
       "$ref": "#/198"
     },
     "input": {
-      "$ref": "#/189"
+      "$ref": "#/185"
     }
   },
   {

@@ -1,0 +1,2438 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_\\-.: ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Commvault.ContentStore/cloudAccounts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Commvault.ContentStore/cloudAccounts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudAccountProperties",
+    "properties": {
+      "marketplace": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Marketplace details of the resource."
+      },
+      "user": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Details of the user."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "ssoUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "SSO URL for the Commvault Cloud Account"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseMarketplaceDetails",
+    "properties": {
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure subscription id for the the marketplace offer is purchased from"
+      },
+      "subscriptionStatus": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Marketplace subscription status"
+      },
+      "offerDetails": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Offer details for the marketplace that is selected by the user"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingFulfillmentStart"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscribed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsubscribed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseOfferDetails",
+    "properties": {
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher Id for the marketplace offer"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Offer Id for the marketplace offer"
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Plan Id for the marketplace offer"
+      },
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Name for the marketplace offer"
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Display Name for the marketplace offer"
+      },
+      "termId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Display Name for the marketplace offer"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseUserDetails",
+    "properties": {
+      "firstName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "First name of the user"
+      },
+      "lastName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Last name of the user"
+      },
+      "emailAddress": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Email address of the user"
+      },
+      "upn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's principal name"
+      },
+      "phoneNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's phone number"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/26"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Commvault.ContentStore/cloudAccounts@2025-01-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Commvault.ContentStore/cloudAccounts/plans"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Commvault.ContentStore/cloudAccounts/plans",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlanProperties",
+    "properties": {
+      "location": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Location of the Commvault Plan"
+      },
+      "storagePlans": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "The storage plans associated with the Commvault Plan"
+      },
+      "schedules": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "The Commvault Plan Schedule"
+      },
+      "retention": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 0,
+        "description": "The Commvault Plan Retention"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StoragePlan",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the Storage resource"
+      },
+      "storagePoolId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Id of the Storage Pool"
+      },
+      "copyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Copy Name from Commvault"
+      },
+      "copyPrecedence": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Precedence of the Storage Plan, 1 is the highest precedence, 2 is the next highest, and so on"
+      },
+      "retentionPeriod": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Indicates the retention period valid only if the type of retention chosen in CUSTOM"
+      },
+      "retentionTime": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Indicates the retention timeframe valid only if the type of retention chosen in CUSTOM"
+      },
+      "backupRuleType": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "Backup Rule Type"
+      },
+      "extendedRetention": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Extended Retention Policy"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "yearly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ALL_JOBS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ALL_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HOURLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DAILY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEEKLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MONTHLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "YEARLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QUARTERLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HALF_YEARLY_FULLS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtendedRetentionTime",
+    "properties": {
+      "retentionTime": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Retention time for Extended Retention"
+      },
+      "retentionPeriod": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Retention period for Extended Retention"
+      },
+      "backupRuleType": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Backup Rule Type for Extended Retention"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "yearly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ALL_JOBS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ALL_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HOURLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DAILY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEEKLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MONTHLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "YEARLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QUARTERLY_FULLS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HALF_YEARLY_FULLS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/61"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/46"
+    },
+    "minLength": 1,
+    "maxLength": 11
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Schedule",
+    "properties": {
+      "backupType": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "Type of Backup"
+      },
+      "frequency": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Frequency of Retention"
+      },
+      "runsEvery": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Interval of Retention"
+      },
+      "weekOfMonth": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Week of the month"
+      },
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Day of the week"
+      },
+      "monthOfYear": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "Month of the year"
+      },
+      "dayOfMonth": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Day of the month"
+      },
+      "weeklyDays": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Weekly Days List"
+      },
+      "time": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time of Retention"
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time Zone"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INCREMENTAL"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FULL"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BOTH"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "yearly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "minutes"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FIRST"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SECOND"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "THIRD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FOURTH"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LAST"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUNDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MONDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TUESDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEDNESDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "THURSDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FRIDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SATURDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEEKDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEEKEND_DAYS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JANUARY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FEBRUARY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MARCH"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "APRIL"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JUNE"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JULY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AUGUST"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SEPTEMBER"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OCTOBER"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NOVEMBER"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DECEMBER"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUNDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MONDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TUESDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WEDNESDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "THURSDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FRIDAY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SATURDAY"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/125"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/77"
+    },
+    "minLength": 1,
+    "maxLength": 11
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Retention",
+    "properties": {
+      "numberOfSnapshots": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Number of Snapshots"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Commvault.ContentStore/cloudAccounts/plans@2025-01-01-preview",
+    "body": {
+      "$ref": "#/43"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Commvault.ContentStore/cloudAccounts/protectionGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Commvault.ContentStore/cloudAccounts/protectionGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProtectionGroupProperties",
+    "properties": {
+      "dataSourceType": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 1,
+        "description": "The datasource type of Commvault Protection Group"
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Commvault Plan to be associated with the Protection Group"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 1,
+        "description": "The resources to be protected under Protection Group"
+      },
+      "protectionStatus": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 2,
+        "description": "The protection group schedule"
+      },
+      "numberOfProtectedItems": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "The number of ProtectedItems under the Protection Group"
+      },
+      "lastBackUpTime": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "The Commvault Protection Group backup time"
+      },
+      "backupActivityStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The backup activity status indicating if backup is enabled or not on the protection group"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureVM"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProtectionGroupResources",
+    "properties": {
+      "manual": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The items to be protected under Protection Group"
+      },
+      "matchRules": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "Rules to match resources"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProtectionGroupResourcesMatchRules",
+    "properties": {
+      "rules": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 1,
+        "description": "rules to match"
+      },
+      "matchType": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 1,
+        "description": "match Type all or any"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Rule",
+    "properties": {
+      "property": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 1,
+        "description": "property of the rule"
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 1,
+        "description": "property of the rule"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "property of the rule"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "resourceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "name"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tagName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tagValue"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "region"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "status"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "doesNotContains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "doesNotEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "startsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "endsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "equals"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/142"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "all"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "any"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "all"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "protected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "not_protected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "backed_up_with_error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "discovered"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Commvault.ContentStore/cloudAccounts/protectionGroups@2025-01-01-preview",
+    "body": {
+      "$ref": "#/136"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Commvault.ContentStore/cloudAccounts/storages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Commvault.ContentStore/cloudAccounts/storages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageProperties",
+    "properties": {
+      "location": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Location of the Commvault Storage"
+      },
+      "storageType": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 1,
+        "description": "The type of Commvault Storage"
+      },
+      "vendor": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "The vendor of Commvault Storage"
+      },
+      "class": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 1,
+        "description": "The class of Commvault Storage"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Air_Gap_Protect"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure_Blob_Storage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "COLD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HOT"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Commvault.ContentStore/cloudAccounts/storages@2025-01-01-preview",
+    "body": {
+      "$ref": "#/175"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9\\-_]{1,127}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Commvault.ContentStore/cloudAccounts/protectionGroups/protectedItems"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Commvault.ContentStore/cloudAccounts/protectionGroups/protectedItems",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProtectedItemProperties",
+    "properties": {
+      "resourceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Name of the commvault protected item"
+      },
+      "lastBackUpTime": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 3,
+        "description": "The Commvault Protected Item backup time"
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The resource group of the protected item"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The location of the protected item"
+      },
+      "vmGuid": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 3,
+        "description": "The GUID of VM"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Commvault.ContentStore/cloudAccounts/protectionGroups/protectedItems@2025-01-01-preview",
+    "body": {
+      "$ref": "#/192"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RestoreProtectionItemRequest",
+    "properties": {
+      "inPlaceRestore": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 1,
+        "description": "Check whether inplace or out of place restore."
+      },
+      "restoreType": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "Type of Restore"
+      },
+      "toTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time to restore"
+      },
+      "vmDestinationInfo": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 1,
+        "description": "The vm destination details of the VM."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NONE"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VIRTUAL_MACHINE"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DISK_ATTACH"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmDestinationInfo",
+    "properties": {
+      "vmInfoList": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 1,
+        "description": "List of information on VMs"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmInfo",
+    "properties": {
+      "sourceVmGuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The GUID of VM to be restored."
+      },
+      "storageAccountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The storage account to be used for restore."
+      },
+      "powerOnVmAfterRestore": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "The identifier to check if VM needs to be powered on."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the VM."
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource group of the VM."
+      },
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The region of the VM."
+      },
+      "networkId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The network Id of the VM."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The subnet Id of the VM."
+      },
+      "attachAndSwapOsDisk": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "The identifier to check if to attach and swap disk of the VM."
+      },
+      "targetVmGuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The GUID of target VM used in DISK ATTACH."
+      },
+      "vmtag": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 0,
+        "description": "The vmTag of the VM."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmTag",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of VM tag."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The value of VM tag."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/204"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/203"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RestoreProtectionItemResponse",
+    "properties": {
+      "taskId": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 3,
+        "description": "The Commvault response for taskId"
+      },
+      "jobIds": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 3,
+        "description": "The jobIds returned from Commvault."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restore",
+    "resourceType": "Commvault.ContentStore/cloudAccounts/protectionGroups",
+    "apiVersion": "2025-01-01-preview",
+    "output": {
+      "$ref": "#/207"
+    },
+    "input": {
+      "$ref": "#/196"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StopBackupProtectionGroupRequest",
+    "properties": {
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The reason for stopping the backup"
+      },
+      "comment": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Any further comments"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stopBackup",
+    "resourceType": "Commvault.ContentStore/cloudAccounts/protectionGroups",
+    "apiVersion": "2025-01-01-preview",
+    "input": {
+      "$ref": "#/210"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RestorePoints",
+    "properties": {
+      "restoreTimes": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 3,
+        "description": "The Commvault Protected Item Restore points"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getRestorePoints",
+    "resourceType": "Commvault.ContentStore/cloudAccounts/protectionGroups/protectedItems",
+    "apiVersion": "2025-01-01-preview",
+    "output": {
+      "$ref": "#/212"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restore",
+    "resourceType": "Commvault.ContentStore/cloudAccounts/protectionGroups/protectedItems",
+    "apiVersion": "2025-01-01-preview",
+    "output": {
+      "$ref": "#/207"
+    },
+    "input": {
+      "$ref": "#/196"
+    }
+  }
+]

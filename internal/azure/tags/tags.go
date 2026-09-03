@@ -104,9 +104,9 @@ func (v tagsValidator) ValidateMap(ctx context.Context, request validator.MapReq
 }
 
 func (v tagsValidator) Description(ctx context.Context) string {
-	return "validate the tags"
+	return "Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long."
 }
 
 func (v tagsValidator) MarkdownDescription(ctx context.Context) string {
-	return "validate the tags"
+	return "Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long."
 }

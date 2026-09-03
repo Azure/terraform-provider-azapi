@@ -1,0 +1,5350 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ComputeBulkActions/locations/launchBulkInstancesOperations"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ComputeBulkActions/locations/launchBulkInstancesOperations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "Zones in which the LaunchBulkInstancesOperation is available"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/333"
+        },
+        "flags": 0,
+        "description": "Details of the resource plan."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/334"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LaunchBulkInstancesOperationProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Total capacity to achieve. It can be in terms of VMs or vCPUs."
+      },
+      "capacityType": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Specifies capacity type for launching instances. It can be in terms of VMs or vCPUs."
+      },
+      "priorityProfile": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "Configuration Options for Regular or Spot instances in LaunchBulkInstancesOperation."
+      },
+      "vmSizesProfile": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "List of VM sizes supported for LaunchBulkInstancesOperation"
+      },
+      "vmAttributes": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Attributes to launch instances."
+      },
+      "computeProfile": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Compute Profile to configure the Virtual Machines."
+      },
+      "zoneAllocationPolicy": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 0,
+        "description": "Zone Allocation Policy for launching instances."
+      },
+      "retryPolicy": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "Retry policy the user can pass"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VCpu"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PriorityProfile",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Specifies the type of Virtual Machine."
+      },
+      "maxPricePerVM": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Price per hour of each Spot VM will never exceed this."
+      },
+      "evictionPolicy": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Eviction Policy to follow when evicting Spot VMs."
+      },
+      "allocationStrategy": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Allocation strategy to follow when determining the VM sizes distribution."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regular"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Spot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LowestPrice"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CapacityOptimized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prioritized"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmSizeProfile",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Sku name (e.g. 'Standard_DS1_v2')"
+      },
+      "rank": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The rank of the VM size. This is used with 'AllocationStrategy.Prioritized'\nThe lower the number, the higher the priority. Starting with 0."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 65535
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMAttributes",
+    "properties": {
+      "vCpuCount": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "The range of vCpuCount specified from Min to Max. Must be specified if VMAttributes are specified, either Min or Max is required if specified."
+      },
+      "memoryInGiB": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "The range of memory specified from Min to Max. Must be specified if VMAttributes are specified, either Min or Max is required if specified."
+      },
+      "architectureTypes": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The VM architecture types specified as a list. Must be specified if VMAttributes are specified. Must be compatible with image used."
+      },
+      "memoryInGiBPerVCpu": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The range of memory in GiB per vCPU specified from min to max. Optional parameter. Either Min or Max is required if specified."
+      },
+      "localStorageSupport": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Specifies whether the VMSize supporting local storage should be used to launch instances or not.\nIncluded - Default if not specified as most Azure VMs support local storage."
+      },
+      "localStorageInGiB": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "LocalStorageSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf localStorageSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "localStorageDiskTypes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The local storage disk types specified as a list. LocalStorageSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf localStorageSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "dataDiskCount": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The range of data disk count specified from Min to Max. Optional parameter. Either Min or Max is required if specified."
+      },
+      "networkInterfaceCount": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The range of network interface count specified from Min to Max. Optional parameter. Either Min or Max is required if specified."
+      },
+      "networkBandwidthInMbps": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The range of network bandwidth in Mbps specified from Min to Max. Optional parameter. Either Min or Max is required if specified."
+      },
+      "rdmaSupport": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Specifies whether the VMSize supporting RDMA (Remote Direct Memory Access) should be used to build launch instances or not."
+      },
+      "rdmaNetworkInterfaceCount": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The range of RDMA (Remote Direct Memory Access) network interface count specified from Min to Max. Optional parameter. Either Min or Max is required if specified.\nrdmaSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf rdmaSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "acceleratorSupport": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Specifies whether the VMSize supporting accelerator should be used to launch instances or not.\nacceleratorSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf acceleratorSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "acceleratorManufacturers": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The accelerator manufacturers specified as a list. \nacceleratorSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf acceleratorSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "acceleratorTypes": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "The accelerator types specified as a list. acceleratorSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf acceleratorSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "acceleratorCount": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The range of accelerator count specified from min to max. Optional parameter. Either Min or Max is required if specified.\nacceleratorSupport should be set to \"Included\" or \"Required\" to use this VMAttribute. \nIf acceleratorSupport is \"Excluded\", this VMAttribute can not be used."
+      },
+      "vmCategories": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The VM category specified as a list. Optional parameter."
+      },
+      "cpuManufacturers": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The VM CPU manufacturers specified as a list. Optional parameter."
+      },
+      "hyperVGenerations": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The hyperV generations specified as a list. Optional parameter."
+      },
+      "burstableSupport": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Specifies whether the VMSize supporting burstable capability should be used to launch instances or not."
+      },
+      "allowedVMSizes": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Specifies which VMSizes should be allowed while filtering on VMAttributes. Cannot be specified together with excludedVMSizes. Maximum of 10 VM sizes allowed. Optional parameter."
+      },
+      "excludedVMSizes": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "Specifies which VMSizes should be excluded while filtering on VMAttributes. Cannot be specified together with allowedVMSizes. Maximum of 10 VM sizes allowed. Optional parameter."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMAttributeMinMaxInteger",
+    "properties": {
+      "min": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Min VMSize from CRS, Min = 0 (uint.MinValue) if not specified."
+      },
+      "max": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Max VMSize from CRS, Max = 4294967295 (uint.MaxValue) if not specified."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMAttributeMinMaxDouble",
+    "properties": {
+      "min": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Minimum value. If not specified, no minimum filter is applied."
+      },
+      "max": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Maximum value. Must be greater than zero. Double.MaxValue(1.7976931348623157E+308)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ARM64"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "X64"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/37"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HDD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SSD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/45"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AMD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Nvidia"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Xilinx"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/58"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GPU"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FPGA"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/62"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeneralPurpose"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ComputeOptimized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MemoryOptimized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StorageOptimized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GpuAccelerated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FpgaAccelerated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HighPerformanceCompute"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/71"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Intel"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AMD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ampere"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/77"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gen1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gen2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/81"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComputeProfile",
+    "properties": {
+      "virtualMachineProfile": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "Base Virtual Machine Profile Properties to be specified according to \"specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/{computeApiVersion}/virtualMachine.json#/definitions/VirtualMachineProperties\""
+      },
+      "extensions": {
+        "type": {
+          "$ref": "#/312"
+        },
+        "flags": 0,
+        "description": "Virtual Machine Extensions Array to be specified according to \"specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/{computeApiVersion}/virtualMachine.json#/definitions/VirtualMachineExtension\""
+      },
+      "computeApiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the Microsoft.Compute API version to use when creating underlying Virtual Machines.\nThe default value will be the latest supported computeApiVersion by LaunchBulkInstancesOperation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineProfile",
+    "properties": {
+      "scheduledEventsPolicy": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine."
+      },
+      "storageProfile": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Specifies the storage settings for the virtual machine disks."
+      },
+      "additionalCapabilities": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "Specifies additional capabilities enabled or disabled on the virtual machine."
+      },
+      "osProfile": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be changed once VM is provisioned."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "Specifies the network interfaces of the virtual machine."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 0,
+        "description": "Specifies the Security related profile settings for the virtual machine."
+      },
+      "diagnosticsProfile": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 0,
+        "description": "Specifies the boot diagnostic settings state. Minimum compute api-version: 2015-06-15."
+      },
+      "licenseType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15"
+      },
+      "extensionsTimeBudget": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). Minimum compute api-version: 2020-06-01."
+      },
+      "scheduledEventsProfile": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Specifies Scheduled Event related configurations."
+      },
+      "userData": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum compute api-version: 2021-03-01."
+      },
+      "capacityReservation": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "Specifies information about the capacity reservation that is used to allocate virtual machine. Minimum compute api-version: 2021-04-01."
+      },
+      "applicationProfile": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "Specifies the gallery applications that should be made available to the VM."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduledEventsPolicy",
+    "properties": {
+      "userInitiatedRedeploy": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while creating userInitiatedRedeploy scheduled event setting creation."
+      },
+      "userInitiatedReboot": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while creating userInitiatedReboot scheduled event setting creation."
+      },
+      "scheduledEventsAdditionalPublishingTargets": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while publishing scheduledEventsAdditionalPublishingTargets."
+      },
+      "allInstancesDown": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while creating AllInstancesDown scheduled event setting creation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserInitiatedRedeploy",
+    "properties": {
+      "automaticallyApprove": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies Redeploy Scheduled Event related configurations."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserInitiatedReboot",
+    "properties": {
+      "automaticallyApprove": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies Reboot Scheduled Event related configurations."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduledEventsAdditionalPublishingTargets",
+    "properties": {
+      "eventGridAndResourceGraph": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while creating eventGridAndResourceGraph Scheduled Event setting."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventGridAndResourceGraph",
+    "properties": {
+      "enable": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies if event grid and resource graph is enabled for Scheduled event related configurations."
+      },
+      "scheduledEventsApiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the api-version to determine which Scheduled Events configuration schema version will be delivered."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AllInstancesDown",
+    "properties": {
+      "automaticallyApprove": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies if Scheduled Events should be auto-approved when all instances are down. Its default value is true."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageProfile",
+    "properties": {
+      "imageReference": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Specifies information about the image to use. You can specify information about platform images, marketplace images, or virtual machine images. This element is required when you want to use a platform image, marketplace image, or virtual machine image, but is not used in other creation operations."
+      },
+      "osDisk": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Specifies information about the operating system disk used by the virtual machine. For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview)."
+      },
+      "dataDisks": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview)."
+      },
+      "diskControllerType": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "Specifies the disk controller type configured for the VM. **Note:** This property will be set to the default disk controller type if not specified provided virtual machine is being created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from the the specified minimum api version. You need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM. Minimum api-version: 2022-08-01."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageReference",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The image publisher."
+      },
+      "offer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the offer of the platform image or marketplace image used to create the virtual machine."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The image SKU."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available. Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for deployment, to use 'latest' version of gallery image, just set '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}' in the 'id' field without version input."
+      },
+      "sharedGalleryImageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET call."
+      },
+      "communityGalleryImageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specified the community gallery image unique id for vm deployment. This can be fetched from community gallery image GET call."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the sub-resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OSDisk",
+    "properties": {
+      "osType": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. Possible values are: Windows, Linux."
+      },
+      "encryptionSettings": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Specifies the encryption settings for the OS Disk. Minimum compute api-version: 2015-06-15."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The disk name."
+      },
+      "vhd": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The virtual hard disk."
+      },
+      "image": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist."
+      },
+      "caching": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for Standard storage. ReadOnly for Premium storage."
+      },
+      "writeAcceleratorEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether writeAccelerator should be enabled or disabled on the disk."
+      },
+      "diffDiskSettings": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine."
+      },
+      "createOption": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "Specifies how the virtual machine disk should be created. Possible values are Attach, FromImage. If you are using a platform image, you should also use the imageReference element described above. If you are using a marketplace image, you should also use the plan element previously described."
+      },
+      "diskSizeGB": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023."
+      },
+      "managedDisk": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The managed disk parameters."
+      },
+      "deleteOption": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible values are: Delete, Detach. The default value is set to Detach. For an ephemeral OS Disk, the default value is set to Delete. The user cannot change the delete option for an ephemeral OS Disk."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskEncryptionSettings",
+    "properties": {
+      "diskEncryptionKey": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the disk encryption key, which is a Key Vault Secret."
+      },
+      "keyEncryptionKey": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the key encryption key in Key Vault."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether disk encryption should be enabled on the virtual machine."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultSecretReference",
+    "properties": {
+      "secretUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URL referencing a secret in a Key Vault."
+      },
+      "sourceVault": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "The relative URL of the Key Vault containing the secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the sub-resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultKeyReference",
+    "properties": {
+      "keyUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URL referencing a key encryption key in Key Vault."
+      },
+      "sourceVault": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "The relative URL of the Key Vault containing the key."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualHardDisk",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the virtual hard disk's uri."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiffDiskSettings",
+    "properties": {
+      "option": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Specifies the ephemeral disk settings for operating system disk."
+      },
+      "placement": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Specifies the ephemeral disk placement for operating system disk. Possible values are: CacheDisk, ResourceDisk, NvmeDisk. The defaulting behavior is: CacheDisk if one is configured for the VM size otherwise ResourceDisk or NvmeDisk is used. Minimum api-version for NvmeDisk: 2024-03-01."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Local"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CacheDisk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceDisk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NvmeDisk"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FromImage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Empty"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Attach"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Copy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restore"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedDiskParameters",
+    "properties": {
+      "storageAccountType": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk."
+      },
+      "diskEncryptionSet": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "Specifies the customer managed disk encryption set resource id for the managed disk."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "Specifies the security profile for the managed disk."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the sub-resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UltraSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PremiumV2_LRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskEncryptionSetParameters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the sub-resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMDiskSecurityProfile",
+    "properties": {
+      "securityEncryptionType": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and NonPersistedTPM for not persisting firmware state in the VMGuestState blob.. **Note:** It can be set for only Confidential VMs."
+      },
+      "diskEncryptionSet": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "Specifies the customer managed disk encryption set resource id for the managed disk that is used for Customer Managed Key encrypted ConfidentialVM OS Disk and VMGuest blob."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VMGuestStateOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DiskWithVMGuestState"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonPersistedTPM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataDisk",
+    "properties": {
+      "lun": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The disk name."
+      },
+      "vhd": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The virtual hard disk."
+      },
+      "image": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist."
+      },
+      "caching": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for Standard storage. ReadOnly for Premium storage."
+      },
+      "writeAcceleratorEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether writeAccelerator should be enabled or disabled on the disk."
+      },
+      "createOption": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 1,
+        "description": "Specifies how the virtual machine disk should be created. Possible values are Attach, FromImage, Empty, Copy, Restore."
+      },
+      "diskSizeGB": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023."
+      },
+      "managedDisk": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The managed disk parameters."
+      },
+      "sourceResource": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "The source resource identifier. It can be a snapshot, or disk restore point from which to create a disk."
+      },
+      "toBeDetached": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset."
+      },
+      "detachOption": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the virtual machine. Supported values: ForceDetach. This feature is still in preview. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'."
+      },
+      "deleteOption": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: Delete, Detach. The default value is set to Detach."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FromImage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Empty"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Attach"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Copy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restore"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiEntityReference",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/..."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForceDetach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/144"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SCSI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NVMe"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdditionalCapabilities",
+    "properties": {
+      "ultraSSDEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled."
+      },
+      "hibernationEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "The flag that enables or disables hibernation capability on the VM."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OSProfile",
+    "properties": {
+      "computerName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the host OS name of the virtual machine. This name cannot be updated after the VM is created. **Max-length (Windows):** 15 characters. **Max-length (Linux):** 64 characters. For naming conventions and restrictions see [Azure infrastructure services implementation guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules)."
+      },
+      "adminUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is created. <br><br> **Windows-only restriction:** Cannot end in \".\" <br><br> **Disallowed values:** \"administrator\", \"admin\", \"user\", \"user1\", \"test\", \"user2\", \"test1\", \"user3\", \"admin1\", \"1\", \"123\", \"a\", \"actuser\", \"adm\", \"admin2\", \"aspnet\", \"backup\", \"console\", \"david\", \"guest\", \"john\", \"owner\", \"root\", \"server\", \"sql\", \"support\", \"support_388945a0\", \"sys\", \"test2\", \"test3\", \"user4\", \"user5\". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters."
+      },
+      "adminPassword": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 0,
+        "description": "Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)"
+      },
+      "customData": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be updated after the VM is created. The property 'customData' is passed to the VM to be saved as a file, for more information see [Custom Data on Azure VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). For using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)."
+      },
+      "windowsConfiguration": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "Specifies Windows operating system settings on the virtual machine."
+      },
+      "linuxConfiguration": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions, see [Linux on Azure-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros)."
+      },
+      "secrets": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault virtual machine extension for Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows)."
+      },
+      "allowExtensionOperations": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine."
+      },
+      "requireGuestProvisionSignal": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Optional property which must either be set to True or omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WindowsConfiguration",
+    "properties": {
+      "provisionVMAgent": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, it is set to true by default. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later."
+      },
+      "enableAutomaticUpdates": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the time zone of the virtual machine. e.g. \"Pacific Standard Time\". Possible values can be [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value from time zones returned by [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones)."
+      },
+      "additionalUnattendContent": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup."
+      },
+      "patchSettings": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "[Preview Feature] Specifies settings related to VM Guest Patching on Windows."
+      },
+      "winRM": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 0,
+        "description": "Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdditionalUnattendContent",
+    "properties": {
+      "passName": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "The pass name. Currently, the only allowable value is OobeSystem."
+      },
+      "componentName": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup."
+      },
+      "settingName": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon."
+      },
+      "content": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML must be less than 4KB and must include the root element for the setting or feature that is being inserted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OobeSystem"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft-Windows-Shell-Setup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoLogon"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FirstLogonCommands"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/169"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PatchSettings",
+    "properties": {
+      "patchMode": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true"
+      },
+      "enableHotpatching": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Enables customers to patch their Azure VMs without requiring a reboot. For enableHotpatching, the 'provisionVMAgent' must be set to true and 'patchMode' must be set to 'AutomaticByPlatform'."
+      },
+      "assessmentMode": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
+        "description": "Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine.<br /><br /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true."
+      },
+      "automaticByPlatformSettings": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Windows."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomaticByOS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomaticByPlatform"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ImageDefault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomaticByPlatform"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WindowsVMGuestPatchAutomaticByPlatformSettings",
+    "properties": {
+      "rebootSetting": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 0,
+        "description": "Specifies the reboot setting for all AutomaticByPlatform patch installation operations."
+      },
+      "bypassPlatformSafetyChecksOnUserSchedule": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Enables customer to schedule patching without accidental upgrades"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IfRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WinRMConfiguration",
+    "properties": {
+      "listeners": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "The list of Windows Remote Management listeners"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WinRMListener",
+    "properties": {
+      "protocol": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**"
+      },
+      "certificateUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate needs to be the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>  \"data\":\"<Base64-encoded-certificate>\",<br>  \"dataType\":\"pfx\",<br>  \"password\":\"<pfx-file-password>\"<br>} <br> To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault virtual machine extension for Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Https"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/191"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxConfiguration",
+    "properties": {
+      "disablePasswordAuthentication": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether password authentication should be disabled."
+      },
+      "ssh": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "Specifies the ssh key configuration for a Linux OS."
+      },
+      "provisionVMAgent": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later."
+      },
+      "patchSettings": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "[Preview Feature] Specifies settings related to VM Guest Patching on Linux."
+      },
+      "enableVMAgentPlatformUpdates": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SshConfiguration",
+    "properties": {
+      "publicKeys": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 0,
+        "description": "The list of SSH public keys used to authenticate with linux based VMs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SshPublicKey",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys"
+      },
+      "keyData": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/198"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxPatchSettings",
+    "properties": {
+      "patchMode": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 0,
+        "description": "Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **ImageDefault** - The virtual machine's default patching configuration is used. <br /><br /> **AutomaticByPlatform** - The virtual machine will be automatically updated by the platform. The property provisionVMAgent must be true"
+      },
+      "assessmentMode": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 0,
+        "description": "Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine. <br /><br /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true."
+      },
+      "automaticByPlatformSettings": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Linux."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ImageDefault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomaticByPlatform"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ImageDefault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomaticByPlatform"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxVMGuestPatchAutomaticByPlatformSettings",
+    "properties": {
+      "rebootSetting": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "Specifies the reboot setting for all AutomaticByPlatform patch installation operations."
+      },
+      "bypassPlatformSafetyChecksOnUserSchedule": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Enables customer to schedule patching without accidental upgrades"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IfRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VaultSecretGroup",
+    "properties": {
+      "sourceVault": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The relative URL of the Key Vault containing all of the certificates in VaultCertificates."
+      },
+      "vaultCertificates": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "The list of key vault references in SourceVault which contain certificates."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VaultCertificate",
+    "properties": {
+      "certificateUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>  'data':'<Base64-encoded-certificate>',<br>  'dataType':'pfx',<br>  'password':'<pfx-file-password>'<br>} <br> To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault virtual machine extension for Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows)."
+      },
+      "certificateStore": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "For Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name <UppercaseThumbprint>.crt for the X509 certificate file and <UppercaseThumbprint>.prv for private key. Both of these files are .pem formatted."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/214"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/213"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkProfile",
+    "properties": {
+      "networkInterfaces": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 0,
+        "description": "Specifies the list of resource Ids for the network interfaces associated with the virtual machine."
+      },
+      "networkApiVersion": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 0,
+        "description": "specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations"
+      },
+      "networkInterfaceConfigurations": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 0,
+        "description": "Specifies the networking configurations that will be used to create the virtual machine networking resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkInterfaceReference",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "Describes a network interface reference properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the sub-resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkInterfaceReferenceProperties",
+    "properties": {
+      "primary": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies the primary network interface in case the virtual machine has more than 1 network interface."
+      },
+      "deleteOption": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "Specify what happens to the network interface when the VM is deleted"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/218"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-11-01"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-11-01"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The network interface configuration name."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 0,
+        "description": "Describes a virtual machine network profile's IP configuration."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 0,
+        "description": "Resource tags applied to the networkInterface address created by this NetworkInterfaceConfiguration"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceConfigurationProperties",
+    "properties": {
+      "primary": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies the primary network interface in case the virtual machine has more than 1 network interface."
+      },
+      "deleteOption": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 0,
+        "description": "Specify what happens to the network interface when the VM is deleted"
+      },
+      "enableAcceleratedNetworking": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the network interface is accelerated networking-enabled."
+      },
+      "disableTcpStateTracking": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the network interface is disabled for tcp state tracking."
+      },
+      "enableFpga": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the network interface is FPGA networking-enabled."
+      },
+      "enableIPForwarding": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Whether IP forwarding enabled on this NIC."
+      },
+      "networkSecurityGroup": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The network security group."
+      },
+      "dnsSettings": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 0,
+        "description": "The dns settings to be applied on the network interfaces."
+      },
+      "ipConfigurations": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 1,
+        "description": "Specifies the IP configurations of the network interface."
+      },
+      "dscpConfiguration": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The DSCP configuration for the network interface."
+      },
+      "auxiliaryMode": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 0,
+        "description": "Specifies whether the Auxiliary mode is enabled for the Network Interface resource."
+      },
+      "auxiliarySku": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 0,
+        "description": "Specifies whether the Auxiliary sku is enabled for the Network Interface resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceDnsSettingsConfiguration",
+    "properties": {
+      "dnsServers": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 0,
+        "description": "List of DNS servers IP addresses"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceIPConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The IP configuration name."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 0,
+        "description": "Describes a virtual machine network interface IP configuration properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceIPConfigurationProperties",
+    "properties": {
+      "subnet": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Specifies the identifier of the subnet."
+      },
+      "primary": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies the primary network interface in case the virtual machine has more than 1 network interface."
+      },
+      "publicIPAddressConfiguration": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 0,
+        "description": "The publicIPAddressConfiguration."
+      },
+      "privateIPAddressVersion": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 0,
+        "description": "Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'."
+      },
+      "applicationSecurityGroups": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to application security group."
+      },
+      "applicationGatewayBackendAddressPools": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to backend address pools of application gateways. A virtual machine can reference backend address pools of multiple application gateways. Multiple virtual machines cannot use the same application gateway."
+      },
+      "loadBalancerBackendAddressPools": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to backend address pools of load balancers. A virtual machine can reference backend address pools of one public and one internal load balancer. [Multiple virtual machines cannot use the same basic sku load balancer]."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachinePublicIPAddressConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The publicIP address configuration name."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "Describes a virtual machines IP Configuration's PublicIPAddress configuration"
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "Resource tags applied to the publicIP address created by this PublicIPAddressConfiguration"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachinePublicIPAddressConfigurationProperties",
+    "properties": {
+      "idleTimeoutInMinutes": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The idle timeout of the public IP address."
+      },
+      "deleteOption": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "Specify what happens to the public IP address when the VM is deleted"
+      },
+      "dnsSettings": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "The dns settings to be applied on the publicIP addresses ."
+      },
+      "ipTags": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "The list of IP tags associated with the public IP address."
+      },
+      "publicIPPrefix": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The PublicIPPrefix from which to allocate publicIP addresses."
+      },
+      "publicIPAddressVersion": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'."
+      },
+      "publicIPAllocationMethod": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "Specify the public IP allocation type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detach"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachinePublicIPAddressDnsSettingsConfiguration",
+    "properties": {
+      "domainNameLabel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label is the concatenation of the domain name label and vm network profile unique ID."
+      },
+      "domainNameLabelScope": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is the concatenation of the hashed domain name label with policy according to the domain name label scope and vm network profile unique ID."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TenantReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubscriptionReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceGroupReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoReuse"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineIpTag",
+    "properties": {
+      "ipTagType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "IP tag type. Example: FirstPartyUsage."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "IP tag associated with the public IP. Example: SQL, Storage etc."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/247"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dynamic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Static"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicIPAddressSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/258"
+        },
+        "flags": 0,
+        "description": "Specify public IP sku name"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 0,
+        "description": "Specify public IP sku tier"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regional"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Global"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachinePublicIPAddressConfigurationTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/234"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AcceleratedConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Floating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "A1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "A2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "A4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "A8"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineNetworkInterfaceConfigurationTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/227"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityProfile",
+    "properties": {
+      "uefiSettings": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 0,
+        "description": "Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum compute api-version: 2020-12-01."
+      },
+      "encryptionAtHost": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be disabled unless this property is set to true for the resource."
+      },
+      "securityType": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set."
+      },
+      "encryptionIdentity": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 0,
+        "description": "Specifies the Managed Identity used by ADE to get access token for keyvault operations."
+      },
+      "proxyAgentSettings": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 0,
+        "description": "Specifies ProxyAgent settings while creating the virtual machine. Minimum compute api-version: 2023-09-01."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UefiSettings",
+    "properties": {
+      "secureBootEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether secure boot should be enabled on the virtual machine. Minimum compute api-version: 2020-12-01."
+      },
+      "vTpmEnabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether vTPM should be enabled on the virtual machine. Minimum compute api-version: 2020-12-01."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrustedLaunch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConfidentialVM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionIdentity",
+    "properties": {
+      "userAssignedIdentityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies ARM Resource ID of one of the user identities associated with the VM."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProxyAgentSettings",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether ProxyAgent feature should be enabled on the virtual machine or virtual machine scale set."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 0,
+        "description": "Specifies the mode that ProxyAgent will execute on. Warning: this property has been deprecated, please specify 'mode' under particular hostendpoint setting."
+      },
+      "keyIncarnationId": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Increase the value of this property allows users to reset the key used for securing communication channel between guest and host."
+      },
+      "wireServer": {
+        "type": {
+          "$ref": "#/292"
+        },
+        "flags": 0,
+        "description": "Specifies the Wire Server endpoint settings while creating the virtual machine or virtual machine scale set. Minimum api-version: 2024-03-01."
+      },
+      "imds": {
+        "type": {
+          "$ref": "#/292"
+        },
+        "flags": 0,
+        "description": "Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine scale set. Minimum api-version: 2024-03-01."
+      },
+      "addProxyAgentExtension": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specify whether to implicitly install the ProxyAgent Extension. This option is currently applicable only for Linux Os."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Audit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enforce"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HostEndpointSettings",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 0,
+        "description": "Specifies the execution mode. In Audit mode, the system acts as if it is enforcing the access control policy, including emitting access denial entries in the logs but it does not actually deny any requests to host endpoints. In Enforce mode, the system will enforce the access control and it is the recommended mode of operation."
+      },
+      "inVMAccessControlProfileReferenceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the InVMAccessControlProfileVersion resource id in the format of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles/{profile}/versions/{version}"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Audit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enforce"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiagnosticsProfile",
+    "properties": {
+      "bootDiagnostics": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 0,
+        "description": "Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the storage account is in the same region and subscription as the VM. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from the hypervisor."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BootDiagnostics",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Whether boot diagnostics should be enabled on the Virtual Machine."
+      },
+      "storageUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Uri of the storage account to use for placing the console output and screenshot. If storageUri is not specified while enabling boot diagnostics, managed storage will be used."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduledEventsProfile",
+    "properties": {
+      "terminateNotificationProfile": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Specifies Terminate Scheduled Event related configurations."
+      },
+      "osImageNotificationProfile": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "Specifies OS Image Scheduled Event related configurations."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TerminateNotificationProfile",
+    "properties": {
+      "notBeforeTimeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The configuration must be specified in ISO 8601 format, the default value is 5 minutes (PT5M)"
+      },
+      "enable": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the Terminate Scheduled event is enabled or disabled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OSImageNotificationProfile",
+    "properties": {
+      "notBeforeTimeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The configuration is specified in ISO 8601 format, and the value must be 15 minutes (PT15M)"
+      },
+      "enable": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Specifies whether the OS Image Scheduled event is enabled or disabled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapacityReservationProfile",
+    "properties": {
+      "capacityReservationGroup": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Specifies the capacity reservation group resource id that should be used for allocating the virtual machine provided enough capacity has been reserved. Please refer to https://aka.ms/CapacityReservation for more details."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationProfile",
+    "properties": {
+      "galleryApplications": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Specifies the gallery applications that should be made available to the VM"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMGalleryApplication",
+    "properties": {
+      "tags": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies a passthrough value for more generic context."
+      },
+      "order": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies the order in which the packages have to be installed"
+      },
+      "packageReferenceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Specifies the GalleryApplicationVersion resource id on the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}"
+      },
+      "configurationReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided"
+      },
+      "treatFailureAsDeploymentFailure": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Optional, If true, any failure for any operation in the VmApplication will fail the deployment"
+      },
+      "enableAutomaticUpgrade": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated for the VM/VMSS"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/304"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineExtension",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the virtual machine extension."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 1,
+        "description": "Properties of the virtual machine extension."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineExtensionProperties",
+    "properties": {
+      "forceUpdateTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "How the extension handler should be forced to update even if the extension configuration has not changed."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the extension handler publisher."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the type of the extension; an example is 'CustomScriptExtension'."
+      },
+      "typeHandlerVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the version of the script handler."
+      },
+      "autoUpgradeMinorVersion": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
+      },
+      "enableAutomaticUpgrade": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available."
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 0,
+        "description": "JSON formatted public settings for the extension."
+      },
+      "protectedSettings": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 0,
+        "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
+      },
+      "suppressFailures": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false."
+      },
+      "protectedSettingsFromKeyVault": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The extensions protected settings that are passed by reference, and consumed from key vault"
+      },
+      "provisionAfterExtensions": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 0,
+        "description": "Collection of extension names after which this extension needs to be provisioned."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineExtensionPropertiesSettings",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/308"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineExtensionPropertiesProtectedSettings",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/308"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/306"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ZoneAllocationPolicy",
+    "properties": {
+      "distributionStrategy": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 1,
+        "description": "Distribution strategy used for zone allocation policy."
+      },
+      "zonePreferences": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 0,
+        "description": "Zone preferences, required when zone distribution strategy is Prioritized."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BestEffortSingleZone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prioritized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BestEffortBalanced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StrictBalanced"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ZonePreference",
+    "properties": {
+      "zone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the zone."
+      },
+      "rank": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The rank of the zone. This is used with 'Prioritized' ZoneDistributionStrategy.\n    The lower the number, the higher the priority, starting with 0.\n    0 is the highest rank. If not specified, defaults to lowest rank."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/319"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RetryPolicy",
+    "properties": {
+      "retryCount": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Retry count for user request"
+      },
+      "retryWindowInMinutes": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Retry window in minutes for user request"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LocationBasedLaunchBulkInstancesOperationTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/330"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/331"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Plan",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A user defined name of the 3rd Party Artifact that is being procured."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic"
+      },
+      "product": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding."
+      },
+      "promotionCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A publisher provided promotion code as provisioned in Data Market for the said product/artifact."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the desired product/artifact."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ComputeBulkActions/locations/launchBulkInstancesOperations@2026-02-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CancelOperationsRequest",
+    "properties": {
+      "operationIds": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 1,
+        "description": "The list of operation ids to cancel operations on"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CancelOperationsResponse",
+    "properties": {
+      "results": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 1,
+        "description": "An array of resource operations that were successfully cancelled"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceOperation",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Unique identifier for the resource involved in the operation, eg Azure Resource Manager ID"
+      },
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource level error code if it exists"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource level error details if they exist"
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 0,
+        "description": "Details of the operation performed on a resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceOperationDetails",
+    "properties": {
+      "operationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Operation identifier for the unique operation"
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Unique identifier for the resource involved in the operation, eg Azure Resource Manager ID"
+      },
+      "opType": {
+        "type": {
+          "$ref": "#/357"
+        },
+        "flags": 0,
+        "description": "Type of operation performed on the resources"
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Subscription id attached to the request"
+      },
+      "deadline": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Deadline for the operation"
+      },
+      "deadlineType": {
+        "type": {
+          "$ref": "#/361"
+        },
+        "flags": 0,
+        "description": "Type of deadline of the operation"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/371"
+        },
+        "flags": 2,
+        "description": "Current state of the operation"
+      },
+      "timezone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timezone for the operation"
+      },
+      "resourceOperationError": {
+        "type": {
+          "$ref": "#/372"
+        },
+        "flags": 0,
+        "description": "Operation level errors if they exist"
+      },
+      "completedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time the operation was complete if errors are null"
+      },
+      "retryPolicy": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "Retry policy the user can pass"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Start"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Create"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InitiateAt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompleteBy"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingScheduling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingExecution"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Executing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/365"
+      },
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceOperationError",
+    "properties": {
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Code for the error eg 404, 500"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Detailed message about the error"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesCancelOperations",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/348"
+    },
+    "input": {
+      "$ref": "#/346"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecuteCreateRequest",
+    "properties": {
+      "resourceConfigParameters": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 1,
+        "description": "resource creation payload"
+      },
+      "executionParameters": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "The execution parameters for the request"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProvisionPayload",
+    "properties": {
+      "baseProfile": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 0,
+        "description": "JSON object that contains VM properties that are common across all VMs in this batch (if you want to create 100 VMs in this request, and they all have same vmSize, then include vmSize in baseProfile)"
+      },
+      "resourceOverrides": {
+        "type": {
+          "$ref": "#/379"
+        },
+        "flags": 0,
+        "description": "JSON array, that contains VM properties that should to be overridden for each VM in the batch (if you want to create 100 VMs, they all need a distinct computerName property, you pass computerNames for each VM in batch in this array), service will merge baseProfile with VM specific overrides and create a merged VMProfile."
+      },
+      "resourceCount": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "Number of VMs to be created"
+      },
+      "resourcePrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "if resourceOverrides doesn't contain \"name\", service will create name based of prefix and ResourceCount e.g. resourceprefix-0,resourceprefix-1.."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProvisionPayloadBaseProfile",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/308"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProvisionPayloadResourceOverridesItem",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/308"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecutionParameters",
+    "properties": {
+      "optimizationPreference": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 0,
+        "description": "Details that could optimize the user's request"
+      },
+      "retryPolicy": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "Retry policy the user can pass"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Availability"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CostAvailabilityBalanced"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/383"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateResourceOperationResponse",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The description of the operation response"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The type of resources used in the request eg virtual machines"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the request eg westus"
+      },
+      "results": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 0,
+        "description": "The results from the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesExecuteCreate",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/385"
+    },
+    "input": {
+      "$ref": "#/375"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecuteDeallocateRequest",
+    "properties": {
+      "executionParameters": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "The execution parameters for the request"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 0,
+        "description": "The resources for the request"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Resources",
+    "properties": {
+      "ids": {
+        "type": {
+          "$ref": "#/390"
+        },
+        "flags": 1,
+        "description": "The resource ids used for the request"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeallocateResourceOperationResponse",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The description of the operation response"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The type of resources used in the request eg virtual machines"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the request eg westus"
+      },
+      "results": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 0,
+        "description": "The results from the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesExecuteDeallocate",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/391"
+    },
+    "input": {
+      "$ref": "#/388"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecuteDeleteRequest",
+    "properties": {
+      "executionParameters": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "The execution parameters for the request"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 0,
+        "description": "The resources for the request"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      },
+      "forceDeletion": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Forced delete resource item"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeleteResourceOperationResponse",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The description of the operation response"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The type of resources used in the request eg virtual machines"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the request eg westus"
+      },
+      "results": {
+        "type": {
+          "$ref": "#/396"
+        },
+        "flags": 0,
+        "description": "The results from the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesExecuteDelete",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/395"
+    },
+    "input": {
+      "$ref": "#/394"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecuteHibernateRequest",
+    "properties": {
+      "executionParameters": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "The execution parameters for the request"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 0,
+        "description": "The resources for the request"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HibernateResourceOperationResponse",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The description of the operation response"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The type of resources used in the request eg virtual machines"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the request eg westus"
+      },
+      "results": {
+        "type": {
+          "$ref": "#/400"
+        },
+        "flags": 0,
+        "description": "The results from the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesExecuteHibernate",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/399"
+    },
+    "input": {
+      "$ref": "#/398"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecuteStartRequest",
+    "properties": {
+      "executionParameters": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "The execution parameters for the request"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 0,
+        "description": "The resources for the request"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StartResourceOperationResponse",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The description of the operation response"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The type of resources used in the request eg virtual machines"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the request eg westus"
+      },
+      "results": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 0,
+        "description": "The results from the request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesExecuteStart",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/403"
+    },
+    "input": {
+      "$ref": "#/402"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GetOperationStatusRequest",
+    "properties": {
+      "operationIds": {
+        "type": {
+          "$ref": "#/407"
+        },
+        "flags": 1,
+        "description": "The list of operation ids to get the status of"
+      },
+      "correlationid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CorrelationId item"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GetOperationStatusResponse",
+    "properties": {
+      "results": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 1,
+        "description": "An array of resource operations based on their operation ids"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/349"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "virtualMachinesGetOperationStatus",
+    "resourceType": "Microsoft.ComputeBulkActions/locations",
+    "apiVersion": "2026-02-01-preview",
+    "output": {
+      "$ref": "#/408"
+    },
+    "input": {
+      "$ref": "#/406"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.ComputeBulkActions/locations/launchBulkInstancesOperations",
+    "apiVersion": "2026-02-01-preview"
+  }
+]

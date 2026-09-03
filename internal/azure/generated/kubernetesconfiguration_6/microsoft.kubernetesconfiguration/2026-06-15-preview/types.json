@@ -1,0 +1,682 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/1"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KubernetesConfiguration/upgradeAssessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-15-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.KubernetesConfiguration/upgradeAssessments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Properties of the UpgradeAssessments resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpgradeAssessmentProperties",
+    "properties": {
+      "currentKubernetesVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Current Kubernetes version running on the cluster (e.g., '1.29')."
+      },
+      "targetKubernetesVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Target Kubernetes version to evaluate for upgrade (e.g., '1.30')."
+      },
+      "assessmentTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "UTC timestamp when the in-cluster agent last computed this assessment."
+      },
+      "overallSeverity": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Rolled-up severity across all checks; highest severity wins."
+      },
+      "componentCompatibility": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Per-component compatibility results with the target Kubernetes version."
+      },
+      "deprecatedApis": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "Deprecated Kubernetes APIs still in use in the cluster."
+      },
+      "readinessChecks": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Cluster readiness check results."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComponentCompatibility",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Component name (e.g., 'containerd', 'calico')."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Installed component version."
+      },
+      "compatibilityStatus": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "Compatibility of the component with the target Kubernetes version."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 1,
+        "description": "Severity associated with this compatibility result."
+      },
+      "minCompatibleVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Minimum component version known to be compatible with targetKubernetesVersion."
+      },
+      "notes": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Additional notes about compatibility."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compatible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Untested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incompatible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeprecatedApiUsage",
+    "properties": {
+      "group": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "API group (e.g., 'flowcontrol.apiserver.k8s.io')."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "API version (e.g., 'v1beta3')."
+      },
+      "resource": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource plural name (e.g., 'flowschemas')."
+      },
+      "removedRelease": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kubernetes release in which this API is removed (e.g., '1.32')."
+      },
+      "usageMetrics": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "HTTP verb call counts observed for this deprecated API."
+      },
+      "lastUsageObservedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "UTC timestamp of the last observed usage."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Severity of continued use of this deprecated API."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpVerbUsageMetrics",
+    "properties": {
+      "get": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of GET requests observed."
+      },
+      "list": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of LIST requests observed."
+      },
+      "post": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of POST (create) requests observed."
+      },
+      "put": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of PUT (replace) requests observed."
+      },
+      "patch": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of PATCH requests observed."
+      },
+      "delete": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of DELETE requests observed."
+      },
+      "watch": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Number of WATCH requests observed."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReadinessCheck",
+    "properties": {
+      "category": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "Category of the readiness check."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Subject of the check (node name, workload namespace/name, etc.).\nOptional for cluster-wide checks."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Severity of the check result."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human-readable reason when severity is not 'None'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeStatus"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "APIServerHealth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PodDisruptionBudget"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/33"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.KubernetesConfiguration/upgradeAssessments@2026-06-15-preview",
+    "body": {
+      "$ref": "#/5"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  }
+]

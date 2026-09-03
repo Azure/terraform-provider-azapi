@@ -1,0 +1,1575 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/aiManagers"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-05-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/aiManagers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AIManagerProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "deletePolicy": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Delete options of the AI Manager. Defaults to `Delete` if not specified."
+      },
+      "managedResourceGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the managed resource group created by the AI Manager to hold underlying infrastructure resources."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Keep"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/23"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/aiManagers@2026-05-02-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/aiManagers/modelSources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-05-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/aiManagers/modelSources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelSourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "Model source type. Constrains the legal authentication kinds. Immutable after creation."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional, free-form description of the source."
+      },
+      "credential": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 4,
+        "description": "Credential the platform uses to authenticate to the source. Optional for public sources (e.g. ungated Hugging Face models)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HuggingFace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialValue",
+    "properties": {
+      "inline": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "An inline credential containing a secret value supplied in the request payload."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InlineCredential",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 5,
+        "description": "The access token, password, or other secret value."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/aiManagers/modelSources@2026-05-02-preview",
+    "body": {
+      "$ref": "#/40"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/aiManagers/namespaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-05-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/aiManagers/namespaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AIManagerNamespaceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Labels applied to the Kubernetes namespace."
+      },
+      "annotations": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Annotations applied to the Kubernetes namespace."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AIManagerNamespacePropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AIManagerNamespacePropertiesAnnotations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/aiManagers/namespaces@2026-05-02-preview",
+    "body": {
+      "$ref": "#/54"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/aiManagers/namespaces/modelDeployments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-05-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/aiManagers/namespaces/modelDeployments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelDeploymentProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "The status of the last reconciliation."
+      },
+      "modelResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Full ARM resource id of the model to deploy. Phase 1 accepts an `AIModel` resource id only. Immutable after creation."
+      },
+      "modelSourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Full ARM resource id of a `ModelSource` to use when pulling artifacts for this deployment. Immutable after creation."
+      },
+      "performanceMode": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Runtime performance mode."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure VM SKU used to host the deployment, e.g. \"Standard_NC96ads_A100_v4\". Immutable after creation."
+      },
+      "scale": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Scaling configuration for the deployment. Provide either `manual` (fixed replica count) or `autoscale` (autoscaling between min/max replicas), but not both."
+      },
+      "overrides": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "User overrides layered on top of profile resolution."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 2,
+        "description": "Runtime status, populated once reconciliation begins."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Balanced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Latency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Throughput"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingProfile",
+    "properties": {
+      "manual": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Manual scaling configuration with a fixed replica count. Mutually exclusive with `autoscale`."
+      },
+      "autoscale": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Autoscaling configuration. Mutually exclusive with `manual`."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManualScalingProfile",
+    "properties": {
+      "replicas": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "Fixed number of replicas. May be `0` to stop serving traffic while keeping the deployment configuration (see `ScalingProfile`)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoscaleProfile",
+    "properties": {
+      "minReplicas": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "The minimum number of replicas. Must be at least `1`; scale-to-zero is not supported in autoscale mode (see `ScalingProfile`)."
+      },
+      "maxReplicas": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "The maximum number of replicas. If not specified, the service derives a default from the subscription GPU quota."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelDeploymentOverrides",
+    "properties": {
+      "values": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Experimental free-form override key/value pairs. Subject to change without notice; not part of the stable contract. Recognized keys are documented per release and may be added, renamed, or removed at any time."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelDeploymentOverridesValues",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelDeploymentStatus",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The inference endpoint URL exposed by the deployment, once ready."
+      },
+      "engine": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The inference engine used to serve the model, e.g. \"vllm\"."
+      },
+      "engineVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of the inference engine, e.g. \"0.17\"."
+      },
+      "maxModelLen": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "The maximum model context length, in tokens, configured for this deployment."
+      },
+      "quantization": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The quantization level applied to the model weights, e.g. \"fp16\", \"awq-int4\"."
+      },
+      "desiredReplicas": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "The desired replica count reported by the controller. Equals `properties.scale.manual.replicas` when manual scaling is used; current target replica count derived from autoscaler otherwise."
+      },
+      "currentReplicas": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "The current number of ready replicas serving traffic."
+      },
+      "peakTokensPerMinute": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "The peak tokens per minute measured by live stress test."
+      },
+      "estimatedProvisionTimeSeconds": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "Estimated total time, in seconds, for the deployment to become ready end-to-end (GPU vm provisioning, image/weight pull, engine warm-up)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/aiManagers/namespaces/modelDeployments@2026-05-02-preview",
+    "body": {
+      "$ref": "#/68"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 16,
+    "maxLength": 16,
+    "pattern": "^[0-9a-f]{16}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/locations/aiModels"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-05-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/locations/aiModels",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AIModelProperties",
+    "properties": {
+      "modelId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Hugging Face model identifier in `<org>/<repo>` form, e.g. `microsoft/Phi-4-mini-instruct`. Uniquely identifies the upstream model that backs this catalog entry."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "An optional, free-form description of the model."
+      },
+      "spec": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 3,
+        "description": "Specification of the model."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelSpec",
+    "properties": {
+      "license": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The license of the model, when known. SPDX license identifier, e.g. `mit`, `apache-2.0`."
+      },
+      "isRestricted": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 3,
+        "description": "Whether access to the model is restricted and requires credential."
+      },
+      "maxContextLength": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 3,
+        "description": "The maximum context length supported by the model, in tokens."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/locations/aiModels@2026-05-02-preview",
+    "body": {
+      "$ref": "#/94"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResults",
+    "properties": {
+      "kubeconfigs": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 2,
+        "description": "Array of credential results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResult",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the credential."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/100"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCredential",
+    "resourceType": "Microsoft.ContainerService/aiManagers",
+    "apiVersion": "2026-05-02-preview",
+    "output": {
+      "$ref": "#/99"
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CalculateCostResponse",
+    "properties": {
+      "currency": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "ISO 4217 currency code, e.g. \"USD\"."
+      },
+      "plans": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 3,
+        "description": "Ranked list of GPU SKU pricing plans. Feasible plans first, ordered by `totalHourlyPrice` ascending; infeasible plans last."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CalculateCostPlan",
+    "properties": {
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Azure VM SKU, e.g. \"Standard_ND96isr_H100_v5\". Matches the value accepted by `ModelDeploymentProperties.vmSize`."
+      },
+      "quantization": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resolved quantization on this SKU."
+      },
+      "vmsPerReplica": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 3,
+        "description": "Number of VMs required to host one replica on this SKU."
+      },
+      "maxAvailableReplicas": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 3,
+        "description": "Maximum number of replicas the caller's subscription can deploy on this SKU today, computed from the available GPU quota in the target region."
+      },
+      "servingPerformanceEstimation": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 2,
+        "description": "Estimated relative inference performance of a single model replica on this SKU. Omitted when an estimate is unavailable."
+      },
+      "vmHourlyPrice": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 3,
+        "description": "On-demand hourly price for a single VM of this SKU, in `currency`."
+      },
+      "totalHourlyPrice": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "Projected hourly cost for one replica (`vmsPerReplica` VMs), in `currency`."
+      },
+      "priceAsOf": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "UTC timestamp of the price snapshot used for this plan."
+      },
+      "feasible": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 3,
+        "description": "Whether the caller can actually deploy this plan today (region availability, GPU quota, model fit, etc.). This field gates the mutually exclusive properties on this model:\n- When `feasible` is `true`: `totalHourlyPrice` is set and `infeasibilityReason` is omitted.\n- When `feasible` is `false`: `infeasibilityReason` is set and `totalHourlyPrice` is omitted."
+      },
+      "infeasibilityReason": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 2,
+        "description": "Reason explaining why the plan is not deployable. This is a per-plan annotation, not an ARM error envelope."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServingPerformanceEstimation",
+    "properties": {
+      "relativeLatencyScore": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 3,
+        "description": "Relative inference latency score in `[0, 1]`. Higher is better (`1` matches the best-performing SKU's latency for this model). Note: this is a normalized score, not a raw latency ratio -- a larger value indicates lower latency."
+      },
+      "relativeThroughputScore": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 3,
+        "description": "Relative inference throughput score in `[0, 1]`. Higher is better (`1` matches the best-performing SKU's throughput for this model)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InfeasibilityReason",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 3,
+        "description": "Machine-readable reason code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Human-readable message accompanying `code`."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InsufficientQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegionUnavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InefficientDeployment"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/105"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "calculateCost",
+    "resourceType": "Microsoft.ContainerService/locations/aiModels",
+    "apiVersion": "2026-05-02-preview",
+    "output": {
+      "$ref": "#/104"
+    },
+    "input": {
+      "$ref": "#/103"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAccessInfo",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "OpenAI-compatible inference gateway base URL (for example, `https://team-alpha.<cluster>.<region>.aksapp.io/v1`)."
+      },
+      "primaryKey": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 3,
+        "description": "Primary API key. Send as `Authorization: Bearer <key>` or `api-key: <key>`. Treat as secret; do not log or persist in plaintext."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 3,
+        "description": "Secondary API key, accepted by the gateway in the same headers as `primaryKey`. Generated independently when the namespace is created, then overwritten by the previous `primaryKey` on each `rotateKeys` call so clients can roll over without downtime. Treat as secret; do not log or persist in plaintext."
+      },
+      "lastRotatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "UTC time the keys were last rotated by `rotateKeys`. Absent until the first rotation. Clients can use this to detect rotation and refresh cached credentials."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAccessKeys",
+    "resourceType": "Microsoft.ContainerService/aiManagers/namespaces",
+    "apiVersion": "2026-05-02-preview",
+    "output": {
+      "$ref": "#/115"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCredential",
+    "resourceType": "Microsoft.ContainerService/aiManagers/namespaces",
+    "apiVersion": "2026-05-02-preview",
+    "output": {
+      "$ref": "#/99"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rotateKeys",
+    "resourceType": "Microsoft.ContainerService/aiManagers/namespaces",
+    "apiVersion": "2026-05-02-preview",
+    "output": {
+      "$ref": "#/115"
+    }
+  }
+]

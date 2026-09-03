@@ -8,10 +8,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // ResourceGroupResourceIdFunction builds resource IDs for resource group scope
 type ResourceGroupResourceIdFunction struct{}
+
+var _ function.Function = &ResourceGroupResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &ResourceGroupResourceIdFunction{}
 
 func (f *ResourceGroupResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "resource_group_resource_id"
@@ -82,4 +86,24 @@ func (f *ResourceGroupResourceIdFunction) Run(ctx context.Context, request funct
 	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
-var _ function.Function = &ResourceGroupResourceIdFunction{}
+func (f *ResourceGroupResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  subscription_id     = "00000000-0000-0000-0000-000000000000"
+  resource_group_name = "rg1"
+  resource_type       = "Microsoft.Network/virtualNetworks/subnets"
+  resource_names      = ["vnet1", "subnet1"]
+}
+
+// it will output "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"
+output "resource_group_resource_id" {
+  value = provider::azapi::resource_group_resource_id(local.subscription_id, local.resource_group_name, local.resource_type, local.resource_names)
+}
+`,
+			},
+		},
+	}
+}

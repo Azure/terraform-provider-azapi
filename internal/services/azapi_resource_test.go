@@ -32,6 +32,7 @@ var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certifica
 var testCertBase64 = base64.StdEncoding.EncodeToString(testCertRaw)
 
 func TestAccGenericResource_basic(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -62,6 +63,7 @@ func TestAccGenericResource_resourceGroup(t *testing.T) {
 }
 
 func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -85,7 +87,48 @@ func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_unknownDiscriminatorValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	// We use a fake parent ID, but valid structure.
+	fakeParentID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/ws"
+
+	config := fmt.Sprintf(`
+variable "datastore_type" {
+  description = "Datastore backend type."
+  type        = string
+  default     = "AzureBlob"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.MachineLearningServices/workspaces/datastores@2025-10-01-preview"
+  name      = "test-datastore"
+  parent_id = "%s"
+  body = {
+    properties = {
+      datastoreType = var.datastore_type
+      credentials = {
+        credentialsType = "None"
+      }
+    }
+  }
+
+  schema_validation_enabled = true
+}
+`, fakeParentID)
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             config,
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func TestAccGenericResource_requiresImport(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -101,6 +144,7 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 }
 
 func TestAccGenericResource_importWithApiVersion(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -121,34 +165,8 @@ func TestAccGenericResource_importWithApiVersion(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_importWithIdentity(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.basic(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		// All import cases in one step: tests all three scenarios
-		// 1a: ID with API version as query parameter
-		// 1b: ID without API version (parsed from resource path)
-		// 2: ID and Type both provided
-		{
-			Config: r.importWithIdentityAllCases(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That("azapi_resource.import_id_with_api_version").ExistsInAzure(r),
-				check.That("azapi_resource.import_id_without_api_version").ExistsInAzure(r),
-				check.That("azapi_resource.import_id_and_type").ExistsInAzure(r),
-			),
-		},
-	})
-}
-
 func TestAccGenericResource_complete(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -164,6 +182,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 }
 
 func TestAccGenericResource_completeBody(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -182,6 +201,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 }
 
 func TestAccGenericResource_identity(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -218,6 +238,7 @@ func TestAccGenericResource_identity(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultTags(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -258,6 +279,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -275,6 +297,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultLocation(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -316,6 +339,7 @@ func TestAccGenericResource_defaultParentId(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNaming(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -324,7 +348,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 			Config: r.defaultNaming(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("name").HasValue("acctestdefaultNaming"),
+				check.That(data.ResourceName).Key("name").HasValue(fmt.Sprintf("acctestdefault%s", data.RandomString)),
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
@@ -332,7 +356,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 			Config: r.defaultNamingOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("name").HasValue("hclNaming"),
+				check.That(data.ResourceName).Key("name").HasValue(fmt.Sprintf("hclNaming%s", data.RandomString)),
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
@@ -371,6 +395,7 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -386,6 +411,7 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreCasing(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -397,6 +423,31 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_listUniqueIdProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.listUniqueIdProperty(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("audit_event_enabled", "true"),
+			),
+		},
+		{
+			Config:            r.listUniqueIdPropertyUpdate(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("audit_event_enabled", "true"),
+				resource.TestCheckOutput("azure_policy_evaluation_details_enabled", "true"),
+			),
+		},
 	})
 }
 
@@ -431,6 +482,7 @@ func TestAccGenericResource_locks(t *testing.T) {
 }
 
 func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	clientId := os.Getenv("ARM_CLIENT_ID")
 	clientSecret := os.Getenv("ARM_CLIENT_SECRET")
@@ -525,6 +577,7 @@ func TestAccGenericResource_unknownNameWithSensitiveBody(t *testing.T) {
 }
 
 func TestAccGenericResource_timeouts(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -538,6 +591,7 @@ func TestAccGenericResource_timeouts(t *testing.T) {
 }
 
 func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -563,6 +617,7 @@ func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
 }
 
 func TestAccGenericResource_withRetry(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -603,6 +658,7 @@ func TestAccGenericResource_queryParameters(t *testing.T) {
 }
 
 func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "New customers are not allowed to create Azure Spring Apps service instance. For more details, please refer to the retirement announcement https://aka.ms/asaretirement")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -622,6 +678,7 @@ func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultOutput(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -788,6 +845,7 @@ func TestAccGenericResource_moveKeyVaultKey(t *testing.T) {
 }
 
 func TestAccGenericResource_SensitiveBody(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -851,6 +909,7 @@ func TestAccGenericResource_SensitiveBodyVersion(t *testing.T) {
 }
 
 func TestAccGenericResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -868,6 +927,7 @@ func TestAccGenericResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
 }
 
 func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -890,6 +950,7 @@ func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
 }
 
 func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -921,6 +982,7 @@ func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
 }
 
 func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -939,6 +1001,7 @@ func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
 }
 
 func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -1183,69 +1246,6 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, testCertBase64)
-}
-
-func (r GenericResource) importWithIdentityAllCases(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-locals {
-  # Create ID with API version as query parameter for Case 1a
-  test_id_with_api_version = format("%%s?api-version=%%s",
-    azapi_resource.test.id,
-    split("@", azapi_resource.test.type)[1]
-  )
-}
-
-# Case 1a: Identity-based import with only ID (ID contains API version as query parameter)
-# This imports the existing test resource using ID with API version in query parameter
-import {
-  to = azapi_resource.import_id_with_api_version
-  identity = {
-    id = local.test_id_with_api_version
-  }
-}
-
-resource "azapi_resource" "import_id_with_api_version" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body      = azapi_resource.test.body
-}
-
-# Case 1b: Identity-based import with only ID (ID does NOT contain API version)
-# This imports the existing test resource using plain ID
-import {
-  to = azapi_resource.import_id_without_api_version
-  identity = {
-    id = azapi_resource.test.id
-  }
-}
-
-resource "azapi_resource" "import_id_without_api_version" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body      = azapi_resource.test.body
-}
-
-# Case 2: Identity-based import with both ID and Type
-# This imports the existing test resource using both ID and Type
-import {
-  to = azapi_resource.import_id_and_type
-  identity = {
-    id   = azapi_resource.test.id
-    type = azapi_resource.test.type
-  }
-}
-
-resource "azapi_resource" "import_id_and_type" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body      = azapi_resource.test.body
-}
-`, r.basic(data))
 }
 
 func (r GenericResource) complete(data acceptance.TestData) string {
@@ -1614,7 +1614,7 @@ func (r GenericResource) defaultNaming(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 provider "azapi" {
-  default_name = "acctestdefaultNaming"
+  default_name = "acctestdefault%[2]s"
 }
 
 resource "azapi_resource" "test" {
@@ -1629,19 +1629,19 @@ resource "azapi_resource" "test" {
     }
   }
 }
-`, r.template(data))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultNamingOverrideInHcl(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 provider "azapi" {
-  default_name = "acctestdefaultNaming"
+  default_name = "acctestdefault%[2]s"
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "hclNaming"
+  name      = "hclNaming%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
@@ -1652,7 +1652,7 @@ resource "azapi_resource" "test" {
     }
   }
 }
-`, r.template(data))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {
@@ -2276,7 +2276,7 @@ func (r GenericResource) unknownName(data acceptance.TestData) string {
 data "azapi_client_config" "current" {}
 
 resource "random_string" "suffix" {
-  length  = 3
+  length  = 15
   special = false
   upper   = false
 }
@@ -2316,7 +2316,7 @@ func (r GenericResource) unknownNameWithSensitiveBody(data acceptance.TestData) 
 data "azapi_client_config" "current" {}
 
 resource "random_string" "suffix" {
-  length  = 3
+  length  = 15
   special = false
   upper   = false
 }
@@ -4312,4 +4312,146 @@ variable "connections" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_client_config" "current" {
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2025-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestvault%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      enableRbacAuthorization   = true
+      enableSoftDelete          = true
+      publicNetworkAccess       = "Enabled"
+      softDeleteRetentionInDays = 7
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId = data.azapi_client_config.current.tenant_id
+    }
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2025-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestlaw%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku                             = { name = "PerGB2018" }
+      retentionInDays                 = 30
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
+}
+`, r.template(data), data.RandomInteger, data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  # This handles cases where Azure uses either field to identify a log setting
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs                = azapi_resource.test.output.properties.logs
+  audit_event_enabled = try([for l in local.logs : l.enabled if l.category == "AuditEvent"][0], null)
+}
+
+output "audit_event_enabled" {
+  value = tostring(local.audit_event_enabled)
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
+}
+
+func (r GenericResource) listUniqueIdPropertyUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        },
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs                                    = azapi_resource.test.output.properties.logs
+  audit_event_enabled                     = try([for l in local.logs : l.enabled if l.category == "AuditEvent"][0], null)
+  azure_policy_evaluation_details_enabled = try([for l in local.logs : l.enabled if l.category == "AzurePolicyEvaluationDetails"][0], null)
+}
+
+output "audit_event_enabled" {
+  value = tostring(local.audit_event_enabled)
+}
+
+output "azure_policy_evaluation_details_enabled" {
+  value = tostring(local.azure_policy_evaluation_details_enabled)
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }

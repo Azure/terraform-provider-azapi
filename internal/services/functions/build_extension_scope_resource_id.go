@@ -7,10 +7,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // ExtensionResourceIdFunction builds resource IDs for extensions
 type ExtensionResourceIdFunction struct{}
+
+var _ function.Function = &ExtensionResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &ExtensionResourceIdFunction{}
 
 func (f *ExtensionResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "extension_resource_id"
@@ -73,4 +77,23 @@ func (f *ExtensionResourceIdFunction) Run(ctx context.Context, request function.
 	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
-var _ function.Function = &ExtensionResourceIdFunction{}
+func (f *ExtensionResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  resource_id    = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"
+  resource_type  = "Microsoft.Authorization/locks"
+  resource_names = ["mylock"]
+}
+
+// it will output "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/providers/Microsoft.Authorization/locks/mylock"
+output "extension_resource_id" {
+  value = provider::azapi::extension_resource_id(local.resource_id, local.resource_type, local.resource_names)
+}
+`,
+			},
+		},
+	}
+}

@@ -60,7 +60,7 @@ resource "azapi_resource" "connector" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Impact/connectors@api-version`. The available api-versions for this resource are: [`2024-05-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Impact/connectors@api-version`. The available api-versions for this resource are: [`2024-05-01-preview`, `2025-01-01-preview`, `2026-01-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}`
@@ -78,5 +78,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{resourceName}?api-version=2024-05-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{resourceName}?api-version=2026-01-01-preview
  ```

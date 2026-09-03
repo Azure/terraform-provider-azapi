@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -71,10 +72,13 @@ type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
 
-var _ resource.Resource = &DataPlaneResource{}
-var _ resource.ResourceWithConfigure = &DataPlaneResource{}
-var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
-var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
+var (
+	_ resource.Resource                 = &DataPlaneResource{}
+	_ resource.ResourceWithConfigure    = &DataPlaneResource{}
+	_ resource.ResourceWithModifyPlan   = &DataPlaneResource{}
+	_ resource.ResourceWithUpgradeState = &DataPlaneResource{}
+	_ resource.ResourceWithImportState  = &DataPlaneResource{}
+)
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
@@ -107,11 +111,13 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			},
 
 			"name": schema.StringAttribute{
-				Required: true,
+				Optional: true,
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the Azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -130,7 +136,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.DataPlaneType(),
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
@@ -186,12 +192,11 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
 					"```hcl\n" +
 					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
 					"  name = var.name\n" +
@@ -318,6 +323,11 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
+	if err := validateDataPlaneResourceName(config); err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
@@ -410,15 +420,26 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
-	id, err := parse.NewDataPlaneResourceId(plan.Name.ValueString(), plan.ParentID.ValueString(), plan.Type.ValueString())
+	if err := validateDataPlaneResourceName(config); err != nil {
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
+	isNewResource := responseState == nil || responseState.Raw.IsNull()
+	createResultFunc, hasCreateResult := getCreateResultFunc(plan)
+
+	resourceName := strings.TrimSpace(plan.Name.ValueString())
+	if isNewResource && hasCreateResult {
+		resourceName = "__generated__"
+	}
+
+	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
-
-	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
 	var timeout time.Duration
 	var diags diag.Diagnostics
@@ -438,16 +459,15 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	defer cancel()
 
 	client := r.ProviderData.DataPlaneClient
+
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
-
-	if isNewResource {
-		// check if the resource already exists using the non-retry client to avoid issue where user specifies
-		// a FooResourceNotFound error as a retryable error
-
+	if isNewResource && !hasCreateResult {
+		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
+		requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptionsForResourceExistenceCheck(plan.Retry)
 		if customizedResource != nil && (*customizedResource).ReadFunc() != nil {
 			_, err = (*customizedResource).ReadFunc()(ctx, *r.ProviderData, id, requestOptions)
 		} else {
@@ -492,8 +512,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.CreateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(plan.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 
 	if !isNewResource {
 		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
@@ -501,6 +521,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	switch {
+	case isNewResource && hasCreateResult:
+		var createdId parse.DataPlaneResourceId
+		createdId, _, err = createResultFunc(ctx, *r.ProviderData, id, body, requestOptions)
+		if err == nil {
+			id = createdId
+			ctx = tflog.SetField(ctx, "resource_id", id.ID())
+		}
 	case isNewResource && customizedResource != nil && (*customizedResource).CreateFunc() != nil:
 		err = (*customizedResource).CreateFunc()(ctx, *r.ProviderData, id, body, requestOptions)
 	case !isNewResource && customizedResource != nil && (*customizedResource).UpdateFunc() != nil:
@@ -513,15 +540,14 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
+	readAfterCreateOpts, _ := clients.NewRetryOptionsForReadAfterCreate()
+	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
+	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-		RetryOptions: clients.CombineRetryOptions(
-			// Create a new retry option to handle specific case of transient 403/404 after resource creation
-			// If a read after create retry is not specified, use the default.
-			clients.NewRetryOptionsForReadAfterCreate(),
-			clients.NewRetryOptions(plan.Retry),
-		),
+		RetryOptions:    combinedRetryOpts,
+		LastRetryError:  combinedLastRetryErr,
 	}
 
 	var responseBody interface{}
@@ -541,6 +567,9 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	plan.ID = basetypes.NewStringValue(id.ID())
+	plan.Name = basetypes.NewStringValue(id.Name)
+	plan.ParentID = basetypes.NewStringValue(id.ParentId)
+	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, nil)
 	if err != nil {
@@ -561,6 +590,50 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	} else {
 		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
+}
+
+func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateResultFunc, bool) {
+	customizedResource := customization.GetCustomization(config.Type.ValueString())
+	if customizedResource == nil {
+		return nil, false
+	}
+	if v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResult); ok {
+		if fn := v.CreateResultFunc(); fn != nil {
+			return fn, true
+		}
+	}
+
+	return nil, false
+}
+
+func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	if config.Name.IsUnknown() {
+		return nil
+	}
+
+	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
+	resourceType := strings.Split(config.Type.ValueString(), "@")[0]
+	if _, ok := getCreateResultFunc(config); ok {
+		// A resource exposing CreateResultFunc has a service-generated name, so "name" must not be set. See PR #1053.
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, resourceType)
+		}
+		return nil
+	}
+	if !parse.HasNameSegment(config.Type.ValueString()) {
+		if !nameIsEmpty {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
+		}
+		return nil
+	}
+	if nameIsEmpty {
+		return fmt.Errorf(`the argument "name" must be set for resource type %q`, resourceType)
+	}
+	return nil
 }
 
 func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
@@ -589,8 +662,8 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	var responseBody interface{}
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
@@ -654,6 +727,44 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
 }
 
+func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
+	resourceID, resourceType, err := parseDataPlaneImportID(request.ID)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid import ID", err.Error())
+		return
+	}
+
+	id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid import ID", fmt.Errorf("parsing data plane resource ID %q with type %q: %+v", resourceID, resourceType, err).Error())
+		return
+	}
+
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("id"), id.ID())...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("name"), id.Name)...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("parent_id"), id.ParentId)...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("type"), fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))...)
+}
+
+func parseDataPlaneImportID(input string) (string, string, error) {
+	parts := strings.SplitN(input, "|", 2)
+	if len(parts) != 2 {
+		return "", "", fmt.Errorf("data plane import ID must be in format '<resource-id>|<type@api-version>', for example 'host/api/projects/myproject/agents/myagent|Microsoft.Foundry/agents@v1'")
+	}
+
+	resourceID := strings.TrimSpace(parts[0])
+	resourceType := strings.TrimSpace(parts[1])
+	if resourceID == "" || resourceType == "" {
+		return "", "", fmt.Errorf("data plane import ID must include both resource ID and type@api-version")
+	}
+
+	if _, _, err := utils.GetAzureResourceTypeApiVersion(resourceType); err != nil {
+		return "", "", fmt.Errorf("invalid resource type in import ID: %s", err)
+	}
+
+	return resourceID, resourceType, nil
+}
+
 func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
 	var model *DataPlaneResourceModel
 	response.Diagnostics.Append(request.State.Get(ctx, &model)...)
@@ -689,8 +800,8 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.DeleteHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).DeleteFunc() != nil {
 		err = (*customizedResource).DeleteFunc()(ctx, *r.ProviderData, id, requestOptions)

@@ -1,0 +1,8329 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/drills"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/drills",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "DrillProperties",
+    "discriminator": "drillType",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "Status of the last operation."
+      },
+      "serviceGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Parent SG resource."
+      },
+      "recoveryPlanProperties": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "ROPlan properties."
+      },
+      "drillAssetProperties": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Properties for internal resources that are created for the Drill."
+      },
+      "chaosResourceProperties": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Chaos Resource properties."
+      },
+      "executionState": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Execution state of the Drill. Whether it is currently running or not."
+      },
+      "executionReadinessState": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "Readiness state of the Drill."
+      },
+      "rbacSetupMode": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "RBAC setup mode."
+      },
+      "attentionReason": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 2,
+        "description": "Attention reason if the ReadinessState is 'NeedsAttention'."
+      },
+      "systemMetadata": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Internal System Metadata, to be used by internal components only."
+      },
+      "lastRunProperties": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Last run properties."
+      },
+      "lastSyncTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Last sync time."
+      },
+      "lastResyncReadinessCheckTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Last resync and readiness check time."
+      },
+      "monitoringProperties": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Monitoring properties of the Drill."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Error details associated with the resource."
+      }
+    },
+    "elements": {
+      "Regional": {
+        "$ref": "#/119"
+      },
+      "Zonal": {
+        "$ref": "#/121"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryPlanPropertiesOfDrill",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Identity to use for RecoveryPlan operations."
+      },
+      "recoveryPlanId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recovery Orchestration plan associated with this Drill."
+      },
+      "recoveryPlanResourceExcludedCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Excluded resource count in RecoveryPlan."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssociatedIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "Identity type linked with the resource"
+      },
+      "userAssignedIdentity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User assigned identity id linked with the resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetPropertiesOfDrill",
+    "properties": {
+      "subscription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Subscription where Drill's internal resources will be created."
+      },
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Region where Drill's internal resources will be created."
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Resource group where Drill's internal resources will be created. If not specified, defaults to 'AzureResilienceManagementDrills'. This value is immutable after drill creation."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90,
+    "pattern": "^[-\\w\\._\\(\\)]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosResourcePropertiesOfDrill",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Identity to use for Chaos Resource operations."
+      },
+      "chaosResourceIdentityForFaults": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Identity to be used by the Chaos Resource for invoking faults on resources."
+      },
+      "chaosResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Chaos Resource created for this Drill"
+      },
+      "faultDurationInMin": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Duration of faults."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NeedsAttention"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomatedCustomRole"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutomatedBuiltinRoles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AttentionReason",
+    "properties": {
+      "drillRbacOnChaosResource": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Drill object does not have the necessary RBAC to run the chaos resource."
+      },
+      "rbacNeededForDrillOnChaosResource": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Permissions needed by the Drill MSI to run the chaos resource."
+      },
+      "drillRbacOnRecoveryPlan": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Drill object does not have the necessary RBAC to run the Recovery Plan."
+      },
+      "rbacNeededForDrillOnRecoveryPlan": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Permissions needed by the Drill MSI to run the Recovery Plan."
+      },
+      "roReadiness": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "Associated RO ready or not."
+      },
+      "rbacOnTargetResources": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "RBAC required by Chaos Resource MSI not setup on the target resources."
+      },
+      "runbookFaultRbacOnTargets": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "RBAC required by AutomationAccount for runbook MSI not setup on the target resources."
+      },
+      "chaosResource": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Chaos resource for faulting exists or not."
+      },
+      "chaosResourceCreationFailureReasons": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Reason for Chaos Resource Creation failure"
+      },
+      "recoveryPlanAndDrillResourcesState": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Resources associated in Recovery Plan and Drill are out of sync."
+      },
+      "serviceGroupAndDrillResourcesState": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Resources in Service Group and Drill are out of sync."
+      },
+      "drillUserMsi": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "User MSI associated with Drill object is deleted."
+      },
+      "chaosResourceUserMsi": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "User MSI associated with chaos resource object is deleted."
+      },
+      "includedResourceInDrill": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Included resource in Drill."
+      },
+      "drillRbacOnMonitoringResources": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "Drill MSI does not have the necessary RBAC to read the Drill Monitoring resources."
+      },
+      "drillMonitoringErrors": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Errors related to Drill Monitoring resources."
+      },
+      "drillMonitoringResources": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "Monitoring Resources created for Drill"
+      },
+      "monitoringRbacOnDrillResources": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Monitoring RBAC required by Drill MSI not setup on the target resources."
+      },
+      "rbacNeededForDrillOnDrillMonitoringResources": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Permissions needed by the Drill MSI to Upload service group health data for monitoring."
+      },
+      "rbacNeededForDrillOnDrillResources": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "Permissions needed by the Drill MSI to read health metrics data for resources in service group."
+      },
+      "missingRequiredResourceProviders": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "List of required required Azure resource providers that are not registered in the subscription specified for chaos resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnderEdit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InSync"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OutOfSync"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InSync"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OutOfSync"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetails",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Error message."
+      },
+      "recommendations": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "A list of recommendations to resolve the error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/78"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemMetadata",
+    "properties": {
+      "initialConfig": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 1,
+        "description": "Indicates if the Initial system configuration of the Drill is complete or not."
+      },
+      "resourceTypeCategories": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 2,
+        "description": "An indication whether a intrested resource type is present in drill resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecoveryVMsPresent"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/95"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LastRunProperties",
+    "properties": {
+      "lastRunTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Timestamp of the last run of this Drill."
+      },
+      "lastRunState": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 2,
+        "description": "Status of the last run of this Drill."
+      },
+      "lastRunDuration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Timespan of the last run of this Drill."
+      },
+      "lastRunAttestation": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 2,
+        "description": "Attestation state of the last run of this Drill."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Success"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MonitoringPropertiesOfDrill",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Identity to use for Drill monitoring operations."
+      },
+      "logAnalyticsWorkspaceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Full ARM Id of the Log analytics workspace created by Resiliency service where health data is collected."
+      },
+      "rawMetricsDataCollectionRuleId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Full ARM Id of the Data collection rule created by Resiliency service which will route data for RAW health data for service group resources."
+      },
+      "serviceGroupMetricsDataCollectionRuleId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Full ARM Id of the Data collection rule created by Resiliency service which will route data for Aggregate health data of service group."
+      },
+      "dataCollectionEndpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Full ARM Id of the Data collection endpoint created by Resiliency service which will route data for service group and its resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/116"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegionalDrillProperties",
+    "properties": {
+      "drillType": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "The discriminator for the Drill object hierarchy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regional"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ZonalDrillProperties",
+    "properties": {
+      "vmsPresent": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 2,
+        "description": "An indication whether a VM is included in this Zonal Drill. If not, RO is not needed."
+      },
+      "drillType": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "The discriminator for the Drill object hierarchy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Present"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Absent"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zonal"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/drills@2026-06-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 16,
+    "writableScopes": 16
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/goalAssignments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/goalAssignments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GoalAssignmentProperties",
+    "properties": {
+      "goalTemplateId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Arm id of the goal template."
+      },
+      "goalAssignmentType": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 1,
+        "description": "The type of goal assignment."
+      },
+      "serviceLevelResources": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "List of service level resources."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Details of any errors encountered during the operation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resiliency"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceLevelResource",
+    "properties": {
+      "serviceLevelIndicatorResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The arm id of the service level indicator resource"
+      },
+      "serviceLevelObjectiveResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The arm id of the service level object resource"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/goalAssignments@2026-06-01-preview",
+    "body": {
+      "$ref": "#/149"
+    },
+    "readableScopes": 16,
+    "writableScopes": 16
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/goalTemplates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/goalTemplates",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GoalTemplateProperties",
+    "properties": {
+      "requireHighAvailability": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Option specified by customer under high availability section of goal template"
+      },
+      "requireDisasterRecovery": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "Option specified by customer under disaster recovery section of goal template"
+      },
+      "regionalRecoveryPointObjective": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Regional recovery point objective specified by customer. eg, PT15M for 15 minutes"
+      },
+      "regionalRecoveryTimeObjective": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Regional recovery time objective specified by customer. eg, PT15M for 15 minutes"
+      },
+      "goalType": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 1,
+        "description": "Type of Goal Template created by customer"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Details of any errors encountered during the operation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resiliency"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/goalTemplates@2026-06-01-preview",
+    "body": {
+      "$ref": "#/166"
+    },
+    "readableScopes": 16,
+    "writableScopes": 16
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{5,24}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/recoveryPlans"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryPlanProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the recovery orchestration plan."
+      },
+      "planType": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 5,
+        "description": "The type of the recovery orchestration plan, which can be set during creation but cannot be changed afterward."
+      },
+      "planState": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 2,
+        "description": "The current state of the recovery orchestration plan."
+      },
+      "planDescription": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 1,
+        "description": "A description of the recovery orchestration plan."
+      },
+      "recoveryGroupsSetting": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 1,
+        "description": "Settings for the recovery orchestration groups associated with the recovery orchestration plan."
+      },
+      "latestFailoverStatus": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 2,
+        "description": "The status of the most recent failover operation executed."
+      },
+      "latestValidationStatus": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 2,
+        "description": "The status of the most recent validation performed."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Error details associated with the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regional"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zonal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnderEdit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 5,
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupsSetting",
+    "properties": {
+      "defaultGroup": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 1,
+        "description": "The default recovery orchestration group setting. Every recovery orchestration plan has a default recovery orchestration group."
+      },
+      "additionalGroups": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 0,
+        "description": "Additional recovery orchestration group settings."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroup",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupProperties",
+    "properties": {
+      "groupUniqueId": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 1,
+        "description": "A unique id for the recovery orchestration group, which is a GUID."
+      },
+      "orderId": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 1,
+        "description": "The order ID of the recovery orchestration group."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 1,
+        "description": "A description of the recovery orchestration group."
+      },
+      "preActions": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "Pre-actions for the recovery orchestration group."
+      },
+      "postActions": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 0,
+        "description": "Post-actions for the recovery orchestration group."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 15
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RecoveryGroupBaseAction",
+    "discriminator": "type",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the recovery orchestration group action."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "A description of the recovery orchestration group action, containing the instructions to be performed during this action."
+      },
+      "timeoutInMinutes": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 1,
+        "description": "The maximum amount of time, in minutes, allowed for the action to complete before it times out."
+      }
+    },
+    "elements": {
+      "CustomRunbook": {
+        "$ref": "#/214"
+      },
+      "ManualAction": {
+        "$ref": "#/217"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 100
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 10000
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupCustomRunbookAction",
+    "properties": {
+      "actionResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ARM Resource ID of the resource that includes the actionable script, such as a Runbook in an Automation Account."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "Key-value parameters for the operation."
+      },
+      "associatedIdentity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The identity associated with actionResourceId for RBAC."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 1,
+        "description": "The type of the recovery orchestration group action."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupCustomRunbookActionParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupManualAction",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 1,
+        "description": "The type of the recovery orchestration group action."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManualAction"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    },
+    "maxLength": 10
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    },
+    "maxLength": 10
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/207"
+    },
+    "maxLength": 14
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryPlanFailoverOperationStatus",
+    "properties": {
+      "lastExecutedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The most recent execution time of the recovery orchestration plan in UTC."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 2,
+        "description": "The status of the most recent execution of the recovery orchestration plan."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Error details for the most recent execution of the recovery orchestration plan."
+      },
+      "recoveryTimeActual": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The actual recovery time of the most recent recovery orchestration plan."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryPlanOperationStatus",
+    "properties": {
+      "lastExecutedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The most recent execution time of the recovery orchestration plan in UTC."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 2,
+        "description": "The status of the most recent execution of the recovery orchestration plan."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Error details for the most recent execution of the recovery orchestration plan."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans@2026-06-01-preview",
+    "body": {
+      "$ref": "#/188"
+    },
+    "readableScopes": 16,
+    "writableScopes": 16
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/usagePlans"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/usagePlans",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/258"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsagePlanProperties",
+    "properties": {
+      "planType": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "The type of the usage plan."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the usage plan."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Details of any errors encountered during Usage Plan create or update."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/usagePlans@2026-06-01-preview",
+    "body": {
+      "$ref": "#/245"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/usagePlans/enrollments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/usagePlans/enrollments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnrollmentProperties",
+    "properties": {
+      "serviceGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARM resource identifier of the service group associated with this usage plan."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the enrollment."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Details of any errors encountered during Enrollment create or update."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/267"
+      },
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/usagePlans/enrollments@2026-06-01-preview",
+    "body": {
+      "$ref": "#/262"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/drills/drillResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DrillResourceProperties",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARM Id of the underlying resource."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Type of the Drill resource."
+      },
+      "activeLocations": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 2,
+        "description": "Active location and zones of the Azure resource."
+      },
+      "recoveryLocations": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 2,
+        "description": "List of recovery locations and zones of the Azure resource."
+      },
+      "activePhysicalZones": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 2,
+        "description": "Active Resource location and physical zones of Azure Resource."
+      },
+      "recoveryPhysicalZones": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 2,
+        "description": "Recovery Resource location and physical zones of HA Azure Resource."
+      },
+      "inclusionState": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 0,
+        "description": "Inclusion State of the Drill resource in Drill"
+      },
+      "recoveryPlanInclusionState": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 2,
+        "description": "Inclusion State of the Drill resource in Recovery Plan"
+      },
+      "recoveryPlanExclusionReason": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 2,
+        "description": "Exclusion reason of the Drill resource in Recovery Plan"
+      },
+      "resourceProtectionSolutionType": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 2,
+        "description": "Protection Solution Type of the Drill resource"
+      },
+      "readinessState": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 2,
+        "description": "Readiness State of the Drill resource"
+      },
+      "faultState": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 2,
+        "description": "Fault State of the Drill resource"
+      },
+      "faultProperties": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 2,
+        "description": "Fault Properties"
+      },
+      "forceInclusionState": {
+        "type": {
+          "$ref": "#/312"
+        },
+        "flags": 2,
+        "description": "ForceInclusion status for this resource. Has the customer forceIncluded it?"
+      },
+      "haStatus": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 2,
+        "description": "HA status of the Drill resource"
+      },
+      "attentionReason": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 2,
+        "description": "Attention reason if the Status is 'NeedsAttention'."
+      },
+      "advisorRecommendationTypeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommendation Type Id for the recommendation."
+      },
+      "advisorHaRecommendationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Associated Advisor Recommendation link, if HA is not enabled on this resource."
+      },
+      "rbacAssignmentError": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 2,
+        "description": "Last RBAC assignment error, if any."
+      },
+      "monitoringRbacAssignmentError": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 2,
+        "description": "Monitoring RBAC assignment error, if any."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ExcludedFromRecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProtectionStatus"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureNative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossZoneVMRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NeedsAttention"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemNative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomScript"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotDefined"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultProperties",
+    "properties": {
+      "availableFaults": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 2,
+        "description": "Available faults for this resource."
+      },
+      "defaultFault": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 2,
+        "description": "Default fault provided by the system."
+      },
+      "overriddenDefaultFault": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 0,
+        "description": "Override fault provided by the user."
+      },
+      "customFault": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 0,
+        "description": "Custom Fault Details selected by user"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultDetails",
+    "properties": {
+      "faultUrn": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 1,
+        "description": "fault urn."
+      },
+      "faultName": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 1,
+        "description": "fault name"
+      },
+      "targetResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARMId of the target resource where fault will be applied. For non-NSG, same as ResourceId. For NSG, its the NSG resource and not the actual resource which is to be simulated for faulting."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/304"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomFaultDetails",
+    "properties": {
+      "faultName": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 1,
+        "description": "fault name"
+      },
+      "scriptResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ID of ARM resource used for automation (e.g. Automation runbook URL)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 100
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEnabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DrillResourceAttentionReason",
+    "properties": {
+      "faultRbacOnTargetResource": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "Chaos Resource MSI does not have the desired RBAC on the resource."
+      },
+      "runbookFaultRbacOnTargets": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "RBAC required by AutomationAccount for runbook MSI not setup on the target resources."
+      },
+      "monitoringRbacOnTargets": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 0,
+        "description": "RBAC required by Drill MSI on the target resource for monitoring."
+      },
+      "resourceState": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 0,
+        "description": "Drill Resource State (wrt SG and RO)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/320"
+      },
+      {
+        "$ref": "#/321"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Set"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/324"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InServiceGroupNotInDrill"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InDrillNotInServiceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InRecoveryPlanNotInDrill"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InDrillNotInRecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceStateIncompatibleWithFault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/331"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillResources@2026-06-01-preview",
+    "body": {
+      "$ref": "#/275"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/drills/drillRuns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillRuns",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/342"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DrillRunProperties",
+    "properties": {
+      "drillId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Parent Drill resource."
+      },
+      "drillMode": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 2,
+        "description": "Drill mode."
+      },
+      "attestation": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 2,
+        "description": "Attestation of this Drill Run."
+      },
+      "notes": {
+        "type": {
+          "$ref": "#/351"
+        },
+        "flags": 2,
+        "description": "Notes for this Drill."
+      },
+      "supportedVerbsForStage": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 2,
+        "description": "Matrix of Actions supported on Operations."
+      },
+      "currentActiveOperationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The currently active operationID on this Drill Run. There can be only one active."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource for which this job was created. This is typically the resource that the job is intended to manage or operate on."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The operation that this job is intended to perform."
+      },
+      "retryDetails": {
+        "type": {
+          "$ref": "#/398"
+        },
+        "flags": 0,
+        "description": "Details of any retries that have been attempted for this job."
+      },
+      "jobExtendedInfo": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 0,
+        "description": "Additional information about the job."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/418"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      },
+      "jobType": {
+        "type": {
+          "$ref": "#/422"
+        },
+        "flags": 3,
+        "description": "The type of job."
+      },
+      "executionConfigurations": {
+        "type": {
+          "$ref": "#/423"
+        },
+        "flags": 2,
+        "description": "Execution configurations for the job."
+      },
+      "triggeredBy": {
+        "type": {
+          "$ref": "#/429"
+        },
+        "flags": 2,
+        "description": "Indicates whether the job was triggered by the system or a user."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failover"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/346"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Success"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/348"
+      },
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SupportedVerbsForStage",
+    "properties": {
+      "drillRunStage": {
+        "type": {
+          "$ref": "#/358"
+        },
+        "flags": 1,
+        "description": "Name of stage."
+      },
+      "supportedVerbs": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 1,
+        "description": "Supported Verbs for stage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FaultInjection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failover"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reprotect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailoverReverse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReprotectReverse"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Start"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Retry"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MarkAsComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancel"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/363"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/352"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobErrorInfo",
+    "properties": {
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A code representing the error."
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A detailed message explaining the error."
+      },
+      "recommendations": {
+        "type": {
+          "$ref": "#/379"
+        },
+        "flags": 2,
+        "description": "A list of recommendations to resolve the error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobRetryDetails",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "retryAttempt": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The retry attempt number of the job."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/397"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/383"
+      },
+      {
+        "$ref": "#/384"
+      },
+      {
+        "$ref": "#/385"
+      },
+      {
+        "$ref": "#/386"
+      },
+      {
+        "$ref": "#/387"
+      },
+      {
+        "$ref": "#/388"
+      },
+      {
+        "$ref": "#/389"
+      },
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/391"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobUserComment",
+    "properties": {
+      "commentType": {
+        "type": {
+          "$ref": "#/396"
+        },
+        "flags": 2,
+        "description": "The type of the user comment."
+      },
+      "commentTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time of user comment."
+      },
+      "comments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "User Comment"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Description"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResumeReason"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/394"
+      },
+      {
+        "$ref": "#/395"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/380"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobExtendedInfo",
+    "properties": {
+      "tasksList": {
+        "type": {
+          "$ref": "#/417"
+        },
+        "flags": 2,
+        "description": "List of tasks associated with this job."
+      },
+      "dynamicErrorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Non localized error message on job execution."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobTaskDetail",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/412"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "taskId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Identifier of the task."
+      },
+      "taskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Friendly name of the task."
+      },
+      "linkedJobIds": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 2,
+        "description": "Identifiers of linked jobs to this task."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/414"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      },
+      "subTasksList": {
+        "type": {
+          "$ref": "#/415"
+        },
+        "flags": 2,
+        "description": "List of sub-tasks associated with this job."
+      },
+      "retryDetails": {
+        "type": {
+          "$ref": "#/416"
+        },
+        "flags": 2,
+        "description": "Retry details of the task."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/401"
+      },
+      {
+        "$ref": "#/402"
+      },
+      {
+        "$ref": "#/403"
+      },
+      {
+        "$ref": "#/404"
+      },
+      {
+        "$ref": "#/405"
+      },
+      {
+        "$ref": "#/406"
+      },
+      {
+        "$ref": "#/407"
+      },
+      {
+        "$ref": "#/408"
+      },
+      {
+        "$ref": "#/409"
+      },
+      {
+        "$ref": "#/410"
+      },
+      {
+        "$ref": "#/411"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/400"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/380"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/400"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DrillRun"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/419"
+      },
+      {
+        "$ref": "#/420"
+      },
+      {
+        "$ref": "#/421"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExecutionConfigurations",
+    "properties": {
+      "userConsent": {
+        "type": {
+          "$ref": "#/426"
+        },
+        "flags": 1,
+        "description": "User consent for performing recovery action."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unspecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allowed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/424"
+      },
+      {
+        "$ref": "#/425"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/427"
+      },
+      {
+        "$ref": "#/428"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillRuns@2026-06-01-preview",
+    "body": {
+      "$ref": "#/344"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/drills/drillRuns/drillRunResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillRuns/drillRunResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/431"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/432"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/434"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DrillRunResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/442"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the Drill Run Resource."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/454"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource for which this job was created. This is typically the resource that the job is intended to manage or operate on."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The operation that this job is intended to perform."
+      },
+      "retryDetails": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 0,
+        "description": "Details of any retries that have been attempted for this job."
+      },
+      "jobExtendedInfo": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 0,
+        "description": "Additional information about the job."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/456"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      },
+      "jobId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id of the Job under which this job-resource exists."
+      },
+      "taskId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id of the job-task to which this job resource is associated."
+      },
+      "taskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Friendly name of the job-task to which this job resource is associated."
+      },
+      "jobResourceType": {
+        "type": {
+          "$ref": "#/460"
+        },
+        "flags": 1,
+        "description": "Discriminator for the JobResource object hierarchy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/436"
+      },
+      {
+        "$ref": "#/437"
+      },
+      {
+        "$ref": "#/438"
+      },
+      {
+        "$ref": "#/439"
+      },
+      {
+        "$ref": "#/440"
+      },
+      {
+        "$ref": "#/441"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/443"
+      },
+      {
+        "$ref": "#/444"
+      },
+      {
+        "$ref": "#/445"
+      },
+      {
+        "$ref": "#/446"
+      },
+      {
+        "$ref": "#/447"
+      },
+      {
+        "$ref": "#/448"
+      },
+      {
+        "$ref": "#/449"
+      },
+      {
+        "$ref": "#/450"
+      },
+      {
+        "$ref": "#/451"
+      },
+      {
+        "$ref": "#/452"
+      },
+      {
+        "$ref": "#/453"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/380"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DrillRun"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/457"
+      },
+      {
+        "$ref": "#/458"
+      },
+      {
+        "$ref": "#/459"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/drills/drillRuns/drillRunResources@2026-06-01-preview",
+    "body": {
+      "$ref": "#/433"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/goalAssignments/goalResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/goalAssignments/goalResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/462"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/465"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GoalResourceProperties",
+    "properties": {
+      "resourceArmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Arm Id of resource under the SG for which the extension resource is maintained."
+      },
+      "highAvailabilityGoalParticipation": {
+        "type": {
+          "$ref": "#/468"
+        },
+        "flags": 1,
+        "description": "Flag which depicts whether the Arm resource is excluded for high availability recommendation."
+      },
+      "highAvailabilityAttestationStatus": {
+        "type": {
+          "$ref": "#/471"
+        },
+        "flags": 1,
+        "description": "Flag which depicts whether the Arm resource is manually attested for high availability recommendation."
+      },
+      "disasterRecoveryGoalParticipation": {
+        "type": {
+          "$ref": "#/474"
+        },
+        "flags": 0,
+        "description": "Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation."
+      },
+      "disasterRecoveryAttestationStatus": {
+        "type": {
+          "$ref": "#/477"
+        },
+        "flags": 0,
+        "description": "Flag which depicts whether the Arm resource is manually attested for disaster recovery recommendation."
+      },
+      "exclusionReasonForHighAvailabilityGoals": {
+        "type": {
+          "$ref": "#/481"
+        },
+        "flags": 2,
+        "description": "Reason for exclusion from high availability goals."
+      },
+      "exclusionReasonForDisasterRecoveryGoals": {
+        "type": {
+          "$ref": "#/485"
+        },
+        "flags": 2,
+        "description": "Reason for exclusion from disaster recovery goals."
+      },
+      "userConfirmationForHighAvailability": {
+        "type": {
+          "$ref": "#/498"
+        },
+        "flags": 0,
+        "description": "List of user confirmations for high availability solutions."
+      },
+      "serviceGroupMemberships": {
+        "type": {
+          "$ref": "#/504"
+        },
+        "flags": 2,
+        "description": "List of service groups of which this resource is memberof."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/512"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/466"
+      },
+      {
+        "$ref": "#/467"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotAttested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManuallyAttested"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/469"
+      },
+      {
+        "$ref": "#/470"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/472"
+      },
+      {
+        "$ref": "#/473"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotAttested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManuallyAttested"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/475"
+      },
+      {
+        "$ref": "#/476"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserSelectedExclusion"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedOverResource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnsupportedResource"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/478"
+      },
+      {
+        "$ref": "#/479"
+      },
+      {
+        "$ref": "#/480"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserSelectedExclusion"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedOverResource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnsupportedResource"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/482"
+      },
+      {
+        "$ref": "#/483"
+      },
+      {
+        "$ref": "#/484"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserConfirmationForHighAvailabilityItem",
+    "properties": {
+      "solutionDisplayName": {
+        "type": {
+          "$ref": "#/489"
+        },
+        "flags": 1,
+        "description": "The solution display name of the high availability solution."
+      },
+      "confirmationStatus": {
+        "type": {
+          "$ref": "#/494"
+        },
+        "flags": 1,
+        "description": "The confirmation status of the high availability solution."
+      },
+      "reasonForRequestingConfirmation": {
+        "type": {
+          "$ref": "#/497"
+        },
+        "flags": 0,
+        "description": "The reason for requesting user confirmation for the high availability solution."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZonePinnedVmWithZrsDisk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmInMultiZoneVmss"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/487"
+      },
+      {
+        "$ref": "#/488"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApprovedByUser"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApprovalPending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApprovalNotNeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RejectedByUser"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/490"
+      },
+      {
+        "$ref": "#/491"
+      },
+      {
+        "$ref": "#/492"
+      },
+      {
+        "$ref": "#/493"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZonePinnedZrsDataDisksConditional"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmInMultiZoneScaleSetStatelessOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/495"
+      },
+      {
+        "$ref": "#/496"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/486"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceGroupMembership",
+    "properties": {
+      "serviceGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Arm Id of the service group."
+      },
+      "membershipType": {
+        "type": {
+          "$ref": "#/503"
+        },
+        "flags": 1,
+        "description": "Membership type of the service group to resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Direct"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThroughSubscription"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThroughResourceGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/500"
+      },
+      {
+        "$ref": "#/501"
+      },
+      {
+        "$ref": "#/502"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/499"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/505"
+      },
+      {
+        "$ref": "#/506"
+      },
+      {
+        "$ref": "#/507"
+      },
+      {
+        "$ref": "#/508"
+      },
+      {
+        "$ref": "#/509"
+      },
+      {
+        "$ref": "#/510"
+      },
+      {
+        "$ref": "#/511"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/goalAssignments/goalResources@2026-06-01-preview",
+    "body": {
+      "$ref": "#/464"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/514"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/515"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/517"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/525"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the recovery job."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/537"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource for which this job was created. This is typically the resource that the job is intended to manage or operate on."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The operation that this job is intended to perform."
+      },
+      "retryDetails": {
+        "type": {
+          "$ref": "#/538"
+        },
+        "flags": 0,
+        "description": "Details of any retries that have been attempted for this job."
+      },
+      "jobExtendedInfo": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 0,
+        "description": "Additional information about the job."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/539"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      },
+      "jobType": {
+        "type": {
+          "$ref": "#/543"
+        },
+        "flags": 3,
+        "description": "The type of job."
+      },
+      "executionConfigurations": {
+        "type": {
+          "$ref": "#/423"
+        },
+        "flags": 2,
+        "description": "Execution configurations for the job."
+      },
+      "triggeredBy": {
+        "type": {
+          "$ref": "#/546"
+        },
+        "flags": 2,
+        "description": "Indicates whether the job was triggered by the system or a user."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/518"
+      },
+      {
+        "$ref": "#/519"
+      },
+      {
+        "$ref": "#/520"
+      },
+      {
+        "$ref": "#/521"
+      },
+      {
+        "$ref": "#/522"
+      },
+      {
+        "$ref": "#/523"
+      },
+      {
+        "$ref": "#/524"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/526"
+      },
+      {
+        "$ref": "#/527"
+      },
+      {
+        "$ref": "#/528"
+      },
+      {
+        "$ref": "#/529"
+      },
+      {
+        "$ref": "#/530"
+      },
+      {
+        "$ref": "#/531"
+      },
+      {
+        "$ref": "#/532"
+      },
+      {
+        "$ref": "#/533"
+      },
+      {
+        "$ref": "#/534"
+      },
+      {
+        "$ref": "#/535"
+      },
+      {
+        "$ref": "#/536"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/380"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DrillRun"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/540"
+      },
+      {
+        "$ref": "#/541"
+      },
+      {
+        "$ref": "#/542"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/544"
+      },
+      {
+        "$ref": "#/545"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs@2026-06-01-preview",
+    "body": {
+      "$ref": "#/516"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/recoveryJobResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/recoveryJobResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/548"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/549"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/551"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryJobResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/559"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the recovery job resource."
+      },
+      "protectionSolutionType": {
+        "type": {
+          "$ref": "#/565"
+        },
+        "flags": 2,
+        "description": "A setting that indicates the protection solution selected."
+      },
+      "recoveryGroupActionSettings": {
+        "type": {
+          "$ref": "#/566"
+        },
+        "flags": 2,
+        "description": "The recovery action settings."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/585"
+        },
+        "flags": 2,
+        "description": "The current status of the job execution."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the job execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The end time of the job execution."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time elapsed during the execution of this job."
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "Details of any errors that occurred during the execution of this job."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource for which this job was created. This is typically the resource that the job is intended to manage or operate on."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The operation that this job is intended to perform."
+      },
+      "retryDetails": {
+        "type": {
+          "$ref": "#/586"
+        },
+        "flags": 0,
+        "description": "Details of any retries that have been attempted for this job."
+      },
+      "jobExtendedInfo": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 0,
+        "description": "Additional information about the job."
+      },
+      "userComments": {
+        "type": {
+          "$ref": "#/587"
+        },
+        "flags": 2,
+        "description": "User Comments."
+      },
+      "jobId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id of the Job under which this job-resource exists."
+      },
+      "taskId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id of the job-task to which this job resource is associated."
+      },
+      "taskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Friendly name of the job-task to which this job resource is associated."
+      },
+      "jobResourceType": {
+        "type": {
+          "$ref": "#/591"
+        },
+        "flags": 1,
+        "description": "Discriminator for the JobResource object hierarchy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/552"
+      },
+      {
+        "$ref": "#/553"
+      },
+      {
+        "$ref": "#/554"
+      },
+      {
+        "$ref": "#/555"
+      },
+      {
+        "$ref": "#/556"
+      },
+      {
+        "$ref": "#/557"
+      },
+      {
+        "$ref": "#/558"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureNative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossZoneVMRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/560"
+      },
+      {
+        "$ref": "#/561"
+      },
+      {
+        "$ref": "#/562"
+      },
+      {
+        "$ref": "#/563"
+      },
+      {
+        "$ref": "#/564"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryGroupActionSettings",
+    "properties": {
+      "actionTask": {
+        "type": {
+          "$ref": "#/570"
+        },
+        "flags": 2,
+        "description": "The action task associated with this job resource."
+      },
+      "actionSequence": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Sequence number for the action."
+      },
+      "recoveryGroupActionType": {
+        "type": {
+          "$ref": "#/573"
+        },
+        "flags": 2,
+        "description": "Type of the recovery group action."
+      },
+      "actionName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Name of the action."
+      },
+      "actionDescription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "User description of the action."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PreActionTask"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PostActionTask"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/567"
+      },
+      {
+        "$ref": "#/568"
+      },
+      {
+        "$ref": "#/569"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManualAction"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/571"
+      },
+      {
+        "$ref": "#/572"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedWithWarnings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
+        "$ref": "#/576"
+      },
+      {
+        "$ref": "#/577"
+      },
+      {
+        "$ref": "#/578"
+      },
+      {
+        "$ref": "#/579"
+      },
+      {
+        "$ref": "#/580"
+      },
+      {
+        "$ref": "#/581"
+      },
+      {
+        "$ref": "#/582"
+      },
+      {
+        "$ref": "#/583"
+      },
+      {
+        "$ref": "#/584"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/380"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RecoveryPlan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DrillRun"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/588"
+      },
+      {
+        "$ref": "#/589"
+      },
+      {
+        "$ref": "#/590"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/recoveryJobResources@2026-06-01-preview",
+    "body": {
+      "$ref": "#/550"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/593"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/594"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/596"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecoveryResourceProperties",
+    "properties": {
+      "recoveryResourceUniqueId": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 1,
+        "description": "A unique id for the recovery resource, which is a GUID."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/604"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "resourceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Original location of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "resourcePhysicalZones": {
+        "type": {
+          "$ref": "#/605"
+        },
+        "flags": 2,
+        "description": "Physical zones of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "inclusionState": {
+        "type": {
+          "$ref": "#/608"
+        },
+        "flags": 0,
+        "description": "A state that indicates the resource status with respect to the recovery orchestration plan."
+      },
+      "needsAttention": {
+        "type": {
+          "$ref": "#/609"
+        },
+        "flags": 2,
+        "description": "Indicating if resource needs user attention and action, details will be found in attentionReasons"
+      },
+      "attentionReasons": {
+        "type": {
+          "$ref": "#/610"
+        },
+        "flags": 2,
+        "description": "Reason for the resource to be in need of attention"
+      },
+      "protectionStatus": {
+        "type": {
+          "$ref": "#/615"
+        },
+        "flags": 2,
+        "description": "A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery."
+      },
+      "resourceProtectionSolutions": {
+        "type": {
+          "$ref": "#/644"
+        },
+        "flags": 2,
+        "description": "A list of ResourceProtectionSolutions with which the recovery orchestration resource is protected."
+      },
+      "selectedProtectionSolutionType": {
+        "type": {
+          "$ref": "#/650"
+        },
+        "flags": 0,
+        "description": "A setting that indicates the protection solution selected."
+      },
+      "selectedProtectionSolutionSetting": {
+        "type": {
+          "$ref": "#/651"
+        },
+        "flags": 0,
+        "description": "Resource protection solution settings of the protection solutions recovery orchestration resource is protected with."
+      },
+      "recoveryGroupId": {
+        "type": {
+          "$ref": "#/664"
+        },
+        "flags": 0,
+        "description": "The recovery orchestration group id associated with the recovery resources."
+      },
+      "associatedIdentity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Identity details associated to the resource, which will be used for performing any operations on it"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Error details associated with the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/597"
+      },
+      {
+        "$ref": "#/598"
+      },
+      {
+        "$ref": "#/599"
+      },
+      {
+        "$ref": "#/600"
+      },
+      {
+        "$ref": "#/601"
+      },
+      {
+        "$ref": "#/602"
+      },
+      {
+        "$ref": "#/603"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Included"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/606"
+      },
+      {
+        "$ref": "#/607"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Protected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotProtected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HighlyAvailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/611"
+      },
+      {
+        "$ref": "#/612"
+      },
+      {
+        "$ref": "#/613"
+      },
+      {
+        "$ref": "#/614"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProtectionSolutionSettings",
+    "properties": {
+      "protectionSolutionType": {
+        "type": {
+          "$ref": "#/622"
+        },
+        "flags": 2,
+        "description": "A setting that indicates the resource protected with which recovery solution."
+      },
+      "protectionStatus": {
+        "type": {
+          "$ref": "#/627"
+        },
+        "flags": 2,
+        "description": "A status that indicates the protection status of a resource with an Azure solution for regional or zonal recovery."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ID of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "activeLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Active location of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "activeLocations": {
+        "type": {
+          "$ref": "#/628"
+        },
+        "flags": 2,
+        "description": "Active locations of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "activePhysicalZones": {
+        "type": {
+          "$ref": "#/629"
+        },
+        "flags": 2,
+        "description": "Active Resource location and physical zones of Azure Resource."
+      },
+      "recoveryLocations": {
+        "type": {
+          "$ref": "#/630"
+        },
+        "flags": 2,
+        "description": "List of recovery locations of the Azure resource associated with the recovery orchestration plan and linked to the recovery resource."
+      },
+      "replicationRole": {
+        "type": {
+          "$ref": "#/634"
+        },
+        "flags": 2,
+        "description": "Specifies the role of the resource in the replication process."
+      },
+      "primaryResource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Primary resource which is getting replicated."
+      },
+      "replicaResources": {
+        "type": {
+          "$ref": "#/635"
+        },
+        "flags": 2,
+        "description": "List of Replica resources to which replication is happening."
+      },
+      "isAutoFailover": {
+        "type": {
+          "$ref": "#/609"
+        },
+        "flags": 3,
+        "description": "Is AutoFailover configured for the resource replication."
+      },
+      "failoverState": {
+        "type": {
+          "$ref": "#/640"
+        },
+        "flags": 2,
+        "description": "Failover state of the recovery orchestration resource."
+      },
+      "testFailoverState": {
+        "type": {
+          "$ref": "#/643"
+        },
+        "flags": 2,
+        "description": "TestFailover state of the recovery orchestration resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureNative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossZoneVMRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/617"
+      },
+      {
+        "$ref": "#/618"
+      },
+      {
+        "$ref": "#/619"
+      },
+      {
+        "$ref": "#/620"
+      },
+      {
+        "$ref": "#/621"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Protected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotProtected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HighlyAvailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/623"
+      },
+      {
+        "$ref": "#/624"
+      },
+      {
+        "$ref": "#/625"
+      },
+      {
+        "$ref": "#/626"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replica"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/631"
+      },
+      {
+        "$ref": "#/632"
+      },
+      {
+        "$ref": "#/633"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedOver"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedOverCommitPending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedOverReprotectPending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/636"
+      },
+      {
+        "$ref": "#/637"
+      },
+      {
+        "$ref": "#/638"
+      },
+      {
+        "$ref": "#/639"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TestFailoverCleanupPending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/641"
+      },
+      {
+        "$ref": "#/642"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/616"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureNative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossZoneVMRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/645"
+      },
+      {
+        "$ref": "#/646"
+      },
+      {
+        "$ref": "#/647"
+      },
+      {
+        "$ref": "#/648"
+      },
+      {
+        "$ref": "#/649"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ResourceBaseProtectionSolutionSetting",
+    "discriminator": "protectionSolutionType",
+    "baseProperties": {},
+    "elements": {
+      "AzureNative": {
+        "$ref": "#/652"
+      },
+      "AzureSiteRecovery": {
+        "$ref": "#/654"
+      },
+      "CustomRunbook": {
+        "$ref": "#/661"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceNativeProtectionSolutionSetting",
+    "properties": {
+      "protectionSolutionType": {
+        "type": {
+          "$ref": "#/653"
+        },
+        "flags": 1,
+        "description": "A setting that indicates the resource protected with which recovery solution."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureNative"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSiteRecoveryProtectionSetting",
+    "properties": {
+      "testFailoverParams": {
+        "type": {
+          "$ref": "#/655"
+        },
+        "flags": 0,
+        "description": "Test failover params for azure site recovery solution."
+      },
+      "testFailoverCleanupParams": {
+        "type": {
+          "$ref": "#/656"
+        },
+        "flags": 0,
+        "description": "Test failover params for azure site recovery solution."
+      },
+      "reprotectParams": {
+        "type": {
+          "$ref": "#/657"
+        },
+        "flags": 0,
+        "description": "Reprotect params for azure site recovery solution."
+      },
+      "protectionSolutionType": {
+        "type": {
+          "$ref": "#/660"
+        },
+        "flags": 1,
+        "description": "A setting that indicates the resource protected with which recovery solution."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSiteRecoveryTestFailoverParams",
+    "properties": {
+      "networkResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure network resource is which will be used for test failover virtual machine."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSiteRecoveryTestFailoverCleanupParams",
+    "properties": {
+      "comments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Comments for testfailover cleanup"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSiteRecoveryReprotectParams",
+    "properties": {
+      "diskReprotectInputDetails": {
+        "type": {
+          "$ref": "#/659"
+        },
+        "flags": 0,
+        "description": "Disk Reprotect Input Details"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskReprotectInputDetails",
+    "properties": {
+      "diskResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Disk Resource Id to Reprotect"
+      },
+      "stagingStorageAccountResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The staging StorageAccount Resource Id."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/658"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSiteRecovery"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceCustomProtectionSetting",
+    "properties": {
+      "failoverAction": {
+        "type": {
+          "$ref": "#/662"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID hosting the failover automation script."
+      },
+      "failoverCommitAction": {
+        "type": {
+          "$ref": "#/662"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID hosting the failover commit automation script."
+      },
+      "testFailoverAction": {
+        "type": {
+          "$ref": "#/662"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID hosting the test failover automation script."
+      },
+      "testFailoverCleanupAction": {
+        "type": {
+          "$ref": "#/662"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID hosting the test failover cleanup automation script."
+      },
+      "reprotectAction": {
+        "type": {
+          "$ref": "#/662"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID hosting the reprotect automation script."
+      },
+      "protectionSolutionType": {
+        "type": {
+          "$ref": "#/663"
+        },
+        "flags": 1,
+        "description": "A setting that indicates the resource protected with which recovery solution."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceCustomProtectionAction",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID hosting the custom action automation script."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomRunbook"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources@2026-06-01-preview",
+    "body": {
+      "$ref": "#/595"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureResilienceManagement/unifiedResilienceItems"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AzureResilienceManagement/unifiedResilienceItems",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/666"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/667"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/669"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UnifiedResilienceItemProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/677"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "goals": {
+        "type": {
+          "$ref": "#/678"
+        },
+        "flags": 1,
+        "description": "Computed and copied data of resilience goals."
+      },
+      "recommendations": {
+        "type": {
+          "$ref": "#/715"
+        },
+        "flags": 1,
+        "description": "Computed and copied data of Azure recommendations."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Last modified time of the unified resilience item."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/670"
+      },
+      {
+        "$ref": "#/671"
+      },
+      {
+        "$ref": "#/672"
+      },
+      {
+        "$ref": "#/673"
+      },
+      {
+        "$ref": "#/674"
+      },
+      {
+        "$ref": "#/675"
+      },
+      {
+        "$ref": "#/676"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GoalsData",
+    "properties": {
+      "templateId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Arm id of the goal template."
+      },
+      "assignmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Arm id of the goal assignment."
+      },
+      "regionalRecoveryPointObjectiveInMinutes": {
+        "type": {
+          "$ref": "#/683"
+        },
+        "flags": 0,
+        "description": "Regional RPO set in resilience goal in minutes."
+      },
+      "regionalRecoveryPointEstimatedInMinutes": {
+        "type": {
+          "$ref": "#/688"
+        },
+        "flags": 0,
+        "description": "Computed recovery point estimated for the service group in minutes."
+      },
+      "regionalRecoveryPointObjectiveStatus": {
+        "type": {
+          "$ref": "#/692"
+        },
+        "flags": 1,
+        "description": "Regional RPO status of the service group."
+      },
+      "regionalRecoveryTimeObjectiveInMinutes": {
+        "type": {
+          "$ref": "#/697"
+        },
+        "flags": 0,
+        "description": "Regional RTO set in resilience goal in minutes."
+      },
+      "regionalRecoveryTimeActualInMinutes": {
+        "type": {
+          "$ref": "#/702"
+        },
+        "flags": 0,
+        "description": "Computed RTA for the service group in minutes."
+      },
+      "regionalRecoveryTimeObjectiveStatus": {
+        "type": {
+          "$ref": "#/706"
+        },
+        "flags": 1,
+        "description": "Regional RTO status of the service group."
+      },
+      "requireHighAvailability": {
+        "type": {
+          "$ref": "#/710"
+        },
+        "flags": 0,
+        "description": "Whether the resource is required for high availability."
+      },
+      "requireDisasterRecovery": {
+        "type": {
+          "$ref": "#/714"
+        },
+        "flags": 0,
+        "description": "Whether the resource is required for disaster recovery."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT15M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT4H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT24H"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/679"
+      },
+      {
+        "$ref": "#/680"
+      },
+      {
+        "$ref": "#/681"
+      },
+      {
+        "$ref": "#/682"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT15M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT4H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT24H"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/684"
+      },
+      {
+        "$ref": "#/685"
+      },
+      {
+        "$ref": "#/686"
+      },
+      {
+        "$ref": "#/687"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/689"
+      },
+      {
+        "$ref": "#/690"
+      },
+      {
+        "$ref": "#/691"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT15M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT4H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT24H"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/693"
+      },
+      {
+        "$ref": "#/694"
+      },
+      {
+        "$ref": "#/695"
+      },
+      {
+        "$ref": "#/696"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT15M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT4H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT24H"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/698"
+      },
+      {
+        "$ref": "#/699"
+      },
+      {
+        "$ref": "#/700"
+      },
+      {
+        "$ref": "#/701"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/703"
+      },
+      {
+        "$ref": "#/704"
+      },
+      {
+        "$ref": "#/705"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSelected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/707"
+      },
+      {
+        "$ref": "#/708"
+      },
+      {
+        "$ref": "#/709"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSelected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/711"
+      },
+      {
+        "$ref": "#/712"
+      },
+      {
+        "$ref": "#/713"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendationsData",
+    "properties": {
+      "highAvailability": {
+        "type": {
+          "$ref": "#/716"
+        },
+        "flags": 1,
+        "description": "The high availability section of resilience recommendation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendationsHighAvailabilityData",
+    "properties": {
+      "enabledResourceCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Count of resources that have high availability enabled."
+      },
+      "notEnabledResourceCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Count of resources that do not have high availability enabled."
+      },
+      "notEvaluatedResourceCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Count of resources that have not been evaluated for high availability."
+      },
+      "evaluationDateTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The date and time when the high availability recommendations were last evaluated."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AzureResilienceManagement/unifiedResilienceItems@2026-06-01-preview",
+    "body": {
+      "$ref": "#/668"
+    },
+    "readableScopes": 16,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendCapacityRequest",
+    "properties": {
+      "resourceIds": {
+        "type": {
+          "$ref": "#/719"
+        },
+        "flags": 1,
+        "description": "Azure resource IDs to evaluate for resiliency. Pass an empty array to automatically discover and evaluate non-resilient resources in the service group. Maximum 50 resources per request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendCapacityResult",
+    "properties": {
+      "resourceCapacities": {
+        "type": {
+          "$ref": "#/732"
+        },
+        "flags": 1,
+        "description": "Individual resiliency assessment for each evaluated resource."
+      },
+      "recommendations": {
+        "type": {
+          "$ref": "#/733"
+        },
+        "flags": 1,
+        "description": "High-level recommendations that apply across multiple resources (e.g., regional migration patterns, common SKU upgrades)."
+      },
+      "agentError": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Error message from the AI advisor, if the advisory enrichment failed. The deterministic assessment results are still available even when this field is set."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendCapacityResourceResult",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Fully qualified ARM resource ID of the evaluated resource."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM resource type (e.g., 'Microsoft.Compute/virtualMachines', 'Microsoft.Storage/storageAccounts')."
+      },
+      "skuName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Current SKU or pricing tier of the resource (e.g., 'Standard_D4s_v3', 'Standard_LRS')."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure region where the resource is deployed (e.g., 'eastus', 'westeurope')."
+      },
+      "capacityAssessment": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable assessment of this resource's resiliency posture. Contains actionable recommendations when available, or null when the AI advisor is unavailable."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Error message if the resource could not be evaluated (e.g., resource not found or access denied). Other fields may be empty when this is set."
+      },
+      "category": {
+        "type": {
+          "$ref": "#/727"
+        },
+        "flags": 0,
+        "description": "Resiliency eligibility classification for this resource. See ResiliencyEligibilityCategory for possible values."
+      },
+      "suggestedRegions": {
+        "type": {
+          "$ref": "#/728"
+        },
+        "flags": 0,
+        "description": "Alternative Azure regions that support resiliency for this resource type. Populated when the current region does not support the required redundancy."
+      },
+      "suggestedSkus": {
+        "type": {
+          "$ref": "#/729"
+        },
+        "flags": 0,
+        "description": "Alternative SKUs that support redundancy for this resource type in the current region. Populated when the current SKU is not eligible for resiliency."
+      },
+      "steps": {
+        "type": {
+          "$ref": "#/730"
+        },
+        "flags": 0,
+        "description": "Ordered list of actions to enable or improve resiliency for this resource."
+      },
+      "links": {
+        "type": {
+          "$ref": "#/731"
+        },
+        "flags": 0,
+        "description": "Links to relevant Azure documentation for configuring resiliency."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZrEligible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SkuCapacityConstrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SkuIneligible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegionUnsupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/722"
+      },
+      {
+        "$ref": "#/723"
+      },
+      {
+        "$ref": "#/724"
+      },
+      {
+        "$ref": "#/725"
+      },
+      {
+        "$ref": "#/726"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/721"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "recommendCapacity",
+    "resourceType": "Microsoft.AzureResilienceManagement/goalAssignments",
+    "apiVersion": "2026-06-01-preview",
+    "output": {
+      "$ref": "#/720"
+    },
+    "input": {
+      "$ref": "#/718"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RefreshGoalResourcesResponse",
+    "properties": {
+      "resourceCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Total count of resources under the goal assignment after refresh."
+      },
+      "lastRefreshTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time when the refresh operation was last performed."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "refreshGoalResources",
+    "resourceType": "Microsoft.AzureResilienceManagement/goalAssignments",
+    "apiVersion": "2026-06-01-preview",
+    "output": {
+      "$ref": "#/735"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateGoalResourceRequest",
+    "properties": {
+      "resources": {
+        "type": {
+          "$ref": "#/739"
+        },
+        "flags": 1,
+        "description": "List of update goal resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GoalResource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/465"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/738"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateGoalResourceResponse",
+    "properties": {
+      "resources": {
+        "type": {
+          "$ref": "#/741"
+        },
+        "flags": 1,
+        "description": "List of update goal resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/738"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "updateGoalResources",
+    "resourceType": "Microsoft.AzureResilienceManagement/goalAssignments",
+    "apiVersion": "2026-06-01-preview",
+    "output": {
+      "$ref": "#/740"
+    },
+    "input": {
+      "$ref": "#/737"
+    }
+  }
+]

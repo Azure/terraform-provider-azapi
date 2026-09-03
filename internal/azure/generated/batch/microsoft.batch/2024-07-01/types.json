@@ -3,7 +3,7 @@
     "$type": "StringType",
     "minLength": 3,
     "maxLength": 24,
-    "pattern": "^[a-z0-9]+$"
+    "pattern": "^[a-zA-Z0-9]+$"
   },
   {
     "$type": "StringLiteralType",
@@ -71,10 +71,17 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "The identity of the Batch account."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -116,7 +123,7 @@
           "$ref": "#/19"
         },
         "flags": 0,
-        "description": "If not specified, the default value is 'enabled'."
+        "description": "The network access type for operating on the resources in the Batch account."
       },
       "networkProfile": {
         "type": {
@@ -162,49 +169,49 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/74"
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with the Batch account"
       },
       "dedicatedCoreQuota": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned."
       },
       "lowPriorityCoreQuota": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned."
       },
       "dedicatedCoreQuotaPerVMFamily": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/77"
         },
         "flags": 2,
         "description": "A list of the dedicated core quota per Virtual Machine family for the Batch account. For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned."
       },
       "dedicatedCoreQuotaPerVMFamilyEnforced": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 2,
         "description": "If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via the dedicatedCoreQuota property on the account and does not consider Virtual Machine family."
       },
       "poolQuota": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "The pool quota for the Batch account."
       },
       "activeJobAndJobScheduleQuota": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "The active job and job schedule quota for the Batch account."
@@ -479,7 +486,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Full path to the secret with or without version. Example https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. or https://mykeyvault.vault.azure.net/keys/testkey. To be usable the following prerequisites must be met:\n\n The Batch Account has a System Assigned identity\n The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions\n The KeyVault has soft-delete and purge protection enabled"
+        "description": "Full path to the secret with or without version. Example https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. or https://mykeyvault.vault.azure.net/keys/testkey. To be usable the following prerequisites must be met:\n\nThe Batch Account has a System Assigned identity\nThe account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions\nThe KeyVault has soft-delete and purge protection enabled"
       }
     }
   },
@@ -573,27 +580,6 @@
         "flags": 0,
         "description": "The properties associated with the private endpoint connection."
       },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ID of the resource."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
-      },
       "etag": {
         "type": {
           "$ref": "#/2"
@@ -607,6 +593,34 @@
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -640,7 +654,7 @@
           "$ref": "#/56"
         },
         "flags": 0,
-        "description": "The private link service connection state of the private endpoint connection"
+        "description": "The private link service connection state of the private endpoint connection."
       }
     }
   },
@@ -772,11 +786,131 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "PrivateEndpointConnectionTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ArrayType",
@@ -800,7 +934,7 @@
       },
       "coreQuota": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "The core quota for the VM family for the Batch account."
@@ -810,7 +944,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/65"
+      "$ref": "#/76"
     }
   },
   {
@@ -836,14 +970,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/83"
         },
         "flags": 1,
         "description": "The type of identity used for the Batch account."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "The list of user identities associated with the Batch account."
@@ -866,13 +1000,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/82"
       }
     ]
   },
@@ -901,17 +1035,137 @@
     "name": "BatchAccountIdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/73"
+      "$ref": "#/84"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.Batch/batchAccounts@2024-07-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/4"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9_-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Batch/batchAccounts/applications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Batch/batchAccounts/applications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "The properties associated with the Application."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ETag of the resource, used for concurrency statements."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The display name for the application."
+      },
+      "allowUpdates": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "A value indicating whether packages within the application may be overwritten using the same version string."
+      },
+      "defaultVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The package to use if a client requests the application but does not specify a version. This property can only be set to the name of an existing package."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Batch/batchAccounts/applications@2024-07-01",
+    "body": {
+      "$ref": "#/90"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
@@ -940,28 +1194,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/94"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/95"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/96"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "The properties associated with the Application Package."
@@ -975,10 +1229,17 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/102"
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -988,7 +1249,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/101"
         },
         "flags": 2,
         "description": "The current state of the application package."
@@ -1035,16 +1296,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/81"
+        "$ref": "#/99"
       },
       {
-        "$ref": "#/82"
+        "$ref": "#/100"
       }
     ]
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "ApplicationPackageTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -1053,124 +1314,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Batch/batchAccounts/applications/versions@2024-07-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/79"
+      "$ref": "#/97"
     },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "minLength": 1,
-    "maxLength": 64,
-    "pattern": "^[a-zA-Z0-9_-]+$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Batch/batchAccounts/applications"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-07-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Batch/batchAccounts/applications",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/86"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/87"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/88"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/90"
-        },
-        "flags": 0,
-        "description": "The properties associated with the Application."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ETag of the resource, used for concurrency statements."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/91"
-        },
-        "flags": 0,
-        "description": "The tags of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ApplicationProperties",
-    "properties": {
-      "displayName": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The display name for the application."
-      },
-      "allowUpdates": {
-        "type": {
-          "$ref": "#/67"
-        },
-        "flags": 0,
-        "description": "A value indicating whether packages within the application may be overwritten using the same version string."
-      },
-      "defaultVersion": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The package to use if a client requests the application but does not specify a version. This property can only be set to the name of an existing package."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Batch/batchAccounts/applications@2024-07-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/89"
-    },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
@@ -1199,28 +1347,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/104"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/105"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/106"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "The properties associated with the certificate."
@@ -1234,10 +1382,17 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1254,7 +1409,7 @@
       },
       "password": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 4,
         "description": "This must not be specified if the certificate format is Cer."
@@ -1275,16 +1430,17 @@
       },
       "format": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/116"
         },
-        "flags": 2
+        "flags": 2,
+        "description": "The provisioned state of the resource"
       },
       "provisioningStateTransitionTime": {
         "type": {
@@ -1295,7 +1451,7 @@
       },
       "previousProvisioningState": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/120"
         },
         "flags": 2,
         "description": "The previous provisioned state of the resource"
@@ -1316,7 +1472,7 @@
       },
       "deleteCertificateError": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/121"
         },
         "flags": 2,
         "description": "This is only returned when the certificate provisioningState is 'Failed'."
@@ -1339,10 +1495,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/99"
+        "$ref": "#/110"
       },
       {
-        "$ref": "#/100"
+        "$ref": "#/111"
       }
     ]
   },
@@ -1362,13 +1518,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/102"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/114"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/115"
       }
     ]
   },
@@ -1388,13 +1544,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/106"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/107"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/119"
       }
     ]
   },
@@ -1425,7 +1581,7 @@
       },
       "details": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/122"
         },
         "flags": 0,
         "description": "A list of additional details about the error."
@@ -1435,7 +1591,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/110"
+      "$ref": "#/121"
     }
   },
   {
@@ -1449,11 +1605,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Batch/batchAccounts/certificates@2024-07-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/96"
+      "$ref": "#/107"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1476,35 +1632,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/87"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/125"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The properties associated with the pool."
       },
       "identity": {
         "type": {
-          "$ref": "#/305"
+          "$ref": "#/316"
         },
         "flags": 0,
         "description": "The type of identity used for the Batch Pool."
@@ -1518,10 +1674,17 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/321"
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1552,7 +1715,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/131"
         },
         "flags": 2,
         "description": "The current state of the pool."
@@ -1566,7 +1729,7 @@
       },
       "allocationState": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/135"
         },
         "flags": 2,
         "description": "Whether the pool is resizing."
@@ -1587,147 +1750,147 @@
       },
       "deploymentConfiguration": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/136"
         },
         "flags": 0,
         "description": "Deployment configuration properties."
       },
       "currentDedicatedNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "The number of dedicated compute nodes currently in the pool."
       },
       "currentLowPriorityNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "The number of Spot/low-priority compute nodes currently in the pool."
       },
       "scaleSettings": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically reevaluated. If this property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes."
       },
       "autoScaleRun": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/200"
         },
         "flags": 2,
         "description": "This property is set only if the pool automatically scales, i.e. autoScaleSettings are used."
       },
       "interNodeCommunication": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/205"
         },
         "flags": 0,
         "description": "This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the requested number of nodes to be allocated in the pool. If not specified, this value defaults to 'Disabled'."
       },
       "networkConfiguration": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/206"
         },
         "flags": 0,
         "description": "The network configuration for a pool."
       },
       "taskSlotsPerNode": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256."
       },
       "taskSchedulingPolicy": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "If not specified, the default is spread."
       },
       "userAccounts": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/241"
         },
         "flags": 0,
         "description": "The list of user accounts to be created on each node in the pool."
       },
       "metadata": {
         "type": {
-          "$ref": "#/232"
+          "$ref": "#/243"
         },
         "flags": 0,
         "description": "The Batch service does not assign any meaning to metadata; it is solely for the use of user code."
       },
       "startTask": {
         "type": {
-          "$ref": "#/233"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "In an PATCH (update) operation, this property can be set to an empty object to remove the start task from the pool."
       },
       "certificates": {
         "type": {
-          "$ref": "#/268"
+          "$ref": "#/279"
         },
         "flags": 0,
         "description": "For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.\n\nWarning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
       },
       "applicationPackages": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/281"
         },
         "flags": 0,
         "description": "Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool."
       },
       "applicationLicenses": {
         "type": {
-          "$ref": "#/271"
+          "$ref": "#/282"
         },
         "flags": 0,
         "description": "The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail."
       },
       "resizeOperationStatus": {
         "type": {
-          "$ref": "#/272"
+          "$ref": "#/283"
         },
         "flags": 2,
         "description": "Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed operation (if the AllocationState is Steady)."
       },
       "mountConfiguration": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/297"
         },
         "flags": 0,
         "description": "This supports Azure Files, NFS, CIFS/SMB, and Blobfuse."
       },
       "targetNodeCommunicationMode": {
         "type": {
-          "$ref": "#/290"
+          "$ref": "#/301"
         },
         "flags": 0,
         "description": "If omitted, the default value is Default."
       },
       "currentNodeCommunicationMode": {
         "type": {
-          "$ref": "#/294"
+          "$ref": "#/305"
         },
         "flags": 2,
         "description": "Determines how a pool communicates with the Batch service."
       },
       "upgradePolicy": {
         "type": {
-          "$ref": "#/295"
+          "$ref": "#/306"
         },
         "flags": 0,
         "description": "Describes an upgrade policy - automatic, manual, or rolling."
       },
       "resourceTags": {
         "type": {
-          "$ref": "#/304"
+          "$ref": "#/315"
         },
         "flags": 0,
         "description": "The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'."
@@ -1746,10 +1909,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/118"
+        "$ref": "#/129"
       },
       {
-        "$ref": "#/119"
+        "$ref": "#/130"
       }
     ]
   },
@@ -1769,13 +1932,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/121"
+        "$ref": "#/132"
       },
       {
-        "$ref": "#/122"
+        "$ref": "#/133"
       },
       {
-        "$ref": "#/123"
+        "$ref": "#/134"
       }
     ]
   },
@@ -1785,7 +1948,7 @@
     "properties": {
       "virtualMachineConfiguration": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/137"
         },
         "flags": 0,
         "description": "The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure."
@@ -1798,7 +1961,7 @@
     "properties": {
       "imageReference": {
         "type": {
-          "$ref": "#/127"
+          "$ref": "#/138"
         },
         "flags": 1,
         "description": "A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual Machine. To get the list of all imageReferences verified by Azure Batch, see the 'List supported node agent SKUs' operation."
@@ -1812,14 +1975,14 @@
       },
       "windowsConfiguration": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/139"
         },
         "flags": 0,
         "description": "This property must not be specified if the imageReference specifies a Linux OS image."
       },
       "dataDisks": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/149"
         },
         "flags": 0,
         "description": "This property must be specified if the compute nodes in the pool need to have empty data disks attached to them."
@@ -1829,53 +1992,53 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises licenses for the nodes which will be deployed. If omitted, no on-premises licensing discount is applied. Values are:\n\n Windows_Server - The on-premises license is for Windows Server.\n Windows_Client - The on-premises license is for Windows Client."
+        "description": "This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises licenses for the nodes which will be deployed. If omitted, no on-premises licensing discount is applied. Values are:\n\nWindows_Server - The on-premises license is for Windows Server.\nWindows_Client - The on-premises license is for Windows Client."
       },
       "containerConfiguration": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/150"
         },
         "flags": 0,
         "description": "If specified, setup is performed on each node in the pool to allow tasks to run in containers. All regular tasks and job manager tasks run on this pool must specify the containerSettings property, and all other tasks may specify it."
       },
       "diskEncryptionConfiguration": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/157"
         },
         "flags": 0,
         "description": "If specified, encryption is performed on each node in the pool during node provisioning."
       },
       "nodePlacementConfiguration": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/162"
         },
         "flags": 0,
         "description": "This configuration will specify rules on how nodes in the pool will be physically allocated."
       },
       "extensions": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/169"
         },
         "flags": 0,
         "description": "If specified, the extensions mentioned in this configuration will be installed on each node."
       },
       "osDisk": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/170"
         },
         "flags": 0,
         "description": "Contains configuration for ephemeral OSDisk settings."
       },
       "securityProfile": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/186"
         },
         "flags": 0,
         "description": "Specifies the security profile settings for the virtual machine or virtual machine scale set."
       },
       "serviceArtifactReference": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "The service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}"
@@ -1943,7 +2106,7 @@
     "properties": {
       "enableAutomaticUpdates": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "If omitted, the default value is true."
@@ -1956,31 +2119,31 @@
     "properties": {
       "lun": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive."
       },
       "caching": {
         "type": {
-          "$ref": "#/133"
+          "$ref": "#/144"
         },
         "flags": 0,
-        "description": "Values are:\n\n none - The caching mode for the disk is not enabled.\n readOnly - The caching mode for the disk is read only.\n readWrite - The caching mode for the disk is read and write.\n\n The default value for caching is none. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/."
+        "description": "Values are:\n\nnone - The caching mode for the disk is not enabled.\nreadOnly - The caching mode for the disk is read only.\nreadWrite - The caching mode for the disk is read and write.\n\nThe default value for caching is none. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/."
       },
       "diskSizeGB": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "The initial disk size in GB when creating new data disk."
       },
       "storageAccountType": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/148"
         },
         "flags": 0,
-        "description": "If omitted, the default is \"Standard_LRS\". Values are:\n\n Standard_LRS - The data disk should use standard locally redundant storage.\n Premium_LRS - The data disk should use premium locally redundant storage."
+        "description": "If omitted, the default is \"Standard_LRS\". Values are:\n\nStandard_LRS - The data disk should use standard locally redundant storage.\nPremium_LRS - The data disk should use premium locally redundant storage."
       }
     }
   },
@@ -2000,13 +2163,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/130"
+        "$ref": "#/141"
       },
       {
-        "$ref": "#/131"
+        "$ref": "#/142"
       },
       {
-        "$ref": "#/132"
+        "$ref": "#/143"
       }
     ]
   },
@@ -2026,20 +2189,20 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/134"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/135"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/136"
+        "$ref": "#/147"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/129"
+      "$ref": "#/140"
     }
   },
   {
@@ -2048,21 +2211,21 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/153"
         },
         "flags": 1,
         "description": "The container technology to be used."
       },
       "containerImageNames": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "This is the full image reference, as would be specified to \"docker pull\". An image will be sourced from the default Docker registry unless the image is fully qualified with an alternative registry."
       },
       "containerRegistries": {
         "type": {
-          "$ref": "#/145"
+          "$ref": "#/156"
         },
         "flags": 0,
         "description": "If any images must be downloaded from a private registry which requires credentials, then those credentials must be provided here."
@@ -2081,10 +2244,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/140"
+        "$ref": "#/151"
       },
       {
-        "$ref": "#/141"
+        "$ref": "#/152"
       },
       {
         "$ref": "#/2"
@@ -2110,7 +2273,7 @@
       },
       "password": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "The password to log into the registry server."
@@ -2134,7 +2297,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/144"
+      "$ref": "#/155"
     }
   },
   {
@@ -2143,7 +2306,7 @@
     "properties": {
       "targets": {
         "type": {
-          "$ref": "#/150"
+          "$ref": "#/161"
         },
         "flags": 0,
         "description": "On Linux pool, only \"TemporaryDisk\" is supported; on Windows pool, \"OsDisk\" and \"TemporaryDisk\" must be specified."
@@ -2162,17 +2325,17 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/147"
+        "$ref": "#/158"
       },
       {
-        "$ref": "#/148"
+        "$ref": "#/159"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/149"
+      "$ref": "#/160"
     }
   },
   {
@@ -2181,7 +2344,7 @@
     "properties": {
       "policy": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional policy."
@@ -2200,10 +2363,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/152"
+        "$ref": "#/163"
       },
       {
-        "$ref": "#/153"
+        "$ref": "#/164"
       }
     ]
   },
@@ -2241,35 +2404,35 @@
       },
       "autoUpgradeMinorVersion": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
       },
       "enableAutomaticUpgrade": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available."
       },
       "settings": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "JSON formatted public settings for the extension."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
       },
       "provisionAfterExtensions": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/168"
         },
         "flags": 0,
         "description": "Collection of extension names after which this extension needs to be provisioned."
@@ -2288,7 +2451,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/155"
+      "$ref": "#/166"
     }
   },
   {
@@ -2297,34 +2460,35 @@
     "properties": {
       "ephemeralOSDiskSettings": {
         "type": {
-          "$ref": "#/160"
+          "$ref": "#/171"
         },
         "flags": 0,
         "description": "Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine."
       },
       "caching": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/176"
         },
         "flags": 0,
         "description": "The type of caching to enable for the disk."
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/166"
+          "$ref": "#/177"
         },
-        "flags": 0
+        "flags": 0,
+        "description": "The managed disk parameters."
       },
       "diskSizeGB": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The initial disk size in GB when creating new OS disk."
       },
       "writeAcceleratorEnabled": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Specifies whether writeAccelerator should be enabled or disabled on the disk."
@@ -2337,7 +2501,7 @@
     "properties": {
       "placement": {
         "type": {
-          "$ref": "#/161"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "This property can be used by user in the request to choose which location the operating system should be in. e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements."
@@ -2364,13 +2528,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/162"
+        "$ref": "#/173"
       },
       {
-        "$ref": "#/163"
+        "$ref": "#/174"
       },
       {
-        "$ref": "#/164"
+        "$ref": "#/175"
       }
     ]
   },
@@ -2380,14 +2544,14 @@
     "properties": {
       "storageAccountType": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/181"
         },
         "flags": 0,
         "description": "The storage account type for use in creating data disks or OS disk."
       },
       "securityProfile": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/182"
         },
         "flags": 0,
         "description": "Specifies the security profile settings for the managed disk. **Note**: It can only be set for Confidential VMs and is required when using Confidential VMs."
@@ -2410,13 +2574,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/167"
+        "$ref": "#/178"
       },
       {
-        "$ref": "#/168"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/169"
+        "$ref": "#/180"
       }
     ]
   },
@@ -2426,7 +2590,7 @@
     "properties": {
       "securityEncryptionType": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/185"
         },
         "flags": 0,
         "description": "Specifies the EncryptionType of the managed disk. It is set to VMGuestStateOnly for encryption of just the VMGuestState blob, and NonPersistedTPM for not persisting firmware state in the VMGuestState blob. **Note**: It can be set for only Confidential VMs and required when using Confidential VMs."
@@ -2445,10 +2609,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/172"
+        "$ref": "#/183"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/184"
       },
       {
         "$ref": "#/2"
@@ -2461,21 +2625,21 @@
     "properties": {
       "securityType": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/189"
         },
         "flags": 0,
         "description": "Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings."
       },
       "encryptionAtHost": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself."
       },
       "uefiSettings": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/190"
         },
         "flags": 0,
         "description": "Specifies the security settings like secure boot and vTPM used while creating the virtual machine."
@@ -2494,10 +2658,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/176"
+        "$ref": "#/187"
       },
       {
-        "$ref": "#/177"
+        "$ref": "#/188"
       }
     ]
   },
@@ -2507,14 +2671,14 @@
     "properties": {
       "secureBootEnabled": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Specifies whether secure boot should be enabled on the virtual machine."
       },
       "vTpmEnabled": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Specifies whether vTPM should be enabled on the virtual machine."
@@ -2540,14 +2704,14 @@
     "properties": {
       "fixedScale": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/193"
         },
         "flags": 0,
         "description": "This property and autoScale are mutually exclusive and one of the properties must be specified."
       },
       "autoScale": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/199"
         },
         "flags": 0,
         "description": "This property and fixedScale are mutually exclusive and one of the properties must be specified."
@@ -2567,21 +2731,21 @@
       },
       "targetDedicatedNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "At least one of targetDedicatedNodes, targetLowPriorityNodes must be set."
       },
       "targetLowPriorityNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "At least one of targetDedicatedNodes, targetLowPriorityNodes must be set."
       },
       "nodeDeallocationOption": {
         "type": {
-          "$ref": "#/187"
+          "$ref": "#/198"
         },
         "flags": 4,
         "description": "If omitted, the default value is Requeue."
@@ -2608,16 +2772,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/183"
+        "$ref": "#/194"
       },
       {
-        "$ref": "#/184"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/186"
+        "$ref": "#/197"
       }
     ]
   },
@@ -2661,7 +2825,7 @@
       },
       "error": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/201"
         },
         "flags": 0,
         "description": "An error that occurred when autoscaling a pool."
@@ -2688,7 +2852,7 @@
       },
       "details": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/202"
         },
         "flags": 0,
         "description": "Additional details about the error."
@@ -2698,7 +2862,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/190"
+      "$ref": "#/201"
     }
   },
   {
@@ -2713,10 +2877,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/192"
+        "$ref": "#/203"
       },
       {
-        "$ref": "#/193"
+        "$ref": "#/204"
       }
     ]
   },
@@ -2733,28 +2897,28 @@
       },
       "dynamicVnetAssignmentScope": {
         "type": {
-          "$ref": "#/198"
+          "$ref": "#/209"
         },
         "flags": 0,
         "description": "The scope of dynamic vnet assignment."
       },
       "endpointConfiguration": {
         "type": {
-          "$ref": "#/199"
+          "$ref": "#/210"
         },
         "flags": 0,
         "description": "The endpoint configuration for a pool."
       },
       "publicIPAddressConfiguration": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "The public IP Address configuration of the networking configuration of a Pool."
       },
       "enableAcceleratedNetworking": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved networking performance. For more details, see: https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview."
@@ -2773,10 +2937,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/196"
+        "$ref": "#/207"
       },
       {
-        "$ref": "#/197"
+        "$ref": "#/208"
       }
     ]
   },
@@ -2786,7 +2950,7 @@
     "properties": {
       "inboundNatPools": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/221"
         },
         "flags": 1,
         "description": "The maximum number of inbound NAT pools per Batch pool is 5. If the maximum number of inbound NAT pools is exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType is NoPublicIPAddresses."
@@ -2806,35 +2970,35 @@
       },
       "protocol": {
         "type": {
-          "$ref": "#/203"
+          "$ref": "#/214"
         },
         "flags": 1,
         "description": "The protocol of the endpoint."
       },
       "backendPort": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 29876 and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400."
       },
       "frontendPortRangeStart": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the request fails with HTTP status code 400."
       },
       "frontendPortRangeEnd": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the request fails with HTTP status code 400."
       },
       "networkSecurityGroupRules": {
         "type": {
-          "$ref": "#/209"
+          "$ref": "#/220"
         },
         "flags": 0,
         "description": "The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network security group rules are specified, a default rule will be created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400."
@@ -2853,10 +3017,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/201"
+        "$ref": "#/212"
       },
       {
-        "$ref": "#/202"
+        "$ref": "#/213"
       }
     ]
   },
@@ -2866,14 +3030,14 @@
     "properties": {
       "priority": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "Priorities within a pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 4096. If any reserved or duplicate values are provided the request fails with HTTP status code 400."
       },
       "access": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/218"
         },
         "flags": 1,
         "description": "The action that should be taken for a specified IP address, subnet range or tag."
@@ -2887,7 +3051,7 @@
       },
       "sourcePortRanges": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/219"
         },
         "flags": 0,
         "description": "Valid values are '*' (for all ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200). The ports should in the range of 0 to 65535 and the port ranges or ports can't overlap. If any other values are provided the request fails with HTTP status code 400. Default value will be *."
@@ -2906,10 +3070,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/205"
+        "$ref": "#/216"
       },
       {
-        "$ref": "#/206"
+        "$ref": "#/217"
       }
     ]
   },
@@ -2922,13 +3086,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/204"
+      "$ref": "#/215"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/200"
+      "$ref": "#/211"
     }
   },
   {
@@ -2937,14 +3101,14 @@
     "properties": {
       "provision": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/226"
         },
         "flags": 0,
         "description": "The default value is BatchManaged"
       },
       "ipAddressIds": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}."
@@ -2967,13 +3131,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/212"
+        "$ref": "#/223"
       },
       {
-        "$ref": "#/213"
+        "$ref": "#/224"
       },
       {
-        "$ref": "#/214"
+        "$ref": "#/225"
       }
     ]
   },
@@ -2989,7 +3153,7 @@
     "properties": {
       "nodeFillType": {
         "type": {
-          "$ref": "#/220"
+          "$ref": "#/231"
         },
         "flags": 1,
         "description": "How tasks should be distributed across compute nodes."
@@ -3008,10 +3172,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/218"
+        "$ref": "#/229"
       },
       {
-        "$ref": "#/219"
+        "$ref": "#/230"
       }
     ]
   },
@@ -3028,28 +3192,28 @@
       },
       "password": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 1,
         "description": "The password for the user account."
       },
       "elevationLevel": {
         "type": {
-          "$ref": "#/224"
+          "$ref": "#/235"
         },
         "flags": 0,
         "description": "nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator permissions. The default value is nonAdmin."
       },
       "linuxUserConfiguration": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/236"
         },
         "flags": 0,
         "description": "This property is ignored if specified on a Windows pool. If not specified, the user is created with the default options."
       },
       "windowsUserConfiguration": {
         "type": {
-          "$ref": "#/226"
+          "$ref": "#/237"
         },
         "flags": 0,
         "description": "This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user is created with the default options."
@@ -3068,10 +3232,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/222"
+        "$ref": "#/233"
       },
       {
-        "$ref": "#/223"
+        "$ref": "#/234"
       }
     ]
   },
@@ -3081,21 +3245,21 @@
     "properties": {
       "uid": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the uid."
       },
       "gid": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the gid."
       },
       "sshPrivateKey": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between nodes in a Linux pool when the pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not configured between nodes (no modification of the user's .ssh directory is done)."
@@ -3108,7 +3272,7 @@
     "properties": {
       "loginMode": {
         "type": {
-          "$ref": "#/229"
+          "$ref": "#/240"
         },
         "flags": 0,
         "description": "Specifies login mode for the user. The default value is Interactive."
@@ -3127,17 +3291,17 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/227"
+        "$ref": "#/238"
       },
       {
-        "$ref": "#/228"
+        "$ref": "#/239"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/221"
+      "$ref": "#/232"
     }
   },
   {
@@ -3163,7 +3327,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/231"
+      "$ref": "#/242"
     }
   },
   {
@@ -3179,42 +3343,42 @@
       },
       "resourceFiles": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/246"
         },
         "flags": 0,
         "description": "A list of files that the Batch service will download to the compute node before running the command line."
       },
       "environmentSettings": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/248"
         },
         "flags": 0,
         "description": "A list of environment variable settings for the start task."
       },
       "userIdentity": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/249"
         },
         "flags": 0,
         "description": "If omitted, the task runs as a non-administrative user unique to the task."
       },
       "maxTaskRetryCount": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the number of retries. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task without limit. Default is 0"
       },
       "waitForSuccess": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum retry count (maxTaskRetryCount). If the task has still not completed successfully after all retries, then the Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected via the node state and scheduling error detail. If false, the Batch service will not wait for the start task to complete. In this case, other tasks can start executing on the compute node while the start task is still running; and even if the start task fails, new tasks will continue to be scheduled on the node. The default is true."
       },
       "containerSettings": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/257"
         },
         "flags": 0,
         "description": "When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container."
@@ -3279,7 +3443,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/234"
+      "$ref": "#/245"
     }
   },
   {
@@ -3305,7 +3469,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/236"
+      "$ref": "#/247"
     }
   },
   {
@@ -3321,7 +3485,7 @@
       },
       "autoUser": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/250"
         },
         "flags": 0,
         "description": "The userName and autoUser properties are mutually exclusive; you must specify one but not both."
@@ -3334,14 +3498,14 @@
     "properties": {
       "scope": {
         "type": {
-          "$ref": "#/242"
+          "$ref": "#/253"
         },
         "flags": 0,
         "description": "The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible by start tasks."
       },
       "elevationLevel": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/256"
         },
         "flags": 0,
         "description": "The default value is nonAdmin."
@@ -3360,10 +3524,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/240"
+        "$ref": "#/251"
       },
       {
-        "$ref": "#/241"
+        "$ref": "#/252"
       }
     ]
   },
@@ -3379,10 +3543,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/243"
+        "$ref": "#/254"
       },
       {
-        "$ref": "#/244"
+        "$ref": "#/255"
       }
     ]
   },
@@ -3406,21 +3570,21 @@
       },
       "registry": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/155"
         },
         "flags": 0,
         "description": "This setting can be omitted if was already provided at pool creation."
       },
       "workingDirectory": {
         "type": {
-          "$ref": "#/249"
+          "$ref": "#/260"
         },
         "flags": 0,
         "description": "A flag to indicate where the container task working directory is. The default is 'taskWorkingDirectory'."
       },
       "containerHostBatchBindMounts": {
         "type": {
-          "$ref": "#/258"
+          "$ref": "#/269"
         },
         "flags": 0,
         "description": "If this array is null or be not present, container task will mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty."
@@ -3439,10 +3603,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/247"
+        "$ref": "#/258"
       },
       {
-        "$ref": "#/248"
+        "$ref": "#/259"
       }
     ]
   },
@@ -3452,14 +3616,14 @@
     "properties": {
       "source": {
         "type": {
-          "$ref": "#/257"
+          "$ref": "#/268"
         },
         "flags": 0,
         "description": "The paths which will be mounted to container task's container."
       },
       "isReadOnly": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "For Linux, if you mount this path as a read/write mode, this does not mean that all users in container have the read/write access for the path, it depends on the access in host VM. If this path is mounted read-only, all users within the container will not be able to modify the path."
@@ -3494,22 +3658,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/251"
+        "$ref": "#/262"
       },
       {
-        "$ref": "#/252"
+        "$ref": "#/263"
       },
       {
-        "$ref": "#/253"
+        "$ref": "#/264"
       },
       {
-        "$ref": "#/254"
+        "$ref": "#/265"
       },
       {
-        "$ref": "#/255"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/256"
+        "$ref": "#/267"
       },
       {
         "$ref": "#/2"
@@ -3519,7 +3683,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/250"
+      "$ref": "#/261"
     }
   },
   {
@@ -3535,7 +3699,7 @@
       },
       "storeLocation": {
         "type": {
-          "$ref": "#/262"
+          "$ref": "#/273"
         },
         "flags": 0,
         "description": "The default value is currentUser. This property is applicable only for pools configured with Windows compute nodes. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory."
@@ -3549,7 +3713,7 @@
       },
       "visibility": {
         "type": {
-          "$ref": "#/267"
+          "$ref": "#/278"
         },
         "flags": 0,
         "description": "Which user accounts on the compute node should have access to the private data of the certificate."
@@ -3568,10 +3732,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/260"
+        "$ref": "#/271"
       },
       {
-        "$ref": "#/261"
+        "$ref": "#/272"
       }
     ]
   },
@@ -3591,26 +3755,26 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/263"
+        "$ref": "#/274"
       },
       {
-        "$ref": "#/264"
+        "$ref": "#/275"
       },
       {
-        "$ref": "#/265"
+        "$ref": "#/276"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/266"
+      "$ref": "#/277"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/259"
+      "$ref": "#/270"
     }
   },
   {
@@ -3636,7 +3800,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/269"
+      "$ref": "#/280"
     }
   },
   {
@@ -3651,14 +3815,14 @@
     "properties": {
       "targetDedicatedNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The desired number of dedicated compute nodes in the pool."
       },
       "targetLowPriorityNodes": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The desired number of Spot/low-priority compute nodes in the pool."
@@ -3672,7 +3836,7 @@
       },
       "nodeDeallocationOption": {
         "type": {
-          "$ref": "#/277"
+          "$ref": "#/288"
         },
         "flags": 0,
         "description": "The default value is requeue."
@@ -3686,7 +3850,7 @@
       },
       "errors": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/291"
         },
         "flags": 0,
         "description": "This property is set only if an error occurred during the last pool resize, and only when the pool allocationState is Steady."
@@ -3713,16 +3877,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/273"
+        "$ref": "#/284"
       },
       {
-        "$ref": "#/274"
+        "$ref": "#/285"
       },
       {
-        "$ref": "#/275"
+        "$ref": "#/286"
       },
       {
-        "$ref": "#/276"
+        "$ref": "#/287"
       }
     ]
   },
@@ -3746,7 +3910,7 @@
       },
       "details": {
         "type": {
-          "$ref": "#/279"
+          "$ref": "#/290"
         },
         "flags": 0,
         "description": "Additional details about the error."
@@ -3756,13 +3920,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/278"
+      "$ref": "#/289"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/278"
+      "$ref": "#/289"
     }
   },
   {
@@ -3771,28 +3935,28 @@
     "properties": {
       "azureBlobFileSystemConfiguration": {
         "type": {
-          "$ref": "#/282"
+          "$ref": "#/293"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with all other properties."
       },
       "nfsMountConfiguration": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/294"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with all other properties."
       },
       "cifsMountConfiguration": {
         "type": {
-          "$ref": "#/284"
+          "$ref": "#/295"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with all other properties."
       },
       "azureFileShareConfiguration": {
         "type": {
-          "$ref": "#/285"
+          "$ref": "#/296"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with all other properties."
@@ -3819,14 +3983,14 @@
       },
       "accountKey": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with both sasKey and identity; exactly one must be specified."
       },
       "sasKey": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "This property is mutually exclusive with both accountKey and identity; exactly one must be specified."
@@ -3915,7 +4079,7 @@
       },
       "password": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 1,
         "description": "The password to use for authentication against the CIFS file system."
@@ -3942,7 +4106,7 @@
       },
       "accountKey": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/109"
         },
         "flags": 1,
         "description": "The Azure Storage account key."
@@ -3966,7 +4130,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/281"
+      "$ref": "#/292"
     }
   },
   {
@@ -3985,13 +4149,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/287"
+        "$ref": "#/298"
       },
       {
-        "$ref": "#/288"
+        "$ref": "#/299"
       },
       {
-        "$ref": "#/289"
+        "$ref": "#/300"
       }
     ]
   },
@@ -4011,13 +4175,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/291"
+        "$ref": "#/302"
       },
       {
-        "$ref": "#/292"
+        "$ref": "#/303"
       },
       {
-        "$ref": "#/293"
+        "$ref": "#/304"
       }
     ]
   },
@@ -4027,21 +4191,21 @@
     "properties": {
       "mode": {
         "type": {
-          "$ref": "#/299"
+          "$ref": "#/310"
         },
         "flags": 1,
         "description": "Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are automatically updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an optional pause time in between."
       },
       "automaticOSUpgradePolicy": {
         "type": {
-          "$ref": "#/300"
+          "$ref": "#/311"
         },
         "flags": 0,
         "description": "The configuration parameters used for performing automatic OS upgrade."
       },
       "rollingUpgradePolicy": {
         "type": {
-          "$ref": "#/301"
+          "$ref": "#/312"
         },
         "flags": 0,
         "description": "The configuration parameters used while performing a rolling upgrade."
@@ -4064,13 +4228,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/296"
+        "$ref": "#/307"
       },
       {
-        "$ref": "#/297"
+        "$ref": "#/308"
       },
       {
-        "$ref": "#/298"
+        "$ref": "#/309"
       }
     ]
   },
@@ -4080,28 +4244,28 @@
     "properties": {
       "disableAutomaticRollback": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Whether OS image rollback feature should be disabled."
       },
       "enableAutomaticOSUpgrade": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools, [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchmanagement/pool/create?tabs=HTTP#windowsconfiguration) cannot be set to true."
       },
       "useRollingUpgradePolicy": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Auto OS Upgrade will fallback to the default policy if no policy is defined on the VMSS."
       },
       "osRollingUpgradeDeferral": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Defer OS upgrades on the TVMs if they are running tasks."
@@ -4114,28 +4278,28 @@
     "properties": {
       "enableCrossZoneUpgrade": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. If this field is not set, Azure Azure Batch will not set its default value. The value of enableCrossZoneUpgrade on the created VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field is able to be set to true or false only when using NodePlacementConfiguration as Zonal."
       },
       "maxBatchInstancePercent": {
         "type": {
-          "$ref": "#/302"
+          "$ref": "#/313"
         },
         "flags": 0,
         "description": "The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent."
       },
       "maxUnhealthyInstancePercent": {
         "type": {
-          "$ref": "#/302"
+          "$ref": "#/313"
         },
         "flags": 0,
         "description": "The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent."
       },
       "maxUnhealthyUpgradedInstancePercent": {
         "type": {
-          "$ref": "#/303"
+          "$ref": "#/314"
         },
         "flags": 0,
         "description": "The maximum percentage of upgraded virtual machine instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and 100, inclusive."
@@ -4149,14 +4313,14 @@
       },
       "prioritizeUnhealthyInstances": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Upgrade all unhealthy instances in a scale set before any healthy instances."
       },
       "rollbackFailedInstancesOnPolicyBreach": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Rollback failed instances to previous model if the Rolling Upgrade policy is violated."
@@ -4187,14 +4351,14 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/308"
+          "$ref": "#/319"
         },
         "flags": 1,
         "description": "The type of identity used for the Batch Pool."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/309"
+          "$ref": "#/320"
         },
         "flags": 0,
         "description": "The list of user identities associated with the Batch pool."
@@ -4213,10 +4377,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/306"
+        "$ref": "#/317"
       },
       {
-        "$ref": "#/307"
+        "$ref": "#/318"
       }
     ]
   },
@@ -4225,12 +4389,12 @@
     "name": "BatchPoolIdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/73"
+      "$ref": "#/84"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "PoolTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -4239,11 +4403,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Batch/batchAccounts/pools@2024-07-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/116"
+      "$ref": "#/127"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -4273,21 +4437,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/312"
+          "$ref": "#/323"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/313"
+          "$ref": "#/324"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/326"
         },
         "flags": 2,
         "description": "The properties associated with the detector."
@@ -4301,10 +4465,17 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/316"
+          "$ref": "#/327"
         },
         "flags": 2,
         "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4323,7 +4494,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "DetectorResponseTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -4332,220 +4503,16 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Batch/batchAccounts/detectors@2024-07-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/314"
+      "$ref": "#/325"
     },
-    "flags": 1
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "StringType",
     "minLength": 1,
-    "maxLength": 101,
-    "pattern": "^[a-zA-Z0-9_-]+\\.?[a-fA-F0-9-]*$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Batch/batchAccounts/privateLinkResources"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-07-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Batch/batchAccounts/privateLinkResources",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/318"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/319"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/320"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/322"
-        },
-        "flags": 2,
-        "description": "The properties associated with the private link resource."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ETag of the resource, used for concurrency statements."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/325"
-        },
-        "flags": 2,
-        "description": "The tags of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PrivateLinkResourceProperties",
-    "properties": {
-      "groupId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The group id is used to establish the private link connection."
-      },
-      "requiredMembers": {
-        "type": {
-          "$ref": "#/323"
-        },
-        "flags": 2,
-        "description": "The list of required members that are used to establish the private link connection."
-      },
-      "requiredZoneNames": {
-        "type": {
-          "$ref": "#/324"
-        },
-        "flags": 2,
-        "description": "The list of required zone names for the private DNS resource name"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Batch/batchAccounts/privateLinkResources@2024-07-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/321"
-    },
-    "flags": 1
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Batch/batchAccounts/privateEndpointConnections"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-07-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Batch/batchAccounts/privateEndpointConnections",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/318"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/327"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/328"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/46"
-        },
-        "flags": 2,
-        "description": "The properties associated with the private endpoint connection."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ETag of the resource, used for concurrency statements."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/330"
-        },
-        "flags": 2,
-        "description": "The tags of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Batch/batchAccounts/privateEndpointConnections@2024-07-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/329"
-    },
-    "flags": 1
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^.*$"
+    "maxLength": 512
   },
   {
     "$type": "StringLiteralType",
@@ -4568,35 +4535,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/332"
+          "$ref": "#/329"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/333"
+          "$ref": "#/330"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/334"
+          "$ref": "#/331"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/336"
+          "$ref": "#/333"
         },
         "flags": 2,
         "description": "Network security configuration properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/380"
+          "$ref": "#/63"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -4609,35 +4576,35 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/344"
+          "$ref": "#/341"
         },
         "flags": 2,
         "description": "Provisioning state of a network security perimeter configuration that is being created or updated."
       },
       "provisioningIssues": {
         "type": {
-          "$ref": "#/371"
+          "$ref": "#/368"
         },
         "flags": 2,
         "description": "List of provisioning issues, if any"
       },
       "networkSecurityPerimeter": {
         "type": {
-          "$ref": "#/364"
+          "$ref": "#/361"
         },
         "flags": 0,
         "description": "Information about a network security perimeter (NSP)"
       },
       "resourceAssociation": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/369"
         },
         "flags": 0,
         "description": "Information about resource association"
       },
       "profile": {
         "type": {
-          "$ref": "#/377"
+          "$ref": "#/374"
         },
         "flags": 0,
         "description": "Network security perimeter configuration profile"
@@ -4676,6 +4643,15 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
         "$ref": "#/337"
       },
       {
@@ -4686,15 +4662,6 @@
       },
       {
         "$ref": "#/340"
-      },
-      {
-        "$ref": "#/341"
-      },
-      {
-        "$ref": "#/342"
-      },
-      {
-        "$ref": "#/343"
       },
       {
         "$ref": "#/2"
@@ -4714,7 +4681,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/346"
+          "$ref": "#/343"
         },
         "flags": 2,
         "description": "Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource providers should generate separate provisioning issue elements for each separate issue detected, and include a meaningful and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules"
@@ -4727,14 +4694,14 @@
     "properties": {
       "issueType": {
         "type": {
-          "$ref": "#/351"
+          "$ref": "#/348"
         },
         "flags": 2,
         "description": "Type of issue"
       },
       "severity": {
         "type": {
-          "$ref": "#/354"
+          "$ref": "#/351"
         },
         "flags": 2,
         "description": "Severity of the issue."
@@ -4748,14 +4715,14 @@
       },
       "suggestedResourceIds": {
         "type": {
-          "$ref": "#/355"
+          "$ref": "#/352"
         },
         "flags": 2,
         "description": "Fully qualified resource IDs of suggested resources that can be associated to the network security perimeter (NSP) to remediate the issue."
       },
       "suggestedAccessRules": {
         "type": {
-          "$ref": "#/370"
+          "$ref": "#/367"
         },
         "flags": 2,
         "description": "Access rules that can be added to the network security profile (NSP) to remediate the issue."
@@ -4782,16 +4749,16 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/344"
+      },
+      {
+        "$ref": "#/345"
+      },
+      {
+        "$ref": "#/346"
+      },
+      {
         "$ref": "#/347"
-      },
-      {
-        "$ref": "#/348"
-      },
-      {
-        "$ref": "#/349"
-      },
-      {
-        "$ref": "#/350"
       },
       {
         "$ref": "#/2"
@@ -4810,10 +4777,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/352"
+        "$ref": "#/349"
       },
       {
-        "$ref": "#/353"
+        "$ref": "#/350"
       },
       {
         "$ref": "#/2"
@@ -4839,7 +4806,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/357"
+          "$ref": "#/354"
         },
         "flags": 0,
         "description": "Properties of Access Rule"
@@ -4852,49 +4819,49 @@
     "properties": {
       "direction": {
         "type": {
-          "$ref": "#/360"
+          "$ref": "#/357"
         },
         "flags": 0,
         "description": "Direction of Access Rule"
       },
       "addressPrefixes": {
         "type": {
-          "$ref": "#/361"
+          "$ref": "#/358"
         },
         "flags": 0,
         "description": "Address prefixes in the CIDR format for inbound rules"
       },
       "subscriptions": {
         "type": {
-          "$ref": "#/363"
+          "$ref": "#/360"
         },
         "flags": 0,
         "description": "Subscriptions for inbound rules"
       },
       "networkSecurityPerimeters": {
         "type": {
-          "$ref": "#/366"
+          "$ref": "#/363"
         },
         "flags": 0,
         "description": "Network security perimeters for inbound rules"
       },
       "fullyQualifiedDomainNames": {
         "type": {
-          "$ref": "#/367"
+          "$ref": "#/364"
         },
         "flags": 0,
         "description": "Fully qualified domain names (FQDN) for outbound rules"
       },
       "emailAddresses": {
         "type": {
-          "$ref": "#/368"
+          "$ref": "#/365"
         },
         "flags": 0,
         "description": "Email addresses for outbound rules"
       },
       "phoneNumbers": {
         "type": {
-          "$ref": "#/369"
+          "$ref": "#/366"
         },
         "flags": 0,
         "description": "Phone numbers for outbound rules"
@@ -4913,10 +4880,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/358"
+        "$ref": "#/355"
       },
       {
-        "$ref": "#/359"
+        "$ref": "#/356"
       },
       {
         "$ref": "#/2"
@@ -4945,7 +4912,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/362"
+      "$ref": "#/359"
     }
   },
   {
@@ -4961,7 +4928,7 @@
       },
       "perimeterGuid": {
         "type": {
-          "$ref": "#/365"
+          "$ref": "#/362"
         },
         "flags": 0,
         "description": "Universal unique ID (UUID) of the network security perimeter"
@@ -4984,7 +4951,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/364"
+      "$ref": "#/361"
     }
   },
   {
@@ -5008,13 +4975,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/356"
+      "$ref": "#/353"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/345"
+      "$ref": "#/342"
     }
   },
   {
@@ -5030,7 +4997,7 @@
       },
       "accessMode": {
         "type": {
-          "$ref": "#/376"
+          "$ref": "#/373"
         },
         "flags": 0,
         "description": "Access mode of the resource association"
@@ -5053,13 +5020,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/373"
+        "$ref": "#/370"
       },
       {
-        "$ref": "#/374"
+        "$ref": "#/371"
       },
       {
-        "$ref": "#/375"
+        "$ref": "#/372"
       },
       {
         "$ref": "#/2"
@@ -5079,28 +5046,28 @@
       },
       "accessRulesVersion": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "Current access rules version"
       },
       "accessRules": {
         "type": {
-          "$ref": "#/378"
+          "$ref": "#/375"
         },
         "flags": 0,
         "description": "List of Access Rules"
       },
       "diagnosticSettingsVersion": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "Current diagnostic settings version"
       },
       "enabledLogCategories": {
         "type": {
-          "$ref": "#/379"
+          "$ref": "#/376"
         },
         "flags": 0,
         "description": "List of log categories that are enabled"
@@ -5110,7 +5077,218 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/356"
+      "$ref": "#/353"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Batch/batchAccounts/networkSecurityPerimeterConfigurations@2024-07-01",
+    "body": {
+      "$ref": "#/332"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 101,
+    "pattern": "^[a-zA-Z0-9_-]+\\.?[a-fA-F0-9-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Batch/batchAccounts/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Batch/batchAccounts/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/379"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The properties associated with the private endpoint connection."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ETag of the resource, used for concurrency statements."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/382"
+        },
+        "flags": 2,
+        "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Batch/batchAccounts/privateEndpointConnections@2024-07-01",
+    "body": {
+      "$ref": "#/381"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Batch/batchAccounts/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Batch/batchAccounts/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 2,
+        "description": "The properties associated with the private link resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ETag of the resource, used for concurrency statements."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/390"
+        },
+        "flags": 2,
+        "description": "The tags of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResourceProperties",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The group id is used to establish the private link connection."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 2,
+        "description": "The list of required members that are used to establish the private link connection."
+      },
+      "requiredZoneNames": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 2,
+        "description": "The list of required zone names for the private DNS resource name"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
     }
   },
   {
@@ -5121,170 +5299,20 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/385"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/390"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
+    "name": "PrivateLinkResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/381"
-      },
-      {
-        "$ref": "#/382"
-      },
-      {
-        "$ref": "#/383"
-      },
-      {
-        "$ref": "#/384"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/386"
-      },
-      {
-        "$ref": "#/387"
-      },
-      {
-        "$ref": "#/388"
-      },
-      {
-        "$ref": "#/389"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Batch/batchAccounts/networkSecurityPerimeterConfigurations@2024-07-01",
-    "scopeType": 8,
+    "name": "Microsoft.Batch/batchAccounts/privateLinkResources@2024-07-01",
     "body": {
-      "$ref": "#/335"
+      "$ref": "#/386"
     },
-    "flags": 1
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "syncAutoStorageKeys",
-    "resourceType": "Microsoft.Batch/batchAccounts",
-    "apiVersion": "2024-07-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "BatchAccountRegenerateKeyParameters",
-    "properties": {
-      "keyName": {
-        "type": {
-          "$ref": "#/396"
-        },
-        "flags": 1,
-        "description": "The type of account key to regenerate."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Primary"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Secondary"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/394"
-      },
-      {
-        "$ref": "#/395"
-      }
-    ]
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -5315,105 +5343,62 @@
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "regenerateKeys",
-    "resourceType": "Microsoft.Batch/batchAccounts",
-    "apiVersion": "2024-07-01",
-    "output": {
-      "$ref": "#/397"
-    },
-    "input": {
-      "$ref": "#/393"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
     "name": "listKeys",
     "resourceType": "Microsoft.Batch/batchAccounts",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/397"
+      "$ref": "#/392"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ActivateApplicationPackageParameters",
+    "name": "BatchAccountRegenerateKeyParameters",
     "properties": {
-      "format": {
+      "keyName": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/397"
         },
         "flags": 1,
-        "description": "The format of the application package binary file."
+        "description": "The type of account key to regenerate."
       }
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "ApplicationPackage",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/80"
-        },
-        "flags": 0,
-        "description": "The properties associated with the Application Package."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ID of the resource."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ETag of the resource, used for concurrency statements."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/402"
-        },
-        "flags": 0,
-        "description": "The tags of the resource."
-      }
-    }
+    "$type": "StringLiteralType",
+    "value": "Primary"
   },
   {
-    "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/395"
+      },
+      {
+        "$ref": "#/396"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regenerateKeys",
+    "resourceType": "Microsoft.Batch/batchAccounts",
+    "apiVersion": "2024-07-01",
+    "output": {
+      "$ref": "#/392"
+    },
+    "input": {
+      "$ref": "#/394"
     }
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "activate",
-    "resourceType": "Microsoft.Batch/batchAccounts/applications/versions",
-    "apiVersion": "2024-07-01",
-    "output": {
-      "$ref": "#/401"
-    },
-    "input": {
-      "$ref": "#/400"
-    }
+    "name": "syncAutoStorageKeys",
+    "resourceType": "Microsoft.Batch/batchAccounts",
+    "apiVersion": "2024-07-01"
   },
   {
     "$type": "ObjectType",
@@ -5428,7 +5413,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/405"
+          "$ref": "#/401"
         },
         "flags": 1,
         "description": "The resource type."
@@ -5445,14 +5430,14 @@
     "properties": {
       "nameAvailable": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 2,
         "description": "Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or invalid and cannot be used."
       },
       "reason": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/405"
         },
         "flags": 2,
         "description": "Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is false."
@@ -5478,10 +5463,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/407"
+        "$ref": "#/403"
       },
       {
-        "$ref": "#/408"
+        "$ref": "#/404"
       }
     ]
   },
@@ -5491,10 +5476,98 @@
     "resourceType": "Microsoft.Batch/locations",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/406"
+      "$ref": "#/402"
     },
     "input": {
-      "$ref": "#/404"
+      "$ref": "#/400"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActivateApplicationPackageParameters",
+    "properties": {
+      "format": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The format of the application package binary file."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationPackage",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The properties associated with the Application Package."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ETag of the resource, used for concurrency statements."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 0,
+        "description": "The tags of the resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationPackageTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "activate",
+    "resourceType": "Microsoft.Batch/batchAccounts/applications/versions",
+    "apiVersion": "2024-07-01",
+    "output": {
+      "$ref": "#/408"
+    },
+    "input": {
+      "$ref": "#/407"
     }
   },
   {
@@ -5507,27 +5580,6 @@
         },
         "flags": 0,
         "description": "The properties associated with the certificate."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ID of the resource."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
       },
       "etag": {
         "type": {
@@ -5542,6 +5594,34 @@
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -5553,7 +5633,8 @@
         "type": {
           "$ref": "#/416"
         },
-        "flags": 2
+        "flags": 2,
+        "description": "The provisioned state of the resource"
       },
       "provisioningStateTransitionTime": {
         "type": {
@@ -5585,7 +5666,7 @@
       },
       "deleteCertificateError": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/121"
         },
         "flags": 2,
         "description": "This is only returned when the certificate provisioningState is 'Failed'."
@@ -5686,7 +5767,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "CertificateTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -5702,43 +5783,28 @@
     }
   },
   {
+    "$type": "ResourceFunctionType",
+    "name": "reconcile",
+    "resourceType": "Microsoft.Batch/batchAccounts/networkSecurityPerimeterConfigurations",
+    "apiVersion": "2024-07-01"
+  },
+  {
     "$type": "ObjectType",
     "name": "Pool",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The properties associated with the pool."
       },
       "identity": {
         "type": {
-          "$ref": "#/305"
+          "$ref": "#/316"
         },
         "flags": 0,
         "description": "The type of identity used for the Batch Pool."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The ID of the resource."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
       },
       "etag": {
         "type": {
@@ -5749,16 +5815,44 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/427"
+          "$ref": "#/428"
         },
         "flags": 0,
         "description": "The tags of the resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "AzureProxyResourceTags",
+    "name": "PoolTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -5770,7 +5864,7 @@
     "resourceType": "Microsoft.Batch/batchAccounts/pools",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/426"
+      "$ref": "#/427"
     }
   },
   {
@@ -5779,13 +5873,7 @@
     "resourceType": "Microsoft.Batch/batchAccounts/pools",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/426"
+      "$ref": "#/427"
     }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "reconcile",
-    "resourceType": "Microsoft.Batch/batchAccounts/networkSecurityPerimeterConfigurations",
-    "apiVersion": "2024-07-01"
   }
 ]

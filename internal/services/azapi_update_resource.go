@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
@@ -33,28 +34,32 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String     `tfsdk:"id"`
-	Name                  types.String     `tfsdk:"name"`
-	ParentID              types.String     `tfsdk:"parent_id"`
-	ResourceID            types.String     `tfsdk:"resource_id"`
-	Type                  types.String     `tfsdk:"type"`
-	Body                  types.Dynamic    `tfsdk:"body"`
-	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
-	SensitiveBodyVersion  types.Map        `tfsdk:"sensitive_body_version"`
-	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
-	Locks                 types.List       `tfsdk:"locks"`
-	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
-	Retry                 retry.RetryValue `tfsdk:"retry" skip_on:"update"`
-	UpdateHeaders         types.Map        `tfsdk:"update_headers"`
-	UpdateQueryParameters types.Map        `tfsdk:"update_query_parameters"`
-	ReadHeaders           types.Map        `tfsdk:"read_headers" skip_on:"update"`
-	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	ID                            types.String     `tfsdk:"id"`
+	Name                          types.String     `tfsdk:"name"`
+	ParentID                      types.String     `tfsdk:"parent_id"`
+	ResourceID                    types.String     `tfsdk:"resource_id"`
+	Type                          types.String     `tfsdk:"type"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
+	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
+	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ListUniqueIdProperty          types.Map        `tfsdk:"list_unique_id_property"`
+	IgnoreOtherItemsInList        types.List       `tfsdk:"ignore_other_items_in_list"`
+	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	Locks                         types.List       `tfsdk:"locks"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
+	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -66,6 +71,7 @@ var _ resource.ResourceWithConfigure = &AzapiUpdateResource{}
 var _ resource.ResourceWithValidateConfig = &AzapiUpdateResource{}
 var _ resource.ResourceWithModifyPlan = &AzapiUpdateResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiUpdateResource{}
+var _ tffwdocs.ResourceWithRenderOption = &AzapiUpdateResource{}
 
 func (r *AzapiUpdateResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -169,11 +175,40 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				MarkdownDescription: docstrings.SensitiveBodyVersion(),
 			},
 
+			"replace_triggers_external_values": schema.DynamicAttribute{
+				Optional: true,
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
+					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
+					"```hcl\n" +
+					"resource \"azapi_update_resource\" \"example\" {\n" +
+					"  resource_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example/providers/Microsoft.Network/publicIPAddresses/example\"\n" +
+					"  type        = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
+					"  body = {\n" +
+					"    properties = {\n" +
+					"      sku   = var.sku\n" +
+					"      zones = var.zones\n" +
+					"    }\n" +
+					"  }\n" +
+					"\n" +
+					"  replace_triggers_external_values = [\n" +
+					"    var.sku,\n" +
+					"    var.zones,\n" +
+					"  ]\n" +
+					"}\n" +
+					"```\n",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
+			},
+
 			"ignore_casing": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -181,6 +216,21 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed:            true,
 				Default:             defaults.BoolDefault(true),
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
+			},
+
+			"list_unique_id_property": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.ListUniqueIdProperty(),
+			},
+
+			"ignore_other_items_in_list": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: docstrings.IgnoreOtherItemsInList(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -404,8 +454,8 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	readRequestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	readRequestOptions.RetryOptions, readRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
@@ -423,7 +473,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	}
 
 	if requestBody != nil {
-		requestBody = utils.MergeObject(existing, requestBody)
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		requestBody = utils.MergeObjectWithOption(existing, requestBody, mergeOption)
 	} else {
 		requestBody = existing
 	}
@@ -438,7 +492,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 	if sensitiveBody != nil {
-		requestBody = utils.MergeObject(requestBody, sensitiveBody)
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		requestBody = utils.MergeObjectWithOption(requestBody, sensitiveBody, mergeOption)
 	}
 
 	if id.ResourceDef != nil {
@@ -456,8 +514,8 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	updateRequestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.UpdateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.UpdateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	updateRequestOptions.RetryOptions, updateRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, updateRequestOptions)
 	if err != nil {
@@ -476,10 +534,16 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 
-	model.ID = basetypes.NewStringValue(id.ID())
+	priorID := ""
+	priorResourceID := ""
+	if stateModel != nil {
+		priorID = stateModel.ID.ValueString()
+		priorResourceID = stateModel.ResourceID.ValueString()
+	}
+	model.ID = basetypes.NewStringValue(preserveCasing(priorID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
-	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
+	model.ResourceID = basetypes.NewStringValue(preserveCasing(priorResourceID, id.AzureResourceId, r.ProviderData.Features.PreserveResourceIDCasing))
 
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
@@ -533,8 +597,8 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -547,10 +611,10 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	}
 
 	state := model
-	state.ID = basetypes.NewStringValue(id.ID())
+	state.ID = basetypes.NewStringValue(preserveCasing(model.ID.ValueString(), id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 	state.Name = basetypes.NewStringValue(id.Name)
 	state.ParentID = basetypes.NewStringValue(id.ParentId)
-	state.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
+	state.ResourceID = basetypes.NewStringValue(preserveCasing(model.ResourceID.ValueString(), id.AzureResourceId, r.ProviderData.Features.PreserveResourceIDCasing))
 	state.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	requestBody := make(map[string]interface{})
@@ -562,6 +626,16 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
+	}
+	if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+		option.ListUniqueIdProperty = v
+	}
+	if paths := common.AsStringList(model.IgnoreOtherItemsInList); len(paths) != 0 {
+		m := make(map[string]bool)
+		for _, p := range paths {
+			m[p] = true
+		}
+		option.IgnoreOtherItemsInList = m
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
@@ -601,4 +675,83 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 
 func (r *AzapiUpdateResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
 
+}
+
+func (r *AzapiUpdateResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_public_ip" "example" {
+  name                = "example-ip"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  allocation_method   = "Static"
+}
+
+resource "azurerm_lb" "example" {
+  name                = "example-lb"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+resource "azurerm_lb_nat_rule" "example" {
+  resource_group_name            = azurerm_resource_group.example.name
+  loadbalancer_id                = azurerm_lb.example.id
+  name                           = "RDPAccess"
+  protocol                       = "Tcp"
+  frontend_port                  = 3389
+  backend_port                   = 3389
+  frontend_ip_configuration_name = "PublicIPAddress"
+}
+
+resource "azapi_update_resource" "example" {
+  type        = "Microsoft.Network/loadBalancers@2021-03-01"
+  resource_id = azurerm_lb.example.id
+
+  body = {
+    properties = {
+      inboundNatRules = [
+        {
+          properties = {
+            idleTimeoutInMinutes = 15
+          }
+        }
+      ]
+    }
+  }
+
+  depends_on = [
+    azurerm_lb_nat_rule.example,
+  ]
+}
+`,
+			},
+		},
+	}
 }

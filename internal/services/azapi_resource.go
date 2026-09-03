@@ -3,10 +3,13 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"net/http"
 	"reflect"
 	"slices"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -47,6 +50,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 const FlagMoveState = "move_state"
@@ -57,9 +61,12 @@ type AzapiResourceModel struct {
 	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
 	ID                            types.String     `tfsdk:"id"`
 	Identity                      types.List       `tfsdk:"identity"`
+	IgnoreBodyChanges             types.List       `tfsdk:"ignore_body_changes"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
 	IgnoreNullProperty            types.Bool       `tfsdk:"ignore_null_property"`
+	ListUniqueIdProperty          types.Map        `tfsdk:"list_unique_id_property"`
+	IgnoreOtherItemsInList        types.List       `tfsdk:"ignore_other_items_in_list"`
 	Location                      types.String     `tfsdk:"location"`
 	Locks                         types.List       `tfsdk:"locks"`
 	Name                          types.String     `tfsdk:"name"`
@@ -99,9 +106,12 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		Body:                          types.Dynamic{},
 		SensitiveBodyVersion:          types.MapNull(types.StringType),
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
+		IgnoreBodyChanges:             types.ListNull(types.StringType),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
 		IgnoreNullProperty:            types.BoolValue(false),
+		ListUniqueIdProperty:          types.MapNull(types.StringType),
+		IgnoreOtherItemsInList:        types.ListNull(types.StringType),
 		Locks:                         types.ListNull(types.StringType),
 		Output:                        types.DynamicNull(),
 		ReplaceTriggersExternalValues: types.DynamicNull(),
@@ -137,6 +147,7 @@ var _ resource.ResourceWithImportState = &AzapiResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiResource{}
 var _ resource.ResourceWithMoveState = &AzapiResource{}
 var _ resource.ResourceWithIdentity = &AzapiResource{}
+var _ tffwdocs.ResourceWithRenderOption = &AzapiResource{}
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -177,7 +188,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name of the azure resource.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -238,14 +249,23 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				MarkdownDescription: docstrings.SensitiveBodyVersion(),
 			},
 
+			"ignore_body_changes": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				WriteOnly:   true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: "A list of paths in the resource body whose changes should be ignored. Prefer Terraform's `lifecycle.ignore_changes` when possible. Use this argument only when the paths must be derived from variables or other non-static values. Changes to this argument take effect only after an apply because its value is stored in provider-private state. Paths use dot notation, for example `properties.sku.name`. Individual list items cannot be targeted, ignore the entire list property instead. Configuration changes at an ignored path will not be sent to Azure until that path is removed from this list. This write-only argument requires Terraform 1.11 or later.",
+			},
+
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
 					"```hcl\n" +
 					"resource \"azapi_resource\" \"example\" {\n" +
 					"  name      = var.name\n" +
@@ -279,7 +299,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -294,6 +314,21 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
 				MarkdownDescription: docstrings.IgnoreNullProperty(),
+			},
+
+			"list_unique_id_property": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.ListUniqueIdProperty(),
+			},
+
+			"ignore_other_items_in_list": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: docstrings.IgnoreOtherItemsInList(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -395,6 +430,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
+				MarkdownDescription: "The identity of this resource.",
 				NestedObject: schema.NestedBlockObject{
 					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{
@@ -451,11 +487,11 @@ func (r *AzapiResource) IdentitySchema(ctx context.Context, request resource.Ide
 		Attributes: map[string]identityschema.Attribute{
 			"id": identityschema.StringAttribute{
 				RequiredForImport: true,
-				Description:       "The Azure resource ID",
+				Description:       "The Azure resource ID.",
 			},
 			"type": identityschema.StringAttribute{
 				OptionalForImport: true,
-				Description:       "The Azure resource type",
+				Description:       "The Azure resource type.",
 			},
 		},
 		Version: 0,
@@ -532,6 +568,22 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		plan.Output = state.Output
 	}
 
+	var ignoreBodyChanges []string
+	if config.IgnoreBodyChanges.IsUnknown() {
+		plan.Output = types.DynamicUnknown()
+	} else {
+		ignoreBodyChanges = common.AsStringList(config.IgnoreBodyChanges)
+		ignoreBodyChangesChanged, diags := ignoreBodyChangesPrivateMgr.Diff(ctx, request.Private, ignoreBodyChanges)
+		response.Diagnostics.Append(diags...)
+		response.Diagnostics.Append(ignoreBodyChangesPrivateMgr.Set(ctx, response.Private, ignoreBodyChanges)...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+		if state != nil && ignoreBodyChangesChanged {
+			plan.Output = types.DynamicUnknown()
+		}
+	}
+
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
 	if err != nil {
 		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
@@ -564,6 +616,34 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
+	if state != nil && len(ignoreBodyChanges) != 0 && dynamic.IsFullyKnown(plan.Body) {
+		planBody := make(map[string]interface{})
+		if err := unmarshalBody(plan.Body, &planBody); err != nil {
+			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+			return
+		}
+		stateBody := make(map[string]interface{})
+		if err := unmarshalBody(state.Body, &stateBody); err != nil {
+			response.Diagnostics.AddError("Invalid state body", fmt.Sprintf(`The argument "body" in state is invalid: %s`, err.Error()))
+			return
+		}
+		planBody, err = overrideBodyWithPaths(planBody, stateBody, ignoreBodyChanges)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: %s`, err))
+			return
+		}
+		data, err := json.Marshal(planBody)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
+		}
+		plan.Body, err = dynamic.FromJSON(data, plan.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
+		}
+	}
+
 	// In the below two cases, we think the config is still matched with the remote state, and there's no need to update the resource:
 	// 1. If the api-version is changed, but the body is not changed
 	// 2. If the body only removes/adds properties that are equal to the remote state
@@ -591,6 +671,16 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			IgnoreCasing:          plan.IgnoreCasing.ValueBool(),
 			IgnoreMissingProperty: false,
 			IgnoreNullProperty:    plan.IgnoreNullProperty.ValueBool(),
+		}
+		if v := common.AsMapOfString(plan.ListUniqueIdProperty); len(v) != 0 {
+			option.ListUniqueIdProperty = v
+		}
+		if paths := common.AsStringList(plan.IgnoreOtherItemsInList); len(paths) != 0 {
+			m := make(map[string]bool)
+			for _, p := range paths {
+				m[p] = true
+			}
+			option.IgnoreOtherItemsInList = m
 		}
 		remoteBody := utils.UpdateObject(configBody, responseBody, option)
 		// suppress the change if the remote body is equal to the config body
@@ -628,9 +718,13 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	if dynamic.IsFullyKnown(plan.Body) {
-		plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
-		if state == nil || !state.Tags.Equal(plan.Tags) {
-			plan.Output = basetypes.NewDynamicUnknown()
+		if state != nil && slices.Contains(ignoreBodyChanges, "tags") {
+			plan.Tags = state.Tags
+		} else {
+			plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
+			if state == nil || !state.Tags.Equal(plan.Tags) {
+				plan.Output = basetypes.NewDynamicUnknown()
+			}
 		}
 
 		// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
@@ -682,7 +776,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if r.ProviderData.Features.EnablePreflight && isNewResource {
+	if r.ProviderData.Features.EnablePreflight {
 		parentId := plan.ParentID.ValueString()
 		if parentId == "" {
 			placeholder, err := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId())
@@ -777,12 +871,12 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	client := r.ProviderData.ResourceClient
 
 	if isNewResource {
-		// check if the resource already exists using the non-retry client to avoid issue where user specifies
-		// a FooResourceNotFound error as a retryable error
+		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
+		requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptionsForResourceExistenceCheck(plan.Retry)
 		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
@@ -790,7 +884,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 
 		// 403 is returned if group (or child resource of group) does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
-		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+		if utils.ResponseErrorWasNotFound(err) || (utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+			// A 403 is returned for management groups that do not exist.
+		} else {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -815,7 +911,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		return
 	}
 	if sensitiveBody != nil {
-		body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(plan.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		body = utils.MergeObjectWithOption(body, sensitiveBody, mergeOption).(map[string]interface{})
 	}
 
 	if !isNewResource {
@@ -824,6 +924,35 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			noneIdentity := identity.Model{Type: types.StringValue(string(identity.None))}
 			out, _ := identity.ExpandIdentity(noneIdentity)
 			body["identity"] = out
+		}
+	}
+
+	if !isNewResource {
+		ignoreBodyChanges := common.AsStringList(config.IgnoreBodyChanges)
+		if len(ignoreBodyChanges) != 0 {
+			requestOptions := clients.RequestOptions{
+				Headers:         common.AsMapOfString(plan.ReadHeaders),
+				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
+			}
+			existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+			if err != nil {
+				diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+				return
+			}
+			body, err = overrideBodyWithPaths(body, existing, ignoreBodyChanges)
+			if err != nil {
+				diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: %s`, err))
+				return
+			}
+			if id.ResourceDef != nil {
+				writableBody := (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(body))
+				var ok bool
+				body, ok = writableBody.(map[string]interface{})
+				if !ok {
+					diagnostics.AddError("Invalid body", fmt.Sprintf("expected writable body to be an object, got %T", writableBody))
+					return
+				}
+			}
 		}
 	}
 
@@ -846,8 +975,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.CreateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(plan.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 	if !isNewResource {
 		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
@@ -858,14 +987,33 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			"err": err,
 		})
 		if isNewResource {
+			// If the create failed because terraform was interrupted (SIGINT,
+			// context.Canceled) or the operation exceeded its timeout
+			// (context.DeadlineExceeded), the resource may already have been
+			// created in Azure while the poll was aborted. Read it back on a
+			// context detached from the cancelled/expired parent so its id can
+			// still be persisted to state, avoiding an orphaned resource that a
+			// subsequent apply would reject with "already exists".
+			// See https://github.com/Azure/terraform-provider-azapi/issues/1110
+			// and https://github.com/Azure/terraform-provider-azapi/issues/1078.
+			recoveryCtx := ctx
+			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+				var cancel context.CancelFunc
+				recoveryCtx, cancel = context.WithTimeout(context.WithoutCancel(ctx), 5*time.Minute)
+				defer cancel()
+			}
 			requestOptions := clients.RequestOptions{
 				Headers:         common.AsMapOfString(plan.ReadHeaders),
 				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-				RetryOptions:    clients.NewRetryOptions(plan.Retry),
 			}
-			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
+			requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
+			if responseBody, err := client.Get(recoveryCtx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
 				// generate the computed fields
-				plan.ID = types.StringValue(id.ID())
+				stateID := ""
+				if state != nil {
+					stateID = state.ID.ValueString()
+				}
+				plan.ID = types.StringValue(preserveCasing(stateID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 
 				var defaultOutput interface{}
 				if !r.ProviderData.Features.DisableDefaultOutput {
@@ -892,7 +1040,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 						plan.Identity = identity.ToList(planIdentity)
 					}
 				}
-				diagnostics.Append(responseState.Set(ctx, plan)...)
+				diagnostics.Append(responseState.Set(recoveryCtx, plan)...)
 			}
 		}
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
@@ -900,13 +1048,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
+	readAfterCreateOpts, _ := clients.NewRetryOptionsForReadAfterCreate()
+	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
+	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-		RetryOptions: clients.CombineRetryOptions(
-			clients.NewRetryOptionsForReadAfterCreate(),
-			clients.NewRetryOptions(plan.Retry),
-		),
+		RetryOptions:    combinedRetryOpts,
+		LastRetryError:  combinedLastRetryErr,
 	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
@@ -920,7 +1069,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	// generate the computed fields
-	plan.ID = types.StringValue(id.ID())
+	stateID := ""
+	if state != nil {
+		stateID = state.ID.ValueString()
+	}
+	plan.ID = types.StringValue(preserveCasing(stateID, id.ID(), r.ProviderData.Features.PreserveResourceIDCasing))
 
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
@@ -948,6 +1101,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 	}
 	diagnostics.Append(responseState.Set(ctx, plan)...)
+	diagnostics.Append(ignoreBodyChangesPrivateMgr.Set(ctx, privateData, common.AsStringList(config.IgnoreBodyChanges))...)
 
 	if plan.SensitiveBodyVersion.IsNull() {
 		writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
@@ -964,6 +1118,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
 	var model AzapiResourceModel
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), model.ID)...); response.Diagnostics.HasError() {
 		return
 	}
 
@@ -990,8 +1147,8 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
@@ -1061,10 +1218,33 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		}
 	}
 
+	ignoreBodyChanges, diags := ignoreBodyChangesPrivateMgr.Get(ctx, request.Private)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	if len(ignoreBodyChanges) != 0 {
+		responseBody, err = overrideBodyWithPaths(responseBody, requestBody, ignoreBodyChanges)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid private state", fmt.Sprintf(`The stored "ignore_body_changes" value is invalid: %s`, err))
+			return
+		}
+	}
+
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
 		IgnoreNullProperty:    model.IgnoreNullProperty.ValueBool(),
+	}
+	if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+		option.ListUniqueIdProperty = v
+	}
+	if paths := common.AsStringList(model.IgnoreOtherItemsInList); len(paths) != 0 {
+		m := make(map[string]bool)
+		for _, p := range paths {
+			m[p] = true
+		}
+		option.IgnoreOtherItemsInList = m
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
@@ -1109,7 +1289,6 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
-	response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), state.ID)...)
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
@@ -1148,8 +1327,8 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.DeleteHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
@@ -1159,11 +1338,14 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	var id parse.ResourceId
 	var err error
+	var explicitApiVersion string
+	var candidateApiVersions []string
+	var responseBody interface{}
 
 	// Case 1: Traditional ID-based import using request.ID
 	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
-		id, err = parse.ResourceID(request.ID)
+		id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(request.ID)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())
 			return
@@ -1188,10 +1370,11 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q with type %q: %+v", resourceID, identityData.Type.ValueString(), err).Error())
 				return
 			}
+			explicitApiVersion = id.ApiVersion
 		} else {
 			// Case 3: Only id is set - parse it to extract API version
 			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
-			id, err = parse.ResourceID(resourceID)
+			id, explicitApiVersion, candidateApiVersions, err = parse.ResourceIDWithApiVersionInfo(resourceID)
 			if err != nil {
 				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", resourceID, err).Error())
 				return
@@ -1207,7 +1390,10 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	responseBody, err = withApiVersionFallback(ctx, func(apiVersion string) (interface{}, error) {
+		return client.Get(ctx, id.AzureResourceId, apiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
+	}, explicitApiVersion, candidateApiVersions)
+
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -1257,6 +1443,36 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Type: state.Type,
 	}
 	response.Diagnostics.Append(response.Identity.Set(ctx, resourceIdentity)...)
+}
+
+func withApiVersionFallback(ctx context.Context, operation func(apiVersion string) (result interface{}, err error), explicitApiVersion string, candidateApiVersions []string) (result interface{}, err error) {
+	if explicitApiVersion == "" && len(candidateApiVersions) == 0 {
+		return nil, fmt.Errorf("have to specify either an explicit api-version or provide candidate api-versions")
+	}
+
+	if explicitApiVersion != "" {
+		return operation(explicitApiVersion)
+	}
+
+	const maxAttempts = 3
+	attempts := maxAttempts
+	if len(candidateApiVersions) < attempts {
+		attempts = len(candidateApiVersions)
+	}
+	for attempt := 0; attempt < attempts; attempt++ {
+		apiVersion := candidateApiVersions[len(candidateApiVersions)-1-attempt]
+		result, err = operation(apiVersion)
+		if err == nil {
+			return result, nil
+		}
+		if !utils.ResponseErrorWasStatusCode(err, http.StatusBadRequest) && !utils.ResponseErrorWasNotFound(err) {
+			return result, err
+		}
+		if attempt < attempts-1 {
+			tflog.Info(ctx, fmt.Sprintf("api-version %q failed with error: %+v, retrying with an older api-version", apiVersion, err))
+		}
+	}
+	return result, err
 }
 
 func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
@@ -1313,6 +1529,12 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 
 				response.Diagnostics.Append(response.TargetPrivate.SetKey(ctx, FlagMoveState, []byte("true"))...)
 				response.Diagnostics.Append(response.TargetState.Set(ctx, state)...)
+
+				resourceIdentity := AzapiResourceIdentityModel{
+					ID:   state.ID,
+					Type: state.Type,
+				}
+				response.Diagnostics.Append(response.TargetIdentity.Set(ctx, resourceIdentity)...)
 			},
 		},
 	}
@@ -1539,4 +1761,102 @@ func isManagementGroupScope(scope string) bool {
 		strings.ToLower(scope),
 		managementGroupScope,
 	)
+}
+
+func (r *AzapiResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_user_assigned_identity" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+}
+
+// manage a container registry resource
+resource "azapi_resource" "example" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  name      = "registry1"
+  parent_id = azurerm_resource_group.example.id
+
+  location = azurerm_resource_group.example.location
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.example.id]
+  }
+
+  body = {
+    sku = {
+      name = "Standard"
+    }
+    properties = {
+      adminUserEnabled = true
+    }
+  }
+
+  tags = {
+    "Key" = "Value"
+  }
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}`,
+			},
+		},
+		ImportId: &tffwdocs.ImportId{
+			Format:    "<resource_id>[?api-version=<api_version>]",
+			ExampleId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01",
+		},
+		IdentityExamples: []tffwdocs.Example{
+			{
+				HCL: `
+id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet"
+type = "Microsoft.Network/virtualNetworks@2023-11-01"
+`,
+			},
+		},
+		Template: template.Must(template.New("resource").Parse(`{{ .Header }}
+{{ .Description }}
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}
+{{- with .Import }}
+{{ . }}
+### API Version for Initial Import Call
+
+While processing an import request, the provider cannot determine which api-version to use for the initial import GET call. To work around this, the provider falls back to the 3 most recent [indexed](https://github.com/Azure/terraform-provider-azapi/blob/main/internal/azure/generated/index.json) api-versions (regardless of preview / stable), trying each in turn. The provider treats any 400 or 404 response as a signal to attempt the next older version. This fallback can result in an api-version mismatch; to avoid it, specify an explicit api-version using the ` + "`api-version`" + ` query parameter or the resource ` + "`type`" + ` attribute.
+
+{{- end }}`)),
+	}
 }

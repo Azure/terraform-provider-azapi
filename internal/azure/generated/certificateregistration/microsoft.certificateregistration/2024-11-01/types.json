@@ -54,14 +54,7 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Resource Location."
+        "description": "Kind of resource"
       },
       "tags": {
         "type": {
@@ -69,6 +62,20 @@
         },
         "flags": 0,
         "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -611,20 +618,140 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.CertificateRegistration/certificateOrders@2024-11-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/3"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -654,14 +781,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/61"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/62"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -678,27 +805,34 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
+        "description": "Kind of resource"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 1,
-        "description": "Resource Location."
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/49"
         },
-        "flags": 0,
-        "description": "Resource tags."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -707,11 +841,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.CertificateRegistration/certificateOrders/certificates@2024-11-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/52"
+      "$ref": "#/63"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -741,21 +875,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/66"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/67"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/69"
         },
         "flags": 2,
         "description": "DetectorResponse resource specific properties"
@@ -765,7 +899,14 @@
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Kind of resource."
+        "description": "Kind of resource"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -775,35 +916,35 @@
     "properties": {
       "metadata": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "metadata for the detector"
       },
       "dataset": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "Data Set"
       },
       "status": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "Indicates status of the most severe insight."
       },
       "dataProvidersMetadata": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "Additional configuration for different data providers to be used by the UI"
       },
       "suggestedUtterances": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "Suggested utterances where the detector can be applicable."
@@ -851,21 +992,21 @@
       },
       "supportTopicList": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/72"
         },
         "flags": 2,
         "description": "List of Support Topics for which this detector is enabled."
       },
       "analysisType": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/73"
         },
         "flags": 2,
         "description": "Analysis Types for which this detector should apply to."
       },
       "type": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/77"
         },
         "flags": 2,
         "description": "Whether this detector is an Analysis Detector or not."
@@ -902,7 +1043,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/60"
+      "$ref": "#/71"
     }
   },
   {
@@ -927,13 +1068,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/63"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/64"
+        "$ref": "#/75"
       },
       {
-        "$ref": "#/65"
+        "$ref": "#/76"
       }
     ]
   },
@@ -943,14 +1084,14 @@
     "properties": {
       "table": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "Data in table form"
       },
       "renderingProperties": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Properties that describe how the table should be rendered"
@@ -970,14 +1111,14 @@
       },
       "columns": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "List of columns with data types"
       },
       "rows": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Raw row values"
@@ -1014,7 +1155,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/69"
+      "$ref": "#/80"
     }
   },
   {
@@ -1026,7 +1167,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/71"
+      "$ref": "#/82"
     }
   },
   {
@@ -1035,7 +1176,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/110"
         },
         "flags": 0,
         "description": "Rendering Type"
@@ -1160,39 +1301,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/74"
-      },
-      {
-        "$ref": "#/75"
-      },
-      {
-        "$ref": "#/76"
-      },
-      {
-        "$ref": "#/77"
-      },
-      {
-        "$ref": "#/78"
-      },
-      {
-        "$ref": "#/79"
-      },
-      {
-        "$ref": "#/80"
-      },
-      {
-        "$ref": "#/81"
-      },
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/84"
-      },
-      {
         "$ref": "#/85"
       },
       {
@@ -1233,13 +1341,46 @@
       },
       {
         "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/67"
+      "$ref": "#/78"
     }
   },
   {
@@ -1255,7 +1396,7 @@
       },
       "statusId": {
         "type": {
-          "$ref": "#/107"
+          "$ref": "#/118"
         },
         "flags": 0,
         "description": "Level of the most severe insight generated by the detector."
@@ -1286,19 +1427,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/102"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/114"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/115"
       },
       {
-        "$ref": "#/105"
+        "$ref": "#/116"
       },
       {
-        "$ref": "#/106"
+        "$ref": "#/117"
       }
     ]
   },
@@ -1314,7 +1455,7 @@
       },
       "propertyBag": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/122"
         },
         "flags": 2,
         "description": "Settings for the data provider"
@@ -1333,7 +1474,7 @@
       },
       "value": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/121"
         },
         "flags": 2,
         "description": "Any object"
@@ -1341,18 +1482,23 @@
     }
   },
   {
-    "$type": "AnyType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/109"
+    "$type": "ObjectType",
+    "name": "KeyValuePairStringObjectValue",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/108"
+      "$ref": "#/120"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/119"
     }
   },
   {
@@ -1368,7 +1514,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "Array of utterance results for search query."
@@ -1381,7 +1527,7 @@
     "properties": {
       "sampleUtterance": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "A sample utterance."
@@ -1408,7 +1554,7 @@
       },
       "links": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/127"
         },
         "flags": 0,
         "description": "Links attribute of sample utterance."
@@ -1431,17 +1577,17 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/114"
+      "$ref": "#/125"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.CertificateRegistration/certificateOrders/detectors@2024-11-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/57"
+      "$ref": "#/68"
     },
-    "flags": 1
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -1449,7 +1595,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/131"
         },
         "flags": 0,
         "description": "ReissueCertificateOrderRequest resource specific properties"
@@ -1524,7 +1670,7 @@
     "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/119"
+      "$ref": "#/130"
     }
   },
   {
@@ -1533,7 +1679,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/134"
         },
         "flags": 0,
         "description": "RenewCertificateOrderRequest resource specific properties"
@@ -1601,7 +1747,7 @@
     "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/122"
+      "$ref": "#/133"
     }
   },
   {
@@ -1629,59 +1775,8 @@
     "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
     "apiVersion": "2024-11-01",
     "input": {
-      "$ref": "#/126"
+      "$ref": "#/137"
     }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SiteSealRequest",
-    "properties": {
-      "lightTheme": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 0,
-        "description": "If <code>true</code> use the light color theme for site seal; otherwise, use the default color theme."
-      },
-      "locale": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Locale of site seal."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SiteSeal",
-    "properties": {
-      "html": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "HTML snippet"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "retrieveSiteSeal",
-    "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
-    "apiVersion": "2024-11-01",
-    "output": {
-      "$ref": "#/129"
-    },
-    "input": {
-      "$ref": "#/128"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "verifyDomainOwnership",
-    "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
-    "apiVersion": "2024-11-01"
   },
   {
     "$type": "ObjectType",
@@ -1689,7 +1784,7 @@
     "properties": {
       "actionType": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/154"
         },
         "flags": 2,
         "description": "Action type."
@@ -1763,27 +1858,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/133"
-      },
-      {
-        "$ref": "#/134"
-      },
-      {
-        "$ref": "#/135"
-      },
-      {
-        "$ref": "#/136"
-      },
-      {
-        "$ref": "#/137"
-      },
-      {
-        "$ref": "#/138"
-      },
-      {
-        "$ref": "#/139"
-      },
-      {
         "$ref": "#/140"
       },
       {
@@ -1803,13 +1877,34 @@
       },
       {
         "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/132"
+      "$ref": "#/139"
     }
   },
   {
@@ -1818,7 +1913,7 @@
     "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/148"
+      "$ref": "#/155"
     }
   },
   {
@@ -1844,7 +1939,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/150"
+      "$ref": "#/157"
     }
   },
   {
@@ -1853,7 +1948,58 @@
     "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
     "apiVersion": "2024-11-01",
     "output": {
-      "$ref": "#/151"
+      "$ref": "#/158"
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteSealRequest",
+    "properties": {
+      "lightTheme": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "If <code>true</code> use the light color theme for site seal; otherwise, use the default color theme."
+      },
+      "locale": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Locale of site seal."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteSeal",
+    "properties": {
+      "html": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "HTML snippet"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "retrieveSiteSeal",
+    "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/161"
+    },
+    "input": {
+      "$ref": "#/160"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "verifyDomainOwnership",
+    "resourceType": "Microsoft.CertificateRegistration/certificateOrders",
+    "apiVersion": "2024-11-01"
   }
 ]
