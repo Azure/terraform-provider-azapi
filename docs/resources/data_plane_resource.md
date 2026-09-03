@@ -485,7 +485,7 @@ resource "terraform_data" "contentUnderstandingDefaults" {
 
   depends_on = [
     azapi_resource.roleAssignment,
-    azapi_resource.aiUserRoleAssignment,
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
     azurerm_cognitive_deployment.gpt_5,
     azurerm_cognitive_deployment.text_embedding_3_large
   ]
