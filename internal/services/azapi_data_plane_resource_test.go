@@ -1710,7 +1710,6 @@ resource "azapi_resource" "gpt5Deployment" {
         name    = "gpt-5"
         version = "2025-08-07"
       }
-      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
     }
     sku = {
       name     = "DataZoneStandard"
@@ -1730,10 +1729,9 @@ resource "azapi_resource" "textEmbedding3LargeDeployment" {
         name    = "text-embedding-3-large"
         version = "1"
       }
-      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
     }
     sku = {
-      name     = "GlobalStandard"
+      name     = "Standard"
       capacity = 1
     }
   }
