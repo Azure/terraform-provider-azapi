@@ -96,7 +96,7 @@ resource "azapi_data_plane_resource" "dataset" {
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
-- `name` (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
+- `name` (String) Specifies the name (identifier segment) of the data plane resource. For resource types with service-generated identifiers, omit this attribute. For Microsoft.Foundry dataset versions, set it to the dataset version. Changing this forces a new resource to be created.
 
 	~> Once set, the value of this attribute in state will not change.
 
@@ -250,6 +250,7 @@ Optional:
 | Microsoft.DigitalTwins/digitalTwinsInstances/eventroutes | /eventroutes/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.DigitalTwins/digitalTwinsInstances/jobs/imports | /jobs/imports/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.Foundry/agents | /agents/{agentName} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
+| Microsoft.Foundry/datasets/versions | /datasets/{datasetName}/versions/{version} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}/datasets/{datasetName}      |
 | Microsoft.IoTCentral/IoTApps/organizations | /organizations/{organizationId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/scheduledJobs | /scheduledJobs/{scheduledJobId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/users | /users/{userId} | {appSubdomain}.azureiotcentral.com                                                          |
@@ -561,6 +562,103 @@ output "foundry_host" {
 
 output "project_name" {
   value = azapi_resource.foundry_project.name
+}
+```
+
+### Microsoft.Foundry/datasets/versions
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {}
+
+variable "project_endpoint" {
+  type        = string
+  description = "Foundry project endpoint, for example contoso.services.ai.azure.com/api/projects/example."
+}
+
+variable "dataset_name" {
+  description = "The name of the dataset."
+  type        = string
+}
+
+variable "dataset_version" {
+  description = "The version of the dataset."
+  type        = string
+}
+
+variable "dataset_description" {
+  description = "The description of the dataset."
+  type        = string
+}
+
+variable "dataset_type" {
+  description = "The dataset type. Supported values are uri-file and uri-folder. The current upload workflow is file-oriented."
+  type        = string
+  default     = "uri-file"
+
+  validation {
+    condition     = contains(["uri-file", "uri-folder"], var.dataset_type)
+    error_message = "dataset_type must be uri-file or uri-folder."
+  }
+}
+
+variable "dataset_format" {
+  description = "The format of the dataset, e.g., jsonl."
+  type        = string
+  default     = "jsonl"
+}
+
+variable "source_url" {
+  type        = string
+  description = "URL for the dataset file. Add module-specific host allowlist validation as appropriate."
+
+  validation {
+    condition     = can(regex("^https://", var.source_url))
+    error_message = "source_url must be an HTTPS URL."
+  }
+}
+
+variable "source_sha256" {
+  type        = string
+  default     = null
+  description = "Optional SHA-256 checksum for source_url."
+}
+
+resource "azapi_data_plane_resource" "dataset" {
+  type = "Microsoft.Foundry/datasets/versions@2025-05-01"
+
+  parent_id = "${var.project_endpoint}/datasets/${var.dataset_name}"
+
+  # The generic AzAPI resource calls this attribute "name".
+  # For Foundry dataset versions, it is the version in the REST path:
+  #
+  # {project-endpoint}/datasets/{dataset_name}/versions/{dataset_version}
+  name = var.dataset_version
+
+  body = {
+    name          = var.dataset_name
+    version       = var.dataset_version
+    description   = var.dataset_description
+    type          = var.dataset_type
+    format        = var.dataset_format
+    source_url    = var.source_url
+    source_sha256 = var.source_sha256
+  }
+}
+
+output "dataset_id" {
+  value = azapi_data_plane_resource.dataset.id
+}
+
+output "computed_sha256" {
+  value = azapi_data_plane_resource.dataset.output.computed_sha256
 }
 ```
 
@@ -1348,3 +1446,12 @@ import {
 }
 ```
 
+
+### Foundry dataset version imports
+
+Foundry dataset versions use the same import format. The resource ID includes
+the dataset name and version, while the resource type includes the API version:
+
+```shell
+$ terraform import azapi_data_plane_resource.dataset "contoso.services.ai.azure.com/api/projects/example/datasets/training/versions/1|Microsoft.Foundry/datasets/versions@2025-05-01"
+```
