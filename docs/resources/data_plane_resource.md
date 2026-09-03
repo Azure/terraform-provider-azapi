@@ -552,12 +552,6 @@ resource "azapi_data_plane_resource" "example" {
   parent_id = trimprefix(azapi_resource.foundry.output.properties.endpoint, "https://")
   name      = "exampleanalyzer"
 
-  retry = {
-    error_message_regex  = ["lacks the required data action", "PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
-    interval_seconds     = 30
-    max_interval_seconds = 180
-  }
-
   body = {
     description    = "My test analyzer"
     baseAnalyzerId = "prebuilt-document"
