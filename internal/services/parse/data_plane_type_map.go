@@ -52,3 +52,7 @@ func hasIdentifierSegment(resourceType string, identifier string) bool {
 func HasNameSegment(resourceType string) bool {
 	return hasIdentifierSegment(resourceType, "name")
 }
+
+func HasEvaluationIdSegment(resourceType string) bool {
+	return hasIdentifierSegment(resourceType, "evaluationId")
+}

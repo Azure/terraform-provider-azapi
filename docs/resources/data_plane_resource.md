@@ -91,12 +91,15 @@ resource "azapi_data_plane_resource" "dataset" {
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
 - `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
 - `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
+- `evaluation_id` (String) The ID of the evaluation for a Microsoft.Foundry evaluation run.
+
+	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `ignore_casing` (Boolean) A dynamic attribute that contains the request body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. Defaults to `true`.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
-- `name` (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
+- `name` (String) Specifies the name (identifier segment) of the data plane resource. For resource types where the service generates the identifier, this argument must not be set. Changing this forces a new resource to be created.
 
 	~> Once set, the value of this attribute in state will not change.
 
@@ -250,6 +253,8 @@ Optional:
 | Microsoft.DigitalTwins/digitalTwinsInstances/eventroutes | /eventroutes/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.DigitalTwins/digitalTwinsInstances/jobs/imports | /jobs/imports/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.Foundry/agents | /agents/{agentName} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
+| Microsoft.Foundry/evaluation/runs | /openai/v1/evals/{evalId}/runs/{runId} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
+| Microsoft.Foundry/evaluation/versions | /openai/v1/evals/{evalId} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
 | Microsoft.IoTCentral/IoTApps/organizations | /organizations/{organizationId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/scheduledJobs | /scheduledJobs/{scheduledJobId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/users | /users/{userId} | {appSubdomain}.azureiotcentral.com                                                          |
@@ -563,6 +568,94 @@ output "project_name" {
   value = azapi_resource.foundry_project.name
 }
 ```
+
+### Microsoft.Foundry/evaluation/runs
+
+```terraform
+resource "azapi_data_plane_resource" "evaluation_run" {
+  type = "Microsoft.Foundry/evaluation/runs@2025-05-01"
+
+  parent_id = "foundry-account-id.services.ai.azure.com/api/projects/foundry-project-id"
+
+  evaluation_id = "eval_id"
+
+  body = {
+    name = "evaluation-run-name"
+
+    data_source = {
+      type = "azure_ai_target_completions"
+
+      source = {
+        type = "file_id"
+        id   = "azureai://accounts/foundry-account-id/projects/foundry-project-id/data/dataset/versions/1"
+      }
+
+      input_messages = {
+        type = "template"
+
+        template = [{
+          role    = "user"
+          content = "{{item.input}}"
+        }]
+      }
+
+      target = {
+        type = "azure_ai_agent"
+        name = "agent-name"
+      }
+    }
+
+    evaluation_level = "turn"
+  }
+}```
+
+### Microsoft.Foundry/evaluation/versions
+
+```terraform
+resource "azapi_data_plane_resource" "evaluation" {
+  type = "Microsoft.Foundry/evaluation/versions@2025-05-01"
+
+  parent_id = "foundry-account-id.services.ai.azure.com/api/projects/foundry-project-id"
+
+  body = {
+    name = "evaluation-name"
+
+    data_source_config = {
+      type = "custom"
+
+      item_schema = {
+        type = "object"
+
+        properties = {
+          input           = { type = "string" }
+          expected_output = { type = "string" }
+        }
+
+        required = []
+      }
+
+      include_sample_schema = false
+    }
+
+    testing_criteria = [{
+      type           = "azure_ai_evaluator"
+      name           = "TaskCompletion"
+      evaluator_name = "builtin.task_completion"
+
+      data_mapping = {
+        query            = "{{item.input}}"
+        response         = "{{sample.output_text}}"
+        ground_truth     = "{{item.expected_output}}"
+        tool_calls       = "{{sample.tool_calls}}"
+        tool_definitions = "{{sample.tool_definitions}}"
+      }
+
+      initialization_parameters = {
+        deployment_name = "gpt5.4-nano"
+      }
+    }]
+  }
+}```
 
 ### Microsoft.IoTCentral/IoTApps/users
 

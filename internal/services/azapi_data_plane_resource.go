@@ -44,6 +44,7 @@ import (
 type DataPlaneResourceModel struct {
 	ID                            types.String     `tfsdk:"id"`
 	Name                          types.String     `tfsdk:"name"`
+	EvaluationID                  types.String     `tfsdk:"evaluation_id"`
 	ParentID                      types.String     `tfsdk:"parent_id"`
 	Type                          types.String     `tfsdk:"type"`
 	Body                          types.Dynamic    `tfsdk:"body"`
@@ -117,7 +118,15 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. For resource types where the service generates the identifier, this argument must not be set. Changing this forces a new resource to be created.",
+			},
+
+			"evaluation_id": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				MarkdownDescription: "The ID of the evaluation for a Microsoft.Foundry evaluation run.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -327,6 +336,10 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
+	if err := validateDataPlaneResourceEvaluationID(config); err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
 
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
@@ -424,6 +437,10 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
+	if err := validateDataPlaneResourceEvaluationID(config); err != nil {
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
 
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 	createResultFunc, hasCreateResult := getCreateResultFunc(plan)
@@ -433,7 +450,12 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		resourceName = "__generated__"
 	}
 
-	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
+	id, err := parse.NewDataPlaneResourceIdWithEvaluationID(
+		resourceName,
+		plan.ParentID.ValueString(),
+		plan.EvaluationID.ValueString(),
+		plan.Type.ValueString(),
+	)
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
@@ -568,6 +590,11 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 
 	plan.ID = basetypes.NewStringValue(id.ID())
 	plan.Name = basetypes.NewStringValue(id.Name)
+	if id.EvaluationId != "" {
+		plan.EvaluationID = basetypes.NewStringValue(id.EvaluationId)
+	} else {
+		plan.EvaluationID = types.StringNull()
+	}
 	plan.ParentID = basetypes.NewStringValue(id.ParentId)
 	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
@@ -616,14 +643,14 @@ func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
 	}
 
 	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
-	resourceType := strings.Split(config.Type.ValueString(), "@")[0]
+	resourceType := strings.SplitN(config.Type.ValueString(), "@", 2)[0]
 	if _, ok := getCreateResultFunc(config); ok {
-		// A resource exposing CreateResultFunc has a service-generated name, so "name" must not be set. See PR #1053.
 		if !nameIsEmpty {
 			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, resourceType)
 		}
 		return nil
 	}
+
 	if !parse.HasNameSegment(config.Type.ValueString()) {
 		if !nameIsEmpty {
 			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
@@ -721,6 +748,11 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}
 
 	model.Name = basetypes.NewStringValue(id.Name)
+	if id.EvaluationId != "" {
+		model.EvaluationID = basetypes.NewStringValue(id.EvaluationId)
+	} else {
+		model.EvaluationID = types.StringNull()
+	}
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
@@ -742,6 +774,9 @@ func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.Im
 
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("id"), id.ID())...)
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("name"), id.Name)...)
+	if id.EvaluationId != "" {
+		response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("evaluation_id"), id.EvaluationId)...)
+	}
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("parent_id"), id.ParentId)...)
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("type"), fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))...)
 }
@@ -763,6 +798,31 @@ func parseDataPlaneImportID(input string) (string, string, error) {
 	}
 
 	return resourceID, resourceType, nil
+}
+
+func validateDataPlaneResourceEvaluationID(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	if config.EvaluationID.IsUnknown() {
+		return nil
+	}
+
+	evaluationIDIsEmpty := config.EvaluationID.IsNull() || strings.TrimSpace(config.EvaluationID.ValueString()) == ""
+	resourceType := strings.SplitN(config.Type.ValueString(), "@", 2)[0]
+	if !parse.HasEvaluationIdSegment(config.Type.ValueString()) {
+		if !evaluationIDIsEmpty {
+			return fmt.Errorf(`the argument "evaluation_id" should not be set for resource type %q because this resource type does not use an evaluation ID`, resourceType)
+		}
+		return nil
+	}
+
+	if evaluationIDIsEmpty {
+		return fmt.Errorf(`the argument "evaluation_id" must be set for resource type %q`, resourceType)
+	}
+
+	return nil
 }
 
 func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
