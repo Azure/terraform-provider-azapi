@@ -60,6 +60,7 @@ type AzapiUpdateResourceModel struct {
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	ReadOverride                  types.Object     `tfsdk:"read_override" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -284,6 +285,8 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
+
+			"read_override": readOverrideSchema(),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -599,7 +602,12 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
+	response.Diagnostics.Append(readDiags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	responseBody, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
