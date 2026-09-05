@@ -102,7 +102,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 
 	// Action does not use sendRequestThenPoll because it parses the response body
 	// based on Content-Type (text/plain vs application/json) rather than always as JSON.
-	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted}
+	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent}
 	resp, pipeline, err := client.sendRequest(req, urlPath, options, successCodes)
 	if err != nil {
 		return nil, err
@@ -146,20 +146,31 @@ func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, 
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
+
+	// Inject headers into context so they are preserved across poller requests
+	ctxHeaders := http.Header{}
+	ctxHeaders.Set("Accept", "application/json")
+	if options.APIVersionHeaderName != "" {
+		ctxHeaders.Set(options.APIVersionHeaderName, apiVersion)
+	}
+	for key, value := range options.Headers {
+		ctxHeaders.Set(key, value)
+	}
+	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
+
 	req, err := runtime.NewRequest(ctx, method, urlPath)
 	if err != nil {
 		return nil, err
 	}
+
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
+	if !options.DisableAPIVersionQueryParameter {
+		reqQP.Set("api-version", apiVersion)
+	}
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	for key, value := range options.Headers {
-		req.Raw().Header.Set(key, value)
-	}
 
 	return req, nil
 }
