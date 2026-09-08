@@ -26,6 +26,22 @@ func TestAccGenericUpdateResource_readOverrideAppSettings(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_readOverridePreservesExistingAppSettings(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.readOverridePreservesExistingAppSettings(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.properties.KEEP").HasValue("existing"),
+				check.That(data.ResourceName).Key("output.properties.KEY1").HasValue("value1"),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_readOverrideDoesNotExportSensitiveBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -148,6 +164,41 @@ resource "azapi_update_resource" "test" {
     method = "POST"
     action = "list"
   }
+}
+`, readOverrideAppSettingsTemplate(data))
+}
+
+func (r GenericUpdateResource) readOverridePreservesExistingAppSettings(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource_action" "appsettings_seed" {
+  type        = "Microsoft.Web/sites/config@2023-12-01"
+  resource_id = "${azapi_resource.site.id}/config/appsettings"
+  method      = "PUT"
+  body = {
+    properties = {
+      KEEP = "existing"
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type      = "Microsoft.Web/sites/config@2023-12-01"
+  name      = "appsettings"
+  parent_id = azapi_resource.site.id
+  body = {
+    properties = {
+      KEY1 = "value1"
+    }
+  }
+  ignore_casing           = false
+  ignore_missing_property = false
+  read_override = {
+    method = "POST"
+    action = "list"
+  }
+  depends_on = [azapi_resource_action.appsettings_seed]
 }
 `, readOverrideAppSettingsTemplate(data))
 }

@@ -459,7 +459,12 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	readRequestOptions.RetryOptions, readRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
+	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
+	diagnostics.Append(readDiags...)
+	if diagnostics.HasError() {
+		return
+	}
+	existing, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, readRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -526,7 +531,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
+	responseBody, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, readRequestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
