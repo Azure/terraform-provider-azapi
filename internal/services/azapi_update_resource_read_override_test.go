@@ -26,6 +26,21 @@ func TestAccGenericUpdateResource_readOverrideAppSettings(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_readOverrideDoesNotExportSensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.readOverrideAppSettingsSensitiveBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.properties.API_KEY").DoesNotExist(),
+			),
+		},
+	})
+}
+
 func readOverrideAppSettingsTemplate(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -129,6 +144,27 @@ resource "azapi_update_resource" "test" {
   }
   ignore_casing           = false
   ignore_missing_property = false
+  read_override = {
+    method = "POST"
+    action = "list"
+  }
+}
+`, readOverrideAppSettingsTemplate(data))
+}
+
+func (r GenericUpdateResource) readOverrideAppSettingsSensitiveBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type      = "Microsoft.Web/sites/config@2023-12-01"
+  name      = "appsettings"
+  parent_id = azapi_resource.site.id
+  sensitive_body = {
+    properties = {
+      API_KEY = "sensitive-value"
+    }
+  }
   read_override = {
     method = "POST"
     action = "list"
