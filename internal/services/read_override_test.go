@@ -27,3 +27,54 @@ func Test_readOverrideFromObject(t *testing.T) {
 		t.Fatalf("null read override should decode to nil without diagnostics")
 	}
 }
+
+func Test_readOverrideConflictsWithSensitiveBody(t *testing.T) {
+	readOverride := types.ObjectValueMust(readOverrideAttributeTypes(), map[string]attr.Value{
+		"method": types.StringValue("POST"),
+		"action": types.StringValue("list"),
+	})
+
+	tests := []struct {
+		name          string
+		readOverride  types.Object
+		sensitiveBody types.Dynamic
+		want          bool
+	}{
+		{
+			name:          "both configured",
+			readOverride:  readOverride,
+			sensitiveBody: types.DynamicValue(types.ObjectValueMust(map[string]attr.Type{"secret": types.StringType}, map[string]attr.Value{"secret": types.StringValue("value")})),
+			want:          true,
+		},
+		{
+			name:          "sensitive body null",
+			readOverride:  readOverride,
+			sensitiveBody: types.DynamicNull(),
+		},
+		{
+			name:          "read override null",
+			readOverride:  types.ObjectNull(readOverrideAttributeTypes()),
+			sensitiveBody: types.DynamicValue(types.StringValue("value")),
+		},
+		{
+			name:          "sensitive body unknown",
+			readOverride:  readOverride,
+			sensitiveBody: types.DynamicUnknown(),
+			want:          true,
+		},
+		{
+			name:          "read override unknown",
+			readOverride:  types.ObjectUnknown(readOverrideAttributeTypes()),
+			sensitiveBody: types.DynamicValue(types.StringValue("value")),
+			want:          true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := readOverrideConflictsWithSensitiveBody(test.readOverride, test.sensitiveBody); got != test.want {
+				t.Fatalf("readOverrideConflictsWithSensitiveBody() = %t, want %t", got, test.want)
+			}
+		})
+	}
+}

@@ -324,6 +324,9 @@ func (r *AzapiUpdateResource) ValidateConfig(ctx context.Context, request resour
 	if !config.Name.IsNull() && !config.ResourceID.IsNull() {
 		response.Diagnostics.AddError("Invalid configuration", `Only one of the arguments "name" or "resource_id" can be set`)
 	}
+	if readOverrideConflictsWithSensitiveBody(config.ReadOverride, config.SensitiveBody) {
+		response.Diagnostics.AddError("Invalid configuration", `The argument "read_override" cannot be used with "sensitive_body" because the read response may contain sensitive values that would be stored in state`)
+	}
 	if response.Diagnostics.HasError() {
 		return
 	}

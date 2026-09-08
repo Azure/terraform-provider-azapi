@@ -48,8 +48,12 @@ func readOverrideSchema() schema.Attribute {
 				},
 			},
 		},
-		MarkdownDescription: "Overrides the default `GET` request used to read the resource. When configured, the provider sends the specified action request instead of `GET` and uses its response for all read processing, including refreshing `body` and `output`. When omitted, the provider reads the resource with `GET`.",
+		MarkdownDescription: "Overrides the default `GET` request used to read the resource. When configured, the provider sends the specified action request instead of `GET` and uses its response for all read processing, including refreshing `body` and `output`. When omitted, the provider reads the resource with `GET`.\n\n~> **Warning:** Do not use `read_override` with sensitive values. Action responses are stored in state through `body` and `output`, and `read_override` cannot be combined with `sensitive_body`.",
 	}
+}
+
+func readOverrideConflictsWithSensitiveBody(readOverride types.Object, sensitiveBody types.Dynamic) bool {
+	return !readOverride.IsNull() && !sensitiveBody.IsNull()
 }
 
 func readOverrideFromObject(ctx context.Context, value types.Object) (*ReadOverrideModel, diag.Diagnostics) {

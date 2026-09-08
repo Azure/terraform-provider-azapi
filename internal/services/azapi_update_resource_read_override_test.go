@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -42,17 +43,14 @@ func TestAccGenericUpdateResource_readOverridePreservesExistingAppSettings(t *te
 	})
 }
 
-func TestAccGenericUpdateResource_readOverrideDoesNotExportSensitiveBody(t *testing.T) {
+func TestAccGenericUpdateResource_readOverrideConflictsWithSensitiveBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.readOverrideAppSettingsSensitiveBody(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("output.properties.API_KEY").DoesNotExist(),
-			),
+			Config:      r.readOverrideAppSettingsSensitiveBody(data),
+			ExpectError: regexp.MustCompile(`"read_override" cannot be used with "sensitive_body"`),
 		},
 	})
 }

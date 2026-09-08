@@ -136,7 +136,11 @@ resource "azapi_update_resource" "example" {
 
 	-> Ensure this in resource ID format.
 - `read_headers` (Map of String) A mapping of headers to be sent with the read request.
-- `read_override` (Object) Overrides the default `GET` request used to read the resource. When configured, the provider sends the specified action request instead of `GET` and uses its response for all read processing, including refreshing `body` and `output`. When omitted, the provider reads the resource with `GET`. See [below for nested schema](#nested--read_override).
+- `read_override` (Object) Overrides the default `GET` request used to read the resource. When configured, the provider sends the specified action request instead of `GET` and uses its response for all read processing, including refreshing `body` and `output`. When omitted, the provider reads the resource with `GET`.
+
+	~> **Warning:** Do not use `read_override` with sensitive values. Action responses are stored in state through `body` and `output`, and `read_override` cannot be combined with `sensitive_body`.
+
+	See [below for nested schema](#nested--read_override).
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
 	If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
