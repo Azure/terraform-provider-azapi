@@ -228,10 +228,76 @@ func (client *ResourceClient) Action(ctx context.Context, resourceID string, act
 			options.RetryOptions.ShouldRetry != nil,
 		)
 	}
+
 	urlPath := resourceID
 	if action != "" {
 		urlPath = fmt.Sprintf("%s/%s", resourceID, action)
 	}
+
+	// Some actions (e.g. Azure Resource Graph's `resources` action) paginate their results via a `$skipToken`
+	// property: the request body carries the token in `options.$skipToken` and the response echoes back a
+	// top-level `$skipToken` when there are more pages, together with a `data` array of results for the current
+	// page. Since this convention isn't part of the generic ARM action contract, only the responses that expose a
+	// `data` array are paged this way; all other actions return their response body as-is.
+	data := make([]interface{}, 0)
+	var skipToken string
+	for {
+		requestBody := body
+		if skipToken != "" {
+			requestBody = withSkipToken(body, skipToken)
+		}
+
+		responseBody, err := client.doAction(ctx, urlPath, apiVersion, method, requestBody, options)
+		if err != nil {
+			return nil, err
+		}
+
+		responseMap, ok := responseBody.(map[string]interface{})
+		if !ok {
+			return responseBody, nil
+		}
+
+		pageData, hasData := responseMap["data"].([]interface{})
+		if !hasData {
+			return responseBody, nil
+		}
+		data = append(data, pageData...)
+
+		nextSkipToken, _ := responseMap["$skipToken"].(string)
+		if nextSkipToken == "" {
+			responseMap["data"] = data
+			delete(responseMap, "$skipToken")
+			return responseMap, nil
+		}
+		skipToken = nextSkipToken
+	}
+}
+
+// withSkipToken returns a shallow copy of body with `options.$skipToken` set to skipToken. body is expected to be
+// a map[string]interface{} (or nil); any other shape is returned unmodified since it can't carry a skip token.
+func withSkipToken(body interface{}, skipToken string) interface{} {
+	bodyMap, ok := body.(map[string]interface{})
+	if !ok {
+		return body
+	}
+
+	newBody := make(map[string]interface{}, len(bodyMap))
+	for k, v := range bodyMap {
+		newBody[k] = v
+	}
+
+	requestOptions, _ := newBody["options"].(map[string]interface{})
+	newOptions := make(map[string]interface{}, len(requestOptions)+1)
+	for k, v := range requestOptions {
+		newOptions[k] = v
+	}
+	newOptions["$skipToken"] = skipToken
+	newBody["options"] = newOptions
+
+	return newBody
+}
+
+func (client *ResourceClient) doAction(ctx context.Context, urlPath string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
 	req, err := runtime.NewRequest(ctx, method, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
