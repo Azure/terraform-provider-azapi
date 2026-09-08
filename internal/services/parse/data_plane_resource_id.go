@@ -65,6 +65,15 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 	name := ""
 	parentId := ""
 	if apiPath := findApiPathByResourceType(azureResourceType); apiPath != nil {
+		if apiPath.NameIsPath {
+			segments := strings.Split(azureResourceId, "/")
+			if len(segments) <= apiPath.ParentIDSegments {
+				return DataPlaneResourceId{}, fmt.Errorf("resource ID %q does not contain a name after %d parent segments", azureResourceId, apiPath.ParentIDSegments)
+			}
+			parentId = strings.Join(segments[:apiPath.ParentIDSegments], "/")
+			name = strings.Join(segments[apiPath.ParentIDSegments:], "/")
+			return NewDataPlaneResourceId(name, parentId, resourceType)
+		}
 		urlFormatParts := strings.Split(apiPath.UrlFormat, "/")
 		azureResourceIdParts := strings.Split(azureResourceId, "/")
 		j := len(azureResourceIdParts) - 1

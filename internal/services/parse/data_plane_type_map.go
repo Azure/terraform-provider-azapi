@@ -9,10 +9,12 @@ import (
 )
 
 type ApiPath struct {
-	UrlFormat       string
-	ResourceType    string
-	URL             string
-	ParentIDExample string
+	UrlFormat        string
+	ResourceType     string
+	URL              string
+	ParentIDExample  string
+	ParentIDSegments int
+	NameIsPath       bool
 }
 
 //go:embed data_plane_resources.json

@@ -12,6 +12,7 @@ const (
 	Purview          cloud.ServiceName = "Purview"
 	Synapse          cloud.ServiceName = "Synapse"
 	Search           cloud.ServiceName = "Search"
+	Storage          cloud.ServiceName = "Storage"
 )
 
 func init() {
@@ -42,6 +43,18 @@ func init() {
 	cloud.AzureGovernment.Services[KeyVault] = cloud.ServiceConfiguration{
 		Audience: "https://vault.usgovcloudapi.net",
 		Endpoint: "https://vault.usgovcloudapi.net",
+	}
+	cloud.AzurePublic.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://.blob.core.windows.net",
+	}
+	cloud.AzureGovernment.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.us",
+		Endpoint: "https://.blob.core.usgovcloudapi.net",
+	}
+	cloud.AzureChina.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.cn",
+		Endpoint: "https://.blob.core.chinacloudapi.cn",
 	}
 	cloud.AzurePublic.Services[Purview] = cloud.ServiceConfiguration{
 		Audience: "https://purview.azure.net",

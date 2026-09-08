@@ -327,6 +327,10 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
+	if err := validateDataPlaneResourceBodyMode(config); err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
 
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
@@ -403,6 +407,13 @@ func (r *DataPlaneResource) Update(ctx context.Context, request resource.UpdateR
 	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
 		return
 	}
+	if shouldSkipExclusiveSensitiveBodyUpdate(&plan, &state) {
+		response.Diagnostics.AddError(
+			"Invalid update",
+			"Updating this resource with sensitive_body requires changing sensitive_body_version. The sensitive payload is write-only and is not resent when its version is unchanged.",
+		)
+		return
+	}
 	if skip.CanSkipExternalRequest(state, plan, "update") {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
 		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
@@ -421,6 +432,10 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	if err := validateDataPlaneResourceName(config); err != nil {
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateDataPlaneResourceBodyMode(config); err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
@@ -493,11 +508,19 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	if state != nil {
 		sensitiveBodyVersionInState = state.SensitiveBodyVersion
 	}
-	sensitiveBody, err := unmarshalSensitiveBody(config.SensitiveBody, plan.SensitiveBodyVersion, sensitiveBodyVersionInState)
+	var sensitiveBody interface{}
+	if requiresExclusiveBody(config) && !config.SensitiveBodyVersion.IsNull() {
+		value := make(map[string]interface{})
+		err = unmarshalBody(config.SensitiveBody, &value)
+		sensitiveBody = value
+	} else {
+		sensitiveBody, err = unmarshalSensitiveBody(config.SensitiveBody, plan.SensitiveBodyVersion, sensitiveBodyVersionInState)
+	}
 	if err != nil {
 		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
 		return
 	}
+
 	if sensitiveBody != nil {
 		body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
 	}
@@ -590,6 +613,52 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	} else {
 		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
+}
+
+func requiresExclusiveBody(config *DataPlaneResourceModel) bool {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return false
+	}
+	resource := customization.GetCustomization(config.Type.ValueString())
+	if resource == nil {
+		return false
+	}
+	exclusive, ok := (*resource).(customization.DataPlaneResourceWithExclusiveBody)
+	return ok && exclusive.RequiresExclusiveBody()
+}
+
+func validateDataPlaneResourceBodyMode(config *DataPlaneResourceModel) error {
+	if !requiresExclusiveBody(config) {
+		return nil
+	}
+	if !dynamic.IsFullyKnown(config.Body) || !dynamic.IsFullyKnown(config.SensitiveBody) {
+		return nil
+	}
+
+	body := make(map[string]interface{})
+	if err := unmarshalBody(config.Body, &body); err != nil {
+		return fmt.Errorf("invalid body: %w", err)
+	}
+	sensitiveBody := make(map[string]interface{})
+	if err := unmarshalBody(config.SensitiveBody, &sensitiveBody); err != nil {
+		return fmt.Errorf("invalid sensitive_body: %w", err)
+	}
+
+	hasBody := len(body) != 0
+	hasSensitiveBody := len(sensitiveBody) != 0
+	if hasBody == hasSensitiveBody {
+		return fmt.Errorf("resource type %q requires exactly one of body or sensitive_body to define the complete request payload", strings.Split(config.Type.ValueString(), "@")[0])
+	}
+	if hasSensitiveBody && config.SensitiveBodyVersion.IsNull() {
+		return fmt.Errorf("sensitive_body_version must be set when sensitive_body is used for resource type %q", strings.Split(config.Type.ValueString(), "@")[0])
+	}
+	return nil
+}
+
+func shouldSkipExclusiveSensitiveBodyUpdate(plan, state *DataPlaneResourceModel) bool {
+	return requiresExclusiveBody(plan) &&
+		!plan.SensitiveBodyVersion.IsNull() &&
+		plan.SensitiveBodyVersion.Equal(state.SensitiveBodyVersion)
 }
 
 func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateResultFunc, bool) {

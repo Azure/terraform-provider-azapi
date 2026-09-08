@@ -290,6 +290,7 @@ Optional:
 | Microsoft.Search/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Storage/storageAccounts/blobServices/containers/blobs | /{blobName} | examplestorage.blob.core.windows.net/container                                              |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/datasets | /datasets/{datasetName} | {workspaceName}.dev.azuresynapse.net                                                        |

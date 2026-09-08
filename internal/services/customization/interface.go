@@ -30,6 +30,15 @@ type DataPlaneResourceWithCreateResult interface {
 	CreateResultFunc() CreateResultFunc
 }
 
+// DataPlaneResourceWithExclusiveBody marks resources that require callers to
+// choose either body or sensitive_body for the complete request payload.
+// Some data plane API such as Azure Storage Blob APIs require the request body to be sent in a single request,
+// and do not support sending the body in multiple parts.
+type DataPlaneResourceWithExclusiveBody interface {
+	DataPlaneResource
+	RequiresExclusiveBody() bool
+}
+
 type ReadFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error)
 type DeleteFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) error
 type CreateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error

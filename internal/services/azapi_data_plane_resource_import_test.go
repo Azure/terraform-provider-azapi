@@ -31,4 +31,17 @@ func TestParseDataPlaneImportID(t *testing.T) {
 			t.Fatalf("expected error")
 		}
 	})
+
+	t.Run("nestedBlob", func(t *testing.T) {
+		resourceID, resourceType, err := parseDataPlaneImportID("account.blob.core.windows.net/container/releases/2026/app.json|Microsoft.Storage/storageAccounts/blobServices/containers/blobs@2023-11-03")
+		if err != nil {
+			t.Fatalf("expected nil error, got: %v", err)
+		}
+		if resourceID != "account.blob.core.windows.net/container/releases/2026/app.json" {
+			t.Fatalf("unexpected resource ID: %q", resourceID)
+		}
+		if resourceType != "Microsoft.Storage/storageAccounts/blobServices/containers/blobs@2023-11-03" {
+			t.Fatalf("unexpected resource type: %q", resourceType)
+		}
+	})
 }

@@ -1,6 +1,7 @@
 package clients
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -16,8 +17,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 )
+
+type RawRequestOptions struct {
+	RequestOptions
+	APIVersionHeader string
+	Content          []byte
+	SuccessCodes     []int
+}
 
 type DataPlaneClient struct {
 	credential      azcore.TokenCredential
@@ -134,12 +143,71 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	return responseBody, nil
 }
 
+func (client *DataPlaneClient) DoRaw(ctx context.Context, method string, resourceID string, options RawRequestOptions) (*http.Response, error) {
+	urlPath, err := buildEscapedURL(resourceID)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := buildRawRequest(ctx, options, urlPath, method)
+	if err != nil {
+		return nil, err
+	}
+	if options.Content != nil {
+		if err := req.SetBody(streaming.NopCloser(bytes.NewReader(options.Content)), ""); err != nil {
+			return nil, err
+		}
+		req.Raw().ContentLength = int64(len(options.Content))
+		req.Raw().Header.Set("Content-Length", fmt.Sprintf("%d", len(options.Content)))
+	}
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
+	if options.APIVersionHeader != "" {
+		req.Raw().Header.Set("x-ms-version", options.APIVersionHeader)
+	}
+
+	successCodes := options.SuccessCodes
+	if len(successCodes) == 0 {
+		successCodes = []int{http.StatusOK}
+	}
+	resp, _, err := client.sendRequestWithServiceRequirement(req, urlPath, options.RequestOptions, successCodes, options.APIVersionHeader != "")
+	return resp, err
+}
+
 func buildURL(resourceId string, action string) (urlPath string) {
 	urlPath = fmt.Sprintf("https://%s", resourceId)
 	if action != "" {
 		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
 	}
 	return
+}
+
+func buildEscapedURL(resourceID string) (string, error) {
+	host, path, found := strings.Cut(resourceID, "/")
+	if host == "" {
+		return "", fmt.Errorf("invalid data-plane resource ID %q: missing host", resourceID)
+	}
+	if !found {
+		return (&url.URL{Scheme: "https", Host: host}).String(), nil
+	}
+	return (&url.URL{Scheme: "https", Host: host, Path: "/" + path}).String(), nil
+}
+
+func buildRawRequest(ctx context.Context, options RawRequestOptions, urlPath, method string) (*policy.Request, error) {
+	if options.RetryOptions != nil {
+		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+	}
+	req, err := runtime.NewRequest(ctx, method, urlPath)
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
 }
 
 func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, apiVersion string) (*policy.Request, error) {
@@ -165,7 +233,11 @@ func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, 
 }
 
 func (client *DataPlaneClient) sendRequest(req *policy.Request, urlPath string, options RequestOptions, statusCodes []int) (*http.Response, runtime.Pipeline, error) {
-	pipeline, err := client.cachedPipeline(urlPath)
+	return client.sendRequestWithServiceRequirement(req, urlPath, options, statusCodes, false)
+}
+
+func (client *DataPlaneClient) sendRequestWithServiceRequirement(req *policy.Request, urlPath string, options RequestOptions, statusCodes []int, requireDataPlaneService bool) (*http.Response, runtime.Pipeline, error) {
+	pipeline, err := client.cachedPipeline(urlPath, requireDataPlaneService)
 	if err != nil {
 		return nil, runtime.Pipeline{}, err
 	}
@@ -199,7 +271,7 @@ func (client *DataPlaneClient) sendRequestThenPoll(ctx context.Context, req *pol
 	return responseBody, nil
 }
 
-func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, error) {
+func (client *DataPlaneClient) cachedPipeline(rawUrl string, requireDataPlaneService bool) (runtime.Pipeline, error) {
 	client.syncMux.Lock()
 	defer client.syncMux.Unlock()
 
@@ -208,13 +280,18 @@ func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, 
 		return runtime.Pipeline{}, err
 	}
 	serviceName := cloud.ResourceManager
+	matchedService := false
 	cloudConfig := client.clientOptions.Cloud
 	host := parsedUrl.Host
 	for name, serviceConfiguration := range cloudConfig.Services {
 		if strings.HasSuffix(host, strings.TrimPrefix(serviceConfiguration.Endpoint, "https://")) {
 			serviceName = name
+			matchedService = true
 			break
 		}
+	}
+	if requireDataPlaneService && (!matchedService || serviceName == cloud.ResourceManager) {
+		return runtime.Pipeline{}, fmt.Errorf("unsupported data-plane endpoint %q: no matching service endpoint and token audience are configured for this cloud", host)
 	}
 
 	if pipeline, ok := client.cachedPipelines[string(serviceName)]; ok {

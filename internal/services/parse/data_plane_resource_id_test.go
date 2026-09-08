@@ -113,6 +113,17 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 				AzureResourceType: "Microsoft.Search/searchServices/synonymmaps",
 			},
 		},
+		{
+			Name:         "releases/2026/app #1?.json",
+			ParentId:     "examplestorage.blob.core.windows.net/container",
+			ResourceType: "Microsoft.Storage/storageAccounts/blobServices/containers/blobs@2023-11-03",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "examplestorage.blob.core.windows.net/container/releases/2026/app #1?.json",
+				ApiVersion:        "2023-11-03",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/blobServices/containers/blobs",
+			},
+		},
 	}
 
 	for _, v := range testData {
@@ -255,6 +266,18 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				AzureResourceType: "Microsoft.Search/searchServices/synonymmaps",
 				ParentId:          "mysearchservice.search.windows.net",
 				Name:              "mysynonymmap",
+			},
+		},
+		{
+			ResourceId:   "examplestorage.blob.core.windows.net/container/releases//2026/../app.json",
+			ResourceType: "Microsoft.Storage/storageAccounts/blobServices/containers/blobs@2023-11-03",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "examplestorage.blob.core.windows.net/container/releases//2026/../app.json",
+				ApiVersion:        "2023-11-03",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/blobServices/containers/blobs",
+				ParentId:          "examplestorage.blob.core.windows.net/container",
+				Name:              "releases//2026/../app.json",
 			},
 		},
 	}
