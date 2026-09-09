@@ -33,6 +33,23 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_contentUnderstandingAnalyzer(t *testing.T) {
+	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test")
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+	importIgnores := []string{"retry"}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.contentUnderstandingAnalyzer(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, append(importIgnores, defaultIgnores()...)...),
+	})
+}
+
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "only 1 purview account is allowed per tenant")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
@@ -354,6 +371,11 @@ func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, sta
 		return &b, nil
 	}
 	return nil, fmt.Errorf("checking for presence of existing %s: %+v", id, err)
+}
+
+func (DataPlaneResource) ImportIdFunc(tfState *terraform.State) (string, error) {
+	state := tfState.RootModule().Resources["azapi_data_plane_resource.test"].Primary
+	return fmt.Sprintf("%s|%s", state.ID, state.Attributes["type"]), nil
 }
 
 func (r DataPlaneResource) appConfigKeyValues(data acceptance.TestData) string {
@@ -1613,6 +1635,163 @@ resource "azapi_data_plane_resource" "test" {
   ]
 }
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) contentUnderstandingAnalyzer(data acceptance.TestData) string {
+	location := data.LocationPrimary
+	if location == "" {
+		location = "westus3"
+	}
+
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+locals {
+  content_understanding_owner_role_definition_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/4b42bd01-da42-4c92-9b07-15ea5bd6a602"
+}
+
+resource "azapi_resource" "resource_group" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[1]s"
+  location = "%[2]s"
+}
+
+resource "azapi_resource" "foundry" {
+  type                      = "Microsoft.CognitiveServices/accounts@2025-06-01"
+  parent_id                 = azapi_resource.resource_group.id
+  name                      = "acctest%[1]s"
+  location                  = azapi_resource.resource_group.location
+  schema_validation_enabled = false
+
+  body = {
+    kind = "AIServices"
+    sku = {
+      name = "S0"
+    }
+    identity = {
+      type = "SystemAssigned"
+    }
+    properties = {
+      disableLocalAuth       = false
+      allowProjectManagement = true
+      customSubDomainName    = "acctest%[1]s"
+    }
+  }
+  response_export_values = ["properties.endpoint"]
+}
+
+resource "azapi_resource" "contentUnderstandingOwnerRoleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.foundry.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = local.content_understanding_owner_role_definition_id
+    }
+  }
+}
+
+resource "azapi_resource" "gpt5Deployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2023-05-01"
+  parent_id = azapi_resource.foundry.id
+  name      = "gpt-5"
+  body = {
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "gpt-5"
+        version = "2025-08-07"
+      }
+    }
+    sku = {
+      name     = "DataZoneStandard"
+      capacity = 1
+    }
+  }
+}
+
+resource "azapi_resource" "textEmbedding3LargeDeployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2023-05-01"
+  parent_id = azapi_resource.foundry.id
+  name      = "text-embedding-3-large"
+  body = {
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "text-embedding-3-large"
+        version = "1"
+      }
+    }
+    sku = {
+      name     = "Standard"
+      capacity = 1
+    }
+  }
+  depends_on = [azapi_resource.gpt5Deployment]
+}
+
+resource "terraform_data" "contentUnderstandingDefaults" {
+  triggers_replace = [
+    azapi_resource.foundry.id,
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
+    azapi_resource.gpt5Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+
+  provisioner "local-exec" {
+    interpreter = ["pwsh", "-Command"]
+    command     = <<-EOT
+      $token = (az account get-access-token --resource https://cognitiveservices.azure.com --query accessToken -o tsv)
+      $headers = @{
+        "Authorization" = "Bearer $token"
+        "Content-Type"  = "application/merge-patch+json"
+      }
+      $body = @{
+        modelDeployments = @{
+          "gpt-5"                  = "gpt-5"
+          "text-embedding-3-large" = "text-embedding-3-large"
+        }
+      } | ConvertTo-Json
+
+      $endpoint = "${azapi_resource.foundry.output.properties.endpoint}contentunderstanding/defaults?api-version=2025-11-01"
+      Invoke-RestMethod -Uri $endpoint -Method Patch -Headers $headers -Body $body
+    EOT
+  }
+
+  depends_on = [
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
+    azapi_resource.gpt5Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-11-01"
+  parent_id = "acctest%[1]s.cognitiveservices.azure.com"
+  name      = "acctest%[1]s"
+
+  retry = {
+    error_message_regex  = ["lacks the required data action", "PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
+    interval_seconds     = 30
+    max_interval_seconds = 180
+  }
+
+  body = {
+    description    = "My test analyzer"
+    baseAnalyzerId = "prebuilt-document"
+    models = {
+      completion = "gpt-5"
+      embedding  = "text-embedding-3-large"
+    }
+  }
+
+  depends_on = [
+    azapi_resource.contentUnderstandingOwnerRoleAssignment,
+    terraform_data.contentUnderstandingDefaults,
+  ]
+}
+`, data.RandomString, location)
 }
 
 func (r DataPlaneResource) appConfigKeyValuesSensitiveBody(data acceptance.TestData, value string) string {

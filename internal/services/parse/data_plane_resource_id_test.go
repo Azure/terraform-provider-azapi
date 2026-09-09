@@ -113,6 +113,17 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 				AzureResourceType: "Microsoft.Search/searchServices/synonymmaps",
 			},
 		},
+		{
+			Name:         "analyzer",
+			ParentId:     "contoso.cognitiveservices.azure.com",
+			ResourceType: "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-11-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "contoso.cognitiveservices.azure.com/contentunderstanding/analyzers/analyzer",
+				ApiVersion:        "2025-11-01",
+				AzureResourceType: "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers",
+			},
+		},
 	}
 
 	for _, v := range testData {
