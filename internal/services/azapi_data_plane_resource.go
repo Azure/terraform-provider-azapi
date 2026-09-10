@@ -328,6 +328,13 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
+	if !config.Type.IsNull() && !config.Type.IsUnknown() {
+		if err := validateDataPlaneResourceWritable(config.Type.ValueString()); err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+	}
+
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
@@ -432,7 +439,6 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	if isNewResource && hasCreateResult {
 		resourceName = "__generated__"
 	}
-
 	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())

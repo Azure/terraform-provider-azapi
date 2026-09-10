@@ -23,7 +23,9 @@ This data source can read Azure data plane resources.
 
 ### Optional
 
+- `headers` (Map of String) A map of headers to include in the request.
 - `name` (String) Specifies the name (identifier segment) of the data plane resource.
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.

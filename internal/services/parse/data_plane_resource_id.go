@@ -41,6 +41,9 @@ func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResou
 			case strings.Contains(part, "{name}"):
 				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
 				parts[i] = strings.ReplaceAll(part, "{name}", name)
+			case strings.Contains(part, "{parentId}"):
+				// Handle embedded {parentId} placeholder, e.g., "{parentId}()"
+				parts[i] = strings.ReplaceAll(part, "{parentId}", parentId)
 			}
 		}
 		azureResourceId = strings.Join(parts, "/")
@@ -93,10 +96,22 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 					}
 				}
 				j--
-			case urlFormatParts[i] == "{parentId}":
+			case strings.Contains(urlFormatParts[i], "{parentId}"):
+				// Handle {parentId}, including embedded forms such as "{parentId}()":
+				// strip any literal prefix/suffix around the placeholder before consuming
+				// the remaining resource ID segments as the parent ID.
+				placeholderIndex := strings.Index(urlFormatParts[i], "{parentId}")
+				prefix := urlFormatParts[i][:placeholderIndex]
+				suffix := urlFormatParts[i][placeholderIndex+len("{parentId}"):]
+				if suffix != "" && j >= 0 {
+					azureResourceIdParts[j] = strings.TrimSuffix(azureResourceIdParts[j], suffix)
+				}
 				for j >= 0 {
 					if j > 0 && i > 0 && azureResourceIdParts[j-1] == urlFormatParts[i-1] {
 						break
+					}
+					if j == 0 && prefix != "" {
+						azureResourceIdParts[j] = strings.TrimPrefix(azureResourceIdParts[j], prefix)
 					}
 					parentId = azureResourceIdParts[j] + "/" + parentId
 					j--
