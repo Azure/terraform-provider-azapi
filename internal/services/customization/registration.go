@@ -8,6 +8,12 @@ func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
 
+	var keyVaultCertificateCustomization DataPlaneResource = KeyVaultCertificateCustomization{}
+	customizations[strings.ToLower(keyVaultCertificateCustomization.GetResourceType())] = keyVaultCertificateCustomization
+
+	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
+	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
+
 	var storageTableCustomization DataPlaneResource = StorageTableCustomization{}
 	customizations[strings.ToLower(storageTableCustomization.GetResourceType())] = storageTableCustomization
 
@@ -16,11 +22,6 @@ func init() {
 
 	var storageTableEntitiesCustomization DataPlaneResource = StorageTableEntitiesCustomization{}
 	customizations[strings.ToLower(storageTableEntitiesCustomization.GetResourceType())] = storageTableEntitiesCustomization
-	var keyVaultCertificateCustomization DataPlaneResource = KeyVaultCertificateCustomization{}
-	customizations[strings.ToLower(keyVaultCertificateCustomization.GetResourceType())] = keyVaultCertificateCustomization
-
-	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
-	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {

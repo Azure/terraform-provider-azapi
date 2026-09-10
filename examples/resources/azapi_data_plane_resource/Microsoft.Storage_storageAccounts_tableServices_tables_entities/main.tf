@@ -77,11 +77,7 @@ resource "azapi_resource" "roleAssignment" {
 
 resource "azapi_data_plane_resource" "entity" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
-  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
-  identifiers = {
-    partitionKey = "example"
-    rowKey       = "state"
-  }
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}(PartitionKey='example',RowKey='state')"
   body = {
     outputs = jsonencode({
       status = "ok"
@@ -96,10 +92,6 @@ resource "azapi_data_plane_resource" "entity" {
 data "azapi_data_plane_resource" "entity" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
   parent_id = azapi_data_plane_resource.entity.parent_id
-  identifiers = {
-    partitionKey = azapi_data_plane_resource.entity.identifiers.partitionKey
-    rowKey       = azapi_data_plane_resource.entity.identifiers.rowKey
-  }
 
   depends_on = [
     azapi_data_plane_resource.entity,
@@ -108,7 +100,7 @@ data "azapi_data_plane_resource" "entity" {
 
 data "azapi_data_plane_resource" "entities" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06"
-  parent_id = azapi_data_plane_resource.entity.parent_id
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
   query_parameters = {
     "$filter" = ["PartitionKey eq 'example'"]
   }

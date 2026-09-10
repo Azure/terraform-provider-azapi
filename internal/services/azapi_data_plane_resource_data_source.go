@@ -45,7 +45,6 @@ type DataPlaneResourceDataSourceModel struct {
 	Name                 types.String     `tfsdk:"name"`
 	ParentID             types.String     `tfsdk:"parent_id"`
 	Type                 types.String     `tfsdk:"type"`
-	Identifiers          types.Map        `tfsdk:"identifiers"`
 	Body                 types.Dynamic    `tfsdk:"body"`
 	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
 	Output               types.Dynamic    `tfsdk:"output"`
@@ -70,7 +69,7 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 			"name": schema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource when the selected resource type uses a single `name` path segment.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource.",
 			},
 			"parent_id": schema.StringAttribute{
 				Required:            true,
@@ -83,12 +82,6 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 					myvalidator.StringIsResourceType(),
 				},
 				MarkdownDescription: docstrings.DataPlaneType(),
-			},
-			"identifiers": schema.MapAttribute{
-				ElementType:         types.StringType,
-				Optional:            true,
-				Computed:            true,
-				MarkdownDescription: "A mapping of identifier placeholder values for data plane resource types that require multiple path identifiers, for example composite keys.",
 			},
 			"body": schema.DynamicAttribute{
 				Computed:            true,
@@ -130,14 +123,11 @@ func (r *DataPlaneResourceDataSource) ValidateConfig(ctx context.Context, reques
 	if config == nil {
 		return
 	}
-
-	resourceConfig := &DataPlaneResourceModel{
-		Name:        config.Name,
-		ParentID:    config.ParentID,
-		Type:        config.Type,
-		Identifiers: config.Identifiers,
-	}
-	if err := validateDataPlaneResourceAddress(resourceConfig); err != nil {
+	if err := validateDataPlaneResourceName(&DataPlaneResourceModel{
+		Name:     config.Name,
+		ParentID: config.ParentID,
+		Type:     config.Type,
+	}); err != nil {
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -157,9 +147,9 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	ctx, cancel := context.WithTimeout(ctx, readTimeout)
 	defer cancel()
 
-	id, err := parse.NewDataPlaneResourceIdWithIdentifiers(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString(), common.AsMapOfString(model.Identifiers))
+	id, err := parse.NewDataPlaneResourceId(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 	if err != nil {
-		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		response.Diagnostics.AddError("Error parsing ID", err.Error())
 		return
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
@@ -189,7 +179,7 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 		return
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, responseBody)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, nil)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -207,7 +197,6 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-	model.Identifiers = stringMapToTypesMap(id.Identifiers)
 
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
 }

@@ -2,7 +2,6 @@ package parse
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -14,17 +13,9 @@ type DataPlaneResourceId struct {
 	AzureResourceType string
 	Name              string
 	ParentId          string
-	// Identifiers holds extra URL placeholder values (beyond name, parentId and apiVersion)
-	// needed to build the resource ID, e.g. the keys in Azure Storage's OData URLs like
-	// https://mystorage.table.core.windows.net/Customers(PartitionKey='Sales',RowKey='1').
-	Identifiers map[string]string
 }
 
 func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResourceId, error) {
-	return NewDataPlaneResourceIdWithIdentifiers(name, parentId, resourceType, nil)
-}
-
-func NewDataPlaneResourceIdWithIdentifiers(name, parentId, resourceType string, identifiers map[string]string) (DataPlaneResourceId, error) {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return DataPlaneResourceId{}, err
@@ -32,21 +23,30 @@ func NewDataPlaneResourceIdWithIdentifiers(name, parentId, resourceType string, 
 
 	azureResourceId := ""
 	if apiPath := findApiPathByResourceType(azureResourceType); apiPath != nil {
-		values := map[string]string{
-			"parentId":   parentId,
-			"apiVersion": apiVersion,
+		parts := strings.Split(apiPath.UrlFormat, "/")
+		for i, part := range parts {
+			switch {
+			case part == "{parentId}":
+				parts[i] = parentId
+			case part == "{name}":
+				parts[i] = name
+			case part == "{apiVersion}":
+				parts[i] = apiVersion
+			case strings.HasPrefix(part, "{name="):
+				defaultName := part[6 : len(part)-1]
+				if !strings.EqualFold(name, defaultName) {
+					return DataPlaneResourceId{}, fmt.Errorf("name %s is not equal to %s", name, defaultName)
+				}
+				parts[i] = defaultName
+			case strings.Contains(part, "{name}"):
+				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
+				parts[i] = strings.ReplaceAll(part, "{name}", name)
+			case strings.Contains(part, "{parentId}"):
+				// Handle embedded {parentId} placeholder, e.g., "{parentId}()"
+				parts[i] = strings.ReplaceAll(part, "{parentId}", parentId)
+			}
 		}
-		if name != "" {
-			values["name"] = name
-		}
-		for key, value := range identifiers {
-			values[key] = value
-		}
-
-		azureResourceId, err = renderDataPlaneURLFormat(apiPath.UrlFormat, values)
-		if err != nil {
-			return DataPlaneResourceId{}, err
-		}
+		azureResourceId = strings.Join(parts, "/")
 	}
 
 	return DataPlaneResourceId{
@@ -55,7 +55,6 @@ func NewDataPlaneResourceIdWithIdentifiers(name, parentId, resourceType string, 
 		AzureResourceType: azureResourceType,
 		Name:              name,
 		ParentId:          parentId,
-		Identifiers:       cloneStringMap(identifiers),
 	}, nil
 }
 
@@ -68,24 +67,65 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 
 	name := ""
 	parentId := ""
-	identifiers := make(map[string]string)
 	if apiPath := findApiPathByResourceType(azureResourceType); apiPath != nil {
-		values, err := parseDataPlaneURLFormat(apiPath.UrlFormat, azureResourceId)
-		if err != nil {
-			return DataPlaneResourceId{}, err
-		}
-		parentId = values["parentId"]
-		name = values["name"]
-		for key, value := range values {
-			if key == "parentId" || key == "name" || key == "apiVersion" {
-				continue
+		urlFormatParts := strings.Split(apiPath.UrlFormat, "/")
+		azureResourceIdParts := strings.Split(azureResourceId, "/")
+		j := len(azureResourceIdParts) - 1
+		for i := len(urlFormatParts) - 1; i >= 0; i-- {
+			if j < 0 {
+				return DataPlaneResourceId{}, fmt.Errorf("index %d is less than 0", j)
 			}
-			identifiers[key] = value
+			switch {
+			case strings.HasPrefix(urlFormatParts[i], "{name"):
+				name = azureResourceIdParts[j]
+				j--
+			case strings.Contains(urlFormatParts[i], "{name}"):
+				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
+				// Extract the actual name from patterns like "indexes('myindex')"
+				template := urlFormatParts[i]
+				actual := azureResourceIdParts[j]
+				// Find the position of {name} in the template
+				nameStart := strings.Index(template, "{name}")
+				if nameStart >= 0 {
+					// Extract prefix and suffix around {name}
+					prefix := template[:nameStart]
+					suffix := template[nameStart+6:] // 6 is len("{name}")
+					// Remove prefix and suffix from actual value to get the name
+					if strings.HasPrefix(actual, prefix) && strings.HasSuffix(actual, suffix) {
+						name = actual[len(prefix) : len(actual)-len(suffix)]
+					}
+				}
+				j--
+			case strings.Contains(urlFormatParts[i], "{parentId}"):
+				// Handle {parentId}, including embedded forms such as "{parentId}()":
+				// strip any literal prefix/suffix around the placeholder before consuming
+				// the remaining resource ID segments as the parent ID.
+				placeholderIndex := strings.Index(urlFormatParts[i], "{parentId}")
+				prefix := urlFormatParts[i][:placeholderIndex]
+				suffix := urlFormatParts[i][placeholderIndex+len("{parentId}"):]
+				if suffix != "" && j >= 0 {
+					azureResourceIdParts[j] = strings.TrimSuffix(azureResourceIdParts[j], suffix)
+				}
+				for j >= 0 {
+					if j > 0 && i > 0 && azureResourceIdParts[j-1] == urlFormatParts[i-1] {
+						break
+					}
+					if j == 0 && prefix != "" {
+						azureResourceIdParts[j] = strings.TrimPrefix(azureResourceIdParts[j], prefix)
+					}
+					parentId = azureResourceIdParts[j] + "/" + parentId
+					j--
+				}
+			case urlFormatParts[i] == "{apiVersion}":
+				j--
+			case strings.EqualFold(azureResourceIdParts[j], urlFormatParts[i]):
+				j--
+			}
 		}
 	}
 	parentId = strings.TrimSuffix(parentId, "/")
 
-	return NewDataPlaneResourceIdWithIdentifiers(name, parentId, resourceType, identifiers)
+	return NewDataPlaneResourceId(name, parentId, resourceType)
 }
 
 func (id DataPlaneResourceId) String() string {
@@ -99,97 +139,4 @@ func (id DataPlaneResourceId) String() string {
 
 func (id DataPlaneResourceId) ID() string {
 	return id.AzureResourceId
-}
-
-func renderDataPlaneURLFormat(urlFormat string, values map[string]string) (string, error) {
-	missing := make([]string, 0)
-	rendered := dataPlanePlaceholderPattern.ReplaceAllStringFunc(urlFormat, func(token string) string {
-		match := dataPlanePlaceholderPattern.FindStringSubmatch(token)
-		if len(match) < 2 {
-			return token
-		}
-		parts := strings.SplitN(match[1], "=", 2)
-		key := strings.TrimSpace(parts[0])
-		if len(parts) == 2 {
-			defaultValue := strings.TrimSpace(parts[1])
-			if value, ok := values[key]; ok && value != "" && !strings.EqualFold(value, defaultValue) {
-				missing = append(missing, fmt.Sprintf("%s must equal %s", key, defaultValue))
-				return token
-			}
-			return defaultValue
-		}
-		value, ok := values[key]
-		if !ok || value == "" {
-			missing = append(missing, key)
-			return token
-		}
-		return value
-	})
-	if len(missing) != 0 {
-		return "", fmt.Errorf("missing required data plane identifiers for URL format %q: %s", urlFormat, strings.Join(missing, ", "))
-	}
-	return rendered, nil
-}
-
-func parseDataPlaneURLFormat(urlFormat string, actual string) (map[string]string, error) {
-	regexText := "^"
-	lastIndex := 0
-	matches := dataPlanePlaceholderPattern.FindAllStringSubmatchIndex(urlFormat, -1)
-	for _, match := range matches {
-		start := match[0]
-		end := match[1]
-		contentStart := match[2]
-		contentEnd := match[3]
-
-		regexText += regexp.QuoteMeta(urlFormat[lastIndex:start])
-
-		content := urlFormat[contentStart:contentEnd]
-		parts := strings.SplitN(content, "=", 2)
-		if len(parts) == 2 {
-			regexText += regexp.QuoteMeta(strings.TrimSpace(parts[1]))
-		} else {
-			if end == len(urlFormat) {
-				regexText += "(.+)"
-			} else {
-				regexText += "(.+?)"
-			}
-		}
-		lastIndex = end
-	}
-	regexText += regexp.QuoteMeta(urlFormat[lastIndex:]) + "$"
-
-	re, err := regexp.Compile(regexText)
-	if err != nil {
-		return nil, fmt.Errorf("building parser for data plane URL format %q: %w", urlFormat, err)
-	}
-	submatches := re.FindStringSubmatch(actual)
-	if submatches == nil {
-		return nil, fmt.Errorf("resource ID %q does not match data plane URL format %q", actual, urlFormat)
-	}
-
-	result := make(map[string]string)
-	groupIndex := 1
-	for _, placeholder := range placeholdersForURLFormat(urlFormat) {
-		if placeholder.HasDefault {
-			result[placeholder.Key] = placeholder.DefaultValue
-			continue
-		}
-		if groupIndex >= len(submatches) {
-			return nil, fmt.Errorf("resource ID %q did not provide capture group for %q", actual, placeholder.Key)
-		}
-		result[placeholder.Key] = submatches[groupIndex]
-		groupIndex++
-	}
-	return result, nil
-}
-
-func cloneStringMap(input map[string]string) map[string]string {
-	if len(input) == 0 {
-		return map[string]string{}
-	}
-	output := make(map[string]string, len(input))
-	for key, value := range input {
-		output[key] = value
-	}
-	return output
 }

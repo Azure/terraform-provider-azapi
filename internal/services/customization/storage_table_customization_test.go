@@ -45,13 +45,10 @@ func TestStorageTableRequestOptionsUseVersionHeader(t *testing.T) {
 		Headers: map[string]string{
 			"Accept": "application/json",
 		},
-	})
+	}, "2026-04-06")
 
-	if !options.DisableAPIVersionQueryParameter {
-		t.Fatal("expected api-version query parameter to be disabled")
-	}
-	if options.APIVersionHeaderName != "x-ms-version" {
-		t.Fatalf("expected x-ms-version header, got %q", options.APIVersionHeaderName)
+	if got := options.Headers["x-ms-version"]; got != "2026-04-06" {
+		t.Fatalf("expected x-ms-version header to be set to the API version, got %q", got)
 	}
 	if got := options.Headers["Accept"]; got != "application/json" {
 		t.Fatalf("expected existing header to be preserved, got %q", got)

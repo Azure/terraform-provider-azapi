@@ -146,31 +146,20 @@ func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, 
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
-
-	// Inject headers into context so they are preserved across poller requests
-	ctxHeaders := http.Header{}
-	ctxHeaders.Set("Accept", "application/json")
-	if options.APIVersionHeaderName != "" {
-		ctxHeaders.Set(options.APIVersionHeaderName, apiVersion)
-	}
-	for key, value := range options.Headers {
-		ctxHeaders.Set(key, value)
-	}
-	ctx = policy.WithHTTPHeader(ctx, ctxHeaders)
-
 	req, err := runtime.NewRequest(ctx, method, urlPath)
 	if err != nil {
 		return nil, err
 	}
-
 	reqQP := req.Raw().URL.Query()
-	if !options.DisableAPIVersionQueryParameter {
-		reqQP.Set("api-version", apiVersion)
-	}
+	reqQP.Set("api-version", apiVersion)
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 
 	return req, nil
 }

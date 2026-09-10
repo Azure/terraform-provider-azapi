@@ -46,7 +46,6 @@ type DataPlaneResourceModel struct {
 	Name                          types.String     `tfsdk:"name"`
 	ParentID                      types.String     `tfsdk:"parent_id"`
 	Type                          types.String     `tfsdk:"type"`
-	Identifiers                   types.Map        `tfsdk:"identifiers"`
 	Body                          types.Dynamic    `tfsdk:"body"`
 	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
 	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
@@ -138,13 +137,6 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					myvalidator.StringIsResourceType(),
 				},
 				MarkdownDescription: docstrings.DataPlaneType(),
-			},
-
-			"identifiers": schema.MapAttribute{
-				ElementType:         types.StringType,
-				Optional:            true,
-				Computed:            true,
-				MarkdownDescription: "A mapping of identifier placeholder values for data plane resource types that require multiple path identifiers, for example composite keys.",
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
@@ -331,7 +323,7 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
-	if err := validateDataPlaneResourceAddress(config); err != nil {
+	if err := validateDataPlaneResourceName(config); err != nil {
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
@@ -347,10 +339,6 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
-	}
-
-	if state != nil && !plan.Identifiers.Equal(state.Identifiers) {
-		response.RequiresReplace.Append(path.Root("identifiers"))
 	}
 
 	if state != nil {
@@ -439,7 +427,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
-	if err := validateDataPlaneResourceAddress(config); err != nil {
+	if err := validateDataPlaneResourceName(config); err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
@@ -451,18 +439,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	if isNewResource && hasCreateResult {
 		resourceName = "__generated__"
 	}
-	if resourceName == "" {
-		placeholderKeys, err := parse.DataPlaneResourcePlaceholderKeys(plan.Type.ValueString())
-		if err != nil {
-			diagnostics.AddError("Invalid configuration", err.Error())
-			return
-		}
-		if slices.Contains(placeholderKeys, "name") {
-			diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
-			return
-		}
-	}
-	id, err := parse.NewDataPlaneResourceIdWithIdentifiers(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString(), common.AsMapOfString(plan.Identifiers))
+	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
@@ -599,7 +576,6 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	plan.Name = basetypes.NewStringValue(id.Name)
 	plan.ParentID = basetypes.NewStringValue(id.ParentId)
 	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-	plan.Identifiers = stringMapToTypesMap(id.Identifiers)
 
 	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, nil)
 	if err != nil {
@@ -753,7 +729,6 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-	model.Identifiers = stringMapToTypesMap(id.Identifiers)
 
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
 }
@@ -775,9 +750,6 @@ func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.Im
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("name"), id.Name)...)
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("parent_id"), id.ParentId)...)
 	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("type"), fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))...)
-	if len(id.Identifiers) != 0 {
-		response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("identifiers"), id.Identifiers)...)
-	}
 }
 
 func parseDataPlaneImportID(input string) (string, string, error) {

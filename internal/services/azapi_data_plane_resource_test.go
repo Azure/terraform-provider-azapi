@@ -1779,11 +1779,7 @@ resource "azapi_resource" "roleAssignment" {
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
-  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
-  identifiers = {
-    partitionKey = "example"
-    rowKey       = "state"
-  }
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}(PartitionKey='example',RowKey='state')"
   body = {
     outputs = "%[3]s"
   }
@@ -1796,10 +1792,6 @@ resource "azapi_data_plane_resource" "test" {
 data "azapi_data_plane_resource" "read" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
   parent_id = azapi_data_plane_resource.test.parent_id
-  identifiers = {
-    partitionKey = azapi_data_plane_resource.test.identifiers.partitionKey
-    rowKey       = azapi_data_plane_resource.test.identifiers.rowKey
-  }
 }
 `, data.LocationPrimary, data.RandomString, outputValue)
 }

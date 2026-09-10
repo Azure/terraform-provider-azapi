@@ -11,10 +11,7 @@ import (
 func TestBuildStorageTableEntityBodyAddsCompositeKeys(t *testing.T) {
 	id := parse.DataPlaneResourceId{
 		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
-		Identifiers: map[string]string{
-			"partitionKey": "pk",
-			"rowKey":       "rk",
-		},
+		AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 	}
 
 	body, err := buildStorageTableEntityBody(id, map[string]interface{}{
@@ -34,10 +31,7 @@ func TestBuildStorageTableEntityBodyAddsCompositeKeys(t *testing.T) {
 func TestBuildStorageTableEntityBodyRejectsMismatchedKeys(t *testing.T) {
 	id := parse.DataPlaneResourceId{
 		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
-		Identifiers: map[string]string{
-			"partitionKey": "pk",
-			"rowKey":       "rk",
-		},
+		AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 	}
 
 	_, err := buildStorageTableEntityBody(id, map[string]interface{}{
@@ -46,13 +40,29 @@ func TestBuildStorageTableEntityBodyRejectsMismatchedKeys(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected validation error")
 	}
-	if !strings.Contains(err.Error(), `identifiers.partitionKey "pk"`) {
+	if !strings.Contains(err.Error(), `PartitionKey "pk" in parent_id`) {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestBuildStorageTableEntityBodyRejectsMissingKeys(t *testing.T) {
+	id := parse.DataPlaneResourceId{
+		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
+		AzureResourceId:   "mystorage.table.core.windows.net/mytable",
+		ParentId:          "mystorage.table.core.windows.net/mytable",
+	}
+
+	_, err := buildStorageTableEntityBody(id, map[string]interface{}{})
+	if err == nil {
+		t.Fatal("expected validation error")
+	}
+	if !strings.Contains(err.Error(), "must end with (PartitionKey=") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
 
 func TestStorageTableEntityRequestOptionsSetTableHeaders(t *testing.T) {
-	options := storageTableEntityRequestOptions(clients.RequestOptions{})
+	options := storageTableEntityRequestOptions(clients.RequestOptions{}, "2026-04-06")
 	if got := options.Headers["Accept"]; got != "application/json;odata=nometadata" {
 		t.Fatalf("expected OData accept header, got %q", got)
 	}
@@ -62,8 +72,8 @@ func TestStorageTableEntityRequestOptionsSetTableHeaders(t *testing.T) {
 	if got := options.Headers["MaxDataServiceVersion"]; got != "3.0;NetFx" {
 		t.Fatalf("expected MaxDataServiceVersion header, got %q", got)
 	}
-	if !options.DisableAPIVersionQueryParameter {
-		t.Fatal("expected api-version query parameter to be disabled")
+	if got := options.Headers["x-ms-version"]; got != "2026-04-06" {
+		t.Fatalf("expected x-ms-version header to be set to the API version, got %q", got)
 	}
 }
 

@@ -91,7 +91,6 @@ resource "azapi_data_plane_resource" "dataset" {
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
 - `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
 - `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
-- `identifiers` (Map of String) A mapping of identifier placeholder values for data plane resource types that require multiple path identifiers, for example composite keys.
 - `ignore_casing` (Boolean) A dynamic attribute that contains the request body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. Defaults to `true`.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -292,7 +291,7 @@ Optional:
 | Microsoft.Search/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Search/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Storage/storageAccounts/tableServices/tables | /Tables('{tableName}') | {storageAccountName}.table.core.windows.net                                                 |
-| Microsoft.Storage/storageAccounts/tableServices/tables/entities | (PartitionKey='{partitionKey}',RowKey='{rowKey}') | {storageAccountName}.table.core.windows.net/{tableName}                                     |
+| Microsoft.Storage/storageAccounts/tableServices/tables/entities |  | {storageAccountName}.table.core.windows.net/{tableName}(PartitionKey='{partitionKey}',RowKey='{rowKey}') |
 | Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection | () | {storageAccountName}.table.core.windows.net/{tableName}                                     |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
@@ -1522,11 +1521,7 @@ resource "azapi_resource" "roleAssignment" {
 
 resource "azapi_data_plane_resource" "entity" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
-  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
-  identifiers = {
-    partitionKey = "example"
-    rowKey       = "state"
-  }
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}(PartitionKey='example',RowKey='state')"
   body = {
     outputs = jsonencode({
       status = "ok"
@@ -1541,10 +1536,6 @@ resource "azapi_data_plane_resource" "entity" {
 data "azapi_data_plane_resource" "entity" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
   parent_id = azapi_data_plane_resource.entity.parent_id
-  identifiers = {
-    partitionKey = azapi_data_plane_resource.entity.identifiers.partitionKey
-    rowKey       = azapi_data_plane_resource.entity.identifiers.rowKey
-  }
 
   depends_on = [
     azapi_data_plane_resource.entity,
@@ -1553,7 +1544,7 @@ data "azapi_data_plane_resource" "entity" {
 
 data "azapi_data_plane_resource" "entities" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06"
-  parent_id = azapi_data_plane_resource.entity.parent_id
+  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
   query_parameters = {
     "$filter" = ["PartitionKey eq 'example'"]
   }

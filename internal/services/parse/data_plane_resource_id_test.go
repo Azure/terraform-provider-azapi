@@ -126,32 +126,24 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 		},
 		{
 			Name:         "",
-			ParentId:     "mystorage.table.core.windows.net/mytable",
+			ParentId:     "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06",
 			Error:        false,
 			Expected: &parse.DataPlaneResourceId{
 				AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 				ApiVersion:        "2026-04-06",
 				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
-				Identifiers: map[string]string{
-					"partitionKey": "pk",
-					"rowKey":       "rk",
-				},
 			},
 		},
-		// {tokenId} — non-name placeholder; previously broken (silently left as literal text)
 		{
 			Name:         "",
-			ParentId:     "myapp.azureiotcentral.com",
-			ResourceType: "Microsoft.IoTCentral/iotApps/apiTokens@2022-07-31",
+			ParentId:     "mystorage.table.core.windows.net/mytable",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06",
 			Error:        false,
 			Expected: &parse.DataPlaneResourceId{
-				AzureResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
-				ApiVersion:        "2022-07-31",
-				AzureResourceType: "Microsoft.IoTCentral/iotApps/apiTokens",
-				Identifiers: map[string]string{
-					"tokenId": "mytoken",
-				},
+				AzureResourceId:   "mystorage.table.core.windows.net/mytable()",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection",
 			},
 		},
 		// {name=defaultValue} — singleton with a fixed name enforced by the service
@@ -171,7 +163,7 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q %q %q", v.Name, v.ParentId, v.ResourceType)
 
-		actual, err := parse.NewDataPlaneResourceIdWithIdentifiers(v.Name, v.ParentId, v.ResourceType, v.Expected.Identifiers)
+		actual, err := parse.NewDataPlaneResourceId(v.Name, v.ParentId, v.ResourceType)
 		if err != nil {
 			if v.Error {
 				continue
@@ -191,9 +183,6 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 		}
 		if actual.AzureResourceType != v.Expected.AzureResourceType {
 			t.Fatalf("Expected %q but got %q for AzureResourceType", v.Expected.AzureResourceType, actual.AzureResourceType)
-		}
-		if len(actual.Identifiers) != len(v.Expected.Identifiers) {
-			t.Fatalf("Expected identifiers %#v but got %#v", v.Expected.Identifiers, actual.Identifiers)
 		}
 	}
 }
@@ -333,27 +322,18 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 				ApiVersion:        "2026-04-06",
 				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
-				ParentId:          "mystorage.table.core.windows.net/mytable",
-				Identifiers: map[string]string{
-					"partitionKey": "pk",
-					"rowKey":       "rk",
-				},
+				ParentId:          "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 			},
 		},
-		// {tokenId} round-trip — verify the non-name placeholder is parsed correctly
 		{
-			ResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
-			ResourceType: "Microsoft.IoTCentral/iotApps/apiTokens@2022-07-31",
+			ResourceId:   "mystorage.table.core.windows.net/mytable()",
+			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06",
 			Error:        false,
 			Expected: &parse.DataPlaneResourceId{
-				AzureResourceId:   "myapp.azureiotcentral.com/api/apiTokens/mytoken",
-				ApiVersion:        "2022-07-31",
-				AzureResourceType: "Microsoft.IoTCentral/iotApps/apiTokens",
-				ParentId:          "myapp.azureiotcentral.com",
-				Name:              "",
-				Identifiers: map[string]string{
-					"tokenId": "mytoken",
-				},
+				AzureResourceId:   "mystorage.table.core.windows.net/mytable()",
+				ApiVersion:        "2026-04-06",
+				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection",
+				ParentId:          "mystorage.table.core.windows.net/mytable",
 			},
 		},
 		// {name=defaultValue} round-trip — verify fixed-default singletons parse correctly
@@ -397,9 +377,6 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 		}
 		if actual.ParentId != v.Expected.ParentId {
 			t.Fatalf("Expected %q but got %q for ParentId", v.Expected.ParentId, actual.ParentId)
-		}
-		if len(actual.Identifiers) != len(v.Expected.Identifiers) {
-			t.Fatalf("Expected identifiers %#v but got %#v", v.Expected.Identifiers, actual.Identifiers)
 		}
 		if actual.Name != v.Expected.Name {
 			t.Fatalf("Expected %q but got %q for Name", v.Expected.Name, actual.Name)

@@ -4,18 +4,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func TestValidateDataPlaneResourceAddress(t *testing.T) {
+func TestValidateDataPlaneResourceName(t *testing.T) {
 	t.Run("agent requires name", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
 			Type: types.StringValue("Microsoft.Foundry/agents@v1"),
 			Name: types.StringNull(),
 		}
 
-		err := validateDataPlaneResourceAddress(config)
+		err := validateDataPlaneResourceName(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
@@ -30,7 +29,7 @@ func TestValidateDataPlaneResourceAddress(t *testing.T) {
 			Name: types.StringValue("terraform-agent"),
 		}
 
-		if err := validateDataPlaneResourceAddress(config); err != nil {
+		if err := validateDataPlaneResourceName(config); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
@@ -41,7 +40,7 @@ func TestValidateDataPlaneResourceAddress(t *testing.T) {
 			Name: types.StringNull(),
 		}
 
-		err := validateDataPlaneResourceAddress(config)
+		err := validateDataPlaneResourceName(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
@@ -56,87 +55,58 @@ func TestValidateDataPlaneResourceAddress(t *testing.T) {
 			Name: types.StringValue("secret-name"),
 		}
 
-		if err := validateDataPlaneResourceAddress(config); err != nil {
+		if err := validateDataPlaneResourceName(config); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
 
-	t.Run("table entity requires identifiers instead of name", func(t *testing.T) {
+	t.Run("table entity does not take a name (composite key lives in parent_id)", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
 			Type: types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
 			Name: types.StringNull(),
-			Identifiers: types.MapValueMust(types.StringType, map[string]attr.Value{
-				"partitionKey": types.StringValue("pk"),
-				"rowKey":       types.StringValue("rk"),
-			}),
 		}
 
-		if err := validateDataPlaneResourceAddress(config); err != nil {
+		if err := validateDataPlaneResourceName(config); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
 
-	t.Run("table entity rejects missing identifiers", func(t *testing.T) {
+	t.Run("table entity rejects name", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
-			Type:        types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
-			Name:        types.StringNull(),
-			Identifiers: types.MapNull(types.StringType),
+			Type: types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
+			Name: types.StringValue("unexpected"),
 		}
 
-		err := validateDataPlaneResourceAddress(config)
+		err := validateDataPlaneResourceName(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
-		if !strings.Contains(err.Error(), "identifiers") {
-			t.Fatalf("expected identifiers error, got: %v", err)
+		if !strings.Contains(err.Error(), "does not have a name") {
+			t.Fatalf("expected no-name error, got: %v", err)
+		}
+	})
+}
+
+func TestValidateDataPlaneResourceWritable(t *testing.T) {
+	t.Run("read-only entities collection is rejected", func(t *testing.T) {
+		err := validateDataPlaneResourceWritable("Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06")
+		if err == nil {
+			t.Fatalf("expected validation error")
+		}
+		if !strings.Contains(err.Error(), "does not support create/update/delete") {
+			t.Fatalf("expected read-only error, got: %v", err)
 		}
 	})
 
-	t.Run("table entity skips validation when identifier values are unknown (pre-for_each expansion)", func(t *testing.T) {
-		// Terraform calls ValidateConfig once on the raw block config before expanding
-		// for_each.  At that point each.value.pk / each.value.rk are unknown string values
-		// inside an otherwise-known map.  Validation must be deferred, not rejected.
-		config := &DataPlaneResourceModel{
-			Type: types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
-			Name: types.StringNull(),
-			Identifiers: types.MapValueMust(types.StringType, map[string]attr.Value{
-				"partitionKey": types.StringUnknown(),
-				"rowKey":       types.StringUnknown(),
-			}),
-		}
-
-		if err := validateDataPlaneResourceAddress(config); err != nil {
-			t.Fatalf("expected nil (deferred) error for unknown identifier values, got: %v", err)
+	t.Run("writable table type is accepted", func(t *testing.T) {
+		if err := validateDataPlaneResourceWritable("Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"); err != nil {
+			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
 
-	t.Run("table entity skips validation when any single identifier value is unknown", func(t *testing.T) {
-		// Mixed case: one key has a concrete value, the other is still unknown.
-		// AsMapOfString returns an empty map when ElementsAs encounters any unknown
-		// element (allowUnknowns=false), so ALL keys appear missing — not just the
-		// unknown one.  We must defer when ANY element is unknown to avoid a false error.
-		config := &DataPlaneResourceModel{
-			Type: types.StringValue("Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"),
-			Name: types.StringNull(),
-			Identifiers: types.MapValueMust(types.StringType, map[string]attr.Value{
-				"partitionKey": types.StringValue("connectivity-hub"),
-				"rowKey":       types.StringUnknown(),
-			}),
-		}
-
-		if err := validateDataPlaneResourceAddress(config); err != nil {
-			t.Fatalf("expected nil (deferred) error for mixed known/unknown identifier values, got: %v", err)
-		}
-	})
-
-	t.Run("singleton with defaulted name does not require name", func(t *testing.T) {
-		config := &DataPlaneResourceModel{
-			Type: types.StringValue("Microsoft.Purview/accounts/Account/resourceSetRuleConfigs@2021-07-01"),
-			Name: types.StringNull(),
-		}
-
-		if err := validateDataPlaneResourceAddress(config); err != nil {
-			t.Fatalf("expected nil error for singleton resource type, got: %v", err)
+	t.Run("type without customization is accepted", func(t *testing.T) {
+		if err := validateDataPlaneResourceWritable("Microsoft.Foundry/agents@v1"); err != nil {
+			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
 }

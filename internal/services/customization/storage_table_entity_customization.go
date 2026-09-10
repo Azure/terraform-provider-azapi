@@ -3,6 +3,7 @@ package customization
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -21,14 +22,14 @@ func (c StorageTableEntityCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, httpMethodMerge, payload, storageTableEntityRequestOptions(options))
+		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, httpMethodMerge, payload, storageTableEntityRequestOptions(options, id.ApiVersion))
 		return err
 	}
 }
 
 func (c StorageTableEntityCustomization) ReadFunc() ReadFunc {
 	return func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error) {
-		responseBody, err := client.DataPlaneClient.Get(ctx, id, storageTableEntityRequestOptions(options))
+		responseBody, err := client.DataPlaneClient.Get(ctx, id, storageTableEntityRequestOptions(options, id.ApiVersion))
 		if err != nil {
 			return nil, err
 		}
@@ -42,14 +43,14 @@ func (c StorageTableEntityCustomization) UpdateFunc() UpdateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, httpMethodMerge, payload, storageTableEntityRequestOptions(options))
+		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, httpMethodMerge, payload, storageTableEntityRequestOptions(options, id.ApiVersion))
 		return err
 	}
 }
 
 func (c StorageTableEntityCustomization) DeleteFunc() DeleteFunc {
 	return func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) error {
-		requestOptions := storageTableEntityRequestOptions(options)
+		requestOptions := storageTableEntityRequestOptions(options, id.ApiVersion)
 		if requestOptions.Headers == nil {
 			requestOptions.Headers = map[string]string{}
 		}
@@ -73,8 +74,21 @@ func (c StorageTableEntitiesCustomization) DeleteFunc() DeleteFunc { return nil 
 
 func (c StorageTableEntitiesCustomization) ReadFunc() ReadFunc {
 	return func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error) {
-		return client.DataPlaneClient.Get(ctx, id, storageTableEntityRequestOptions(options))
+		return client.DataPlaneClient.Get(ctx, id, storageTableEntityRequestOptions(options, id.ApiVersion))
 	}
+}
+
+// storageTableEntityKeyPattern matches the composite key suffix embedded in the entity's
+// parent_id / resource ID, e.g. "mytable(PartitionKey='Sales',RowKey='1')".
+var storageTableEntityKeyPattern = regexp.MustCompile(`\(PartitionKey='([^']*)',RowKey='([^']*)'\)$`)
+
+// storageTableEntityKeys extracts PartitionKey and RowKey from the entity resource ID.
+func storageTableEntityKeys(id parse.DataPlaneResourceId) (string, string, error) {
+	match := storageTableEntityKeyPattern.FindStringSubmatch(id.AzureResourceId)
+	if match == nil {
+		return "", "", fmt.Errorf("parent_id for %s must end with (PartitionKey='<value>',RowKey='<value>'), got %q", id.AzureResourceType, id.ParentId)
+	}
+	return match[1], match[2], nil
 }
 
 func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{}) (map[string]interface{}, error) {
@@ -89,22 +103,21 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 		}
 	}
 
-	partitionKey := id.Identifiers["partitionKey"]
-	rowKey := id.Identifiers["rowKey"]
-	if partitionKey == "" || rowKey == "" {
-		return nil, fmt.Errorf("missing required identifiers partitionKey and rowKey")
+	partitionKey, rowKey, err := storageTableEntityKeys(id)
+	if err != nil {
+		return nil, err
 	}
 
 	if rawPartitionKey, ok := payload["PartitionKey"]; ok {
 		value, ok := rawPartitionKey.(string)
 		if !ok || value != partitionKey {
-			return nil, fmt.Errorf(`body.PartitionKey must be a string matching identifiers.partitionKey %q`, partitionKey)
+			return nil, fmt.Errorf(`body.PartitionKey must be a string matching the PartitionKey %q in parent_id`, partitionKey)
 		}
 	}
 	if rawRowKey, ok := payload["RowKey"]; ok {
 		value, ok := rawRowKey.(string)
 		if !ok || value != rowKey {
-			return nil, fmt.Errorf(`body.RowKey must be a string matching identifiers.rowKey %q`, rowKey)
+			return nil, fmt.Errorf(`body.RowKey must be a string matching the RowKey %q in parent_id`, rowKey)
 		}
 	}
 
@@ -113,8 +126,8 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 	return payload, nil
 }
 
-func storageTableEntityRequestOptions(options clients.RequestOptions) clients.RequestOptions {
-	cloned := storageTableRequestOptions(options)
+func storageTableEntityRequestOptions(options clients.RequestOptions, apiVersion string) clients.RequestOptions {
+	cloned := storageTableRequestOptions(options, apiVersion)
 	if cloned.Headers == nil {
 		cloned.Headers = map[string]string{}
 	}
@@ -135,7 +148,7 @@ func flattenStorageTableEntity(responseBody interface{}) (interface{}, error) {
 	if !ok {
 		return nil, fmt.Errorf("expected Azure Table entity response to be an object")
 	}
-	// Strip fields that are already captured in `identifiers` (PartitionKey, RowKey) or are
+	// Strip fields that are already captured in `parent_id` (PartitionKey, RowKey) or are
 	// OData protocol metadata (Timestamp, odata.*).  Leaving them in the body would create
 	// a permanent diff between the user-authored body and the read-back state, because the
 	// user does not include these fields in their HCL body attribute.
