@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -121,6 +122,7 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
 				ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
 				ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
+				ReadOverride                  types.Object        `tfsdk:"read_override"`
 			}
 
 			var oldState OldModel
@@ -164,6 +166,10 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Retry:                         retry.NewRetryValueNull(),
 				SensitiveBody:                 types.DynamicNull(),
 				SensitiveBodyVersion:          types.MapNull(types.StringType),
+				ReadOverride: types.ObjectNull(map[string]attr.Type{
+					"method": types.StringType,
+					"action": types.StringType,
+				}),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

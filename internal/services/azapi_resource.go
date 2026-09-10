@@ -871,12 +871,12 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	client := r.ProviderData.ResourceClient
 
 	if isNewResource {
-		// check if the resource already exists using the non-retry client to avoid issue where user specifies
-		// a FooResourceNotFound error as a retryable error
+		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
 			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		}
+		requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptionsForResourceExistenceCheck(plan.Retry)
 		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())

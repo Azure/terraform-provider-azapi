@@ -21,14 +21,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
   }
 }
 
@@ -46,7 +38,10 @@ variable "location" {
   default = "westeurope"
 }
 
-data "azurerm_client_config" "current" {
+data "azapi_client_config" "current" {}
+
+locals {
+  key_vault_secrets_officer_role_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/b86a8fe4-44ce-4948-aee5-eccb2c155cd7"
 }
 
 resource "azapi_resource" "resourceGroup" {
@@ -56,7 +51,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -66,26 +61,35 @@ resource "azapi_resource" "vault" {
         family = "A"
         name   = "standard"
       }
-      accessPolicies   = []
-      enableSoftDelete = true
-      tenantId         = data.azurerm_client_config.current.tenant_id
+      accessPolicies          = []
+      enableRbacAuthorization = true
+      enableSoftDelete        = true
+      tenantId                = data.azapi_client_config.current.tenant_id
     }
   }
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
-  lifecycle {
-    ignore_changes = [body.properties.accessPolicies]
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "keyVaultSecretsOfficer" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.vault.id
+  name      = uuidv5("url", "${azapi_resource.vault.id}/${data.azapi_client_config.current.object_id}/${local.key_vault_secrets_officer_role_id}")
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = local.key_vault_secrets_officer_role_id
+    }
   }
 }
 
 data "azapi_resource_id" "secret" {
-  type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  type      = "Microsoft.KeyVault/vaults/secrets@2026-02-01"
   parent_id = azapi_resource.vault.id
   name      = var.resource_name
 }
 
 resource "azapi_resource_action" "put_secret" {
-  type        = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  type        = "Microsoft.KeyVault/vaults/secrets@2026-02-01"
   resource_id = data.azapi_resource_id.secret.id
   method      = "PUT"
   body = {
@@ -94,6 +98,12 @@ resource "azapi_resource_action" "put_secret" {
     }
   }
   response_export_values = ["*"]
+  retry = {
+    error_message_regex  = ["Forbidden", "Unauthorized", "authorization"]
+    interval_seconds     = 10
+    max_interval_seconds = 60
+  }
+  depends_on = [azapi_resource.keyVaultSecretsOfficer]
 }
 
 ```
@@ -104,7 +114,7 @@ resource "azapi_resource_action" "put_secret" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.KeyVault/vaults/secrets@api-version`. The available api-versions for this resource are: [`2016-10-01`, `2018-02-14`, `2018-02-14-preview`, `2019-09-01`, `2020-04-01-preview`, `2021-04-01-preview`, `2021-06-01-preview`, `2021-10-01`, `2021-11-01-preview`, `2022-02-01-preview`, `2022-07-01`, `2022-11-01`, `2023-02-01`, `2023-07-01`, `2024-04-01-preview`, `2024-11-01`, `2024-12-01-preview`, `2025-05-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.KeyVault/vaults/secrets@api-version`. The available api-versions for this resource are: [`2016-10-01`, `2018-02-14`, `2018-02-14-preview`, `2019-09-01`, `2020-04-01-preview`, `2021-04-01-preview`, `2021-06-01-preview`, `2021-10-01`, `2021-11-01-preview`, `2022-02-01-preview`, `2022-07-01`, `2022-11-01`, `2023-02-01`, `2023-07-01`, `2024-04-01-preview`, `2024-11-01`, `2024-12-01-preview`, `2025-05-01`, `2026-02-01`, `2026-03-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}`
@@ -122,5 +132,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}/secrets/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}/secrets/{resourceName}?api-version=2025-05-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{resourceName}/secrets/{resourceName}?api-version=2026-03-01-preview
  ```
