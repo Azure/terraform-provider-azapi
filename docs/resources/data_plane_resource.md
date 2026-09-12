@@ -599,7 +599,7 @@ variable "dataset_description" {
 }
 
 variable "dataset_type" {
-  description = "The dataset type. Supported values are uri_file and uri_folder. The current upload workflow is file-oriented."
+  description = "The dataset type. Supported values are uri_file and uri_folder."
   type        = string
   default     = "uri_file"
 
