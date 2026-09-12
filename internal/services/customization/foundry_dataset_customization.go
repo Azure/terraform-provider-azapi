@@ -261,7 +261,7 @@ func setDatasetDefaults(
 
 	datasetType = strings.TrimSpace(datasetType)
 	if datasetType == "" {
-		values["type"] = "uri-file"
+		values["type"] = "uri_file"
 	}
 
 	format, _, exists, err := datasetStringField(values, "format")
@@ -324,12 +324,12 @@ func datasetVersionRequestBody(
 
 	datasetType = strings.TrimSpace(datasetType)
 	if datasetType == "" {
-		datasetType = "uri-file"
+		datasetType = "uri_file"
 	}
 
-	if datasetType != "uri-file" && datasetType != "uri-folder" {
+	if datasetType != "uri_file" && datasetType != "uri_folder" {
 		return nil, "", fmt.Errorf(
-			`dataset body field "type" must be "uri-file" or "uri-folder"`,
+			`dataset body field "type" must be "uri_file" or "uri_folder"`,
 		)
 	}
 

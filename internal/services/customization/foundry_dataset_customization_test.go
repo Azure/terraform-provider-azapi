@@ -105,7 +105,7 @@ func TestDatasetVersionRequestBody(t *testing.T) {
 		"name":        "example-dataset",
 		"version":     "1",
 		"description": "example",
-		"type":        "uri-file",
+		"type":        "uri_file",
 		"dataUri":     "https://storage.blob.core.windows.net/container",
 		"format":      "jsonl",
 	}
@@ -305,7 +305,7 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 		},
 		map[string]interface{}{
 			"version":         "1",
-			"type":            "uri-file",
+			"type":            "uri_file",
 			"format":          "jsonl",
 			"computed_sha256": "abc",
 		},
@@ -318,7 +318,7 @@ func TestFoundryDatasetPlanBody(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected plan body type: %#v", planBody)
 	}
-	if values["version"] != "1" || values["type"] != "uri-file" {
+	if values["version"] != "1" || values["type"] != "uri_file" {
 		t.Fatalf("state defaults were not copied into plan body: %#v", values)
 	}
 	if _, exists := values["computed_sha256"]; exists {
@@ -339,7 +339,7 @@ func TestDatasetDefaults(t *testing.T) {
 		if body["version"] != "1" {
 			t.Fatalf("unexpected version: %#v", body["version"])
 		}
-		if body["type"] != "uri-file" {
+		if body["type"] != "uri_file" {
 			t.Fatalf("unexpected type: %#v", body["type"])
 		}
 	})
@@ -367,7 +367,7 @@ func TestDatasetDefaults(t *testing.T) {
 	t.Run("allows folder uploads", func(t *testing.T) {
 		body := map[string]interface{}{
 			"format": "jsonl",
-			"type":   "uri-folder",
+			"type":   "uri_folder",
 		}
 
 		if err := setDatasetDefaults(
@@ -376,7 +376,7 @@ func TestDatasetDefaults(t *testing.T) {
 		); err != nil {
 			t.Fatalf("setDatasetDefaults returned an error: %v", err)
 		}
-		if body["type"] != "uri-folder" {
+		if body["type"] != "uri_folder" {
 			t.Fatalf("unexpected type: %#v", body["type"])
 		}
 	})
@@ -438,12 +438,12 @@ func TestDatasetVersionRequestBodyAllowsFolderType(t *testing.T) {
 		"name":        "example-dataset",
 		"description": "example",
 		"format":      "jsonl",
-		"type":        "uri-folder",
+		"type":        "uri_folder",
 	}, "1", "https://storage.blob.core.windows.net/container")
 	if err != nil {
 		t.Fatalf("datasetVersionRequestBody returned an error: %v", err)
 	}
-	if body["type"] != "uri-folder" {
+	if body["type"] != "uri_folder" {
 		t.Fatalf("unexpected dataset type: %#v", body["type"])
 	}
 }
