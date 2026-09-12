@@ -242,7 +242,9 @@ func TestDatasetHTTPClientsRefuseRedirects(t *testing.T) {
 
 			response, err := client.Do(request)
 			if response != nil {
-				response.Body.Close()
+				if closeErr := response.Body.Close(); closeErr != nil {
+					t.Errorf("closing redirect response body: %v", closeErr)
+				}
 			}
 			if err == nil {
 				t.Fatal("expected redirect to be refused")
@@ -556,7 +558,7 @@ func TestStreamDatasetToUploadRejectsChecksumMismatch(
 		t.Fatal("expected checksum mismatch error")
 	}
 
-	if !strings.Contains(err.Error(), "SHA-256 mismatch") {
+	if !strings.Contains(err.Error(), "sha-256 mismatch") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 

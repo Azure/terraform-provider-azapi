@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -86,28 +87,28 @@ func datasetField(
 func datasetStringField(
 	values map[string]interface{},
 	names ...string,
-) (string, string, bool, error) {
+) (string, bool, error) {
 	value, name, exists := datasetField(values, names...)
 	if !exists || value == nil {
-		return "", name, false, nil
+		return "", false, nil
 	}
 
 	switch value := value.(type) {
 	case string:
-		return value, name, true, nil
+		return value, true, nil
 
 	case float64:
 		if value != float64(int64(value)) {
-			return "", name, true, fmt.Errorf(
+			return "", true, fmt.Errorf(
 				"dataset field %q must be a string",
 				name,
 			)
 		}
 
-		return strconv.FormatInt(int64(value), 10), name, true, nil
+		return strconv.FormatInt(int64(value), 10), true, nil
 
 	default:
-		return "", name, true, fmt.Errorf(
+		return "", true, fmt.Errorf(
 			"dataset field %q must be a string",
 			name,
 		)
@@ -118,7 +119,7 @@ func datasetRequiredString(
 	values map[string]interface{},
 	name string,
 ) (string, error) {
-	value, _, exists, err := datasetStringField(values, name)
+	value, exists, err := datasetStringField(values, name)
 	if err != nil {
 		return "", err
 	}
@@ -142,7 +143,7 @@ func datasetSourceInfo(
 		return "", "", false, err
 	}
 
-	sourceURL, _, exists, err := datasetStringField(
+	sourceURL, exists, err := datasetStringField(
 		values,
 		"source_url",
 		"sourceUrl",
@@ -158,7 +159,7 @@ func datasetSourceInfo(
 		)
 	}
 
-	expectedSHA256, _, hasSHA256, err := datasetStringField(
+	expectedSHA256, hasSHA256, err := datasetStringField(
 		values,
 		"source_sha256",
 		"sourceSha256",
@@ -203,7 +204,7 @@ func datasetPendingUploadBody(
 		"pendingUploadType": "BlobReference",
 	}
 
-	if value, _, exists, err := datasetStringField(
+	if value, exists, err := datasetStringField(
 		values,
 		"pending_upload_id",
 		"pendingUploadId",
@@ -213,7 +214,7 @@ func datasetPendingUploadBody(
 		result["pendingUploadId"] = strings.TrimSpace(value)
 	}
 
-	if value, _, exists, err := datasetStringField(
+	if value, exists, err := datasetStringField(
 		values,
 		"connection_name",
 		"connectionName",
@@ -235,7 +236,7 @@ func setDatasetDefaults(
 		return fmt.Errorf("dataset body must be a mutable object")
 	}
 
-	version, _, exists, err := datasetStringField(values, "version")
+	version, exists, err := datasetStringField(values, "version")
 	if err != nil {
 		return err
 	}
@@ -254,7 +255,7 @@ func setDatasetDefaults(
 		values["version"] = version
 	}
 
-	datasetType, _, _, err := datasetStringField(values, "type")
+	datasetType, _, err := datasetStringField(values, "type")
 	if err != nil {
 		return err
 	}
@@ -264,7 +265,7 @@ func setDatasetDefaults(
 		values["type"] = "uri_file"
 	}
 
-	format, _, exists, err := datasetStringField(values, "format")
+	format, exists, err := datasetStringField(values, "format")
 	if err != nil {
 		return err
 	}
@@ -293,7 +294,7 @@ func datasetVersionRequestBody(
 		return nil, "", err
 	}
 
-	version, _, exists, err := datasetStringField(values, "version")
+	version, exists, err := datasetStringField(values, "version")
 	if err != nil {
 		return nil, "", err
 	}
@@ -317,7 +318,7 @@ func datasetVersionRequestBody(
 		return nil, "", err
 	}
 
-	datasetType, _, _, err := datasetStringField(values, "type")
+	datasetType, _, err := datasetStringField(values, "type")
 	if err != nil {
 		return nil, "", err
 	}
@@ -512,7 +513,7 @@ func datasetUploadHTTPClient() *http.Client {
 	}
 }
 
-func downloadDatasetSHA256(sourceURL string) (string, error) {
+func downloadDatasetSHA256(sourceURL string) (checksum string, err error) {
 	request, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodGet,
@@ -536,7 +537,11 @@ func downloadDatasetSHA256(sourceURL string) (string, error) {
 		)
 	}
 
-	defer response.Body.Close()
+	defer func() {
+		if closeErr := response.Body.Close(); err == nil && closeErr != nil {
+			err = fmt.Errorf("closing dataset checksum response: %w", closeErr)
+		}
+	}()
 
 	if response.StatusCode < http.StatusOK ||
 		response.StatusCode >= http.StatusMultipleChoices {
@@ -564,7 +569,7 @@ func streamDatasetToUpload(
 	containerSASURL string,
 	expectedSHA256 string,
 	verifySHA256 bool,
-) (string, error) {
+) (actualSHA256 string, err error) {
 	filename, err := datasetSourceFilename(sourceURL)
 	if err != nil {
 		return "", err
@@ -598,7 +603,11 @@ func streamDatasetToUpload(
 		)
 	}
 
-	defer sourceResponse.Body.Close()
+	defer func() {
+		if closeErr := sourceResponse.Body.Close(); err == nil && closeErr != nil {
+			err = fmt.Errorf("closing dataset source response: %w", closeErr)
+		}
+	}()
 
 	if sourceResponse.StatusCode < http.StatusOK ||
 		sourceResponse.StatusCode >= http.StatusMultipleChoices {
@@ -617,8 +626,16 @@ func streamDatasetToUpload(
 	}
 
 	tempFileName := tempFile.Name()
-	defer os.Remove(tempFileName)
-	defer tempFile.Close()
+	defer func() {
+		if closeErr := tempFile.Close(); err == nil &&
+			closeErr != nil &&
+			!errors.Is(closeErr, os.ErrClosed) {
+			err = fmt.Errorf("closing temporary dataset file: %w", closeErr)
+		}
+		if removeErr := os.Remove(tempFileName); err == nil && removeErr != nil {
+			err = fmt.Errorf("removing temporary dataset file: %w", removeErr)
+		}
+	}()
 
 	hasher := sha256.New()
 
@@ -632,12 +649,12 @@ func streamDatasetToUpload(
 		)
 	}
 
-	actualSHA256 := hex.EncodeToString(hasher.Sum(nil))
+	actualSHA256 = hex.EncodeToString(hasher.Sum(nil))
 
 	if verifySHA256 &&
 		!strings.EqualFold(actualSHA256, expectedSHA256) {
 		return "", fmt.Errorf(
-			"SHA-256 mismatch. Supplied SHA-256 does not match computed SHA-256.",
+			"sha-256 mismatch: supplied SHA-256 does not match computed SHA-256",
 		)
 	}
 
@@ -687,7 +704,11 @@ func streamDatasetToUpload(
 		)
 	}
 
-	defer uploadResponse.Body.Close()
+	defer func() {
+		if closeErr := uploadResponse.Body.Close(); err == nil && closeErr != nil {
+			err = fmt.Errorf("closing dataset upload response: %w", closeErr)
+		}
+	}()
 
 	if uploadResponse.StatusCode < http.StatusOK ||
 		uploadResponse.StatusCode >= http.StatusMultipleChoices {
@@ -727,7 +748,7 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		return nil, err
 	}
 
-	version, _, exists, err := datasetStringField(
+	version, exists, err := datasetStringField(
 		requestBody,
 		"version",
 	)
@@ -878,7 +899,7 @@ func (c FoundryDatasetCustomization) UpdateFunc() UpdateFunc {
 		_ clients.RequestOptions,
 	) error {
 		return fmt.Errorf(
-			"Foundry dataset versions are immutable; create a new dataset version instead",
+			"foundry dataset versions are immutable; create a new dataset version instead",
 		)
 	}
 }
