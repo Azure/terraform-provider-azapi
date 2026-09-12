@@ -887,13 +887,6 @@ func (c FoundryDatasetCustomization) DeleteFunc() DeleteFunc {
 	return nil
 }
 
-func (c FoundryDatasetCustomization) StateBodyFunc() StateBodyFunc {
-	return func(body interface{}) (interface{}, error) {
-		// Preserve the configured body, including source_sha256.
-		return body, nil
-	}
-}
-
 func (c FoundryDatasetCustomization) PlanBodyFunc() PlanBodyFunc {
 	return func(
 		planBody interface{},
@@ -995,5 +988,4 @@ func datasetSafeError(operation string, _ error) error {
 
 var _ DataPlaneResource = &FoundryDatasetCustomization{}
 var _ DataPlaneResourceWithPlanBody = &FoundryDatasetCustomization{}
-var _ DataPlaneResourceWithStateBody = &FoundryDatasetCustomization{}
 var _ DataPlaneResourceWithReadOptions = &FoundryDatasetCustomization{}

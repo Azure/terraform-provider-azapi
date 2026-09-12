@@ -68,11 +68,6 @@ type DataPlaneResourceModel struct {
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
-type DataPlaneResourceIdentityModel struct {
-	ID   types.String `tfsdk:"id"`
-	Type types.String `tfsdk:"type"`
-}
-
 type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
@@ -577,33 +572,6 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
-	if stateBodyResource, ok := func() (customization.DataPlaneResourceWithStateBody, bool) {
-		if customizedResource == nil {
-			return nil, false
-		}
-		resource, ok := (*customizedResource).(customization.DataPlaneResourceWithStateBody)
-		if !ok || resource.StateBodyFunc() == nil {
-			return nil, false
-		}
-		return resource, true
-	}(); ok {
-		stateBody, err := stateBodyResource.StateBodyFunc()(body)
-		if err != nil {
-			diagnostics.AddError("Failed to build state body", err.Error())
-			return
-		}
-		stateBodyJSON, err := json.Marshal(stateBody)
-		if err != nil {
-			diagnostics.AddError("Failed to build state body", err.Error())
-			return
-		}
-		plan.Body, err = dynamic.FromJSONImplied(stateBodyJSON)
-		if err != nil {
-			diagnostics.AddError("Failed to build state body", err.Error())
-			return
-		}
-	}
-
 	readAfterCreateOpts, _ := clients.NewRetryOptionsForReadAfterCreate()
 	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
 	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
@@ -836,32 +804,10 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 }
 
 func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
-	resourceID := request.ID
-	resourceType := ""
-
-	if request.Identity != nil && !request.Identity.Raw.IsNull() {
-		var identityData DataPlaneResourceIdentityModel
-		diags := request.Identity.Get(ctx, &identityData)
-		response.Diagnostics.Append(diags...)
-		if response.Diagnostics.HasError() {
-			return
-		}
-
-		if !identityData.ID.IsNull() && identityData.ID.ValueString() != "" {
-			resourceID = identityData.ID.ValueString()
-		}
-		if !identityData.Type.IsNull() && identityData.Type.ValueString() != "" {
-			resourceType = identityData.Type.ValueString()
-		}
-	}
-
-	if resourceType == "" {
-		var err error
-		resourceID, resourceType, err = parseDataPlaneImportID(resourceID)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid import ID", err.Error())
-			return
-		}
+	resourceID, resourceType, err := parseDataPlaneImportID(request.ID)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid import ID", err.Error())
+		return
 	}
 
 	id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)

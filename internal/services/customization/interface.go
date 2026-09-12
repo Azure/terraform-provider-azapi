@@ -30,13 +30,6 @@ type DataPlaneResourceWithCreateResult interface {
 	CreateResultFunc() CreateResultFunc
 }
 
-// DataPlaneResourceWithStateBody is an optional extension for customizations
-// which add provider-computed values to the request body stored in state.
-type DataPlaneResourceWithStateBody interface {
-	DataPlaneResource
-	StateBodyFunc() StateBodyFunc
-}
-
 // DataPlaneResourceWithPlanBody is an optional extension for customizations
 // which need to carry provider-computed body values from state into the plan.
 type DataPlaneResourceWithPlanBody interface {
@@ -58,5 +51,4 @@ type DeleteFunc = func(ctx context.Context, client clients.Client, id parse.Data
 type CreateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error
 type CreateResultFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) (parse.DataPlaneResourceId, interface{}, error)
 type PlanBodyFunc = func(planBody interface{}, stateBody interface{}) (interface{}, error)
-type StateBodyFunc = func(body interface{}) (interface{}, error)
 type UpdateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error
