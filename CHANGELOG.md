@@ -1,3 +1,9 @@
+## v2.13.0 (Unreleased)
+
+ENHANCEMENTS:
+
+- `azapi_data_plane_resource` resource: Support moving `azurerm_key_vault_secret` state with a `moved` block (GH-1244).
+
 ## v2.12.0
 
 ENHANCEMENTS:
