@@ -8,7 +8,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/hashicorp/go-uuid v1.0.3
-	github.com/hashicorp/hcl/v2 v2.24.0
+	github.com/hashicorp/hcl/v2 v2.25.0
 	github.com/hashicorp/terraform-plugin-docs v0.25.0
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.7.0
