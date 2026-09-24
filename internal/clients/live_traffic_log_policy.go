@@ -14,7 +14,7 @@ import (
 
 const (
 	redactedValue       = "REDACTED"
-	logSensitiveDataEnv = "LOG_SENSITIVE_DATA"
+	logSensitiveDataEnv = "AZAPI_LOG_SENSITIVE_DATA"
 )
 
 type liveTrafficLogPolicy struct {
