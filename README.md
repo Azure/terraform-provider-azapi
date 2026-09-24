@@ -73,10 +73,6 @@ resource "azapi_resource" "automationAccount" {
 
 Further [usage documentation is available on the Terraform website](https://registry.terraform.io/providers/Azure/azapi/latest/docs).
 
-## HTTP body logging
-
-HTTP bodies are redacted by default. For debugging, set `TF_LOG=DEBUG` and `LOG_SENSITIVE_DATA=true` to log full request and response bodies, including `sensitive_body` values. Authentication headers remain redacted.
-
 ## Contributing
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
