@@ -2,17 +2,24 @@ package clients
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-const redactedValue = "REDACTED"
+const (
+	redactedValue       = "REDACTED"
+	logSensitiveDataEnv = "AZAPI_LOG_SENSITIVE_DATA"
+)
 
 type liveTrafficLogPolicy struct {
 	notAllowedHeaders map[string]bool
+	logSensitiveData  bool
 }
 
 type traffic struct {
@@ -35,6 +42,7 @@ type liveResponse struct {
 
 func NewLiveTrafficLogPolicy() policy.Policy {
 	return &liveTrafficLogPolicy{
+		logSensitiveData: os.Getenv(logSensitiveDataEnv) == "true",
 		notAllowedHeaders: map[string]bool{
 			"authorization":                true,
 			"x-ms-authorization-auxiliary": true,
@@ -81,14 +89,30 @@ func (p *liveTrafficLogPolicy) requestBodyString(req *policy.Request) string {
 	if req.Raw().Body == nil {
 		return ""
 	}
-	return redactedValue
+	if !p.logSensitiveData {
+		return redactedValue
+	}
+	body, err := io.ReadAll(req.Raw().Body)
+	if err != nil {
+		log.Printf("[ERROR] Failed to read request body for logging: %v", err)
+		return redactedValue
+	}
+	return string(body)
 }
 
 func (p *liveTrafficLogPolicy) responseBodyString(resp *http.Response) string {
 	if resp.Body == nil {
 		return ""
 	}
-	return redactedValue
+	if !p.logSensitiveData {
+		return redactedValue
+	}
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		log.Printf("[ERROR] Failed to read response body for logging: %v", err)
+		return redactedValue
+	}
+	return string(body)
 }
 
 func (p *liveTrafficLogPolicy) header(input http.Header) map[string]string {
