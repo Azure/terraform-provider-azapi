@@ -3,6 +3,7 @@ package clients
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -81,53 +82,79 @@ func TestLiveTrafficLogPolicyEmptyBodies(t *testing.T) {
 	}
 }
 
-func TestLiveTrafficLogPolicyDoesNotLogBodies(t *testing.T) {
-	var logOutput bytes.Buffer
-	originalOutput := log.Writer()
-	originalFlags := log.Flags()
-	log.SetOutput(&logOutput)
-	log.SetFlags(0)
-	defer func() {
-		log.SetOutput(originalOutput)
-		log.SetFlags(originalFlags)
-	}()
+func TestLiveTrafficLogPolicyLogging(t *testing.T) {
+	const requestBody = `{"secret":"request-secret"}`
+	const responseBody = `{"secret":"response-secret"}`
+	for _, tc := range []struct {
+		name    string
+		env     string
+		logBody bool
+	}{
+		{name: "default"},
+		{name: "disabled", env: "false"},
+		{name: "invalid", env: "invalid"},
+		{name: "enabled", env: "true", logBody: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("LOG_SENSITIVE_DATA", tc.env)
+			var logOutput bytes.Buffer
+			originalOutput, originalFlags := log.Writer(), log.Flags()
+			log.SetOutput(&logOutput)
+			log.SetFlags(0)
+			t.Cleanup(func() {
+				log.SetOutput(originalOutput)
+				log.SetFlags(originalFlags)
+			})
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{
-			NewLiveTrafficLogPolicy(),
-		},
-	}, &policy.ClientOptions{
-		Telemetry: policy.TelemetryOptions{Disabled: true},
-		Transport: fakeTransporter{
-			response: &http.Response{
-				StatusCode: http.StatusOK,
-				Header:     make(http.Header),
-				Body:       io.NopCloser(strings.NewReader(`{"secret":"response-secret"}`)),
-			},
-		},
-	})
+			pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{
+				PerRetry: []policy.Policy{NewLiveTrafficLogPolicy()},
+			}, &policy.ClientOptions{
+				Telemetry: policy.TelemetryOptions{Disabled: true},
+				Transport: fakeTransporter{response: &http.Response{
+					StatusCode: http.StatusOK,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(strings.NewReader(responseBody)),
+				}},
+			})
+			req, err := runtime.NewRequest(context.Background(), http.MethodPut, "https://example.com")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := runtime.MarshalAsJSON(req, json.RawMessage(requestBody)); err != nil {
+				t.Fatal(err)
+			}
+			req.Raw().Header.Set("Authorization", "Bearer auth-secret")
+			req.Raw().Header.Set("x-ms-authorization-auxiliary", "Bearer auxiliary-secret")
 
-	req, err := runtime.NewRequest(context.Background(), http.MethodPost, "https://example.com")
-	if err != nil {
-		t.Fatalf("failed to create request: %+v", err)
-	}
-	if err := runtime.MarshalAsJSON(req, map[string]string{"secret": "request-secret"}); err != nil {
-		t.Fatalf("failed to marshal request body: %+v", err)
-	}
+			resp, err := pl.Do(req)
+			if err != nil {
+				t.Fatal(err)
+			}
+			body, err := io.ReadAll(resp.Request.Body)
+			if err != nil || string(body) != requestBody {
+				t.Fatalf("request body was not preserved: body=%q, error=%v", body, err)
+			}
+			body, err = runtime.Payload(resp)
+			if err != nil || string(body) != responseBody {
+				t.Fatalf("response body was not preserved: body=%q, error=%v", body, err)
+			}
 
-	if _, err := pl.Do(req); err != nil {
-		t.Fatalf("unexpected pipeline error: %+v", err)
-	}
-
-	got := logOutput.String()
-	if !strings.Contains(got, redactedValue) {
-		t.Fatalf("expected log output to contain redaction marker, got %q", got)
-	}
-	if strings.Contains(got, "request-secret") {
-		t.Fatalf("log output included request secret: %s", got)
-	}
-	if strings.Contains(got, "response-secret") {
-		t.Fatalf("log output included response secret: %s", got)
+			var got traffic
+			payload := strings.TrimPrefix(logOutput.String(), "[DEBUG] Live traffic: ")
+			if err := json.Unmarshal([]byte(payload), &got); err != nil {
+				t.Fatal(err)
+			}
+			wantRequest, wantResponse := redactedValue, redactedValue
+			if tc.logBody {
+				wantRequest, wantResponse = requestBody, responseBody
+			}
+			if got.LiveRequest.Body != wantRequest || got.LiveResponse.Body != wantResponse {
+				t.Fatalf("unexpected logged bodies: request=%q response=%q", got.LiveRequest.Body, got.LiveResponse.Body)
+			}
+			if got.LiveRequest.Headers["Authorization"] != redactedValue || got.LiveRequest.Headers["X-Ms-Authorization-Auxiliary"] != redactedValue {
+				t.Fatal("authentication headers were not redacted")
+			}
+		})
 	}
 }
 
