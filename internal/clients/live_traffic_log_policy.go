@@ -12,7 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-const redactedValue = "REDACTED"
+const (
+	redactedValue       = "REDACTED"
+	logSensitiveDataEnv = "LOG_SENSITIVE_DATA"
+)
 
 type liveTrafficLogPolicy struct {
 	notAllowedHeaders map[string]bool
@@ -39,7 +42,7 @@ type liveResponse struct {
 
 func NewLiveTrafficLogPolicy() policy.Policy {
 	return &liveTrafficLogPolicy{
-		logSensitiveData: os.Getenv("LOG_SENSITIVE_DATA") == "true",
+		logSensitiveData: os.Getenv(logSensitiveDataEnv) == "true",
 		notAllowedHeaders: map[string]bool{
 			"authorization":                true,
 			"x-ms-authorization-auxiliary": true,

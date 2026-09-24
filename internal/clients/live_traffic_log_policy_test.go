@@ -96,7 +96,7 @@ func TestLiveTrafficLogPolicyLogging(t *testing.T) {
 		{name: "enabled", env: "true", logBody: true},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			t.Setenv("LOG_SENSITIVE_DATA", tc.env)
+			t.Setenv(logSensitiveDataEnv, tc.env)
 			var logOutput bytes.Buffer
 			originalOutput, originalFlags := log.Writer(), log.Flags()
 			log.SetOutput(&logOutput)
