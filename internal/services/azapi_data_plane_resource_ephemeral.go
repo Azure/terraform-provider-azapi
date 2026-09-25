@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/customization"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
@@ -49,6 +50,8 @@ type DataPlaneResourceEphemeralModel struct {
 	Output               types.Dynamic    `tfsdk:"output"`
 	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
 	Retry                retry.RetryValue `tfsdk:"retry"`
+	Headers              types.Map        `tfsdk:"headers"`
+	QueryParameters      types.Map        `tfsdk:"query_parameters"`
 }
 
 func (r *DataPlaneResourceEphemeral) Metadata(ctx context.Context, request ephemeral.MetadataRequest, response *ephemeral.MetadataResponse) {
@@ -93,6 +96,18 @@ func (r *DataPlaneResourceEphemeral) Schema(ctx context.Context, request ephemer
 				MarkdownDescription: docstrings.Output("ephemeral.azapi_data_plane_resource"),
 			},
 			"retry": retry.RetryEphemeralSchema(ctx),
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request.",
+			},
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request.",
+			},
 		},
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx),
@@ -140,8 +155,7 @@ func (r *DataPlaneResourceEphemeral) Open(ctx context.Context, request ephemeral
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
 	client := r.ProviderData.DataPlaneClient
-	requestOptions := clients.RequestOptions{}
-	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
+	requestOptions := dataPlaneResourceEphemeralRequestOptions(model)
 
 	var responseBody interface{}
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
@@ -181,4 +195,13 @@ func (r *DataPlaneResourceEphemeral) Open(ctx context.Context, request ephemeral
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	response.Diagnostics.Append(response.Result.Set(ctx, model)...)
+}
+
+func dataPlaneResourceEphemeralRequestOptions(model *DataPlaneResourceEphemeralModel) clients.RequestOptions {
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.Headers),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
+	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
+	return requestOptions
 }

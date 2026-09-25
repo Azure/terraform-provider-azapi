@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/customization"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
@@ -49,6 +50,8 @@ type DataPlaneResourceDataSourceModel struct {
 	Output               types.Dynamic    `tfsdk:"output"`
 	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
 	Retry                retry.RetryValue `tfsdk:"retry"`
+	Headers              types.Map        `tfsdk:"headers"`
+	QueryParameters      types.Map        `tfsdk:"query_parameters"`
 }
 
 func (r *DataPlaneResourceDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
@@ -93,6 +96,18 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 				MarkdownDescription: docstrings.Output("data.azapi_data_plane_resource"),
 			},
 			"retry": retry.RetryDsSchema(ctx),
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request.",
+			},
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request.",
+			},
 		},
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx),
@@ -140,7 +155,10 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
 	client := r.ProviderData.DataPlaneClient
-	requestOptions := clients.RequestOptions{}
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.Headers),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
+	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	var responseBody interface{}

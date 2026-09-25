@@ -102,7 +102,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 
 	// Action does not use sendRequestThenPoll because it parses the response body
 	// based on Content-Type (text/plain vs application/json) rather than always as JSON.
-	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted}
+	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent}
 	resp, pipeline, err := client.sendRequest(req, urlPath, options, successCodes)
 	if err != nil {
 		return nil, err
