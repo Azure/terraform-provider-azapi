@@ -1,3 +1,20 @@
+## v2.13.0
+
+ENHANCEMENTS:
+
+- `azapi_data_plane_resource` data source: Support reading Azure data plane resources (GH-1199).
+- `azapi_data_plane_resource` ephemeral resource: Support reading Azure data plane resources without persisting their properties to Terraform state (GH-1199).
+- `azapi_update_resource` resource: Add the `read_override` property to read resources with a `POST` action when `GET` is not supported (GH-1167).
+- `azapi` provider: Improve retries for chained authentication token credential requests (GH-1109).
+- Support Key Vault key and secret API versions `2026-02-01` and `2026-03-01-preview`.
+- Update bicep types to Azure/azure-rest-api-specs revision 0744f52a86919d243ba2225e55bdb9c87bf521a5 (GH-1197).
+
+BUG FIXES:
+
+- Fix custom retry configuration not being applied to resource existence checks (GH-1193, GH-1229).
+- Propagate configured resource headers to long-running operation polling requests (GH-1220).
+- Skip the unsupported `Microsoft.Portal/dashboards` API version `2026-04-01` (GH-1223).
+
 ## v2.12.0
 
 ENHANCEMENTS:
