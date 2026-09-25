@@ -59,4 +59,30 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 			t.Fatalf("expected nil error, got: %v", err)
 		}
 	})
+
+	t.Run("foundry dataset version requires the version name", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type: types.StringValue("Microsoft.Foundry/datasets/versions@2025-05-01"),
+			Name: types.StringNull(),
+		}
+
+		err := validateDataPlaneResourceName(config)
+		if err == nil {
+			t.Fatalf("expected validation error")
+		}
+		if !strings.Contains(err.Error(), "must be set") {
+			t.Fatalf("expected must-be-set error, got: %v", err)
+		}
+	})
+
+	t.Run("foundry dataset version accepts version name", func(t *testing.T) {
+		config := &DataPlaneResourceModel{
+			Type: types.StringValue("Microsoft.Foundry/datasets/versions@2025-05-01"),
+			Name: types.StringValue("1"),
+		}
+
+		if err := validateDataPlaneResourceName(config); err != nil {
+			t.Fatalf("expected nil error, got: %v", err)
+		}
+	})
 }
