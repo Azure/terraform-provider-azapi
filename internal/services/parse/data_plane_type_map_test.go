@@ -46,6 +46,18 @@ func Test_hasIdentifierSegment(t *testing.T) {
 			Expected:     true,
 		},
 		{
+			Name:         "evaluation ID identifier present",
+			ResourceType: "Microsoft.Foundry/evaluation/runs@2025-05-01",
+			Identifier:   "evaluationId",
+			Expected:     true,
+		},
+		{
+			Name:         "evaluation ID identifier absent",
+			ResourceType: "Microsoft.Foundry/evaluation/versions@2025-05-01",
+			Identifier:   "evaluationId",
+			Expected:     false,
+		},
+		{
 			Name:         "identifier prefix does not match longer placeholder",
 			ResourceType: "Microsoft.KeyVault/vaults/certificates@2016-10-01",
 			Identifier:   "nam",
@@ -66,5 +78,14 @@ func Test_hasIdentifierSegment(t *testing.T) {
 				t.Fatalf("expected %v but got %v for resource type %q and identifier %q", v.Expected, actual, v.ResourceType, v.Identifier)
 			}
 		})
+	}
+}
+
+func TestHasEvaluationIdSegment(t *testing.T) {
+	if !HasEvaluationIdSegment("Microsoft.Foundry/evaluation/runs@2025-05-01") {
+		t.Fatal("expected evaluation runs to have an evaluation ID segment")
+	}
+	if HasEvaluationIdSegment("Microsoft.Foundry/evaluation/versions@2025-05-01") {
+		t.Fatal("expected evaluation versions not to have an evaluation ID segment")
 	}
 }

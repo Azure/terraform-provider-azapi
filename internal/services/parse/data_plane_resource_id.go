@@ -13,9 +13,14 @@ type DataPlaneResourceId struct {
 	AzureResourceType string
 	Name              string
 	ParentId          string
+	EvaluationId      string
 }
 
 func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResourceId, error) {
+	return NewDataPlaneResourceIdWithEvaluationID(name, parentId, "", resourceType)
+}
+
+func NewDataPlaneResourceIdWithEvaluationID(name, parentId, evaluationId, resourceType string) (DataPlaneResourceId, error) {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return DataPlaneResourceId{}, err
@@ -30,6 +35,8 @@ func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResou
 				parts[i] = parentId
 			case part == "{name}":
 				parts[i] = name
+			case part == "{evaluationId}":
+				parts[i] = evaluationId
 			case part == "{apiVersion}":
 				parts[i] = apiVersion
 			case strings.HasPrefix(part, "{name="):
@@ -52,6 +59,7 @@ func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResou
 		AzureResourceType: azureResourceType,
 		Name:              name,
 		ParentId:          parentId,
+		EvaluationId:      evaluationId,
 	}, nil
 }
 
@@ -64,6 +72,7 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 
 	name := ""
 	parentId := ""
+	evaluationId := ""
 	if apiPath := findApiPathByResourceType(azureResourceType); apiPath != nil {
 		urlFormatParts := strings.Split(apiPath.UrlFormat, "/")
 		azureResourceIdParts := strings.Split(azureResourceId, "/")
@@ -75,6 +84,9 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 			switch {
 			case strings.HasPrefix(urlFormatParts[i], "{name"):
 				name = azureResourceIdParts[j]
+				j--
+			case strings.HasPrefix(urlFormatParts[i], "{evaluationId"):
+				evaluationId = azureResourceIdParts[j]
 				j--
 			case strings.Contains(urlFormatParts[i], "{name}"):
 				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
@@ -110,7 +122,7 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 	}
 	parentId = strings.TrimSuffix(parentId, "/")
 
-	return NewDataPlaneResourceId(name, parentId, resourceType)
+	return NewDataPlaneResourceIdWithEvaluationID(name, parentId, evaluationId, resourceType)
 }
 
 func (id DataPlaneResourceId) String() string {

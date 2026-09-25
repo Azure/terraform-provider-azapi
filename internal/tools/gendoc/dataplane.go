@@ -188,8 +188,12 @@ func generateExampleSections(apiPaths []ApiPath) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("failed to read %s: %v", path.ExamplePath, err)
 		}
-		fmt.Fprintf(&sb, "```terraform\n%s```\n", string(b))
+		fmt.Fprintf(&sb, "```terraform\n%s```\n", escapeTemplateDelimiters(string(b)))
 	}
 
 	return sb.String(), nil
+}
+
+func escapeTemplateDelimiters(content string) string {
+	return strings.ReplaceAll(content, "{{", `{{"{{"}}`)
 }
