@@ -79,9 +79,6 @@ resource "azapi_data_plane_resource" "example" {
   create_headers = local.storage_table_headers
   read_headers   = local.storage_table_headers
   delete_headers = local.storage_table_headers
-  body = {
-    TableName = var.resource_name
-  }
 
   retry = {
     error_message_regex  = ["AuthorizationPermissionMismatch", "AuthorizationFailure", "Forbidden", "Unauthorized", "authorization"]

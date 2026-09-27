@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
@@ -22,7 +23,10 @@ func (c StorageTableEntityCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, http.MethodPut, payload, options)
+		// Use the Insert Entity operation (POST against the table collection) rather than
+		// Insert-Or-Replace (PUT against the entity), so create fails with a conflict if the
+		// entity already exists instead of silently overwriting it.
+		_, err = client.DataPlaneClient.Action(ctx, storageTableEntityCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
 		return err
 	}
 }
@@ -64,6 +68,12 @@ func storageTableEntityKeys(id parse.DataPlaneResourceId) (string, string, error
 	return match[1], match[2], nil
 }
 
+// storageTableEntityCollectionID returns the table collection URL (without the composite-key
+// suffix), used as the target for the Insert Entity operation.
+func storageTableEntityCollectionID(id parse.DataPlaneResourceId) string {
+	return storageTableEntityKeyPattern.ReplaceAllString(id.AzureResourceId, "")
+}
+
 func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{}) (map[string]interface{}, error) {
 	payload := make(map[string]interface{})
 	if body != nil {
@@ -72,6 +82,12 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 			return nil, fmt.Errorf("expected body for %s to be an object", id.AzureResourceType)
 		}
 		for key, value := range bodyMap {
+			// PartitionKey and RowKey are derived entirely from parent_id, so reject them
+			// outright rather than requiring them to match; strings.EqualFold catches case
+			// variants such as "partitionkey" that the service would otherwise silently ignore.
+			if strings.EqualFold(key, "PartitionKey") || strings.EqualFold(key, "RowKey") {
+				return nil, fmt.Errorf(`body must not set %q; it is derived from parent_id`, key)
+			}
 			payload[key] = value
 		}
 	}
@@ -79,19 +95,6 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 	partitionKey, rowKey, err := storageTableEntityKeys(id)
 	if err != nil {
 		return nil, err
-	}
-
-	if rawPartitionKey, ok := payload["PartitionKey"]; ok {
-		value, ok := rawPartitionKey.(string)
-		if !ok || value != partitionKey {
-			return nil, fmt.Errorf(`body.PartitionKey must be a string matching the PartitionKey %q in parent_id`, partitionKey)
-		}
-	}
-	if rawRowKey, ok := payload["RowKey"]; ok {
-		value, ok := rawRowKey.(string)
-		if !ok || value != rowKey {
-			return nil, fmt.Errorf(`body.RowKey must be a string matching the RowKey %q in parent_id`, rowKey)
-		}
 	}
 
 	payload["PartitionKey"] = partitionKey

@@ -1724,9 +1724,6 @@ resource "azapi_data_plane_resource" "test" {
   create_headers = local.storage_table_headers
   read_headers   = local.storage_table_headers
   delete_headers = local.storage_table_headers
-  body = {
-    TableName = "acctest%[2]s"
-  }
 
   retry = {
     error_message_regex  = ["AuthorizationPermissionMismatch", "AuthorizationFailure", "Forbidden", "Unauthorized", "authorization"]
@@ -1790,9 +1787,6 @@ resource "azapi_data_plane_resource" "table" {
   create_headers = local.storage_table_headers
   read_headers   = local.storage_table_headers
   delete_headers = local.storage_table_headers
-  body = {
-    TableName = "acctest%[2]s"
-  }
 
   retry = {
     error_message_regex  = ["AuthorizationPermissionMismatch", "AuthorizationFailure", "Forbidden", "Unauthorized", "authorization"]

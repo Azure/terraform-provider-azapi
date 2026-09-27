@@ -62,9 +62,6 @@ resource "azapi_data_plane_resource" "table" {
   create_headers = local.storage_table_headers
   read_headers   = local.storage_table_headers
   delete_headers = local.storage_table_headers
-  body = {
-    TableName = var.resource_name
-  }
 
   retry = {
     error_message_regex  = ["AuthorizationPermissionMismatch", "AuthorizationFailure", "Forbidden", "Unauthorized", "authorization"]
@@ -100,8 +97,9 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
-# Table entity writes use insert-or-replace semantics. Each create or update request
-# must include the complete desired entity content. Properties omitted from a write,
+# Create uses the Insert Entity operation, which fails if an entity with the same
+# PartitionKey/RowKey already exists. Update uses Insert-Or-Replace, so each update request
+# must include the complete desired entity content: properties omitted from an update,
 # including properties added outside Terraform, are removed by that write.
 #
 # With sensitive_body_version, unchanged sensitive properties are omitted from update

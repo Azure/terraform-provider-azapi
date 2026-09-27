@@ -58,17 +58,13 @@ func buildStorageTableCreateBody(id parse.DataPlaneResourceId, body interface{})
 			return nil, fmt.Errorf("expected body for %s to be an object", id.AzureResourceType)
 		}
 		for key, value := range bodyMap {
+			// TableName is derived entirely from name, so reject it outright rather than
+			// requiring it to match; strings.EqualFold catches case variants such as
+			// "tableName" that the service would otherwise silently ignore.
+			if strings.EqualFold(key, "TableName") {
+				return nil, fmt.Errorf(`body must not set %q; it is derived from name %q`, key, id.Name)
+			}
 			payload[key] = value
-		}
-	}
-
-	if rawName, ok := payload["TableName"]; ok {
-		tableName, ok := rawName.(string)
-		if !ok {
-			return nil, fmt.Errorf(`body.TableName must be a string matching name %q`, id.Name)
-		}
-		if tableName != id.Name {
-			return nil, fmt.Errorf(`body.TableName %q must match name %q`, tableName, id.Name)
 		}
 	}
 

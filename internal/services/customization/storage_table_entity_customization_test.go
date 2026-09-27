@@ -40,19 +40,36 @@ func TestBuildStorageTableEntityBodyAddsCompositeKeys(t *testing.T) {
 	}
 }
 
-func TestBuildStorageTableEntityBodyRejectsMismatchedKeys(t *testing.T) {
+func TestBuildStorageTableEntityBodyRejectsPartitionKeyInput(t *testing.T) {
 	id := parse.DataPlaneResourceId{
 		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
 		AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
 	}
 
 	_, err := buildStorageTableEntityBody(id, map[string]interface{}{
-		"PartitionKey": "wrong",
+		"PartitionKey": "pk",
 	})
 	if err == nil {
 		t.Fatal("expected validation error")
 	}
-	if !strings.Contains(err.Error(), `PartitionKey "pk" in parent_id`) {
+	if !strings.Contains(err.Error(), `must not set "PartitionKey"`) {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestBuildStorageTableEntityBodyRejectsRowKeyInputCaseInsensitively(t *testing.T) {
+	id := parse.DataPlaneResourceId{
+		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
+		AzureResourceId:   "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
+	}
+
+	_, err := buildStorageTableEntityBody(id, map[string]interface{}{
+		"rowkey": "rk",
+	})
+	if err == nil {
+		t.Fatal("expected validation error")
+	}
+	if !strings.Contains(err.Error(), `must not set "rowkey"`) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
@@ -73,8 +90,66 @@ func TestBuildStorageTableEntityBodyRejectsMissingKeys(t *testing.T) {
 	}
 }
 
-func TestStorageTableEntityPutReplacesEntity(t *testing.T) {
+func TestStorageTableEntityCreateInsertsNewEntity(t *testing.T) {
 	transport := &storageTableEntityTransport{}
+	dataPlaneClient, err := clients.NewDataPlaneClient(storageTableStaticTokenCredential{}, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud:     cloud.AzurePublic,
+			Transport: transport,
+		},
+	})
+	if err != nil {
+		t.Fatalf("building data plane client: %v", err)
+	}
+
+	customization := StorageTableEntityCustomization{}
+	client := clients.Client{
+		DataPlaneClient: dataPlaneClient,
+	}
+	id := parse.DataPlaneResourceId{
+		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
+		AzureResourceId:   "management.azure.com/mytable(PartitionKey='pk',RowKey='rk')",
+		ApiVersion:        "2026-04-06",
+	}
+	options := clients.RequestOptions{
+		Headers: map[string]string{
+			"x-ms-version": "2026-04-06",
+		},
+	}
+	createBody := map[string]interface{}{
+		"retained": "initial",
+	}
+	if err := customization.CreateFunc()(context.Background(), client, id, createBody, options); err != nil {
+		t.Fatalf("creating entity: %v", err)
+	}
+
+	if len(transport.requests) != 1 {
+		t.Fatalf("expected 1 request, got %d", len(transport.requests))
+	}
+	got := transport.requests[0]
+	if got.method != http.MethodPost {
+		t.Fatalf("expected create to use the Insert Entity POST operation, got %q", got.method)
+	}
+	if got.url != "https://management.azure.com/mytable" {
+		t.Fatalf("expected Insert Entity request against the table collection, got %q", got.url)
+	}
+	expectedPayload := map[string]interface{}{
+		"PartitionKey": "pk",
+		"RowKey":       "rk",
+		"retained":     "initial",
+	}
+	if !reflect.DeepEqual(got.body, expectedPayload) {
+		t.Fatalf("expected request body %#v, got %#v", expectedPayload, got.body)
+	}
+}
+
+func TestStorageTableEntityUpdatePutReplacesEntity(t *testing.T) {
+	transport := &storageTableEntityTransport{
+		entity: map[string]interface{}{
+			"retained":         "initial",
+			"removed_property": "remove-me",
+		},
+	}
 	dataPlaneClient, err := clients.NewDataPlaneClient(storageTableStaticTokenCredential{}, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Cloud:     cloud.AzurePublic,
@@ -100,20 +175,6 @@ func TestStorageTableEntityPutReplacesEntity(t *testing.T) {
 			"x-custom":     "custom-value",
 		},
 	}
-	createBody := map[string]interface{}{
-		"retained":         "initial",
-		"removed_property": "remove-me",
-	}
-	if err := customization.CreateFunc()(context.Background(), client, id, createBody, options); err != nil {
-		t.Fatalf("creating entity: %v", err)
-	}
-	expectedCreatePayload := map[string]interface{}{
-		"PartitionKey":     "pk",
-		"RowKey":           "rk",
-		"retained":         "initial",
-		"removed_property": "remove-me",
-	}
-	assertStorageTableRequest(t, transport.requests[0], expectedCreatePayload)
 
 	transport.entity["external_property"] = "remove-on-next-write"
 	updateBody := map[string]interface{}{
@@ -123,13 +184,35 @@ func TestStorageTableEntityPutReplacesEntity(t *testing.T) {
 	if err := customization.UpdateFunc()(context.Background(), client, id, updateBody, options); err != nil {
 		t.Fatalf("updating entity: %v", err)
 	}
+
+	if len(transport.requests) != 1 {
+		t.Fatalf("expected 1 request, got %d", len(transport.requests))
+	}
+	got := transport.requests[0]
+	if got.method != http.MethodPut {
+		t.Fatalf("expected update to use the Insert-Or-Replace PUT operation, got %q", got.method)
+	}
+	if got.url != "https://management.azure.com/mytable(PartitionKey='pk',RowKey='rk')" {
+		t.Fatalf("expected Insert-Or-Replace request against the entity, got %q", got.url)
+	}
 	expectedUpdatePayload := map[string]interface{}{
 		"PartitionKey": "pk",
 		"RowKey":       "rk",
 		"retained":     "updated",
 		"added":        "new",
 	}
-	assertStorageTableRequest(t, transport.requests[1], expectedUpdatePayload)
+	if !reflect.DeepEqual(got.body, expectedUpdatePayload) {
+		t.Fatalf("expected request body %#v, got %#v", expectedUpdatePayload, got.body)
+	}
+	if gotHeader := got.headers.Get("x-ms-version"); gotHeader != "2026-04-06" {
+		t.Fatalf("expected caller-provided x-ms-version header, got %q", gotHeader)
+	}
+	if gotHeader := got.headers.Get("x-custom"); gotHeader != "custom-value" {
+		t.Fatalf("expected caller-provided custom header, got %q", gotHeader)
+	}
+	if gotHeader := got.headers.Get("If-Match"); gotHeader != "" {
+		t.Fatalf("expected no If-Match header, got %q", gotHeader)
+	}
 
 	result, err := customization.ReadFunc()(context.Background(), client, id, options)
 	if err != nil {
@@ -162,25 +245,6 @@ func TestStorageTableEntityPutReplacesEntity(t *testing.T) {
 	}
 }
 
-func assertStorageTableRequest(t *testing.T, request storageTableEntityRequest, expectedBody map[string]interface{}) {
-	t.Helper()
-	if request.method != http.MethodPut {
-		t.Fatalf("expected PUT request, got %q", request.method)
-	}
-	if !reflect.DeepEqual(request.body, expectedBody) {
-		t.Fatalf("expected request body %#v, got %#v", expectedBody, request.body)
-	}
-	if got := request.headers.Get("x-ms-version"); got != "2026-04-06" {
-		t.Fatalf("expected caller-provided x-ms-version header, got %q", got)
-	}
-	if got := request.headers.Get("x-custom"); got != "custom-value" {
-		t.Fatalf("expected caller-provided custom header, got %q", got)
-	}
-	if got := request.headers.Get("If-Match"); got != "" {
-		t.Fatalf("expected no If-Match header, got %q", got)
-	}
-}
-
 type storageTableStaticTokenCredential struct{}
 
 func (storageTableStaticTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
@@ -192,6 +256,7 @@ func (storageTableStaticTokenCredential) GetToken(context.Context, policy.TokenR
 
 type storageTableEntityRequest struct {
 	method  string
+	url     string
 	headers http.Header
 	body    map[string]interface{}
 }
@@ -203,18 +268,25 @@ type storageTableEntityTransport struct {
 
 func (t *storageTableEntityTransport) Do(request *http.Request) (*http.Response, error) {
 	switch request.Method {
-	case http.MethodPut:
+	case http.MethodPost, http.MethodPut:
 		var body map[string]interface{}
 		if err := json.NewDecoder(request.Body).Decode(&body); err != nil {
 			return nil, fmt.Errorf("decoding request body: %w", err)
 		}
 		t.requests = append(t.requests, storageTableEntityRequest{
 			method:  request.Method,
+			url:     fmt.Sprintf("%s://%s%s", request.URL.Scheme, request.URL.Host, request.URL.Path),
 			headers: request.Header.Clone(),
 			body:    body,
 		})
 		t.entity = body
-		return storageTableResponse(request, http.StatusNoContent, "")
+		// Insert Entity (POST) responds 201 Created; Insert-Or-Replace Entity (PUT) responds
+		// 204 No Content.
+		statusCode := http.StatusNoContent
+		if request.Method == http.MethodPost {
+			statusCode = http.StatusCreated
+		}
+		return storageTableResponse(request, statusCode, "")
 	case http.MethodGet:
 		responseBody := make(map[string]interface{}, len(t.entity)+2)
 		for key, value := range t.entity {

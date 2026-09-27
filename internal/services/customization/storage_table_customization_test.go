@@ -22,7 +22,7 @@ func TestBuildStorageTableCreateBodyAddsTableName(t *testing.T) {
 	}
 }
 
-func TestBuildStorageTableCreateBodyRejectsMismatchedTableName(t *testing.T) {
+func TestBuildStorageTableCreateBodyRejectsTableNameInput(t *testing.T) {
 	id := parse.DataPlaneResourceId{
 		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables",
 		Name:              "acctesttable",
@@ -34,8 +34,25 @@ func TestBuildStorageTableCreateBodyRejectsMismatchedTableName(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected validation error")
 	}
-	if !strings.Contains(err.Error(), `must match name "acctesttable"`) {
-		t.Fatalf("expected name mismatch error, got: %v", err)
+	if !strings.Contains(err.Error(), `must not set "TableName"`) {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestBuildStorageTableCreateBodyRejectsTableNameInputCaseInsensitively(t *testing.T) {
+	id := parse.DataPlaneResourceId{
+		AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables",
+		Name:              "acctesttable",
+	}
+
+	_, err := buildStorageTableCreateBody(id, map[string]interface{}{
+		"tablename": "acctesttable",
+	})
+	if err == nil {
+		t.Fatal("expected validation error")
+	}
+	if !strings.Contains(err.Error(), `must not set "tablename"`) {
+		t.Fatalf("unexpected error: %v", err)
 	}
 }
 
