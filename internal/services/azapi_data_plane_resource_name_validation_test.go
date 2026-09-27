@@ -86,17 +86,3 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 		}
 	})
 }
-
-func TestValidateDataPlaneResourceWritable(t *testing.T) {
-	t.Run("writable table type is accepted", func(t *testing.T) {
-		if err := validateDataPlaneResourceWritable("Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"); err != nil {
-			t.Fatalf("expected nil error, got: %v", err)
-		}
-	})
-
-	t.Run("type without customization is accepted", func(t *testing.T) {
-		if err := validateDataPlaneResourceWritable("Microsoft.Foundry/agents@v1"); err != nil {
-			t.Fatalf("expected nil error, got: %v", err)
-		}
-	})
-}

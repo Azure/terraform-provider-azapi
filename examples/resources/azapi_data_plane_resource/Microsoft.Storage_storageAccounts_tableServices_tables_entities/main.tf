@@ -123,13 +123,3 @@ resource "azapi_data_plane_resource" "entity" {
     azapi_resource.roleAssignment,
   ]
 }
-
-data "azapi_data_plane_resource" "entity" {
-  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
-  parent_id = azapi_data_plane_resource.entity.parent_id
-  headers   = local.storage_table_entity_headers
-
-  depends_on = [
-    azapi_data_plane_resource.entity,
-  ]
-}

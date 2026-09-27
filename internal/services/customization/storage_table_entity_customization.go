@@ -23,9 +23,8 @@ func (c StorageTableEntityCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
-		// Use the Insert Entity operation (POST against the table collection) rather than
-		// Insert-Or-Replace (PUT against the entity), so create fails with a conflict if the
-		// entity already exists instead of silently overwriting it.
+		// Insert Entity (POST to the table) returns a conflict if the entity already exists,
+		// unlike Insert-Or-Replace, so create never overwrites existing data.
 		_, err = client.DataPlaneClient.Action(ctx, storageTableEntityCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
 		return err
 	}
@@ -82,9 +81,7 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 			return nil, fmt.Errorf("expected body for %s to be an object", id.AzureResourceType)
 		}
 		for key, value := range bodyMap {
-			// PartitionKey and RowKey are derived entirely from parent_id, so reject them
-			// outright rather than requiring them to match; strings.EqualFold catches case
-			// variants such as "partitionkey" that the service would otherwise silently ignore.
+			// PartitionKey and RowKey come from parent_id; EqualFold also rejects case variants such as "partitionkey".
 			if strings.EqualFold(key, "PartitionKey") || strings.EqualFold(key, "RowKey") {
 				return nil, fmt.Errorf(`body must not set %q; it is derived from parent_id`, key)
 			}

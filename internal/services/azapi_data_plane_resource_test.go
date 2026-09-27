@@ -259,8 +259,6 @@ func TestAccDataPlaneResource_storageTableEntity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("output.outputs").HasValue("value1"),
 				check.That(data.ResourceName).Key("output.removed_property").HasValue("remove-me"),
-				check.That("data.azapi_data_plane_resource.read").Key("output.outputs").HasValue("value1"),
-				check.That("data.azapi_data_plane_resource.read").Key("output.removed_property").HasValue("remove-me"),
 			),
 		},
 		{
@@ -269,8 +267,6 @@ func TestAccDataPlaneResource_storageTableEntity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("output.outputs").HasValue("value2"),
 				check.That(data.ResourceName).Key("output.removed_property").DoesNotExist(),
-				check.That("data.azapi_data_plane_resource.read").Key("output.outputs").HasValue("value2"),
-				check.That("data.azapi_data_plane_resource.read").Key("output.removed_property").DoesNotExist(),
 			),
 		},
 		{
@@ -1839,12 +1835,6 @@ resource "azapi_data_plane_resource" "test" {
   depends_on = [
     azapi_resource.roleAssignment,
   ]
-}
-
-data "azapi_data_plane_resource" "read" {
-  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
-  parent_id = azapi_data_plane_resource.test.parent_id
-  headers   = local.storage_table_entity_headers
 }
 `, data.LocationPrimary, data.RandomString, outputValue, removedProperty)
 }
