@@ -51,22 +51,6 @@ func (c StorageTableEntityCustomization) DeleteFunc() DeleteFunc {
 	}
 }
 
-type StorageTableEntitiesCustomization struct{}
-
-func (c StorageTableEntitiesCustomization) GetResourceType() string {
-	return "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection"
-}
-
-func (c StorageTableEntitiesCustomization) CreateFunc() CreateFunc { return nil }
-func (c StorageTableEntitiesCustomization) UpdateFunc() UpdateFunc { return nil }
-func (c StorageTableEntitiesCustomization) DeleteFunc() DeleteFunc { return nil }
-
-func (c StorageTableEntitiesCustomization) ReadFunc() ReadFunc {
-	return func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error) {
-		return client.DataPlaneClient.Get(ctx, id, options)
-	}
-}
-
 // storageTableEntityKeyPattern matches the composite key suffix embedded in the entity's
 // parent_id / resource ID, e.g. "mytable(PartitionKey='Sales',RowKey='1')".
 var storageTableEntityKeyPattern = regexp.MustCompile(`\(PartitionKey='([^']*)',RowKey='([^']*)'\)$`)
@@ -116,4 +100,3 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 }
 
 var _ DataPlaneResource = &StorageTableEntityCustomization{}
-var _ DataPlaneResource = &StorageTableEntitiesCustomization{}

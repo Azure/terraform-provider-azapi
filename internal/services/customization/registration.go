@@ -19,9 +19,6 @@ func init() {
 
 	var storageTableEntityCustomization DataPlaneResource = StorageTableEntityCustomization{}
 	customizations[strings.ToLower(storageTableEntityCustomization.GetResourceType())] = storageTableEntityCustomization
-
-	var storageTableEntitiesCustomization DataPlaneResource = StorageTableEntitiesCustomization{}
-	customizations[strings.ToLower(storageTableEntitiesCustomization.GetResourceType())] = storageTableEntitiesCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {

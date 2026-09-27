@@ -135,17 +135,6 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
 			},
 		},
-		{
-			Name:         "",
-			ParentId:     "mystorage.table.core.windows.net/mytable",
-			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06",
-			Error:        false,
-			Expected: &parse.DataPlaneResourceId{
-				AzureResourceId:   "mystorage.table.core.windows.net/mytable()",
-				ApiVersion:        "2026-04-06",
-				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection",
-			},
-		},
 		// {name=defaultValue} — singleton with a fixed name enforced by the service
 		{
 			Name:         "defaultResourceSetRuleConfig",
@@ -323,17 +312,6 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				ApiVersion:        "2026-04-06",
 				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entities",
 				ParentId:          "mystorage.table.core.windows.net/mytable(PartitionKey='pk',RowKey='rk')",
-			},
-		},
-		{
-			ResourceId:   "mystorage.table.core.windows.net/mytable()",
-			ResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06",
-			Error:        false,
-			Expected: &parse.DataPlaneResourceId{
-				AzureResourceId:   "mystorage.table.core.windows.net/mytable()",
-				ApiVersion:        "2026-04-06",
-				AzureResourceType: "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection",
-				ParentId:          "mystorage.table.core.windows.net/mytable",
 			},
 		},
 		// {name=defaultValue} round-trip — verify fixed-default singletons parse correctly

@@ -88,16 +88,6 @@ func TestValidateDataPlaneResourceName(t *testing.T) {
 }
 
 func TestValidateDataPlaneResourceWritable(t *testing.T) {
-	t.Run("read-only entities collection is rejected", func(t *testing.T) {
-		err := validateDataPlaneResourceWritable("Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06")
-		if err == nil {
-			t.Fatalf("expected validation error")
-		}
-		if !strings.Contains(err.Error(), "does not support create/update/delete") {
-			t.Fatalf("expected read-only error, got: %v", err)
-		}
-	})
-
 	t.Run("writable table type is accepted", func(t *testing.T) {
 		if err := validateDataPlaneResourceWritable("Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"); err != nil {
 			t.Fatalf("expected nil error, got: %v", err)

@@ -292,7 +292,6 @@ Optional:
 | Microsoft.Search/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Storage/storageAccounts/tableServices/tables | /Tables('{tableName}') | {storageAccountName}.table.core.windows.net                                                 |
 | Microsoft.Storage/storageAccounts/tableServices/tables/entities |  | {storageAccountName}.table.core.windows.net/{tableName}(PartitionKey='{partitionKey}',RowKey='{rowKey}') |
-| Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection | () | {storageAccountName}.table.core.windows.net/{tableName}                                     |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/datasets | /datasets/{datasetName} | {workspaceName}.dev.azuresynapse.net                                                        |
@@ -1583,19 +1582,6 @@ data "azapi_data_plane_resource" "entity" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
   parent_id = azapi_data_plane_resource.entity.parent_id
   headers   = local.storage_table_entity_headers
-
-  depends_on = [
-    azapi_data_plane_resource.entity,
-  ]
-}
-
-data "azapi_data_plane_resource" "entities" {
-  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06"
-  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
-  headers   = local.storage_table_entity_headers
-  query_parameters = {
-    "$filter" = ["PartitionKey eq 'example'"]
-  }
 
   depends_on = [
     azapi_data_plane_resource.entity,

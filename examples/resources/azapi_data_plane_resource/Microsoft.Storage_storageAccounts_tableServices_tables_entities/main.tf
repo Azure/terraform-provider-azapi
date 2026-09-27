@@ -135,16 +135,3 @@ data "azapi_data_plane_resource" "entity" {
     azapi_data_plane_resource.entity,
   ]
 }
-
-data "azapi_data_plane_resource" "entities" {
-  type      = "Microsoft.Storage/storageAccounts/tableServices/tables/entitiesCollection@2026-04-06"
-  parent_id = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}"
-  headers   = local.storage_table_entity_headers
-  query_parameters = {
-    "$filter" = ["PartitionKey eq 'example'"]
-  }
-
-  depends_on = [
-    azapi_data_plane_resource.entity,
-  ]
-}
