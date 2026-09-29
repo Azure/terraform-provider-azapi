@@ -107,7 +107,7 @@ output "quarantine_policy" {
 - `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
 
 	-> Element value must satisfy all validations: string length must be at least 1.
-- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`). A field name may also be a dot-separated path addressing a nested field (e.g., `"subnet.id"`); a field whose own name contains dots takes precedence over the equivalent path.
 - `location` (String) The location of the Azure resource.
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
