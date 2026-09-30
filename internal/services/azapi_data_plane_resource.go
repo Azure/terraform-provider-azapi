@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"reflect"
 	"slices"
 	"strings"
@@ -78,7 +79,16 @@ var (
 	_ resource.ResourceWithModifyPlan   = &DataPlaneResource{}
 	_ resource.ResourceWithUpgradeState = &DataPlaneResource{}
 	_ resource.ResourceWithImportState  = &DataPlaneResource{}
+	_ resource.ResourceWithMoveState    = &DataPlaneResource{}
 )
+
+// dataPlaneMoveSourceTypes maps each azurerm resource type that can be moved to
+// azapi_data_plane_resource onto the data plane type the moved state is given. Only the resource
+// type has to be right: the api-version is an in-place change rather than a replacement, so the
+// configured version takes over on the next apply.
+var dataPlaneMoveSourceTypes = map[string]string{
+	"azurerm_key_vault_secret": "Microsoft.KeyVault/vaults/secrets@7.5",
+}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
@@ -725,6 +735,79 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
+}
+
+func (r *DataPlaneResource) MoveState(ctx context.Context) []resource.StateMover {
+	return []resource.StateMover{
+		{
+			SourceSchema: &schema.Schema{
+				Attributes: map[string]schema.Attribute{
+					"id":             schema.StringAttribute{Computed: true},
+					"versionless_id": schema.StringAttribute{Computed: true},
+				},
+			},
+			StateMover: func(ctx context.Context, request resource.MoveStateRequest, response *resource.MoveStateResponse) {
+				resourceType, ok := dataPlaneMoveSourceTypes[request.SourceTypeName]
+				if !ok || !strings.HasSuffix(request.SourceProviderAddress, "/hashicorp/azurerm") {
+					return
+				}
+
+				if request.SourceState == nil {
+					response.Diagnostics.AddError("Invalid source state", "The source state is nil")
+					return
+				}
+
+				var sourceID, sourceVersionlessID types.String
+				response.Diagnostics.Append(request.SourceState.GetAttribute(ctx, path.Root("id"), &sourceID)...)
+				response.Diagnostics.Append(request.SourceState.GetAttribute(ctx, path.Root("versionless_id"), &sourceVersionlessID)...)
+				if response.Diagnostics.HasError() {
+					return
+				}
+
+				objectURL := sourceVersionlessID.ValueString()
+				if objectURL == "" {
+					objectURL = sourceID.ValueString()
+				}
+
+				resourceID, err := dataPlaneResourceIDFromObjectURL(objectURL)
+				if err != nil {
+					response.Diagnostics.AddError("Invalid source state", err.Error())
+					return
+				}
+
+				id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)
+				if err != nil {
+					response.Diagnostics.AddError("Invalid source state", fmt.Errorf("parsing data plane resource ID %q with type %q: %+v", resourceID, resourceType, err).Error())
+					return
+				}
+
+				// The moved state is exactly what ImportState produces for the same object, so the
+				// refresh and plan that follow a move behave as they do after `terraform import`. The
+				// secret value is deliberately not carried over, because body is not sensitive.
+				response.Diagnostics.Append(response.TargetState.SetAttribute(ctx, path.Root("id"), id.ID())...)
+				response.Diagnostics.Append(response.TargetState.SetAttribute(ctx, path.Root("name"), id.Name)...)
+				response.Diagnostics.Append(response.TargetState.SetAttribute(ctx, path.Root("parent_id"), id.ParentId)...)
+				response.Diagnostics.Append(response.TargetState.SetAttribute(ctx, path.Root("type"), fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))...)
+			},
+		},
+	}
+}
+
+// dataPlaneResourceIDFromObjectURL turns a Key Vault object URL as the azurerm provider records it,
+// such as https://myvault.vault.azure.net/secrets/mysecret/<version>, into the versionless data
+// plane resource ID myvault.vault.azure.net/secrets/mysecret.
+func dataPlaneResourceIDFromObjectURL(input string) (string, error) {
+	objectURL, err := url.Parse(strings.TrimSpace(input))
+	if err != nil {
+		return "", fmt.Errorf("parsing object URL %q: %+v", input, err)
+	}
+
+	segments := strings.Split(strings.Trim(objectURL.Path, "/"), "/")
+	if objectURL.Scheme != "https" || objectURL.Host == "" || len(segments) < 2 || segments[0] == "" || segments[1] == "" {
+		return "", fmt.Errorf("expected an object URL such as https://myvault.vault.azure.net/secrets/mysecret, got %q", input)
+	}
+
+	return fmt.Sprintf("%s/%s/%s", objectURL.Host, segments[0], segments[1]), nil
 }
 
 func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {

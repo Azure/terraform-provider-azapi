@@ -229,3 +229,28 @@ The migration flow supports migrating multiple resources at the same time. You c
 ### How about migrating resources from azapi to azurerm?
 
 The `azurerm` provider doesn't support `moved` block yet. The migration will support migrating resources from `azapi` to `azurerm` in the future.
+
+### How about migrating Key Vault secrets to `azapi_data_plane_resource`?
+
+An `azurerm_key_vault_secret` can be moved to `azapi_data_plane_resource` with a `moved` block:
+
+```hcl
+moved {
+  from = azurerm_key_vault_secret.example
+  to   = azapi_data_plane_resource.example
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.KeyVault/vaults/secrets@7.5"
+  parent_id = "myvault.vault.azure.net"
+  name      = "example"
+  body = {
+    contentType = "text/plain"
+  }
+  sensitive_body = {
+    value = var.secret_value
+  }
+}
+```
+
+The moved resource is treated as if it had been imported, so the secret value is never copied into state. The next plan shows an in-place update that fills in `body`, and applying it writes the secret once. Key Vault creates a new version holding the same value, and the secret keeps its name and version history.

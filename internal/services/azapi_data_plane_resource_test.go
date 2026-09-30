@@ -98,6 +98,27 @@ func TestAccDataPlaneResource_keyVaultSecret(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_moveKeyVaultSecretFromAzureRM(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.keyVaultSecretAzureRM(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config:            r.keyVaultSecretAzureRMMoved(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+	})
+}
+
 func TestAccDataPlaneResource_keyVaultKeyRbac(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -603,6 +624,71 @@ resource "azapi_data_plane_resource" "test" {
     attributes = {
       enabled = true
     }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_secret
+  ]
+}`, r.keyVaultSecretTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultSecretAzureRM(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_key_vault_secret" "test" {
+  name            = "acctest%[2]s"
+  value           = "s3cr3tValue"
+  key_vault_id    = azapi_resource.vault.id
+  content_type    = "text/plain"
+  expiration_date = "2030-01-02T03:04:05Z"
+
+  tags = {
+    source = "acctest"
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_secret
+  ]
+}`, r.keyVaultSecretTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultSecretAzureRMMoved(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+provider "azurerm" {
+  features {}
+}
+
+moved {
+  from = azurerm_key_vault_secret.test
+  to   = azapi_data_plane_resource.test
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/secrets@7.5"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    contentType = "text/plain"
+    attributes = {
+      enabled = true
+      exp     = 1893553445
+    }
+    tags = {
+      source = "acctest"
+    }
+  }
+  sensitive_body = {
+    value = "s3cr3tValue"
+  }
+  sensitive_body_version = {
+    value = sha256("s3cr3tValue")
   }
 
   depends_on = [

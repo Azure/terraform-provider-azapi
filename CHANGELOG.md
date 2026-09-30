@@ -8,6 +8,7 @@ ENHANCEMENTS:
 - KeyVault: Updated examples to use RBAC and 2026-02-01 API version (GH-1230).
 - `azapi_data_plane_resource`: Support data source and ephemeral resource (GH-1199).
 - Update bicep types to Azure/azure-rest-api-specs revision 0744f52a86919d243ba2225e55bdb9c87bf521a5 (GH-1197).
+- `azapi_data_plane_resource` resource: Support moving `azurerm_key_vault_secret` state with a `moved` block (GH-1244).
 
 BUG FIXES:
 
