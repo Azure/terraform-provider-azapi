@@ -183,6 +183,46 @@ func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_replaceTriggersExternalValues(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.replaceTriggersExternalValues(data, "one"),
+		},
+		{
+			Config: r.replaceTriggersExternalValues(data, "two"),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(
+						data.ResourceName,
+						plancheck.ResourceActionReplace,
+					),
+					plancheck.ExpectResourceAction(
+						"azapi_resource.test",
+						plancheck.ResourceActionNoop,
+					),
+				},
+			},
+			Check: resource.TestCheckResourceAttr(
+				data.ResourceName, "exist", "true",
+			),
+		},
+		{
+			Config: r.replaceTriggersExternalValues(data, "two"),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(
+						data.ResourceName,
+						plancheck.ResourceActionNoop,
+					),
+				},
+			},
+		},
+	})
+}
+
 func (r ActionResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
   %[1]s
@@ -515,4 +555,25 @@ resource "azapi_resource_action" "test" {
   ignore_not_found       = true
   response_export_values = ["*"]
 }`
+}
+
+func (r ActionResource) replaceTriggersExternalValues(
+	data acceptance.TestData,
+	trigger string,
+) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Storage/storageAccounts@2026-04-01"
+  resource_id = azapi_resource.test.id
+  action      = "regenerateKey"
+
+  body = {
+    keyName = "key1"
+  }
+
+  replace_triggers_external_values = [%[2]q]
+}
+`, r.template(data), trigger)
 }
