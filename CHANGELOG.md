@@ -1,3 +1,21 @@
+## v2.13.0
+
+ENHANCEMENTS:
+
+- `LOG_SENSITIVE_DATA` env var to log request and response body (GH-1245).
+- ChainedTokenCredential: Improved retry policy (GH-1243).
+- `azapi_update_resource`: read_override property for APIs that require POST for fetches (GH-1170).
+- KeyVault: Updated examples to use RBAC and 2026-02-01 API version (GH-1230).
+- `azapi_data_plane_resource`: Support data source and ephemeral resource (GH-1199).
+- Update bicep types to Azure/azure-rest-api-specs revision 0744f52a86919d243ba2225e55bdb9c87bf521a5 (GH-1197).
+
+BUG FIXES:
+
+- Propagate resource headers to LRO polls (GH-1220).
+- `azapi_data_plane_resource`: Apply retry logic to existence check (GH-1229).
+- API version index skips: Added Microsoft.Portal/dashboards 2026-04-01, removed Microsoft.Keyvault 2026-02-01 and 2026-03-01-preview (GH-1223).
+- Fix retries for resource existence checks (GH-1193).
+
 ## v2.12.0
 
 ENHANCEMENTS:

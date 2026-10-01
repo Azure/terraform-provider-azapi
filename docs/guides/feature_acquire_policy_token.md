@@ -24,7 +24,7 @@ The provider inspects the responses of HTTP requests. The flow is as follows:
 6. If no usable token is returned, the original policy denial is surfaced unchanged.
 
 <!-- Source: ../images/acquire_policy_token_reactive.mmd -- regenerate the SVG with mermaid-cli after editing it. -->
-![Reactive policy token acquisition flow](../images/acquire_policy_token_reactive.svg)
+![Reactive policy token acquisition flow](https://raw.githubusercontent.com/Azure/terraform-provider-azapi/refs/heads/main/docs/images/acquire_policy_token_reactive.svg)
 
 ## Always acquiring a policy token
 
@@ -41,7 +41,7 @@ provider "azapi" {
 This attribute defaults to `false` and can also be sourced from the `ARM_ALWAYS_ACQUIRE_POLICY_TOKEN` environment variable. Enabling it improves performance when the number of changed resources is known to be large beforehand. If a proactive acquisition does not return a usable token, the provider falls back to the reactive flow described above.
 
 <!-- Source: ../images/acquire_policy_token_proactive.mmd -- regenerate the SVG with mermaid-cli after editing it. -->
-![Proactive policy token acquisition flow](../images/acquire_policy_token_proactive.svg)
+![Proactive policy token acquisition flow](https://raw.githubusercontent.com/Azure/terraform-provider-azapi/refs/heads/main/docs/images/acquire_policy_token_proactive.svg)
 
 ## Limitations
 

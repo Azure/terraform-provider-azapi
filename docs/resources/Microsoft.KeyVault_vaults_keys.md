@@ -21,14 +21,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
   }
 }
 
@@ -46,7 +38,10 @@ variable "location" {
   default = "westeurope"
 }
 
-data "azurerm_client_config" "current" {
+data "azapi_client_config" "current" {}
+
+locals {
+  key_vault_crypto_officer_role_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/14b46e9e-c2b7-41b4-b07b-48a6ebf60603"
 }
 
 resource "azapi_resource" "resourceGroup" {
@@ -56,7 +51,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -66,57 +61,36 @@ resource "azapi_resource" "vault" {
         family = "A"
         name   = "standard"
       }
-      accessPolicies        = []
-      enableSoftDelete      = true
-      enablePurgeProtection = true
-      tenantId              = data.azurerm_client_config.current.tenant_id
-    }
-  }
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
-  lifecycle {
-    ignore_changes = [body.properties.accessPolicies]
-  }
-}
-
-resource "azapi_resource_action" "put_accessPolicy" {
-  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
-  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
-  method      = "PUT"
-  body = {
-    properties = {
-      accessPolicies = [
-        {
-          objectId = data.azurerm_client_config.current.object_id
-          permissions = {
-            certificates = [
-              "ManageContacts",
-            ]
-            keys = [
-              "Get", "Create", "Delete", "List", "Restore", "Recover", "UnwrapKey", "WrapKey", "Purge", "Encrypt", "Decrypt", "Sign", "Verify"
-            ]
-            secrets = [
-              "Get",
-            ]
-            storage = [
-            ]
-          }
-          tenantId = data.azurerm_client_config.current.tenant_id
-        },
-      ]
+      accessPolicies          = []
+      enableRbacAuthorization = true
+      enableSoftDelete        = true
+      enablePurgeProtection   = true
+      tenantId                = data.azapi_client_config.current.tenant_id
     }
   }
   response_export_values = ["*"]
 }
 
+resource "azapi_resource" "keyVaultCryptoOfficer" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.vault.id
+  name      = uuidv5("url", "${azapi_resource.vault.id}/${data.azapi_client_config.current.object_id}/${local.key_vault_crypto_officer_role_id}")
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = local.key_vault_crypto_officer_role_id
+    }
+  }
+}
+
 data "azapi_resource_id" "key" {
-  type      = "Microsoft.KeyVault/vaults/keys@2023-02-01"
+  type      = "Microsoft.KeyVault/vaults/keys@2026-02-01"
   parent_id = azapi_resource.vault.id
   name      = var.resource_name
 }
 
 resource "azapi_resource_action" "put_key" {
-  type        = "Microsoft.KeyVault/vaults/keys@2023-02-01"
+  type        = "Microsoft.KeyVault/vaults/keys@2026-02-01"
   resource_id = data.azapi_resource_id.key.id
   method      = "PUT"
   body = {
@@ -127,9 +101,13 @@ resource "azapi_resource_action" "put_key" {
     }
   }
   response_export_values = ["*"]
-  depends_on             = [azapi_resource_action.put_accessPolicy]
+  retry = {
+    error_message_regex  = ["Forbidden", "Unauthorized", "authorization"]
+    interval_seconds     = 10
+    max_interval_seconds = 60
+  }
+  depends_on = [azapi_resource.keyVaultCryptoOfficer]
 }
-
 
 ```
 

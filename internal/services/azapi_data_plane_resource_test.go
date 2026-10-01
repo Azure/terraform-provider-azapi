@@ -98,6 +98,20 @@ func TestAccDataPlaneResource_keyVaultSecret(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_keyVaultKeyRbac(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.keyVaultKeyRbac(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_keyVaultCertificate(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -654,6 +668,79 @@ resource "azapi_resource_action" "add_accesspolicy_secret" {
 }
 
 
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultKeyRbac(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2025-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2026-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestkv%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      tenantId                = data.azapi_client_config.current.tenant_id
+      enableRbacAuthorization = true
+      accessPolicies          = []
+      publicNetworkAccess     = "Enabled"
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+    }
+  }
+  response_export_values = {
+    vaultUri = "properties.vaultUri"
+  }
+}
+
+resource "azapi_resource" "keyVaultCryptoOfficer" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.vault.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/14b46e9e-c2b7-41b4-b07b-48a6ebf60603"
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/keys@2025-07-01"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    kty      = "RSA"
+    key_size = 2048
+    key_ops  = ["encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"]
+    attributes = {
+      enabled = true
+    }
+  }
+
+  retry = {
+    error_message_regex  = ["Forbidden", "Unauthorized", "authorization"]
+    interval_seconds     = 10
+    max_interval_seconds = 60
+  }
+
+  depends_on = [
+    azapi_resource.keyVaultCryptoOfficer,
+  ]
+}
 `, data.LocationPrimary, data.RandomString)
 }
 

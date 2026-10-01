@@ -60,6 +60,7 @@ type AzapiUpdateResourceModel struct {
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
 	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	ReadOverride                  types.Object     `tfsdk:"read_override" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -284,6 +285,8 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional:            true,
 				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
+
+			"read_override": readOverrideSchema(),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -320,6 +323,9 @@ func (r *AzapiUpdateResource) ValidateConfig(ctx context.Context, request resour
 	}
 	if !config.Name.IsNull() && !config.ResourceID.IsNull() {
 		response.Diagnostics.AddError("Invalid configuration", `Only one of the arguments "name" or "resource_id" can be set`)
+	}
+	if readOverrideConflictsWithSensitiveBody(config.ReadOverride, config.SensitiveBody) {
+		response.Diagnostics.AddError("Invalid configuration", `The argument "read_override" cannot be used with "sensitive_body" because the read response may contain sensitive values that would be stored in state`)
 	}
 	if response.Diagnostics.HasError() {
 		return
@@ -456,7 +462,12 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	readRequestOptions.RetryOptions, readRequestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
+	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
+	diagnostics.Append(readDiags...)
+	if diagnostics.HasError() {
+		return
+	}
+	existing, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, readRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -523,7 +534,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
+	responseBody, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, readRequestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -599,7 +610,12 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+	readOverride, readDiags := readOverrideFromObject(ctx, model.ReadOverride)
+	response.Diagnostics.Append(readDiags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	responseBody, err := readResource(ctx, client, id.AzureResourceId, id.ApiVersion, readOverride, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))

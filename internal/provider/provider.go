@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"net/http"
 	"os"
 	"strings"
 	"text/template"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/entrauth/aztfauth"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -21,6 +23,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/functions"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/version"
+	"github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/action"
@@ -688,6 +691,9 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 
 	cred, err := buildChainedTokenCredential(model, azcore.ClientOptions{
 		Cloud: cloudConfig,
+		Retry: policy.RetryOptions{
+			ShouldRetry: shouldRetryTokenRequest,
+		},
 	})
 	if err != nil {
 		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
@@ -897,6 +903,13 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 	})
 
 	return cred, err
+}
+
+func shouldRetryTokenRequest(resp *http.Response, err error) bool {
+	// OAuth token requests have been reported unreliable in some cases, use go-retryablehttp to align the retry behaviour
+	// with AzureRM https://github.com/Azure/terraform-provider-azapi/issues/1109
+	shouldRetry, _ := retryablehttp.DefaultRetryPolicy(context.Background(), resp, err)
+	return shouldRetry
 }
 
 func (p *Provider) RenderOption() tffwdocs.ProviderRenderOption {

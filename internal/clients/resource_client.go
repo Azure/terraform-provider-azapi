@@ -46,6 +46,14 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
+	if len(options.Headers) != 0 {
+		headers := make(http.Header, len(options.Headers))
+		for key, value := range options.Headers {
+			headers.Set(key, value)
+		}
+		ctx = policy.WithHTTPHeader(ctx, headers)
+	}
+
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
