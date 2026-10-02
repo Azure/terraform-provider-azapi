@@ -39,6 +39,15 @@ func TestDatasetUploadDetails(t *testing.T) {
 	if dataURI != "https://storage.blob.core.windows.net/container" {
 		t.Fatalf("unexpected data URI: %q", dataURI)
 	}
+
+	delete(response, "blobReferenceForConsumption")
+	_, dataURI, err = datasetUploadDetails(response)
+	if err != nil {
+		t.Fatalf("datasetUploadDetails without blobReferenceForConsumption returned an error: %v", err)
+	}
+	if dataURI != "https://storage.blob.core.windows.net/container" {
+		t.Fatalf("unexpected fallback data URI: %q", dataURI)
+	}
 }
 
 func TestDatasetSourceInfo(t *testing.T) {

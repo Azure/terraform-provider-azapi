@@ -424,7 +424,7 @@ func datasetUploadDetails(
 		return "", "", err
 	}
 
-	dataURIValues := values
+	dataURIValues := blobReference
 
 	if consumption, ok := values["blobReferenceForConsumption"]; ok &&
 		consumption != nil {
