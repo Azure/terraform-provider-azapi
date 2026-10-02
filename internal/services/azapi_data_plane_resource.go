@@ -359,6 +359,17 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		}
 	}
 
+	if state != nil {
+		changed, err := foundryEvaluationImmutableFieldsChanged(plan, state)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid evaluation body configuration", err.Error())
+			return
+		}
+		if changed {
+			response.RequiresReplace.Append(path.Root("body"))
+		}
+	}
+
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 
 	// Check if any paths in replace_triggers_refs have changed
@@ -798,6 +809,52 @@ func parseDataPlaneImportID(input string) (string, string, error) {
 	}
 
 	return resourceID, resourceType, nil
+}
+
+const foundryEvaluationVersionsResourceType = "Microsoft.Foundry/evaluation/versions"
+
+func foundryEvaluationImmutableFieldsChanged(plan, state *DataPlaneResourceModel) (bool, error) {
+	if plan == nil || state == nil || plan.Type.IsNull() || plan.Type.IsUnknown() {
+		return false, nil
+	}
+
+	resourceType := strings.SplitN(plan.Type.ValueString(), "@", 2)[0]
+	if !strings.EqualFold(resourceType, foundryEvaluationVersionsResourceType) {
+		return false, nil
+	}
+
+	planBody, err := foundryEvaluationBodyValues(plan.Body)
+	if err != nil {
+		return false, fmt.Errorf("reading planned body: %w", err)
+	}
+	stateBody, err := foundryEvaluationBodyValues(state.Body)
+	if err != nil {
+		return false, fmt.Errorf("reading state body: %w", err)
+	}
+
+	for _, fieldName := range []string{"data_source_config", "testing_criteria"} {
+		if !reflect.DeepEqual(planBody[fieldName], stateBody[fieldName]) {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func foundryEvaluationBodyValues(body types.Dynamic) (map[string]interface{}, error) {
+	data, err := dynamic.ToJSONWithUnknownValueHandler(body, func(value attr.Value) ([]byte, error) {
+		return json.Marshal(nil)
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var values map[string]interface{}
+	if err := json.Unmarshal(data, &values); err != nil {
+		return nil, err
+	}
+
+	return values, nil
 }
 
 func validateDataPlaneResourceEvaluationID(config *DataPlaneResourceModel) error {
