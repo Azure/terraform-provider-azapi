@@ -833,10 +833,10 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 		id.AzureResourceId,
 		"",
 		id.ApiVersion,
-		http.MethodPut,
+		http.MethodPatch,
 		versionBody,
 		options,
-		"application/json",
+		"application/merge-patch+json",
 	)
 	if err != nil {
 		return "", datasetSafeError(

@@ -1,8 +1,10 @@
 package customization
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -11,6 +13,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 )
@@ -120,6 +126,148 @@ func TestDatasetVersionRequestBody(t *testing.T) {
 	}
 	if !reflect.DeepEqual(body, expected) {
 		t.Fatalf("unexpected version request body:\n got: %#v\nwant: %#v", body, expected)
+	}
+}
+
+type foundryDatasetTestCredential struct{}
+
+func (foundryDatasetTestCredential) GetToken(
+	context.Context,
+	policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: "test-token"}, nil
+}
+
+type foundryDatasetTestTransport struct {
+	t                         *testing.T
+	uploadSASURL              string
+	blobURI                   string
+	versionRequestMethod      string
+	versionRequestContentType string
+}
+
+func (transport *foundryDatasetTestTransport) Do(
+	request *http.Request,
+) (*http.Response, error) {
+	var responseBody []byte
+
+	switch {
+	case request.Method == http.MethodPost &&
+		strings.HasSuffix(request.URL.Path, "/startPendingUpload"):
+		var err error
+		responseBody, err = json.Marshal(map[string]interface{}{
+			"blobReference": map[string]interface{}{
+				"blobUri": transport.blobURI,
+				"credential": map[string]interface{}{
+					"type":   "SAS",
+					"sasUri": transport.uploadSASURL,
+				},
+			},
+			"blobReferenceForConsumption": map[string]interface{}{
+				"blobUri": transport.blobURI,
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
+
+	case strings.HasSuffix(
+		request.URL.Path,
+		"/datasets/example-dataset/versions/1",
+	):
+		transport.versionRequestMethod = request.Method
+		transport.versionRequestContentType = request.Header.Get("Content-Type")
+		responseBody = []byte(`{"name":"example-dataset","version":"1"}`)
+
+	default:
+		transport.t.Errorf(
+			"unexpected data-plane request: %s %s",
+			request.Method,
+			request.URL,
+		)
+		responseBody = []byte(`{}`)
+	}
+
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(string(responseBody))),
+		Request:    request,
+	}, nil
+}
+
+func TestFoundryDatasetCreateUsesMergePatch(t *testing.T) {
+	sourceServer := httptest.NewServer(http.HandlerFunc(func(
+		response http.ResponseWriter,
+		_ *http.Request,
+	) {
+		_, _ = io.WriteString(response, "dataset")
+	}))
+	defer sourceServer.Close()
+
+	uploadServer := httptest.NewServer(http.HandlerFunc(func(
+		response http.ResponseWriter,
+		request *http.Request,
+	) {
+		if request.Method != http.MethodPut {
+			t.Errorf("unexpected upload method: %s", request.Method)
+		}
+		response.WriteHeader(http.StatusCreated)
+	}))
+	defer uploadServer.Close()
+
+	transport := &foundryDatasetTestTransport{
+		t:            t,
+		uploadSASURL: uploadServer.URL + "/container?sr=c&sig=test",
+		blobURI:      uploadServer.URL + "/container",
+	}
+	dataPlaneClient, err := clients.NewDataPlaneClient(
+		foundryDatasetTestCredential{},
+		&arm.ClientOptions{
+			ClientOptions: policy.ClientOptions{
+				Cloud:     cloud.AzurePublic,
+				Transport: transport,
+			},
+		},
+	)
+	if err != nil {
+		t.Fatalf("building data-plane client: %v", err)
+	}
+
+	_, err = (FoundryDatasetCustomization{}).createOrUpdate(
+		t.Context(),
+		clients.Client{DataPlaneClient: dataPlaneClient},
+		parse.DataPlaneResourceId{
+			AzureResourceId:   "example.services.ai.azure.com/api/projects/example/datasets/example-dataset/versions/1",
+			ApiVersion:        "2025-05-01",
+			AzureResourceType: "Microsoft.Foundry/datasets/versions",
+			Name:              "1",
+		},
+		map[string]interface{}{
+			"name":        "example-dataset",
+			"description": "example dataset",
+			"format":      "jsonl",
+			"source_url":  sourceServer.URL + "/data.jsonl",
+		},
+		clients.RequestOptions{},
+	)
+	if err != nil {
+		t.Fatalf("creating dataset: %v", err)
+	}
+
+	if transport.versionRequestMethod != http.MethodPatch {
+		t.Errorf(
+			"unexpected dataset version method: got %q, want %q",
+			transport.versionRequestMethod,
+			http.MethodPatch,
+		)
+	}
+	if transport.versionRequestContentType != "application/merge-patch+json" {
+		t.Errorf(
+			"unexpected dataset version content type: got %q, want %q",
+			transport.versionRequestContentType,
+			"application/merge-patch+json",
+		)
 	}
 }
 
