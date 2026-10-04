@@ -14,6 +14,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
@@ -544,6 +545,14 @@ func datasetSourceHTTPClient() *http.Client {
 	}
 }
 
+const datasetChecksumHTTPClientTimeout = 5 * time.Minute
+
+func datasetChecksumHTTPClient() *http.Client {
+	client := datasetSourceHTTPClient()
+	client.Timeout = datasetChecksumHTTPClientTimeout
+	return client
+}
+
 func datasetUploadHTTPClient() *http.Client {
 	return &http.Client{
 		CheckRedirect: func(
@@ -555,9 +564,9 @@ func datasetUploadHTTPClient() *http.Client {
 	}
 }
 
-func downloadDatasetSHA256(sourceURL string) (checksum string, err error) {
+func downloadDatasetSHA256(ctx context.Context, sourceURL string) (checksum string, err error) {
 	request, err := http.NewRequestWithContext(
-		context.Background(),
+		ctx,
 		http.MethodGet,
 		sourceURL,
 		nil,
@@ -571,7 +580,7 @@ func downloadDatasetSHA256(sourceURL string) (checksum string, err error) {
 
 	request.Header.Set("Accept-Encoding", "identity")
 
-	response, err := datasetSourceHTTPClient().Do(request)
+	response, err := datasetChecksumHTTPClient().Do(request)
 	if err != nil {
 		return "", fmt.Errorf(
 			"downloading dataset for checksum: %w",
@@ -1112,6 +1121,7 @@ func (c FoundryDatasetCustomization) UseResponseBodyAsOutput() bool {
 }
 
 func (c FoundryDatasetCustomization) AugmentReadOutput(
+	ctx context.Context,
 	responseBody interface{},
 	stateBody interface{},
 ) (interface{}, error) {
@@ -1139,7 +1149,7 @@ func (c FoundryDatasetCustomization) AugmentReadOutput(
 	// Calculate the checksum for output. This is best effort during reads:
 	// source_url can expire, be deleted, or become unavailable after the
 	// Azure AI asset has already been created.
-	computedSHA256, err := downloadDatasetSHA256(sourceURL)
+	computedSHA256, err := downloadDatasetSHA256(ctx, sourceURL)
 	if err != nil {
 		outputValues["computed_sha256"] = nil
 		return outputValues, nil

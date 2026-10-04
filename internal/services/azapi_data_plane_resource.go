@@ -584,7 +584,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		readOptionsResource, _ = (*customizedResource).(customization.DataPlaneResourceWithReadOptions)
 	}
 	if readOptionsResource != nil {
-		responseBody, err = readOptionsResource.AugmentReadOutput(responseBody, body)
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, body)
 		if err != nil {
 			diagnostics.AddError("Failed to build resource output", err.Error())
 			return
@@ -731,7 +731,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}()
 
 	if readOptionsResource != nil {
-		responseBody, err = readOptionsResource.AugmentReadOutput(responseBody, stateBody)
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, stateBody)
 		if err != nil {
 			response.Diagnostics.AddError("Failed to build resource output", err.Error())
 			return

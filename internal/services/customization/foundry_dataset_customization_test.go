@@ -12,6 +12,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -427,6 +428,13 @@ func TestStreamDatasetToUpload(t *testing.T) {
 	}
 }
 
+func TestDatasetChecksumHTTPClientTimeout(t *testing.T) {
+	const expectedTimeout = 5 * time.Minute
+	if timeout := datasetChecksumHTTPClient().Timeout; timeout != expectedTimeout {
+		t.Fatalf("unexpected checksum HTTP client timeout: got %s, want %s", timeout, expectedTimeout)
+	}
+}
+
 func TestDatasetHTTPClientsRefuseRedirects(t *testing.T) {
 	redirectServer := httptest.NewServer(http.HandlerFunc(func(
 		response http.ResponseWriter,
@@ -438,8 +446,9 @@ func TestDatasetHTTPClientsRefuseRedirects(t *testing.T) {
 	defer redirectServer.Close()
 
 	for name, client := range map[string]*http.Client{
-		"source": datasetSourceHTTPClient(),
-		"upload": datasetUploadHTTPClient(),
+		"source":   datasetSourceHTTPClient(),
+		"checksum": datasetChecksumHTTPClient(),
+		"upload":   datasetUploadHTTPClient(),
 	} {
 		t.Run(name, func(t *testing.T) {
 			request, err := http.NewRequest(
@@ -468,6 +477,7 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 	t.Run("preserves response checksum", func(t *testing.T) {
 		customization := FoundryDatasetCustomization{}
 		output, err := customization.AugmentReadOutput(
+			context.Background(),
 			map[string]interface{}{
 				"computed_sha256": "abc",
 			},
@@ -496,6 +506,7 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 		expectedSHA256 := hex.EncodeToString(sum[:])
 		customization := FoundryDatasetCustomization{}
 		output, err := customization.AugmentReadOutput(
+			context.Background(),
 			map[string]interface{}{"name": "example-dataset"},
 			map[string]interface{}{"source_url": sourceServer.URL + "/data.jsonl"},
 		)
@@ -505,6 +516,84 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 		values, ok := output.(map[string]interface{})
 		if !ok || values["computed_sha256"] != expectedSHA256 {
 			t.Fatalf("unexpected output: %#v", output)
+		}
+	})
+
+	t.Run("cancels stalled checksum download with read context", func(t *testing.T) {
+		const timeout = 2 * time.Second
+
+		bodyStalled := make(chan struct{})
+		requestCanceled := make(chan struct{})
+		sourceServer := httptest.NewServer(http.HandlerFunc(func(
+			response http.ResponseWriter,
+			request *http.Request,
+		) {
+			response.Header().Set("Content-Length", "1024")
+			response.WriteHeader(http.StatusOK)
+			if _, err := io.WriteString(response, "partial"); err != nil {
+				t.Errorf("writing partial dataset response: %v", err)
+				return
+			}
+			flusher, ok := response.(http.Flusher)
+			if !ok {
+				t.Error("test server response does not support flushing")
+				return
+			}
+			flusher.Flush()
+			close(bodyStalled)
+
+			<-request.Context().Done()
+			close(requestCanceled)
+		}))
+		defer sourceServer.Close()
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		type readResult struct {
+			output interface{}
+			err    error
+		}
+		result := make(chan readResult, 1)
+		customization := FoundryDatasetCustomization{}
+		go func() {
+			output, err := customization.AugmentReadOutput(
+				ctx,
+				map[string]interface{}{"name": "example-dataset"},
+				map[string]interface{}{"source_url": sourceServer.URL + "/data.jsonl"},
+			)
+			result <- readResult{output: output, err: err}
+		}()
+
+		select {
+		case <-bodyStalled:
+		case <-time.After(timeout):
+			t.Fatal("checksum download did not reach the stalled response body")
+		}
+
+		cancel()
+
+		select {
+		case <-requestCanceled:
+		case <-time.After(timeout):
+			t.Fatal("source request was not canceled with the read context")
+		}
+
+		select {
+		case read := <-result:
+			if read.err != nil {
+				t.Fatalf("AugmentReadOutput returned an error: %v", read.err)
+			}
+			values, ok := read.output.(map[string]interface{})
+			if !ok {
+				t.Fatalf("unexpected read output type: %#v", read.output)
+			}
+			checksum, exists := values["computed_sha256"]
+			if !exists || checksum != nil {
+				t.Fatalf("expected an unavailable checksum after cancellation, got %#v", read.output)
+			}
+		case <-time.After(timeout):
+			t.Fatal("checksum download did not return after context cancellation")
 		}
 	})
 }

@@ -45,7 +45,11 @@ type DataPlaneResourceWithReadOptions interface {
 	DataPlaneResource
 	PreserveBodyStateOnRead() bool
 	UseResponseBodyAsOutput() bool
-	AugmentReadOutput(responseBody interface{}, stateBody interface{}) (interface{}, error)
+	AugmentReadOutput(
+		ctx context.Context,
+		responseBody interface{},
+		stateBody interface{},
+	) (interface{}, error)
 }
 
 type ReadFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error)
