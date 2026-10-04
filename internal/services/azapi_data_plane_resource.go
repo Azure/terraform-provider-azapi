@@ -331,31 +331,12 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 	if state != nil {
 		if customizedResource := customization.GetCustomization(plan.Type.ValueString()); customizedResource != nil {
 			if planBodyResource, ok := (*customizedResource).(customization.DataPlaneResourceWithPlanBody); ok && planBodyResource.PlanBodyFunc() != nil {
-				planBody := make(map[string]interface{})
-				stateBody := make(map[string]interface{})
-				if err := unmarshalBody(plan.Body, &planBody); err != nil {
-					response.Diagnostics.AddError("Invalid plan body", err.Error())
-					return
-				}
-				if err := unmarshalBody(state.Body, &stateBody); err != nil {
-					response.Diagnostics.AddError("Invalid state body", err.Error())
-					return
-				}
-				normalizedBody, err := planBodyResource.PlanBodyFunc()(planBody, stateBody)
+				normalizedBody, err := planBodyResource.PlanBodyFunc()(ctx, plan.Body, state.Body)
 				if err != nil {
 					response.Diagnostics.AddError("Invalid plan body", err.Error())
 					return
 				}
-				bodyJSON, err := json.Marshal(normalizedBody)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid plan body", err.Error())
-					return
-				}
-				plan.Body, err = dynamic.FromJSONImplied(bodyJSON)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid plan body", err.Error())
-					return
-				}
+				plan.Body = normalizedBody
 			}
 		}
 	}

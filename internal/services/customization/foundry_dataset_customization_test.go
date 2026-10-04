@@ -19,6 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 func TestDatasetUploadDetails(t *testing.T) {
@@ -507,33 +509,67 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 	})
 }
 
-func TestFoundryDatasetPlanBody(t *testing.T) {
+func TestFoundryDatasetPlanBodyPreservesUnknownValues(t *testing.T) {
 	customization := FoundryDatasetCustomization{}
-	planBody, err := customization.PlanBodyFunc()(
-		map[string]interface{}{
-			"name":   "example-dataset",
-			"format": "jsonl",
+	planBody := types.DynamicValue(types.ObjectValueMust(
+		map[string]attr.Type{
+			"name":          types.StringType,
+			"source_url":    types.StringType,
+			"source_sha256": types.StringType,
 		},
-		map[string]interface{}{
-			"version":         "1",
-			"type":            "uri_file",
-			"format":          "jsonl",
-			"computed_sha256": "abc",
+		map[string]attr.Value{
+			"name":          types.StringValue("example-dataset"),
+			"source_url":    types.StringUnknown(),
+			"source_sha256": types.StringUnknown(),
 		},
+	))
+	stateBody := types.DynamicValue(types.ObjectValueMust(
+		map[string]attr.Type{
+			"version":         types.StringType,
+			"type":            types.StringType,
+			"format":          types.StringType,
+			"computed_sha256": types.StringType,
+		},
+		map[string]attr.Value{
+			"version":         types.StringValue("1"),
+			"type":            types.StringValue("uri_file"),
+			"format":          types.StringValue("jsonl"),
+			"computed_sha256": types.StringValue("abc"),
+		},
+	))
+
+	normalizedBody, err := customization.PlanBodyFunc()(
+		context.Background(),
+		planBody,
+		stateBody,
 	)
 	if err != nil {
 		t.Fatalf("PlanBodyFunc returned an error: %v", err)
 	}
 
-	values, ok := planBody.(map[string]interface{})
+	values, ok := normalizedBody.UnderlyingValue().(types.Object)
 	if !ok {
-		t.Fatalf("unexpected plan body type: %#v", planBody)
+		t.Fatalf("unexpected plan body type: %#v", normalizedBody.UnderlyingValue())
 	}
-	if values["version"] != "1" || values["type"] != "uri_file" {
-		t.Fatalf("state defaults were not copied into plan body: %#v", values)
+	attributes := values.Attributes()
+	for field, expected := range map[string]string{
+		"version": "1",
+		"type":    "uri_file",
+		"format":  "jsonl",
+	} {
+		value, ok := attributes[field].(types.String)
+		if !ok || value.ValueString() != expected {
+			t.Fatalf("state default %q was not copied into plan body: %#v", field, attributes[field])
+		}
 	}
-	if _, exists := values["computed_sha256"]; exists {
-		t.Fatalf("computed_sha256 must not be copied into plan body: %#v", values)
+	for _, field := range []string{"source_url", "source_sha256"} {
+		value, ok := attributes[field].(types.String)
+		if !ok || !value.IsUnknown() {
+			t.Fatalf("unknown %q was not preserved: %#v", field, attributes[field])
+		}
+	}
+	if _, exists := attributes["computed_sha256"]; exists {
+		t.Fatalf("computed_sha256 must not be copied into plan body: %#v", attributes)
 	}
 }
 

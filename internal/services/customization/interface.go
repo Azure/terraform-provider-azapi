@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type DataPlaneResource interface {
@@ -32,6 +33,7 @@ type DataPlaneResourceWithCreateResult interface {
 
 // DataPlaneResourceWithPlanBody is an optional extension for customizations
 // which need to carry provider-computed body values from state into the plan.
+// Its Terraform values preserve unknowns while the plan body is normalized.
 type DataPlaneResourceWithPlanBody interface {
 	DataPlaneResource
 	PlanBodyFunc() PlanBodyFunc
@@ -50,5 +52,5 @@ type ReadFunc = func(ctx context.Context, client clients.Client, id parse.DataPl
 type DeleteFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) error
 type CreateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error
 type CreateResultFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) (parse.DataPlaneResourceId, interface{}, error)
-type PlanBodyFunc = func(planBody interface{}, stateBody interface{}) (interface{}, error)
+type PlanBodyFunc = func(ctx context.Context, planBody types.Dynamic, stateBody types.Dynamic) (types.Dynamic, error)
 type UpdateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error

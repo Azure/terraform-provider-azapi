@@ -17,6 +17,8 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 // FoundryDatasetCustomization manages a Foundry dataset version and its
@@ -953,37 +955,151 @@ func (c FoundryDatasetCustomization) DeleteFunc() DeleteFunc {
 	return nil
 }
 
+func datasetTerraformAttributes(value attr.Value) (map[string]attr.Value, error) {
+	switch value := value.(type) {
+	case types.Object:
+		return value.Attributes(), nil
+	case types.Map:
+		return value.Elements(), nil
+	default:
+		return nil, fmt.Errorf("dataset body must be an object or map, got %T", value)
+	}
+}
+
+func datasetTerraformField(values map[string]attr.Value, name string) (attr.Value, bool) {
+	if value, exists := values[name]; exists {
+		return value, true
+	}
+
+	for key, value := range values {
+		if strings.EqualFold(key, name) {
+			return value, true
+		}
+	}
+
+	return nil, false
+}
+
+func datasetPlanDefaults(
+	planValues map[string]attr.Value,
+	stateValues map[string]attr.Value,
+) map[string]attr.Value {
+	defaults := make(map[string]attr.Value)
+
+	for _, field := range []string{
+		"version",
+		"type",
+		"format",
+	} {
+		if _, exists := datasetTerraformField(planValues, field); exists {
+			continue
+		}
+
+		if value, exists := datasetTerraformField(stateValues, field); exists {
+			defaults[field] = value
+		}
+	}
+
+	return defaults
+}
+
 func (c FoundryDatasetCustomization) PlanBodyFunc() PlanBodyFunc {
 	return func(
-		planBody interface{},
-		stateBody interface{},
-	) (interface{}, error) {
-		planValues, err := datasetMap(planBody)
-		if err != nil {
-			return nil, err
+		ctx context.Context,
+		planBody types.Dynamic,
+		stateBody types.Dynamic,
+	) (types.Dynamic, error) {
+		if planBody.IsNull() || planBody.IsUnknown() || planBody.IsUnderlyingValueUnknown() {
+			return planBody, nil
 		}
 
-		stateValues, err := datasetMap(stateBody)
+		planValue := planBody.UnderlyingValue()
+		planValues, err := datasetTerraformAttributes(planValue)
 		if err != nil {
-			return planValues, nil
+			return types.Dynamic{}, err
 		}
 
-		// Do not copy computed_sha256 into body. It belongs in output.
-		for _, field := range []string{
-			"version",
-			"type",
-			"format",
-		} {
-			if _, _, exists := datasetField(planValues, field); exists {
-				continue
+		if stateBody.IsNull() || stateBody.IsUnknown() || stateBody.IsUnderlyingValueUnknown() {
+			return planBody, nil
+		}
+
+		stateValues, err := datasetTerraformAttributes(stateBody.UnderlyingValue())
+		if err != nil {
+			return planBody, nil
+		}
+
+		defaults := datasetPlanDefaults(planValues, stateValues)
+		if len(defaults) == 0 {
+			return planBody, nil
+		}
+
+		switch planValue := planValue.(type) {
+		case types.Object:
+			attributes := make(map[string]attr.Value, len(planValues)+len(defaults))
+			for field, value := range planValues {
+				attributes[field] = value
 			}
 
-			if value, _, exists := datasetField(stateValues, field); exists {
-				planValues[field] = value
+			planAttributeTypes := planValue.AttributeTypes(ctx)
+			attributeTypes := make(map[string]attr.Type, len(planAttributeTypes)+len(defaults))
+			for field, valueType := range planAttributeTypes {
+				attributeTypes[field] = valueType
 			}
-		}
 
-		return planValues, nil
+			for field, value := range defaults {
+				attributes[field] = value
+				attributeTypes[field] = value.Type(ctx)
+			}
+
+			normalizedBody, diagnostics := types.ObjectValue(attributeTypes, attributes)
+			if diagnostics.HasError() {
+				diagnostic := diagnostics.Errors()[0]
+				return types.Dynamic{}, fmt.Errorf(
+					"building normalized dataset plan body: %s: %s",
+					diagnostic.Summary(),
+					diagnostic.Detail(),
+				)
+			}
+
+			return types.DynamicValue(normalizedBody), nil
+
+		case types.Map:
+			elements := make(map[string]attr.Value, len(planValues)+len(defaults))
+			for field, value := range planValues {
+				elements[field] = value
+			}
+
+			elementType := planValue.ElementType(ctx)
+			for field, value := range defaults {
+				if !elementType.Equal(value.Type(ctx)) {
+					if elementType.Equal(types.DynamicType) {
+						value = types.DynamicValue(value)
+					} else {
+						return types.Dynamic{}, fmt.Errorf(
+							"cannot copy dataset field %q from state into map body with element type %s",
+							field,
+							elementType.String(),
+						)
+					}
+				}
+				elements[field] = value
+			}
+
+			normalizedBody, diagnostics := types.MapValue(elementType, elements)
+			if diagnostics.HasError() {
+				diagnostic := diagnostics.Errors()[0]
+				return types.Dynamic{}, fmt.Errorf(
+					"building normalized dataset plan body: %s: %s",
+					diagnostic.Summary(),
+					diagnostic.Detail(),
+				)
+			}
+
+			return types.DynamicValue(normalizedBody), nil
+
+		default:
+			return types.Dynamic{}, fmt.Errorf("dataset body must be an object or map, got %T", planValue)
+		}
 	}
 }
 
