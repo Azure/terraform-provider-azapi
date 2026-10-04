@@ -129,6 +129,40 @@ func TestDatasetVersionRequestBody(t *testing.T) {
 	}
 }
 
+func TestDatasetDataURI(t *testing.T) {
+	baseURI := "https://storage.blob.core.windows.net/container"
+	sourceURL := "https://example.com/data.jsonl"
+
+	tests := []struct {
+		name string
+		body map[string]interface{}
+		want string
+	}{
+		{
+			name: "file URI includes uploaded filename",
+			body: map[string]interface{}{"type": "uri_file"},
+			want: baseURI + "/data.jsonl",
+		},
+		{
+			name: "folder URI remains a container URI",
+			body: map[string]interface{}{"type": "uri_folder"},
+			want: baseURI,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got, err := datasetDataURI(test.body, baseURI, sourceURL)
+			if err != nil {
+				t.Fatalf("datasetDataURI returned an error: %v", err)
+			}
+			if got != test.want {
+				t.Fatalf("unexpected data URI: got %q, want %q", got, test.want)
+			}
+		})
+	}
+}
+
 type foundryDatasetTestCredential struct{}
 
 func (foundryDatasetTestCredential) GetToken(
@@ -144,6 +178,7 @@ type foundryDatasetTestTransport struct {
 	blobURI                   string
 	versionRequestMethod      string
 	versionRequestContentType string
+	versionRequestBody        map[string]interface{}
 }
 
 func (transport *foundryDatasetTestTransport) Do(
@@ -177,6 +212,13 @@ func (transport *foundryDatasetTestTransport) Do(
 	):
 		transport.versionRequestMethod = request.Method
 		transport.versionRequestContentType = request.Header.Get("Content-Type")
+		requestBody, err := io.ReadAll(request.Body)
+		if err != nil {
+			return nil, err
+		}
+		if err := json.Unmarshal(requestBody, &transport.versionRequestBody); err != nil {
+			return nil, err
+		}
 		responseBody = []byte(`{"name":"example-dataset","version":"1"}`)
 
 	default:
@@ -211,6 +253,9 @@ func TestFoundryDatasetCreateUsesMergePatch(t *testing.T) {
 	) {
 		if request.Method != http.MethodPut {
 			t.Errorf("unexpected upload method: %s", request.Method)
+		}
+		if request.URL.Path != "/container/data.jsonl" {
+			t.Errorf("unexpected upload path: %s", request.URL.Path)
 		}
 		response.WriteHeader(http.StatusCreated)
 	}))
@@ -267,6 +312,13 @@ func TestFoundryDatasetCreateUsesMergePatch(t *testing.T) {
 			"unexpected dataset version content type: got %q, want %q",
 			transport.versionRequestContentType,
 			"application/merge-patch+json",
+		)
+	}
+	if transport.versionRequestBody["dataUri"] != uploadServer.URL+"/container/data.jsonl" {
+		t.Errorf(
+			"unexpected registered data URI: got %q, want %q",
+			transport.versionRequestBody["dataUri"],
+			uploadServer.URL+"/container/data.jsonl",
 		)
 	}
 }

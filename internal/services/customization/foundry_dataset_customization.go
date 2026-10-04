@@ -464,6 +464,20 @@ func datasetSourceFilename(sourceURL string) (string, error) {
 	return filename, nil
 }
 
+func datasetBlobURL(baseURL string, filename string) (string, error) {
+	parsedURL, err := url.Parse(baseURL)
+	if err != nil {
+		return "", fmt.Errorf("parsing dataset blob URL: %w", err)
+	}
+
+	parsedURL.Path = strings.TrimSuffix(parsedURL.Path, "/") +
+		"/" +
+		filename
+	parsedURL.RawPath = ""
+
+	return parsedURL.String(), nil
+}
+
 func datasetBlobUploadURL(
 	containerSASURL string,
 	filename string,
@@ -476,19 +490,45 @@ func datasetBlobUploadURL(
 		)
 	}
 
-	query := parsedURL.Query()
-
 	// A blob-level SAS URL can be used directly.
-	if strings.EqualFold(query.Get("sr"), "b") {
+	if strings.EqualFold(parsedURL.Query().Get("sr"), "b") {
 		return parsedURL.String(), nil
 	}
 
-	parsedURL.Path = strings.TrimSuffix(parsedURL.Path, "/") +
-		"/" +
-		filename
-	parsedURL.RawPath = ""
+	return datasetBlobURL(containerSASURL, filename)
+}
 
-	return parsedURL.String(), nil
+func datasetDataURI(
+	body interface{},
+	dataURI string,
+	sourceURL string,
+) (string, error) {
+	values, err := datasetMap(body)
+	if err != nil {
+		return "", err
+	}
+
+	datasetType, _, err := datasetStringField(values, "type")
+	if err != nil {
+		return "", err
+	}
+
+	switch strings.TrimSpace(datasetType) {
+	case "", "uri_file":
+		filename, err := datasetSourceFilename(sourceURL)
+		if err != nil {
+			return "", err
+		}
+
+		return datasetBlobURL(dataURI, filename)
+	case "uri_folder":
+		// Keep the container URI until folder uploads are supported.
+		return dataURI, nil
+	default:
+		return "", fmt.Errorf(
+			`dataset body field "type" must be "uri_file" or "uri_folder"`,
+		)
+	}
 }
 
 func datasetSourceHTTPClient() *http.Client {
@@ -804,6 +844,11 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 	}
 
 	uploadSASURL, dataURI, err := datasetUploadDetails(pendingResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	dataURI, err = datasetDataURI(requestBody, dataURI, sourceURL)
 	if err != nil {
 		return nil, err
 	}
