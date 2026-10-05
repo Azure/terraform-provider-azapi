@@ -662,7 +662,25 @@ func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
 		return nil
 	}
 
-	if !parse.HasNameSegment(config.Type.ValueString()) {
+	return validateDataPlaneResourceNameByURLFormat(config.Type.ValueString(), nameIsEmpty)
+}
+
+func validateDataPlaneResourceLookupName(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	if config.Name.IsUnknown() {
+		return nil
+	}
+
+	nameIsEmpty := config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == ""
+	return validateDataPlaneResourceNameByURLFormat(config.Type.ValueString(), nameIsEmpty)
+}
+
+func validateDataPlaneResourceNameByURLFormat(resourceTypeWithVersion string, nameIsEmpty bool) error {
+	resourceType := strings.SplitN(resourceTypeWithVersion, "@", 2)[0]
+	if !parse.HasNameSegment(resourceTypeWithVersion) {
 		if !nameIsEmpty {
 			return fmt.Errorf(`the argument "name" should not be set for resource type %q because this resource type does not have a name`, resourceType)
 		}
@@ -823,6 +841,14 @@ func foundryEvaluationImmutableFieldsChanged(plan, state *DataPlaneResourceModel
 		return false, nil
 	}
 
+	immutableFields := []string{"data_source_config", "testing_criteria"}
+	for _, fieldName := range immutableFields {
+		if foundryEvaluationBodyFieldContainsUnknownValue(plan.Body, fieldName) ||
+			foundryEvaluationBodyFieldContainsUnknownValue(state.Body, fieldName) {
+			return true, nil
+		}
+	}
+
 	planBody, err := foundryEvaluationBodyValues(plan.Body)
 	if err != nil {
 		return false, fmt.Errorf("reading planned body: %w", err)
@@ -832,13 +858,84 @@ func foundryEvaluationImmutableFieldsChanged(plan, state *DataPlaneResourceModel
 		return false, fmt.Errorf("reading state body: %w", err)
 	}
 
-	for _, fieldName := range []string{"data_source_config", "testing_criteria"} {
+	for _, fieldName := range immutableFields {
 		if !reflect.DeepEqual(planBody[fieldName], stateBody[fieldName]) {
 			return true, nil
 		}
 	}
 
 	return false, nil
+}
+
+func foundryEvaluationBodyFieldContainsUnknownValue(body types.Dynamic, fieldName string) bool {
+	if body.IsUnknown() {
+		return true
+	}
+
+	bodyValue := body.UnderlyingValue()
+	if bodyValue == nil || bodyValue.IsNull() {
+		return false
+	}
+	if bodyValue.IsUnknown() {
+		return true
+	}
+
+	switch value := bodyValue.(type) {
+	case types.Object:
+		fieldValue, ok := value.Attributes()[fieldName]
+		return ok && foundryEvaluationValueContainsUnknown(fieldValue)
+	case types.Map:
+		fieldValue, ok := value.Elements()[fieldName]
+		return ok && foundryEvaluationValueContainsUnknown(fieldValue)
+	default:
+		return false
+	}
+}
+
+func foundryEvaluationValueContainsUnknown(value attr.Value) bool {
+	if value == nil || value.IsNull() {
+		return false
+	}
+	if value.IsUnknown() {
+		return true
+	}
+
+	switch value := value.(type) {
+	case types.Dynamic:
+		return foundryEvaluationValueContainsUnknown(value.UnderlyingValue())
+	case types.Object:
+		for _, attribute := range value.Attributes() {
+			if foundryEvaluationValueContainsUnknown(attribute) {
+				return true
+			}
+		}
+	case types.Map:
+		for _, element := range value.Elements() {
+			if foundryEvaluationValueContainsUnknown(element) {
+				return true
+			}
+		}
+	case types.List:
+		for _, element := range value.Elements() {
+			if foundryEvaluationValueContainsUnknown(element) {
+				return true
+			}
+		}
+	case types.Set:
+		for _, element := range value.Elements() {
+			if foundryEvaluationValueContainsUnknown(element) {
+				return true
+			}
+		}
+	case types.Tuple:
+		for _, element := range value.Elements() {
+			if foundryEvaluationValueContainsUnknown(element) {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func foundryEvaluationBodyValues(body types.Dynamic) (map[string]interface{}, error) {

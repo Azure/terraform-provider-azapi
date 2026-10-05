@@ -122,6 +122,86 @@ func TestDataPlaneResourceModifyPlanFoundryEvaluationReplacement(t *testing.T) {
 	}
 }
 
+func TestDataPlaneResourceModifyPlanFoundryEvaluationUnknownValues(t *testing.T) {
+	defaultStateBody := `{
+		"name": "evaluation",
+		"metadata": {"team": "platform"}
+	}`
+	tests := []struct {
+		name      string
+		stateBody string
+		body      string
+		replace   bool
+	}{
+		{
+			name: "unknown data source configuration absent from state",
+			body: `{
+				"name": "evaluation",
+				"metadata": {"team": "platform"},
+				"data_source_config": "<unknown>"
+			}`,
+			replace: true,
+		},
+		{
+			name: "unknown testing criteria absent from state",
+			body: `{
+				"name": "evaluation",
+				"metadata": {"team": "platform"},
+				"testing_criteria": "<unknown>"
+			}`,
+			replace: true,
+		},
+		{
+			name: "unknown nested data source value replacing a null value",
+			stateBody: `{
+				"name": "evaluation",
+				"metadata": {"team": "platform"},
+				"data_source_config": {
+					"type": "custom",
+					"include_sample_schema": null
+				}
+			}`,
+			body: `{
+				"name": "evaluation",
+				"metadata": {"team": "platform"},
+				"data_source_config": {
+					"type": "custom",
+					"include_sample_schema": "<unknown>"
+				}
+			}`,
+			replace: true,
+		},
+		{
+			name: "unknown mutable metadata does not require replacement",
+			body: `{
+				"name": "evaluation",
+				"metadata": "<unknown>"
+			}`,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			stateBody := test.stateBody
+			if stateBody == "" {
+				stateBody = defaultStateBody
+			}
+			response := modifyFoundryEvaluationPlan(t, stateBody, test.body)
+			if response.Diagnostics.HasError() {
+				t.Fatalf("modifying plan: %v", response.Diagnostics)
+			}
+
+			want := path.Paths{}
+			if test.replace {
+				want = path.Paths{path.Root("body")}
+			}
+			if got := response.RequiresReplace; len(got) != len(want) || (len(want) == 1 && got[0].String() != want[0].String()) {
+				t.Fatalf("unexpected replacement paths: got %v, want %v", got, want)
+			}
+		})
+	}
+}
+
 func modifyFoundryEvaluationPlan(t *testing.T, stateBody, planBody string) resource.ModifyPlanResponse {
 	t.Helper()
 

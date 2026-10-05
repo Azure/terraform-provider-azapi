@@ -87,6 +87,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 			type newModel struct {
 				ID                            types.String        `tfsdk:"id"`
 				Name                          types.String        `tfsdk:"name"`
+				EvaluationID                  types.String        `tfsdk:"evaluation_id"`
 				ParentID                      types.String        `tfsdk:"parent_id"`
 				Type                          types.String        `tfsdk:"type"`
 				Body                          types.Dynamic       `tfsdk:"body"`
@@ -136,6 +137,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 			newState := newModel{
 				ID:                            oldState.ID,
 				Name:                          oldState.Name,
+				EvaluationID:                  types.StringNull(),
 				ParentID:                      oldState.ParentID,
 				Type:                          oldState.Type,
 				Body:                          bodyVal,
