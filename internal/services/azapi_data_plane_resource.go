@@ -329,16 +329,17 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 	}
 
 	if state != nil {
-		if customizedResource := customization.GetCustomization(plan.Type.ValueString()); customizedResource != nil {
-			if planBodyResource, ok := (*customizedResource).(customization.DataPlaneResourceWithPlanBody); ok && planBodyResource.PlanBodyFunc() != nil {
-				normalizedBody, err := planBodyResource.PlanBodyFunc()(ctx, plan.Body, state.Body)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid plan body", err.Error())
-					return
-				}
-				plan.Body = normalizedBody
-			}
+		normalizedBody, err := normalizeDataPlaneResourcePlanBody(
+			ctx,
+			plan.Type.ValueString(),
+			plan.Body,
+			state.Body,
+		)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body", err.Error())
+			return
 		}
+		plan.Body = normalizedBody
 	}
 
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
@@ -474,6 +475,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	client := r.ProviderData.DataPlaneClient
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
+	createResponseFunc, hasCreateResponse := getCreateResponseFunc(plan)
 	if isNewResource && !hasCreateResult {
 		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
@@ -533,6 +535,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
 	}
 
+	var createResponse interface{}
 	switch {
 	case isNewResource && hasCreateResult:
 		var createdId parse.DataPlaneResourceId
@@ -541,6 +544,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 			id = createdId
 			ctx = tflog.SetField(ctx, "resource_id", id.ID())
 		}
+	case isNewResource && hasCreateResponse:
+		createResponse, err = createResponseFunc(ctx, *r.ProviderData, id, body, requestOptions)
 	case isNewResource && customizedResource != nil && (*customizedResource).CreateFunc() != nil:
 		err = (*customizedResource).CreateFunc()(ctx, *r.ProviderData, id, body, requestOptions)
 	case !isNewResource && customizedResource != nil && (*customizedResource).UpdateFunc() != nil:
@@ -584,7 +589,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		readOptionsResource, _ = (*customizedResource).(customization.DataPlaneResourceWithReadOptions)
 	}
 	if readOptionsResource != nil {
-		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, body)
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, body, createResponse)
 		if err != nil {
 			diagnostics.AddError("Failed to build resource output", err.Error())
 			return
@@ -634,6 +639,44 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 	}
 
 	return nil, false
+}
+
+func getCreateResponseFunc(config *DataPlaneResourceModel) (customization.CreateResponseFunc, bool) {
+	customizedResource := customization.GetCustomization(config.Type.ValueString())
+	if customizedResource == nil {
+		return nil, false
+	}
+	if v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResponse); ok {
+		if fn := v.CreateResponseFunc(); fn != nil {
+			return fn, true
+		}
+	}
+
+	return nil, false
+}
+
+func normalizeDataPlaneResourcePlanBody(
+	ctx context.Context,
+	resourceType string,
+	planBody types.Dynamic,
+	stateBody types.Dynamic,
+) (types.Dynamic, error) {
+	customizedResource := customization.GetCustomization(resourceType)
+	if customizedResource == nil {
+		return planBody, nil
+	}
+
+	planBodyResource, ok := (*customizedResource).(customization.DataPlaneResourceWithPlanBody)
+	if !ok {
+		return planBody, nil
+	}
+
+	planBodyFunc := planBodyResource.PlanBodyFunc()
+	if planBodyFunc == nil {
+		return planBody, nil
+	}
+
+	return planBodyFunc(ctx, planBody, stateBody)
 }
 
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
@@ -731,7 +774,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}()
 
 	if readOptionsResource != nil {
-		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, stateBody)
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, stateBody, nil)
 		if err != nil {
 			response.Diagnostics.AddError("Failed to build resource output", err.Error())
 			return

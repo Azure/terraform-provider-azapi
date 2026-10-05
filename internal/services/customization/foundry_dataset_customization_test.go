@@ -482,6 +482,7 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 				"computed_sha256": "abc",
 			},
 			map[string]interface{}{},
+			nil,
 		)
 		if err != nil {
 			t.Fatalf("AugmentReadOutput returned an error: %v", err)
@@ -489,6 +490,40 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 		values, ok := output.(map[string]interface{})
 		if !ok || values["computed_sha256"] != "abc" {
 			t.Fatalf("computed_sha256 was not preserved in output: %#v", output)
+		}
+	})
+
+	t.Run("uses the upload checksum without refetching the source", func(t *testing.T) {
+		sourceRequested := make(chan struct{}, 1)
+		sourceServer := httptest.NewServer(http.HandlerFunc(func(
+			response http.ResponseWriter,
+			_ *http.Request,
+		) {
+			sourceRequested <- struct{}{}
+			_, _ = io.WriteString(response, "changed source contents")
+		}))
+		defer sourceServer.Close()
+
+		uploadedSum := sha256.Sum256([]byte("uploaded contents"))
+		expectedSHA256 := hex.EncodeToString(uploadedSum[:])
+		customization := FoundryDatasetCustomization{}
+		output, err := customization.AugmentReadOutput(
+			context.Background(),
+			map[string]interface{}{"name": "example-dataset"},
+			map[string]interface{}{"source_url": sourceServer.URL + "/data.jsonl"},
+			map[string]interface{}{"computed_sha256": expectedSHA256},
+		)
+		if err != nil {
+			t.Fatalf("AugmentReadOutput returned an error: %v", err)
+		}
+		values, ok := output.(map[string]interface{})
+		if !ok || values["computed_sha256"] != expectedSHA256 {
+			t.Fatalf("unexpected output checksum: %#v", output)
+		}
+		select {
+		case <-sourceRequested:
+			t.Fatal("source URL was fetched again after create")
+		default:
 		}
 	})
 
@@ -509,6 +544,7 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 			context.Background(),
 			map[string]interface{}{"name": "example-dataset"},
 			map[string]interface{}{"source_url": sourceServer.URL + "/data.jsonl"},
+			nil,
 		)
 		if err != nil {
 			t.Fatalf("AugmentReadOutput returned an error: %v", err)
@@ -561,6 +597,7 @@ func TestFoundryDatasetReadOutput(t *testing.T) {
 				ctx,
 				map[string]interface{}{"name": "example-dataset"},
 				map[string]interface{}{"source_url": sourceServer.URL + "/data.jsonl"},
+				nil,
 			)
 			result <- readResult{output: output, err: err}
 		}()
@@ -791,6 +828,7 @@ func TestFoundryDatasetCustomizationLifecycle(t *testing.T) {
 		t.Fatalf("unexpected resource type: %q", customization.GetResourceType())
 	}
 	if customization.CreateFunc() == nil ||
+		customization.CreateResponseFunc() == nil ||
 		customization.ReadFunc() == nil ||
 		customization.UpdateFunc() == nil {
 		t.Fatal("dataset customization must define create, read, and update behavior")
@@ -934,6 +972,62 @@ func TestStreamDatasetToUploadRejectsUploadFailure(t *testing.T) {
 
 	if !strings.Contains(err.Error(), "uploading dataset returned HTTP") {
 		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestStreamDatasetToUploadRedactsSASURLOnTransportError(t *testing.T) {
+	const sensitiveQuery = "sig=secret"
+
+	sourceServer := httptest.NewServer(http.HandlerFunc(func(
+		response http.ResponseWriter,
+		_ *http.Request,
+	) {
+		_, _ = io.WriteString(response, "dataset contents")
+	}))
+	defer sourceServer.Close()
+
+	uploadSeen := make(chan struct{}, 1)
+	uploadServer := httptest.NewServer(http.HandlerFunc(func(
+		response http.ResponseWriter,
+		_ *http.Request,
+	) {
+		uploadSeen <- struct{}{}
+		hijacker, ok := response.(http.Hijacker)
+		if !ok {
+			t.Error("upload response does not support hijacking")
+			return
+		}
+		connection, _, err := hijacker.Hijack()
+		if err != nil {
+			t.Errorf("hijacking upload connection: %v", err)
+			return
+		}
+		if err := connection.Close(); err != nil {
+			t.Errorf("closing upload connection: %v", err)
+		}
+	}))
+	defer uploadServer.Close()
+
+	_, err := streamDatasetToUpload(
+		t.Context(),
+		sourceServer.URL+"/dataset.jsonl",
+		uploadServer.URL+"/container?sr=c&"+sensitiveQuery,
+		"",
+		false,
+	)
+	if err == nil {
+		t.Fatal("expected upload transport failure")
+	}
+	if !strings.Contains(err.Error(), "streaming dataset: request failed") {
+		t.Fatalf("unexpected sanitized error: %v", err)
+	}
+	if strings.Contains(err.Error(), sensitiveQuery) || strings.Contains(err.Error(), uploadServer.URL) {
+		t.Fatalf("upload URL was exposed in the error: %v", err)
+	}
+	select {
+	case <-uploadSeen:
+	default:
+		t.Fatal("upload request was not attempted")
 	}
 }
 

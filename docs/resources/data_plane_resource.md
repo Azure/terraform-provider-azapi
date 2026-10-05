@@ -599,7 +599,7 @@ variable "dataset_description" {
 }
 
 variable "dataset_type" {
-  description = "The dataset type. Supported values are uri_file and uri_folder."
+  description = "uri_file registers the uploaded file; uri_folder registers its container, currently with one source file. Multi-file folders are not supported."
   type        = string
   default     = "uri_file"
 
@@ -617,7 +617,7 @@ variable "dataset_format" {
 
 variable "source_url" {
   type        = string
-  description = "URL for the dataset file. Add module-specific host allowlist validation as appropriate."
+  description = "URL for the single dataset file. For uri_folder, it is uploaded into the container root. Add module-specific host allowlist validation as appropriate."
 
   validation {
     condition     = can(regex("^https://", var.source_url))

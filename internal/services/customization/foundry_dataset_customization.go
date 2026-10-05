@@ -452,7 +452,7 @@ func datasetSourceFilename(sourceURL string) (string, error) {
 	parsedURL, err := url.Parse(sourceURL)
 	// err is always non-nil for invalid URLs.
 	if err != nil {
-		return "", fmt.Errorf("parsing source_url: %w", err)
+		return "", datasetSafeURLError("parsing source_url", err)
 	}
 
 	if parsedURL.Path == "" || strings.HasSuffix(parsedURL.Path, "/") {
@@ -470,7 +470,7 @@ func datasetSourceFilename(sourceURL string) (string, error) {
 func datasetBlobURL(baseURL string, filename string) (string, error) {
 	parsedURL, err := url.Parse(baseURL)
 	if err != nil {
-		return "", fmt.Errorf("parsing dataset blob URL: %w", err)
+		return "", datasetSafeURLError("parsing dataset blob URL", err)
 	}
 
 	parsedURL.Path = strings.TrimSuffix(parsedURL.Path, "/") +
@@ -487,10 +487,7 @@ func datasetBlobUploadURL(
 ) (string, error) {
 	parsedURL, err := url.Parse(containerSASURL)
 	if err != nil {
-		return "", fmt.Errorf(
-			"parsing upload SAS URL: %w",
-			err,
-		)
+		return "", datasetSafeURLError("parsing upload SAS URL", err)
 	}
 
 	// A blob-level SAS URL can be used directly.
@@ -525,7 +522,8 @@ func datasetDataURI(
 
 		return datasetBlobURL(dataURI, filename)
 	case "uri_folder":
-		// Keep the container URI until folder uploads are supported.
+		// The current workflow uploads one source file into the container and
+		// registers the container root as the folder URI.
 		return dataURI, nil
 	default:
 		return "", fmt.Errorf(
@@ -565,6 +563,10 @@ func datasetUploadHTTPClient() *http.Client {
 }
 
 func downloadDatasetSHA256(ctx context.Context, sourceURL string) (checksum string, err error) {
+	defer func() {
+		err = datasetSafeURLError("downloading dataset checksum", err)
+	}()
+
 	request, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodGet,
@@ -621,6 +623,10 @@ func streamDatasetToUpload(
 	expectedSHA256 string,
 	verifySHA256 bool,
 ) (actualSHA256 string, err error) {
+	defer func() {
+		err = datasetSafeURLError("streaming dataset", err)
+	}()
+
 	filename, err := datasetSourceFilename(sourceURL)
 	if err != nil {
 		return "", err
@@ -915,6 +921,18 @@ func (c FoundryDatasetCustomization) createOrUpdate(
 	return responseValues, nil
 }
 
+func (c FoundryDatasetCustomization) CreateResponseFunc() CreateResponseFunc {
+	return func(
+		ctx context.Context,
+		client clients.Client,
+		id parse.DataPlaneResourceId,
+		body interface{},
+		options clients.RequestOptions,
+	) (interface{}, error) {
+		return c.createOrUpdate(ctx, client, id, body, options)
+	}
+}
+
 func (c FoundryDatasetCustomization) CreateFunc() CreateFunc {
 	return func(
 		ctx context.Context,
@@ -1124,6 +1142,7 @@ func (c FoundryDatasetCustomization) AugmentReadOutput(
 	ctx context.Context,
 	responseBody interface{},
 	stateBody interface{},
+	createResponse interface{},
 ) (interface{}, error) {
 	outputValues, err := datasetMap(responseBody)
 	if err != nil {
@@ -1136,6 +1155,20 @@ func (c FoundryDatasetCustomization) AugmentReadOutput(
 		"computed_sha256",
 	); exists {
 		return outputValues, nil
+	}
+
+	if createResponse != nil {
+		createValues, err := datasetMap(createResponse)
+		if err == nil {
+			computedSHA256, exists, err := datasetStringField(
+				createValues,
+				"computed_sha256",
+			)
+			if err == nil && exists && strings.TrimSpace(computedSHA256) != "" {
+				outputValues["computed_sha256"] = computedSHA256
+				return outputValues, nil
+			}
+		}
 	}
 
 	sourceURL, _, _, err := datasetSourceInfo(stateBody)
@@ -1178,6 +1211,20 @@ func datasetSafeError(operation string, _ error) error {
 	}
 }
 
+func datasetSafeURLError(operation string, err error) error {
+	if err == nil {
+		return nil
+	}
+
+	var requestError *url.Error
+	if errors.As(err, &requestError) {
+		return datasetSafeError(operation, err)
+	}
+
+	return err
+}
+
 var _ DataPlaneResource = &FoundryDatasetCustomization{}
+var _ DataPlaneResourceWithCreateResponse = &FoundryDatasetCustomization{}
 var _ DataPlaneResourceWithPlanBody = &FoundryDatasetCustomization{}
 var _ DataPlaneResourceWithReadOptions = &FoundryDatasetCustomization{}
