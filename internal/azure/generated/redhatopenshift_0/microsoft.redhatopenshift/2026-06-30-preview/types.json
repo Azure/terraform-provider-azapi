@@ -1,0 +1,2562 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z]([-a-zA-Z0-9]{0,52}[a-zA-Z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HcpOpenShiftClusterProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Version of the control plane components"
+      },
+      "dns": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Cluster DNS configuration"
+      },
+      "network": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Cluster network configuration"
+      },
+      "console": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Shows the cluster web console information"
+      },
+      "api": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Shows the cluster API server profile"
+      },
+      "ingress": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The cluster ingress configuration"
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "Azure platform configuration"
+      },
+      "autoscaling": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Configure ClusterAutoscaling ."
+      },
+      "etcd": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Configure ETCD."
+      },
+      "imageDigestMirrors": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "imageDigestMirrors is a set of rules to allow pulling images from a\nmirrored registry by using digest specifications.\n\nWARNING: Updating this array will redeploy all node pools in the cluster."
+      },
+      "nodeDrainTimeoutMinutes": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "nodeDrainTimeoutMinutes is the grace period for how long Pod Disruption Budget-protected workloads will be\nrespected during any node draining operation. After this grace period, any workloads protected by Pod Disruption\nBudgets that have not been successfully drained from a node will be forcibly evicted. This is\nespecially relevant to cluster upgrades.\n\nValid values are in minutes and from 0 to 10080 minutes (1 week).\n0 means that the MachinePool can be drained without any time limitation.\n\nThis is the value is used a default for all NodePools. It can be overridden\nby specifying nodeDrainTimeoutMinutes for a given NodePool"
+      },
+      "clusterImageRegistry": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "OpenShift internal image registry"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Status of the cluster resource"
+      },
+      "cryptoRestrictions": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Cryptographic restrictions for kernel and userspace libraries"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VersionProfile",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ID is the desired X.Y version of the cluster control plane."
+      },
+      "channelGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ChannelGroup is the name of the set to which this version belongs.\nEach version belongs to only a single set.\n\nIf not specified, the default value is 'stable'."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DnsProfile",
+    "properties": {
+      "baseDomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "BaseDomain is the base DNS domain of the cluster."
+      },
+      "baseDomainPrefix": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "BaseDomainPrefix is the unique name of the cluster representing the OpenShift's cluster name.\nBaseDomainPrefix is the name that will appear in the cluster's DNS, provisioned cloud providers resources"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 15,
+    "pattern": "^[a-z]([-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkProfile",
+    "properties": {
+      "networkType": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The main controller responsible for rendering the core networking components"
+      },
+      "podCidr": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The CIDR of the pod IP addresses"
+      },
+      "serviceCidr": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The CIDR block for assigned service IPs"
+      },
+      "machineCidr": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The CIDR block from which to assign machine IP addresses"
+      },
+      "hostPrefix": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Network host prefix"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OVNKubernetes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConsoleProfile",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The cluster web console URL endpoint"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiProfile",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "URL endpoint for the API server"
+      },
+      "visibility": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The internet visibility of the OpenShift API server"
+      },
+      "authorizedCidrs": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The list of authorized IPv4 CIDR blocks allowed to access the API server. Maximum 500 entries."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 500
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IngressProfile",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The type of the default cluster ingress."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformProfile",
+    "properties": {
+      "managedResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource group name to put cluster resources\n\nIf not specified then a unique name is generated from the\nfollowing pattern\n\n\"aro-hcp-\" + clusterName + \"-\" + UUID\n\nwhere clusterName means the hcpOpenShiftClusters resource name\n(up to 45 characters) followed by a 16-byte universally unique\nidentifier per RFC 4122."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID of the worker subnet\nNote that a subnet cannot be reused between ARO-HCP Clusters."
+      },
+      "vnetIntegrationSubnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID of a subnet that enables direct,\nprivate network connectivity between the hosted control plane\nand your cluster's nodes. This subnet must be dedicated to ARO HCP\nand cannot be shared with the cluster subnet or any node pool subnets."
+      },
+      "outboundType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The core outgoing configuration"
+      },
+      "networkSecurityGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ResourceId for the NSG (network security group) attached to the cluster subnet\n\nNote that NSGs cannot be reused for other ARO-HCP clusters."
+      },
+      "operatorsAuthentication": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "The configuration that the operators of the cluster have to authenticate to Azure"
+      },
+      "issuerUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "URL for the OIDC provider to be used for authentication\nto authenticate against user Azure cloud account"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LoadBalancer"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperatorsAuthenticationProfile",
+    "properties": {
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "Represents the information related to Azure User-Assigned managed identities needed\nto perform Operators authentication based on Azure User-Assigned Managed Identities"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesProfile",
+    "properties": {
+      "controlPlaneOperators": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The set of Azure User-Assigned Managed Identities leveraged for the Control Plane\noperators of the cluster. The set of required managed identities is dependent on the\nCluster's OpenShift version."
+      },
+      "dataPlaneOperators": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "The set of Azure User-Assigned Managed Identities leveraged for the Data Plane\noperators of the cluster. The set of required managed identities is dependent on the\nCluster's OpenShift version."
+      },
+      "serviceManagedIdentity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Represents the information associated to an Azure User-Assigned Managed Identity whose\npurpose is to perform service level actions."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesProfileControlPlaneOperators",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesProfileDataPlaneOperators",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterAutoscalingProfile",
+    "properties": {
+      "maxNodesTotal": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "maxNodesTotal is the maximum allowable number of nodes for the Autoscaler scale out to be operational.\nThe autoscaler will not grow the cluster beyond this number. If omitted, the autoscaler will not have a maximum limit."
+      },
+      "maxPodGracePeriodSeconds": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "maxPodGracePeriod is the maximum seconds to wait for graceful pod termination before scaling down a NodePool.\nThe default is 600 seconds."
+      },
+      "maxNodeProvisionTimeSeconds": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "maxNodeProvisionTimeSeconds is the maximum time to wait for node provisioning before considering the\nprovisioning to be unsuccessful. The default is 900 seconds, or 15 minutes."
+      },
+      "podPriorityThreshold": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "podPriorityThreshold enables users to schedule \"best-effort\" pods, which shouldn't trigger autoscaler actions,\nbut only run when there are spare resources available. The default is -10.\nSee the following for more details:\nhttps://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EtcdProfile",
+    "properties": {
+      "dataEncryption": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "ETCD Data Encryption settings.\nIf not specified platform managed keys are used."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EtcdDataEncryptionProfile",
+    "properties": {
+      "keyManagementMode": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Specify the key management strategy used for the encryption key that encrypts the ETCD data."
+      },
+      "customerManaged": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Specify customer managed encryption key details.\nRequired when keyManagementMode is \"CustomerManaged\"."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManaged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomerManagedEncryptionProfile",
+    "properties": {
+      "encryptionType": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The encryption type used.\nBy default, \"KMS\" is used."
+      },
+      "kms": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The Key Management Service (KMS) encryption key details.\n\nRequired when encryptionType is \"KMS\"."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "KMS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KmsEncryptionProfile",
+    "properties": {
+      "vaultName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "vaultName is the name of the keyvault that contains the secret."
+      },
+      "visibility": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "visibility of the keyvault that contains the secret."
+      },
+      "activeKey": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "The details of the active key."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KmsKey",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "name is the name of the keyvault key used for encryption/decryption."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "version contains the version of the key to use."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageDigestMirror",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "source matches the repository that users refer to, e.g. in image pull specifications.\nSetting source to a registry hostname, e.g. docker.io, quay.io, or registry.redhat.io,\nwill match the image pull specification of the corresponding registry.\n\nsource uses one of the following formats:\n* host[:port]\n* host[:port]/namespace[/namespace...]\n* host[:port]/namespace[/namespace...]/repo\n* [*.]host\n\nfor more information about the format, see:\nhttps://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table"
+      },
+      "mirrors": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "mirrors is zero or more locations that may also contain the same images. No mirror will\nbe configured if not specified. Images can be pulled from these mirrors only if they are\nreferenced by their digests. The mirrored location is obtained by replacing the part of\nthe input reference that matches source by the mirrors entry, e.g. for\nregistry.redhat.io/product/repo reference, a (source, mirror) pair *.redhat.io,\nmirror.local/redhat causes a mirror.local/redhat/product/repo repository to be used.\n\nThe order of mirrors in this list is treated as the user's desired priority, while source\nis by default considered lower priority than all mirrors.\n\nIf no mirror is specified or all image pulls from the mirror list fail, the image will\ncontinue to be pulled from the repository in the pull spec.\n\nOther cluster configuration, including (but not limited to) other imageDigestMirrors\nobjects, may impact the exact order mirrors are contacted in, or some mirrors may be\ncontacted in parallel, so this should be considered a preference rather than a guarantee\nof ordering.\n\nmirrors uses one of the following formats:\n* host[:port]\n* host[:port]/namespace[/namespace...]\n* host[:port]/namespace[/namespace...]/repo\n\nfor more information about the format, see:\nhttps://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 255
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/56"
+    },
+    "minLength": 1,
+    "maxLength": 255
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/55"
+    },
+    "maxLength": 240
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 10080
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterImageRegistryProfile",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "state indicates the desired ImageStream-backed cluster image registry installation mode.\nThis can only be set during cluster creation and cannot be changed after cluster creation.\nEnabled means the ImageStream-backed image registry will be run as pods on worker nodes in\nthe cluster. Disabled means the ImageStream-backed image registry will not be present in\nthe cluster. The default is Enabled."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceStatus",
+    "properties": {
+      "conditions": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "The conditions on the resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Condition",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 3,
+        "description": "Type of the condition.\nThis is a PascalCase identifier representing the type of the condition."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 3,
+        "description": "The status of the condition."
+      },
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The last time the condition transitioned from one status to another."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 3,
+        "description": "A programmatic identifier indicating the reason for the condition's last transition.\nThis value should be a CamelCase string."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 3,
+        "description": "A human readable message indicating details about the transition.\nThis may be an empty string."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Progressing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "True"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "False"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 1024,
+    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$"
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 32768
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    },
+    "maxLength": 10
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FIPS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/87"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters@2026-06-30-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z]([-a-zA-Z0-9]{0,13}[a-zA-Z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/externalAuths"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/externalAuths",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalAuthProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Status of the external auth resource"
+      },
+      "issuer": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 1,
+        "description": "Token Issuer profile"
+      },
+      "clients": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "External Auth OIDC clients\nThere must not be more than 20 entries and entries must have unique namespace/name pairs."
+      },
+      "claim": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 1,
+        "description": "External Auth claim\nThis configures how claims are validated and applied."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AwaitingSecret"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TokenIssuerProfile",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "This configures the URL used to issue tokens by the identity provider.\nThe Kubernetes API server determines how authentication tokens should be handled\nby matching the 'iss' claim in the JWT to the issuerURL of configured identity providers.\n\nissuerURL must use the 'https' scheme."
+      },
+      "audiences": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 1,
+        "description": "This configures the acceptable audiences the JWT token, issued by the identity\nprovider, must be issued to. At least one of the entries must match the\n'aud' claim in the JWT token.\n\naudiences must contain at least one entry and must not exceed ten entries."
+      },
+      "ca": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The issuer of the token\n\nCertificate bundle to use to validate server certificates for the configured URL.\nIt must be PEM encoded and when not specified, the system trust is used."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1,
+    "maxLength": 10
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalAuthClientProfile",
+    "properties": {
+      "component": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 1,
+        "description": "External Auth client component"
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "External Auth client id\nThe clientId must appear in the audience field of the TokenIssuerProfile."
+      },
+      "extraScopes": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "external auth client scopes\n\nThis is useful if you have configured claim mappings that requires specific\nscopes to be requested beyond the standard OIDC scopes.\nWhen omitted, no additional scopes are requested."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 1,
+        "description": "Determines the OIDC provider client type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalAuthClientComponentProfile",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "The name of the external auth client\n\nThis specifies the name of the platform component being configured to use\nthe identity provider as an authentication mode.\nIt is used in combination with namespace as a unique identifier."
+      },
+      "authClientNamespace": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 1,
+        "description": "The namespace of the external Auth client\nThis specifies the namespace in which the platform component being configured\nto use the identity provider as an authentication mode is running.\n\nIt is used in combination with name as a unique identifier."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 256
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Confidential"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/118"
+    },
+    "maxLength": 20
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalAuthClaimProfile",
+    "properties": {
+      "mappings": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 1,
+        "description": "The claim mappings"
+      },
+      "validationRules": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The claim validation rules"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TokenClaimMappingsProfile",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 1,
+        "description": "The claim mappings username."
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "The claim mappings groups."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsernameClaimProfile",
+    "properties": {
+      "claim": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "Claim name of the external profile"
+      },
+      "prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Prefix for the claim external profile\nMust be set when the prefixPolicy field is set to 'Prefix' and must be unset\notherwise."
+      },
+      "prefixPolicy": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "Prefix policy is an optional field that configures how a prefix should be\napplied to the value of the JWT claim specified in the 'claim' field.\n\nAllowed values are 'Prefix', 'NoPrefix', and 'None'. If not specified, the\ndefault policy is 'None'.\n\nWhen set to 'Prefix', the value specified in the prefix field will be\nprepended to the value of the JWT claim.\nThe prefix field must be set when prefixPolicy is 'Prefix'.\n\nWhen set to 'NoPrefix', no prefix will be prepended to the value\nof the JWT claim.\n\nWhen set to 'None', this means no opinion and the platform is left to choose\nany prefixes that are applied which is subject to change over time.\nCurrently, the platform prepends `{issuerURL}#` to the value of the JWT claim\nwhen the claim is not 'email'.\nAs an example, consider the following scenario:\n`prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,\nthe JWT claims include \"username\":\"userA\" and \"email\":\"userA"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prefix"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoPrefix"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GroupClaimProfile",
+    "properties": {
+      "claim": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "Claim name of the external profile"
+      },
+      "prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Prefix for the claim external profile\nIf this is specified prefixPolicy will be set to \"Prefix\" by default"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TokenClaimValidationRule",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "This configures the type of the validation rule.\nIt defaults to \"RequiredClaim\""
+      },
+      "requiredClaim": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "The required claim rule to be applied."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequiredClaim"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TokenRequiredClaim",
+    "properties": {
+      "claim": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "Claim name for the validation profile\nclaim is a required field that configures the name of the required claim."
+      },
+      "requiredValue": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "Required value\nrequiredValue is a required field that configures the value that 'claim' must\nhave when taken from the incoming JWT claims.\nIf the value in the JWT claims does not match, the token\nwill be rejected for authentication."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/136"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/externalAuths@2026-06-30-preview",
+    "body": {
+      "$ref": "#/105"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/nodePools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/nodePools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodePoolProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 2,
+        "description": "Provisioning state"
+      },
+      "version": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "OpenShift version for the nodepool"
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 1,
+        "description": "Azure node pool platform configuration"
+      },
+      "replicas": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The number of worker nodes, it cannot be used together with autoscaling.\nValidation:\n- Minimum: 0\n- Maximum: 200 (only when availabilityZone is not specified)\n- No maximum when availabilityZone is specified"
+      },
+      "autoRepair": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "Auto-repair"
+      },
+      "autoScaling": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "Representation of a autoscaling in a node pool."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "Kubernetes labels to propagate to the NodePool Nodes\nNote that when the labels are updated this is only applied to newly\ncreate nodes in the Nodepool, existing node labels remain unchanged."
+      },
+      "taints": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "Taints for the nodes"
+      },
+      "nodeDrainTimeoutMinutes": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "nodeDrainTimeoutMinutes is the grace period for how long Pod Disruption Budget-protected workloads will be\nrespected during any node draining operation. After this grace period, any workloads protected by Pod Disruption\nBudgets that have not been successfully drained from a node will be forcibly evicted. This is\nespecially relevant to cluster upgrades.\n\nValid values are from 0 to 10080 minutes (1 week) .\n0 means that the NodePool can be drained without any time limitation.\n\nIf unset the cluster nodeDrainTimeoutMinutes value is used as a default."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Status of the node pool resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodePoolVersionProfile",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ID is the unique identifier of the version."
+      },
+      "channelGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ChannelGroup is the name of the set to which this version belongs.\nEach version belongs to only a single set.\n\nIf not specified, the default value is 'stable'."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodePoolPlatformProfile",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID of the worker subnet\nNote that a subnet cannot be reused between ARO-HCP Clusters, however the\nsame subnet can be used for NodePools of the same cluster."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The VM size according to the documentation:\n- https://learn.microsoft.com/en-us/azure/virtual-machines/sizes"
+      },
+      "enableEncryptionAtHost": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "Whether to enable host based OS and data drive encryption.\n- https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data"
+      },
+      "osDisk": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "The settings and configuration options for OSDisk"
+      },
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The availability zone for the node pool.\nPlease read the documentation to see which regions support availability zones\n- https://learn.microsoft.com/en-us/azure/availability-zones/az-overview"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OsDiskProfile",
+    "properties": {
+      "sizeGiB": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "The OS disk size in GiB. Maximum is 4095 GiB for Managed disks. For Ephemeral disks,\nthe maximum is 2040 GiB; Azure may enforce a lower effective limit based on the\nselected VM size's local cache, temp, or NVMe capacity."
+      },
+      "diskStorageAccountType": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "The type of the disk storage account\n- https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types"
+      },
+      "encryptionSetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the DiskEncryptionSet resource to use to encrypt the OS disks for the VMs.\nThis needs to exist in the same subscription id listed in the Hosted Cluster, HostedCluster.Spec.Platform.Azure.SubscriptionID.\nDiskEncryptionSetID should also exist in a resource group under the same subscription id and the same location\nlisted in the Hosted Cluster, HostedCluster.Spec.Platform.Azure.Location.\n\nDetails on how to create a Disk Encryption Set can be found here:\nhttps://learn.microsoft.com/en-us/azure/virtual-machines/disks-enable-customer-managed-keys-portal#set-up-your-disk-encryption-set"
+      },
+      "diskType": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "The type of the OS disk.\n- https://learn.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 64,
+    "maxValue": 4095
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ephemeral"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodePoolAutoScaling",
+    "properties": {
+      "min": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The minimum number of nodes in the node pool.\nValidation:\n- Minimum: 0\n- Maximum: 200 (only when availabilityZone is not specified)\n- No maximum when availabilityZone is specified"
+      },
+      "max": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The maximum number of nodes in the node pool.\nValidation:\n- Minimum: 0 (must be >= min)\n- Maximum: 200 (only when availabilityZone is not specified)\n- No maximum when availabilityZone is specified"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Label",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The key of the label"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the label"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Taint",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 1,
+        "description": "The key of the taint"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "The value of the taint"
+      },
+      "effect": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 1,
+        "description": "The effect of the taint"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 316
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 63
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoSchedule"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PreferNoSchedule"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoExecute"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/169"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters/nodePools@2026-06-30-preview",
+    "body": {
+      "$ref": "#/144"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-\\.]{3,24}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.RedHatOpenShift/locations/hcpOpenShiftVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.RedHatOpenShift/locations/hcpOpenShiftVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HcpOpenShiftVersionProperties",
+    "properties": {
+      "channelGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ChannelGroup is the name of the group where this version belongs."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 1,
+        "description": "Enabled indicates if this version can be used to create clusters."
+      },
+      "endOfLifeTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "EndOfLifeTimestamp is the date and time when this version will reach End of Life."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.RedHatOpenShift/locations/hcpOpenShiftVersions@2026-06-30-preview",
+    "body": {
+      "$ref": "#/182"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.RedHatOpenShift/locations/hcpOperatorIdentityRoleSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-06-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.RedHatOpenShift/locations/hcpOperatorIdentityRoleSets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HcpOperatorIdentityRoleSetProperties",
+    "properties": {
+      "controlPlaneOperators": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 1,
+        "description": "The role definitions required for the User-Assigned managed identities used\nby Control Plane operators on a cluster."
+      },
+      "dataPlaneOperators": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 1,
+        "description": "The role definitions required for the User-Assigned managed identities used\nby Data Plane operators on a cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperatorIdentityRoles",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the operator"
+      },
+      "required": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 1,
+        "description": "Whether or not the operator is required for installation"
+      },
+      "roleDefinitions": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 1,
+        "description": "The role definitions required to be assigned to the identity assumed by this operator"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnEnablement"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoleDefinition",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the required role definition"
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of the role definition"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/193"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/189"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/189"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.RedHatOpenShift/locations/hcpOperatorIdentityRoleSets@2026-06-30-preview",
+    "body": {
+      "$ref": "#/187"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HcpOpenShiftClusterAdminCredential",
+    "properties": {
+      "kubeconfig": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 3,
+        "description": "Admin kubeconfig with a temporary client certificate"
+      },
+      "expirationTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Expiration timestamp for the kubeconfig's client certificate"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "requestAdminCredential",
+    "resourceType": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters",
+    "apiVersion": "2026-06-30-preview",
+    "output": {
+      "$ref": "#/198"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "revokeCredentials",
+    "resourceType": "Microsoft.RedHatOpenShift/hcpOpenShiftClusters",
+    "apiVersion": "2026-06-30-preview"
+  }
+]

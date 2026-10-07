@@ -86,7 +86,7 @@ resource "azapi_resource" "authorizationRule" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Relay/namespaces/authorizationRules@api-version`. The available api-versions for this resource are: [`2016-07-01`, `2017-04-01`, `2021-11-01`, `2024-01-01`, `2026-01-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Relay/namespaces/authorizationRules@api-version`. The available api-versions for this resource are: [`2016-07-01`, `2017-04-01`, `2021-11-01`, `2024-01-01`, `2026-01-01`, `2026-07-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{resourceName}`
@@ -104,5 +104,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{resourceName}/authorizationRules/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{resourceName}/authorizationRules/{resourceName}?api-version=2026-01-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{resourceName}/authorizationRules/{resourceName}?api-version=2026-07-01-preview
  ```
