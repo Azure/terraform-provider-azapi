@@ -291,3 +291,56 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 		}
 	}
 }
+
+func Test_FoundryEvaluationResourceIDs(t *testing.T) {
+	const (
+		parentID          = "account.services.ai.azure.com/api/projects/project"
+		evaluationType    = "Microsoft.Foundry/evaluation/versions@2025-05-01"
+		evaluationRunType = "Microsoft.Foundry/evaluation/runs@2025-05-01"
+	)
+
+	evaluationID, err := parse.NewDataPlaneResourceId(
+		"eval_123",
+		parentID,
+		evaluationType,
+	)
+	if err != nil {
+		t.Fatalf("creating evaluation ID: %v", err)
+	}
+	if evaluationID.AzureResourceId != parentID+"/openai/v1/evals/eval_123" {
+		t.Fatalf("unexpected evaluation resource ID: %q", evaluationID.AzureResourceId)
+	}
+
+	runID, err := parse.NewDataPlaneResourceIdWithEvaluationID(
+		"run_456",
+		parentID,
+		"eval_123",
+		evaluationRunType,
+	)
+	if err != nil {
+		t.Fatalf("creating evaluation run ID: %v", err)
+	}
+	if runID.AzureResourceId != parentID+"/openai/v1/evals/eval_123/runs/run_456" {
+		t.Fatalf("unexpected evaluation run resource ID: %q", runID.AzureResourceId)
+	}
+	if runID.EvaluationId != "eval_123" {
+		t.Fatalf("unexpected evaluation ID: %q", runID.EvaluationId)
+	}
+
+	parsedID, err := parse.DataPlaneResourceIDWithResourceType(
+		runID.AzureResourceId,
+		evaluationRunType,
+	)
+	if err != nil {
+		t.Fatalf("parsing evaluation run ID: %v", err)
+	}
+	if parsedID.Name != "run_456" {
+		t.Fatalf("unexpected parsed run ID: %q", parsedID.Name)
+	}
+	if parsedID.EvaluationId != "eval_123" {
+		t.Fatalf("unexpected parsed evaluation ID: %q", parsedID.EvaluationId)
+	}
+	if parsedID.ParentId != parentID {
+		t.Fatalf("unexpected parsed parent ID: %q", parsedID.ParentId)
+	}
+}

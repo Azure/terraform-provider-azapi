@@ -23,7 +23,8 @@ This data source can read Azure data plane resources.
 
 ### Optional
 
-- `name` (String) Specifies the name (identifier segment) of the data plane resource.
+- `name` (String) Specifies the name (identifier segment) used to look up the data plane resource. For resources with a service-generated identifier, set this to the identifier returned when the resource was created.
+- `evaluation_id` (String) The ID of the evaluation for a Microsoft.Foundry evaluation run.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
