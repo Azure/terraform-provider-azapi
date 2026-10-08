@@ -117,7 +117,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. For resource types with service-generated identifiers, omit this attribute. For Microsoft.Foundry dataset versions, set it to the dataset version. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -328,6 +328,20 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
+	if state != nil {
+		normalizedBody, err := normalizeDataPlaneResourcePlanBody(
+			ctx,
+			plan.Type.ValueString(),
+			plan.Body,
+			state.Body,
+		)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body", err.Error())
+			return
+		}
+		plan.Body = normalizedBody
+	}
+
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
@@ -461,6 +475,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	client := r.ProviderData.DataPlaneClient
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
+	createResponseFunc, hasCreateResponse := getCreateResponseFunc(plan)
 	if isNewResource && !hasCreateResult {
 		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
@@ -520,6 +535,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
 	}
 
+	var createResponse interface{}
 	switch {
 	case isNewResource && hasCreateResult:
 		var createdId parse.DataPlaneResourceId
@@ -528,6 +544,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 			id = createdId
 			ctx = tflog.SetField(ctx, "resource_id", id.ID())
 		}
+	case isNewResource && hasCreateResponse:
+		createResponse, err = createResponseFunc(ctx, *r.ProviderData, id, body, requestOptions)
 	case isNewResource && customizedResource != nil && (*customizedResource).CreateFunc() != nil:
 		err = (*customizedResource).CreateFunc()(ctx, *r.ProviderData, id, body, requestOptions)
 	case !isNewResource && customizedResource != nil && (*customizedResource).UpdateFunc() != nil:
@@ -566,12 +584,29 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
+	var readOptionsResource customization.DataPlaneResourceWithReadOptions
+	if customizedResource != nil {
+		readOptionsResource, _ = (*customizedResource).(customization.DataPlaneResourceWithReadOptions)
+	}
+	if readOptionsResource != nil {
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, body, createResponse)
+		if err != nil {
+			diagnostics.AddError("Failed to build resource output", err.Error())
+			return
+		}
+	}
+
+	defaultOutput := interface{}(nil)
+	if readOptionsResource != nil && readOptionsResource.UseResponseBodyAsOutput() {
+		defaultOutput = responseBody
+	}
+
 	plan.ID = basetypes.NewStringValue(id.ID())
 	plan.Name = basetypes.NewStringValue(id.Name)
 	plan.ParentID = basetypes.NewStringValue(id.ParentId)
 	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, nil)
+	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, defaultOutput)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -604,6 +639,44 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 	}
 
 	return nil, false
+}
+
+func getCreateResponseFunc(config *DataPlaneResourceModel) (customization.CreateResponseFunc, bool) {
+	customizedResource := customization.GetCustomization(config.Type.ValueString())
+	if customizedResource == nil {
+		return nil, false
+	}
+	if v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResponse); ok {
+		if fn := v.CreateResponseFunc(); fn != nil {
+			return fn, true
+		}
+	}
+
+	return nil, false
+}
+
+func normalizeDataPlaneResourcePlanBody(
+	ctx context.Context,
+	resourceType string,
+	planBody types.Dynamic,
+	stateBody types.Dynamic,
+) (types.Dynamic, error) {
+	customizedResource := customization.GetCustomization(resourceType)
+	if customizedResource == nil {
+		return planBody, nil
+	}
+
+	planBodyResource, ok := (*customizedResource).(customization.DataPlaneResourceWithPlanBody)
+	if !ok {
+		return planBody, nil
+	}
+
+	planBodyFunc := planBodyResource.PlanBodyFunc()
+	if planBodyFunc == nil {
+		return planBody, nil
+	}
+
+	return planBodyFunc(ctx, planBody, stateBody)
 }
 
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
@@ -665,8 +738,9 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}
 	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
+	customizedResource := customization.GetCustomization(model.Type.ValueString())
 	var responseBody interface{}
-	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
+	if customizedResource != nil && (*customizedResource).ReadFunc() != nil {
 		responseBody, err = (*customizedResource).ReadFunc()(ctx, *r.ProviderData, id, requestOptions)
 	} else {
 		responseBody, err = client.Get(ctx, id, requestOptions)
@@ -682,42 +756,68 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	requestBody := make(map[string]interface{})
-	if err := unmarshalBody(model.Body, &requestBody); err != nil {
+	stateBody := make(map[string]interface{})
+	if err := unmarshalBody(model.Body, &stateBody); err != nil {
 		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
 	}
 
-	option := utils.UpdateJsonOption{
-		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
-		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
-	}
-	body := utils.UpdateObject(requestBody, responseBody, option)
+	readOptionsResource, preserveBodyState := func() (customization.DataPlaneResourceWithReadOptions, bool) {
+		if customizedResource == nil {
+			return nil, false
+		}
+		resource, ok := (*customizedResource).(customization.DataPlaneResourceWithReadOptions)
+		if !ok {
+			return nil, false
+		}
+		return resource, resource.PreserveBodyStateOnRead()
+	}()
 
-	data, err := json.Marshal(body)
-	if err != nil {
-		response.Diagnostics.AddError("Invalid body", err.Error())
-		return
+	if readOptionsResource != nil {
+		responseBody, err = readOptionsResource.AugmentReadOutput(ctx, responseBody, stateBody, nil)
+		if err != nil {
+			response.Diagnostics.AddError("Failed to build resource output", err.Error())
+			return
+		}
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, nil)
+	defaultOutput := interface{}(nil)
+	if readOptionsResource != nil && readOptionsResource.UseResponseBodyAsOutput() {
+		defaultOutput = responseBody
+	}
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return
 	}
 	model.Output = output
 
-	if !model.Body.IsNull() {
-		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
-		if err != nil {
-			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
-			payload, err = dynamic.FromJSONImplied(data)
-			if err != nil {
-				response.Diagnostics.AddError("Invalid payload", err.Error())
-				return
-			}
+	if !preserveBodyState {
+		option := utils.UpdateJsonOption{
+			IgnoreCasing:          model.IgnoreCasing.ValueBool(),
+			IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
 		}
-		model.Body = payload
+		body := utils.UpdateObject(stateBody, responseBody, option)
+
+		data, err := json.Marshal(body)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
+		}
+
+		if !model.Body.IsNull() {
+			payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+			if err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+				payload, err = dynamic.FromJSONImplied(data)
+				if err != nil {
+					response.Diagnostics.AddError("Invalid payload", err.Error())
+					return
+				}
+			}
+			model.Body = payload
+		}
 	}
 
 	model.Name = basetypes.NewStringValue(id.Name)
