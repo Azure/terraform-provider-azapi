@@ -87,35 +87,49 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 }
 
 func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
+	return client.action(ctx, resourceID, action, apiVersion, method, body, options, true)
+}
+
+// ActionWithoutPolling sends the request and returns the response body without treating the response as a
+// long-running operation. Use it for services whose success responses carry a Location header that points at
+// the created resource rather than at an operation to poll, such as the Azure Table Storage Insert operations.
+func (client *DataPlaneClient) ActionWithoutPolling(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
+	return client.action(ctx, resourceID, action, apiVersion, method, body, options, false)
+}
+
+func (client *DataPlaneClient) action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions, poll bool) (interface{}, error) {
 	urlPath := buildURL(resourceID, action)
 	req, err := buildRequest(ctx, options, urlPath, method, apiVersion)
 	if err != nil {
 		return nil, err
 	}
 
-	if method != "GET" && body != nil {
-		err = runtime.MarshalAsJSON(req, body)
-	}
-	if err != nil {
-		return nil, err
+	if method != http.MethodGet && body != nil {
+		if err := runtime.MarshalAsJSON(req, body); err != nil {
+			return nil, err
+		}
 	}
 
 	// Action does not use sendRequestThenPoll because it parses the response body
 	// based on Content-Type (text/plain vs application/json) rather than always as JSON.
-	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted}
+	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent}
 	resp, pipeline, err := client.sendRequest(req, urlPath, options, successCodes)
 	if err != nil {
 		return nil, err
 	}
 
-	pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil)
-	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
-			Frequency: 10 * time.Second,
-		})
-		return resp, err
+	if poll {
+		if pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil); err == nil {
+			return pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+				Frequency: 10 * time.Second,
+			})
+		}
 	}
 
+	return parseActionResponse(resp)
+}
+
+func parseActionResponse(resp *http.Response) (interface{}, error) {
 	var responseBody interface{}
 	contentType := resp.Header.Get("Content-Type")
 	switch {

@@ -13,6 +13,12 @@ func init() {
 
 	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
 	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
+
+	var storageTableCustomization DataPlaneResource = StorageTableCustomization{}
+	customizations[strings.ToLower(storageTableCustomization.GetResourceType())] = storageTableCustomization
+
+	var storageTableEntityCustomization DataPlaneResource = StorageTableEntityCustomization{}
+	customizations[strings.ToLower(storageTableEntityCustomization.GetResourceType())] = storageTableEntityCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {
