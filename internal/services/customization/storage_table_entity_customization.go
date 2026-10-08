@@ -25,7 +25,7 @@ func (c StorageTableEntityCustomization) CreateFunc() CreateFunc {
 		}
 		// Insert Entity (POST to the table) returns a conflict if the entity already exists,
 		// unlike Insert-Or-Replace, so create never overwrites existing data.
-		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, storageTableEntityCollectionID(id), http.MethodPost, id.ApiVersion, payload, options)
+		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, storageTableEntityCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
 		return err
 	}
 }
@@ -42,7 +42,7 @@ func (c StorageTableEntityCustomization) UpdateFunc() UpdateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, id.AzureResourceId, http.MethodPut, id.ApiVersion, payload, options)
+		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, id.AzureResourceId, "", id.ApiVersion, http.MethodPut, payload, options)
 		return err
 	}
 }
