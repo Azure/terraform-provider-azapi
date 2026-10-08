@@ -116,6 +116,34 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 		return resp, err
 	}
 
+	return parseActionResponse(resp)
+}
+
+// ActionWithoutPolling sends the request and returns the response body without treating the response as a
+// long-running operation. Use it for services whose success responses carry a Location header that points at
+// the created resource rather than at an operation to poll, such as the Azure Table Storage Insert operations.
+func (client *DataPlaneClient) ActionWithoutPolling(ctx context.Context, resourceID string, method string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
+	urlPath := buildURL(resourceID, "")
+	req, err := buildRequest(ctx, options, urlPath, method, apiVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	if method != http.MethodGet && body != nil {
+		if err := runtime.MarshalAsJSON(req, body); err != nil {
+			return nil, err
+		}
+	}
+
+	successCodes := []int{http.StatusOK, http.StatusCreated, http.StatusNoContent}
+	resp, _, err := client.sendRequest(req, urlPath, options, successCodes)
+	if err != nil {
+		return nil, err
+	}
+	return parseActionResponse(resp)
+}
+
+func parseActionResponse(resp *http.Response) (interface{}, error) {
 	var responseBody interface{}
 	contentType := resp.Header.Get("Content-Type")
 	switch {

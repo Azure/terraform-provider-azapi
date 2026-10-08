@@ -22,7 +22,7 @@ func (c StorageTableCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.Action(ctx, storageTableCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
+		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, storageTableCollectionID(id), http.MethodPost, id.ApiVersion, payload, options)
 		return err
 	}
 }
