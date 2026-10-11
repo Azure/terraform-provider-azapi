@@ -348,14 +348,14 @@
           "$ref": "#/28"
         },
         "flags": 1,
-        "description": "The name of the VM size, eg Standard_D2ads_v5"
+        "description": "The virtual machine SKU, for example `Standard_D2ads_v5`."
       },
       "rank": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The rank of this VM size in the priority order"
+        "description": "The customer-defined priority rank for this virtual machine size."
       },
       "override": {
         "type": {
@@ -716,7 +716,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The ID of the sub-resource."
+        "description": "The Azure resource ID."
       }
     }
   },
@@ -868,14 +868,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The URL referencing a secret in a Key Vault."
+        "description": "The URL of the secret in Azure Key Vault."
       },
       "sourceVault": {
         "type": {
           "$ref": "#/46"
         },
         "flags": 1,
-        "description": "The relative URL of the Key Vault containing the secret."
+        "description": "The Azure resource ID of the Key Vault that contains the secret."
       }
     }
   },
@@ -888,7 +888,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The ID of the sub-resource."
+        "description": "The Azure resource ID."
       }
     }
   },
@@ -1091,7 +1091,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The ID of the sub-resource."
+        "description": "The Azure resource ID."
       }
     }
   },
@@ -1161,7 +1161,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The ID of the sub-resource."
+        "description": "The Azure resource ID."
       }
     }
   },
@@ -1565,7 +1565,7 @@
         "type": {
           "$ref": "#/109"
         },
-        "flags": 0,
+        "flags": 4,
         "description": "Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)"
       },
       "customData": {
@@ -2238,7 +2238,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The ID of the sub-resource."
+        "description": "The Azure resource ID."
       }
     }
   },
@@ -3451,7 +3451,7 @@
         "type": {
           "$ref": "#/252"
         },
-        "flags": 0,
+        "flags": 4,
         "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
       },
       "suppressFailures": {
@@ -3465,7 +3465,7 @@
         "type": {
           "$ref": "#/45"
         },
-        "flags": 0,
+        "flags": 4,
         "description": "The extensions protected settings that are passed by reference, and consumed from key vault"
       },
       "provisionAfterExtensions": {
@@ -3755,14 +3755,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The zone identifier"
+        "description": "The availability zone identifier."
       },
       "rank": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The rank of this zone in the priority order"
+        "description": "The customer-defined priority rank for this availability zone."
       }
     }
   },
@@ -3869,21 +3869,21 @@
           "$ref": "#/285"
         },
         "flags": 0,
-        "description": "Details that could optimize the user's request"
+        "description": "The preference used to optimize execution of the bulk action."
       },
       "retryPolicy": {
         "type": {
           "$ref": "#/286"
         },
         "flags": 0,
-        "description": "Retry policy the user can pass"
+        "description": "The retry settings for the bulk action."
       },
       "verifyVmAgentHealth": {
         "type": {
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "When true on an executeStart request, run a post-Start VM agent health check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations."
+        "description": "If true, Bulk Actions verifies the virtual machine guest agent health after a start operation. Setting this property to true for any other operation causes the request to fail."
       }
     }
   },
@@ -3925,21 +3925,21 @@
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "Retry count for user request"
+        "description": "The maximum number of retry attempts."
       },
       "retryWindowInMinutes": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "Retry window in minutes for user request"
+        "description": "The period, in minutes, during which Bulk Actions can retry the operation."
       },
       "onFailureAction": {
         "type": {
           "$ref": "#/294"
         },
         "flags": 0,
-        "description": "Action to take on failure"
+        "description": "The operation that Bulk Actions attempts when the requested operation fails."
       }
     }
   },
@@ -4481,28 +4481,28 @@
           "$ref": "#/334"
         },
         "flags": 0,
-        "description": "The priority type for VM allocation"
+        "description": "The priority type for virtual machine allocation."
       },
       "maxPricePerVM": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "Price per hour of each Spot VM will never exceed this. Available from 2026-04-06-preview."
+        "description": "The maximum hourly price, in US dollars, for each Spot virtual machine."
       },
       "evictionPolicy": {
         "type": {
           "$ref": "#/337"
         },
         "flags": 0,
-        "description": "Eviction Policy to follow when evicting Spot VMs. Available from 2026-04-06-preview."
+        "description": "The action applied to a Spot virtual machine when Azure evicts it."
       },
       "allocationStrategy": {
         "type": {
           "$ref": "#/341"
         },
         "flags": 0,
-        "description": "The allocation strategy for VM size selection"
+        "description": "The strategy used to select a virtual machine size."
       }
     }
   },
@@ -4588,14 +4588,14 @@
           "$ref": "#/28"
         },
         "flags": 1,
-        "description": "The name of the VM size, eg Standard_D2ads_v5"
+        "description": "The virtual machine SKU, for example `Standard_D2ads_v5`."
       },
       "rank": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The rank of this VM size in the priority order"
+        "description": "The customer-defined priority rank for this virtual machine size."
       }
     }
   },
@@ -5200,14 +5200,14 @@
           "$ref": "#/407"
         },
         "flags": 0,
-        "description": "The distribution strategy for zone allocation"
+        "description": "The strategy used to distribute virtual machines across availability zones."
       },
       "zonePreferences": {
         "type": {
           "$ref": "#/408"
         },
         "flags": 0,
-        "description": "The zone preferences for allocation priority"
+        "description": "The availability zones and their allocation priorities."
       }
     }
   },
@@ -5359,56 +5359,56 @@
           "$ref": "#/419"
         },
         "flags": 1,
-        "description": "The type of resource the scheduled action is targeting"
+        "description": "The type of compute resource targeted by the action."
       },
       "actionType": {
         "type": {
           "$ref": "#/423"
         },
         "flags": 1,
-        "description": "The action the scheduled action should perform in the resources"
+        "description": "The operation performed on the targeted resources."
       },
       "startTime": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The time which the scheduled action is supposed to start running"
+        "description": "The date and time, including UTC offset, when the schedule becomes active."
       },
       "endTime": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The time when the scheduled action is supposed to stop scheduling"
+        "description": "The date and time, including UTC offset, after which no new occurrences are scheduled."
       },
       "schedule": {
         "type": {
           "$ref": "#/424"
         },
         "flags": 1,
-        "description": "The schedule the scheduled action is supposed to follow"
+        "description": "The recurring schedule."
       },
       "notificationSettings": {
         "type": {
           "$ref": "#/474"
         },
         "flags": 1,
-        "description": "The notification settings for the scheduled action"
+        "description": "Notification settings that apply to the scheduled action."
       },
       "disabled": {
         "type": {
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "Tell if the scheduled action is disabled or not"
+        "description": "Indicates whether new occurrences are disabled."
       },
       "provisioningState": {
         "type": {
           "$ref": "#/479"
         },
         "flags": 2,
-        "description": "The status of the last provisioning operation performed on the resource."
+        "description": "Read-only. The provisioning state of the scheduled action."
       }
     }
   },
@@ -5472,49 +5472,49 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The time the scheduled action is supposed to run on"
+        "description": "The local time of day when the scheduled action runs."
       },
       "timeZone": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The timezone the scheduled time is specified on"
+        "description": "The time zone used to interpret the scheduled time."
       },
       "requestedWeekDays": {
         "type": {
           "$ref": "#/434"
         },
         "flags": 0,
-        "description": "The week days the scheduled action is supposed to run on. If empty, it means it will run on every week day."
+        "description": "The days of the week when the action runs. An empty array means every day of the week."
       },
       "requestedMonths": {
         "type": {
           "$ref": "#/449"
         },
         "flags": 0,
-        "description": "The months the scheduled action is supposed to run on. If empty, it means it will run on every month."
+        "description": "The months when the action runs. An empty array means every month."
       },
       "requestedDaysOfTheMonth": {
         "type": {
           "$ref": "#/451"
         },
         "flags": 0,
-        "description": "The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day of the month."
+        "description": "The calendar days when the action runs. An empty array means every day of the month."
       },
       "executionParameters": {
         "type": {
           "$ref": "#/452"
         },
         "flags": 0,
-        "description": "The execution parameters the scheduled action is supposed to follow"
+        "description": "Settings that control operation execution and retries."
       },
       "deadlineType": {
         "type": {
           "$ref": "#/468"
         },
         "flags": 0,
-        "description": "The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will default to InitiateAt."
+        "description": "How the scheduled time is interpreted. The default is `InitiateAt`."
       }
     }
   },
@@ -5713,14 +5713,14 @@
           "$ref": "#/456"
         },
         "flags": 0,
-        "description": "Details that could optimize the user's request"
+        "description": "The preferred optimization goal."
       },
       "retryPolicy": {
         "type": {
           "$ref": "#/457"
         },
         "flags": 0,
-        "description": "Retry policy the user can pass"
+        "description": "The retry settings for failed resource operations."
       }
     }
   },
@@ -5762,21 +5762,21 @@
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "Retry count for the request"
+        "description": "The maximum number of retry attempts."
       },
       "retryWindowInMinutes": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "Retry window in minutes for the request"
+        "description": "The time window, in minutes, during which retries can occur."
       },
       "onFailureAction": {
         "type": {
           "$ref": "#/464"
         },
         "flags": 0,
-        "description": "Action to take on failure"
+        "description": "The resource operation to retry after a failure."
       }
     }
   },
@@ -5868,28 +5868,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Where the notification should be sent. For email, it should follow email format."
+        "description": "The notification destination. For email notifications, specify a valid email address."
       },
       "type": {
         "type": {
           "$ref": "#/471"
         },
         "flags": 1,
-        "description": "Type of notification to be sent."
+        "description": "The notification delivery method."
       },
       "language": {
         "type": {
           "$ref": "#/473"
         },
         "flags": 1,
-        "description": "The language the notification should be sent on."
+        "description": "The language used for the notification."
       },
       "disabled": {
         "type": {
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "Tells if the notification is enabled or not."
+        "description": "If true, notifications to this destination are disabled."
       }
     }
   },
@@ -6051,21 +6051,21 @@
           "$ref": "#/2"
         },
         "flags": 3,
-        "description": "The time the occurrence is scheduled for. This value can be changed by calling the delay API"
+        "description": "Read-only. The UTC date and time when the occurrence is scheduled to run."
       },
       "resultSummary": {
         "type": {
           "$ref": "#/487"
         },
         "flags": 3,
-        "description": "The result for occurrences that achieved a terminal state"
+        "description": "Read-only. The result summary after the occurrence reaches a final state."
       },
       "provisioningState": {
         "type": {
           "$ref": "#/500"
         },
         "flags": 2,
-        "description": "The aggregated provisioning state of the occurrence"
+        "description": "Read-only. The current state of the occurrence."
       }
     }
   },
@@ -6078,14 +6078,14 @@
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The total number of resources that the occurrence was supposed to act on."
+        "description": "The number of resources targeted by the occurrence."
       },
       "statuses": {
         "type": {
           "$ref": "#/492"
         },
         "flags": 1,
-        "description": "The summarized status of the resources."
+        "description": "Resource counts grouped by result code."
       }
     }
   },
@@ -6098,21 +6098,21 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The error code for those resources. In case of success, code is populated with Success."
+        "description": "The result code shared by the resources in this group. A successful result uses `Success`."
       },
       "count": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The number of resources that the code applies to."
+        "description": "The number of resources with this result code."
       },
       "errorDetails": {
         "type": {
           "$ref": "#/489"
         },
         "flags": 0,
-        "description": "The error details for the resources. Not populated on success cases."
+        "description": "Error details for failed resources. This property is omitted for successful results."
       }
     }
   },
@@ -6276,7 +6276,7 @@
           "$ref": "#/507"
         },
         "flags": 1,
-        "description": "List of resources to be attached/patched"
+        "description": "The list of resources to attach to the scheduled action."
       }
     }
   },
@@ -6289,14 +6289,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The ARM Id of the resource.\n\"subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}\""
+        "description": "The Azure resource ID of the targeted virtual machine."
       },
       "notificationSettings": {
         "type": {
           "$ref": "#/506"
         },
         "flags": 0,
-        "description": "The desired notification settings for the specified resource."
+        "description": "Notification settings that apply only to this resource."
       }
     }
   },
@@ -6321,14 +6321,14 @@
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "The total number of resources operated on"
+        "description": "The number of resources included in the operation."
       },
       "resourcesStatuses": {
         "type": {
           "$ref": "#/513"
         },
         "flags": 1,
-        "description": "The resource status of for each resource"
+        "description": "The operation result for each resource."
       }
     }
   },
@@ -6341,21 +6341,21 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The arm identifier of the resource"
+        "description": "The Azure resource ID of the targeted resource."
       },
       "status": {
         "type": {
           "$ref": "#/512"
         },
         "flags": 3,
-        "description": "The state the resource is currently on"
+        "description": "The result of the operation for the resource."
       },
       "error": {
         "type": {
           "$ref": "#/489"
         },
         "flags": 0,
-        "description": "Errors encountered while trying to perform"
+        "description": "Error details when the operation fails for the resource."
       }
     }
   },
@@ -6408,7 +6408,7 @@
           "$ref": "#/516"
         },
         "flags": 1,
-        "description": "The resources the cancellation should act on. If no resource is passed in the list, Scheduled Action will cancel the occurrence for all resources."
+        "description": "The resources for which operations should be canceled. An empty array cancels all operations for all resources for the occurrence."
       }
     }
   },
@@ -6439,7 +6439,7 @@
           "$ref": "#/519"
         },
         "flags": 1,
-        "description": "List of resources to be detached"
+        "description": "The Azure resource IDs of the resources to remove."
       }
     }
   },
@@ -6482,7 +6482,7 @@
           "$ref": "#/524"
         },
         "flags": 1,
-        "description": "The list of resources we watch to patch"
+        "description": "The resources and notification settings to update."
       }
     }
   },
@@ -6563,7 +6563,7 @@
           "$ref": "#/529"
         },
         "flags": 1,
-        "description": "The set of operation ids to acknowledge."
+        "description": "The Bulk Action Operation Ids that identify operations for which errors should be acknowledged."
       }
     }
   },
@@ -6582,21 +6582,21 @@
           "$ref": "#/531"
         },
         "flags": 1,
-        "description": "The set of operation ids that were newly acknowledged"
+        "description": "The Bulk Action Operation Ids that identify operations with acknowledged errors."
       },
       "notFound": {
         "type": {
           "$ref": "#/532"
         },
         "flags": 1,
-        "description": "The set of operation ids that were not found in the completed operations store"
+        "description": "The Bulk Action Operation Ids that were not found or are no longer available."
       },
       "skipped": {
         "type": {
           "$ref": "#/533"
         },
         "flags": 1,
-        "description": "The set of operation ids that were skipped because they were already acknowledged, not failed, or belong to a different scope"
+        "description": "The Bulk Action Operation Ids that identify operations with errors that could not be acknowledged."
       }
     }
   },
@@ -6639,7 +6639,7 @@
           "$ref": "#/536"
         },
         "flags": 1,
-        "description": "The list of operation ids to cancel operations on"
+        "description": "The Bulk Action Operation Ids that identify the operations to cancel."
       }
     }
   },
@@ -6658,7 +6658,7 @@
           "$ref": "#/574"
         },
         "flags": 1,
-        "description": "An array of resource operations that were successfully cancelled"
+        "description": "The current result for each operation submitted for cancellation."
       }
     }
   },
@@ -6671,35 +6671,35 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Unique identifier for the resource involved in the operation, for example Azure resource ID"
+        "description": "The virtual machine Azure resource ID."
       },
       "errorCode": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Resource level error code if it exists"
+        "description": "A code that identifies the error for the virtual machine operation."
       },
       "errorDetails": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Resource level error details if they exist"
+        "description": "A message that describes the error for the virtual machine operation."
       },
       "operation": {
         "type": {
           "$ref": "#/539"
         },
         "flags": 0,
-        "description": "Details of the operation performed on a resource"
+        "description": "The virtual machine operation details."
       },
       "virtualMachineInfo": {
         "type": {
           "$ref": "#/573"
         },
         "flags": 0,
-        "description": "Information about the virtual machine"
+        "description": "Details of the virtual machine on which the operation is performed."
       }
     }
   },
@@ -6712,91 +6712,91 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Operation identifier for the unique operation"
+        "description": "The operation ID used to track the action for this virtual machine."
       },
       "resourceId": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Unique identifier for the resource involved in the operation, for example Azure resource ID"
+        "description": "The virtual machine's Azure resource ID."
       },
       "opType": {
         "type": {
           "$ref": "#/547"
         },
         "flags": 0,
-        "description": "Type of operation performed on the resources"
+        "description": "The type of operation performed on the virtual machine."
       },
       "subscriptionId": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Subscription id attached to the request"
+        "description": "The subscription ID associated with the bulk action."
       },
       "deadline": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Deadline for the operation"
+        "description": "The requested deadline for the operation."
       },
       "deadlineType": {
         "type": {
           "$ref": "#/551"
         },
         "flags": 0,
-        "description": "Type of deadline of the operation"
+        "description": "Specifies whether the deadline time indicates the time at which the operation should start or should be complete."
       },
       "state": {
         "type": {
           "$ref": "#/561"
         },
         "flags": 2,
-        "description": "Current state of the operation"
+        "description": "The current state of the operation."
       },
       "timezone": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Timezone for the operation"
+        "description": "The time zone used to interpret the operation deadline."
       },
       "resourceOperationError": {
         "type": {
           "$ref": "#/562"
         },
         "flags": 0,
-        "description": "Operation level errors if they exist"
+        "description": "Contains error details if the operation does not succeed."
       },
       "fallbackOperationInfo": {
         "type": {
           "$ref": "#/563"
         },
         "flags": 0,
-        "description": "Fallback operation details if a fallback was performed"
+        "description": "Information about the fallback operation attempted after the requested operation did not succeed."
       },
       "completedAt": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Time the operation was complete if errors are null"
+        "description": "The date and time when the operation completed."
       },
       "retryPolicy": {
         "type": {
           "$ref": "#/286"
         },
         "flags": 0,
-        "description": "Retry policy the user can pass"
+        "description": "The retry settings for the bulk action."
       },
       "resourceNotificationDetails": {
         "type": {
           "$ref": "#/572"
         },
         "flags": 0,
-        "description": "Resource notification details."
+        "description": "Caller-provided context associated with the virtual machine operation."
       }
     }
   },
@@ -6966,14 +6966,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Code for the error eg 404, 500"
+        "description": "A code that identifies the error."
       },
       "errorDetails": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Detailed message about the error"
+        "description": "A message that describes the error."
       }
     }
   },
@@ -6986,21 +6986,21 @@
           "$ref": "#/571"
         },
         "flags": 1,
-        "description": "The last operation type that was performed as a fallback"
+        "description": "The type of the additional operation."
       },
       "status": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The status of the fallback operation"
+        "description": "The status of the additional operation."
       },
       "error": {
         "type": {
           "$ref": "#/562"
         },
         "flags": 0,
-        "description": "The error code if the fallback operation failed"
+        "description": "The error returned when the additional operation did not succeed."
       }
     }
   },
@@ -7070,7 +7070,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Resource context for notification tracking"
+        "description": "Caller-provided context string returned with the virtual machine operation result notification. Do not include secrets or personal data."
       }
     }
   },
@@ -7083,14 +7083,21 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The name of the VM size, eg Standard_D2ads_v5"
+        "description": "The virtual machine SKU, for example `Standard_D2ads_v5`."
       },
       "zone": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The zone identifier"
+        "description": "The availability zone identifier."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resolved Azure virtual machine name."
       }
     }
   },
@@ -7121,14 +7128,14 @@
           "$ref": "#/577"
         },
         "flags": 1,
-        "description": "resource creation payload"
+        "description": "The shared and per-virtual-machine creation configuration."
       },
       "executionParameters": {
         "type": {
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       }
     }
   },
@@ -7141,28 +7148,28 @@
           "$ref": "#/578"
         },
         "flags": 0,
-        "description": "Bulk Actions Virtual Machine Profile object that contains VM properties that are common across all VMs in this batch"
+        "description": "The virtual machine configuration as a JSON object applied to every virtual machine in the bulk create action."
       },
       "resourceOverrides": {
         "type": {
           "$ref": "#/580"
         },
         "flags": 0,
-        "description": "Bulk Actions Virtual Machine Profile array, that contains VM properties that should be overridden for each VM in the batch"
+        "description": "The per-virtual-machine configuration overrides for the bulk create action."
       },
       "resourceCount": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "Number of VMs to be created"
+        "description": "The number of virtual machines to create."
       },
       "resourcePrefix": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "If resourceOverrides doesn't contain \"name\", the service will create a name based on the prefix and ResourceCount, e.g., resourceprefix-0, resourceprefix-1.."
+        "description": "The prefix used by Bulk Actions to generate virtual machine names when a per-virtual-machine override does not specify `name`."
       }
     }
   },
@@ -7197,28 +7204,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the create request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the create request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/582"
         },
         "flags": 0,
-        "description": "The results from the create request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7249,14 +7256,14 @@
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/585"
         },
         "flags": 0,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "resourcesWithContext": {
         "type": {
@@ -7276,7 +7283,7 @@
           "$ref": "#/586"
         },
         "flags": 1,
-        "description": "The resource ids used for the request"
+        "description": "The Azure resource IDs of the target virtual machines."
       }
     }
   },
@@ -7334,28 +7341,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the deallocate request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the deallocate request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/591"
         },
         "flags": 0,
-        "description": "The results from the deallocate request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7386,14 +7393,14 @@
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/585"
         },
         "flags": 0,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "resourcesWithContext": {
         "type": {
@@ -7407,7 +7414,7 @@
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "Forced delete resource item"
+        "description": "Indicates whether Bulk Actions uses forced deletion for the target virtual machines."
       }
     }
   },
@@ -7420,28 +7427,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the delete request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the delete request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/595"
         },
         "flags": 0,
-        "description": "The results from the delete request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7472,7 +7479,7 @@
           "$ref": "#/598"
         },
         "flags": 1,
-        "description": "The list of operation ids to get the status of"
+        "description": "The Bulk Action Operation Ids that identify the operations for which current status should be returned."
       }
     }
   },
@@ -7491,7 +7498,7 @@
           "$ref": "#/600"
         },
         "flags": 1,
-        "description": "An array of resource operations based on their operation ids"
+        "description": "The current result for each requested operation."
       }
     }
   },
@@ -7522,14 +7529,14 @@
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/585"
         },
         "flags": 0,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "resourcesWithContext": {
         "type": {
@@ -7549,28 +7556,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the Hibernate request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the Hibernate request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/604"
         },
         "flags": 0,
-        "description": "The results from the Hibernate request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7601,14 +7608,14 @@
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/585"
         },
         "flags": 0,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "resourcesWithContext": {
         "type": {
@@ -7622,7 +7629,7 @@
           "$ref": "#/607"
         },
         "flags": 0,
-        "description": "Reimage parameters including base profile and per-resource overrides"
+        "description": "The shared and per-virtual-machine reimage configuration."
       }
     }
   },
@@ -7635,14 +7642,14 @@
           "$ref": "#/608"
         },
         "flags": 0,
-        "description": "Common reimage profile applied to all resources unless overridden"
+        "description": "The reimage configuration applied to every virtual machine unless a per-virtual-machine override is provided."
       },
       "resourceOverrides": {
         "type": {
           "$ref": "#/611"
         },
         "flags": 0,
-        "description": "Per-resource reimage overrides"
+        "description": "The reimage configuration overrides for individual virtual machines."
       }
     }
   },
@@ -7655,21 +7662,21 @@
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported for VM/VMSS with Ephemeral OS disk."
+        "description": "Indicates whether to reimage the temporary disk. The default value is `false`. This option is supported only for virtual machines or virtual machine scale sets that use an ephemeral operating system disk."
       },
       "exactVersion": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk is reimaged to the existing version of OS Disk."
+        "description": "The exact image version to use when reimaging the operating system disk. When omitted, the disk is reimaged to its current image version."
       },
       "osProfile": {
         "type": {
           "$ref": "#/609"
         },
         "flags": 0,
-        "description": "Specifies information required for reimaging the non-ephemeral OS disk."
+        "description": "The operating system profile used when reimaging a non-ephemeral operating system disk."
       }
     }
   },
@@ -7682,14 +7689,14 @@
           "$ref": "#/109"
         },
         "flags": 0,
-        "description": "Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)"
+        "description": "The password for the virtual machine administrator account. The password must be 8 to 123 characters long for Windows virtual machines or 6 to 72 characters long for Linux virtual machines. It must contain characters from at least three of these categories: lowercase letters, uppercase letters, digits, and special characters. The following values are not allowed: `abc@123`, `P@$$w0rd`, `P@ssw0rd`, `P@ssword123`, `Pa$$word`, `pass@word1`, `Password!`, `Password1`, `Password22`, and `iloveyou!`. This secret is accepted only in the request and is not returned in responses."
       },
       "customData": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be updated after the VM is created. The property customData is passed to the VM to be saved as a file, for more information see [Custom Data on Azure VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). If using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)."
+        "description": "Base64-encoded custom data provided to the virtual machine. The decoded data can contain up to 65,535 bytes. Do not include secrets or passwords."
       }
     }
   },
@@ -7702,14 +7709,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The Azure resource ID of the virtual machine for this override"
+        "description": "The Azure resource ID of the virtual machine to which the override applies."
       },
       "profile": {
         "type": {
           "$ref": "#/608"
         },
         "flags": 1,
-        "description": "Per-resource reimage profile override"
+        "description": "The reimage configuration for this virtual machine."
       }
     }
   },
@@ -7728,28 +7735,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the reimage request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the reimage request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/613"
         },
         "flags": 0,
-        "description": "The results from the reimage request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7780,14 +7787,14 @@
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/585"
         },
         "flags": 0,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "resourcesWithContext": {
         "type": {
@@ -7807,28 +7814,28 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The type of resources used in the start request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the start request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/617"
         },
         "flags": 0,
-        "description": "The results from the start request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -7859,14 +7866,14 @@
           "$ref": "#/620"
         },
         "flags": 1,
-        "description": "resource creation payload"
+        "description": "The creation configuration and flexible allocation preferences."
       },
       "executionParameters": {
         "type": {
           "$ref": "#/281"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       }
     }
   },
@@ -7879,35 +7886,35 @@
           "$ref": "#/621"
         },
         "flags": 0,
-        "description": "Bulk Actions Virtual Machine Profile object that contains VM properties that are common across all VMs in this batch"
+        "description": "The virtual machine configuration as a JSON object applied to every virtual machine in the bulk create action."
       },
       "resourceOverrides": {
         "type": {
           "$ref": "#/623"
         },
         "flags": 0,
-        "description": "Bulk Actions Virtual Machine Profile array, that contains VM properties that should be overridden for each VM in the batch"
+        "description": "The per-virtual-machine configuration overrides for the bulk create action."
       },
       "resourceCount": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 1,
-        "description": "Number of VMs to be created"
+        "description": "The number of virtual machines to create."
       },
       "resourcePrefix": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "If resourceOverrides doesn't contain \"name\", the service will create a name based on the prefix and ResourceCount, e.g., resourceprefix-0, resourceprefix-1.."
+        "description": "The prefix used by Bulk Actions to generate virtual machine names when a per-virtual-machine override does not specify `name`."
       },
       "flexProperties": {
         "type": {
           "$ref": "#/624"
         },
         "flags": 1,
-        "description": "Flex properties used for VDI resource creation scenarios"
+        "description": "The flexible allocation preferences for the virtual desktop infrastructure workload."
       }
     }
   },
@@ -7942,35 +7949,35 @@
           "$ref": "#/625"
         },
         "flags": 1,
-        "description": "The list of VM size profiles to use for flex creation"
+        "description": "The virtual machine sizes that Bulk Actions can use, in customer-defined priority order."
       },
       "osType": {
         "type": {
           "$ref": "#/628"
         },
         "flags": 1,
-        "description": "The operating system type for the VMs"
+        "description": "The operating system type for the virtual machines."
       },
       "priorityProfile": {
         "type": {
           "$ref": "#/331"
         },
         "flags": 1,
-        "description": "The priority profile for VM allocation"
+        "description": "The priority and allocation preferences for the virtual machines."
       },
       "zoneAllocationPolicy": {
         "type": {
           "$ref": "#/402"
         },
         "flags": 0,
-        "description": "The zone allocation policy for distributing VMs across availability zones"
+        "description": "The preferences for distributing virtual machines across availability zones."
       },
       "minCapacity": {
         "type": {
           "$ref": "#/20"
         },
         "flags": 0,
-        "description": "The minimum number of VMs that must be successfully created for the request to proceed. If fewer than this number can be allocated, the entire request is automatically rejected."
+        "description": "The minimum number of virtual machines that must be created. Bulk Actions rejects the request when it cannot allocate this number."
       }
     }
   },
@@ -8037,14 +8044,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The exact time to delay the operations to"
+        "description": "The new date and time for the occurrence, including the UTC offset."
       },
       "resourceIds": {
         "type": {
           "$ref": "#/632"
         },
         "flags": 1,
-        "description": "The resources that should be delayed. If empty, the delay will apply to the all resources in the occurrence."
+        "description": "The resources to delay. An empty array delays all resources in the occurrence."
       }
     }
   },

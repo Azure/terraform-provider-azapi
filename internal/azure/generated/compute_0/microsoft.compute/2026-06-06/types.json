@@ -8,7 +8,7 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The list of operation ids to cancel operations on"
+        "description": "The Bulk Action Operation Ids that identify the operations to cancel."
       }
     }
   },
@@ -30,7 +30,7 @@
           "$ref": "#/45"
         },
         "flags": 1,
-        "description": "An array of resource operations that were successfully cancelled"
+        "description": "The current result for each operation submitted for cancellation."
       }
     }
   },
@@ -43,28 +43,28 @@
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Unique identifier for the resource involved in the operation, for example Azure resource ID"
+        "description": "The virtual machine Azure resource ID."
       },
       "errorCode": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Resource level error code if it exists"
+        "description": "A code that identifies the error for the virtual machine operation."
       },
       "errorDetails": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Resource level error details if they exist"
+        "description": "A message that describes the error for the virtual machine operation."
       },
       "operation": {
         "type": {
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "Details of the operation performed on a resource"
+        "description": "The virtual machine operation details."
       }
     }
   },
@@ -77,84 +77,84 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "Operation identifier for the unique operation"
+        "description": "The operation ID used to track the action for this virtual machine."
       },
       "resourceId": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Unique identifier for the resource involved in the operation, for example Azure resource ID"
+        "description": "The virtual machine's Azure resource ID."
       },
       "opType": {
         "type": {
           "$ref": "#/12"
         },
         "flags": 0,
-        "description": "Type of operation performed on the resources"
+        "description": "The type of operation performed on the virtual machine."
       },
       "subscriptionId": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Subscription id attached to the request"
+        "description": "The subscription ID associated with the bulk action."
       },
       "deadline": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Deadline for the operation"
+        "description": "The requested deadline for the operation."
       },
       "deadlineType": {
         "type": {
           "$ref": "#/16"
         },
         "flags": 0,
-        "description": "Type of deadline of the operation"
+        "description": "Specifies whether the deadline time indicates the time at which the operation should start or should be complete."
       },
       "state": {
         "type": {
           "$ref": "#/26"
         },
         "flags": 2,
-        "description": "Current state of the operation"
+        "description": "The current state of the operation."
       },
       "timezone": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Timezone for the operation"
+        "description": "The time zone used to interpret the operation deadline."
       },
       "resourceOperationError": {
         "type": {
           "$ref": "#/27"
         },
         "flags": 0,
-        "description": "Operation level errors if they exist"
+        "description": "Contains error details if the operation does not succeed."
       },
       "fallbackOperationInfo": {
         "type": {
           "$ref": "#/28"
         },
         "flags": 0,
-        "description": "Fallback operation details if a fallback was performed"
+        "description": "Information about the fallback operation attempted after the requested operation did not succeed."
       },
       "completedAt": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 0,
-        "description": "Time the operation was complete if errors are null"
+        "description": "The date and time when the operation completed."
       },
       "retryPolicy": {
         "type": {
           "$ref": "#/36"
         },
         "flags": 0,
-        "description": "Retry policy the user can pass"
+        "description": "The retry settings for the bulk action."
       }
     }
   },
@@ -317,14 +317,14 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "Code for the error eg 404, 500"
+        "description": "A code that identifies the error."
       },
       "errorDetails": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "Detailed message about the error"
+        "description": "A message that describes the error."
       }
     }
   },
@@ -337,21 +337,21 @@
           "$ref": "#/35"
         },
         "flags": 1,
-        "description": "The last operation type that was performed as a fallback"
+        "description": "The type of the additional operation."
       },
       "status": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The status of the fallback operation"
+        "description": "The status of the additional operation."
       },
       "error": {
         "type": {
           "$ref": "#/27"
         },
         "flags": 0,
-        "description": "The error code if the fallback operation failed"
+        "description": "The error returned when the additional operation did not succeed."
       }
     }
   },
@@ -414,21 +414,21 @@
           "$ref": "#/37"
         },
         "flags": 0,
-        "description": "Retry count for user request"
+        "description": "The maximum number of retry attempts."
       },
       "retryWindowInMinutes": {
         "type": {
           "$ref": "#/37"
         },
         "flags": 0,
-        "description": "Retry window in minutes for user request"
+        "description": "The period, in minutes, during which Bulk Actions can retry the operation."
       },
       "onFailureAction": {
         "type": {
           "$ref": "#/44"
         },
         "flags": 0,
-        "description": "Action to take on failure"
+        "description": "The operation that Bulk Actions attempts when the requested operation fails."
       }
     }
   },
@@ -512,14 +512,14 @@
           "$ref": "#/48"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/49"
         },
         "flags": 1,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       }
     }
   },
@@ -532,7 +532,7 @@
           "$ref": "#/36"
         },
         "flags": 0,
-        "description": "Retry policy the user can pass"
+        "description": "The retry settings for the bulk action."
       }
     }
   },
@@ -545,7 +545,7 @@
           "$ref": "#/50"
         },
         "flags": 1,
-        "description": "The resource ids used for the request"
+        "description": "The Azure resource IDs of the target virtual machines."
       }
     }
   },
@@ -564,28 +564,28 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The type of resources used in the deallocate request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The location of the deallocate request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/52"
         },
         "flags": 0,
-        "description": "The results from the deallocate request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -616,21 +616,21 @@
           "$ref": "#/48"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/49"
         },
         "flags": 1,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       },
       "forceDeletion": {
         "type": {
           "$ref": "#/55"
         },
         "flags": 0,
-        "description": "Forced delete resource item"
+        "description": "Indicates whether Bulk Actions uses forced deletion for the target virtual machines."
       }
     }
   },
@@ -646,28 +646,28 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The type of resources used in the delete request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The location of the delete request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/57"
         },
         "flags": 0,
-        "description": "The results from the delete request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -698,7 +698,7 @@
           "$ref": "#/60"
         },
         "flags": 1,
-        "description": "The list of operation ids to get the status of"
+        "description": "The Bulk Action Operation Ids that identify the operations for which current status should be returned."
       }
     }
   },
@@ -717,7 +717,7 @@
           "$ref": "#/62"
         },
         "flags": 1,
-        "description": "An array of resource operations based on their operation ids"
+        "description": "The current result for each requested operation."
       }
     }
   },
@@ -748,14 +748,14 @@
           "$ref": "#/48"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/49"
         },
         "flags": 1,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       }
     }
   },
@@ -768,28 +768,28 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The type of resources used in the Hibernate request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The location of the Hibernate request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/66"
         },
         "flags": 0,
-        "description": "The results from the Hibernate request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
@@ -820,14 +820,14 @@
           "$ref": "#/48"
         },
         "flags": 1,
-        "description": "The execution parameters for the request"
+        "description": "The execution settings for the bulk action."
       },
       "resources": {
         "type": {
           "$ref": "#/49"
         },
         "flags": 1,
-        "description": "The resources for the request"
+        "description": "The target virtual machines."
       }
     }
   },
@@ -840,28 +840,28 @@
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The description of the operation response"
+        "description": "A description of the bulk action result."
       },
       "type": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The type of resources used in the start request eg virtual machines"
+        "description": "The type of resources targeted by the bulk action."
       },
       "location": {
         "type": {
           "$ref": "#/1"
         },
         "flags": 1,
-        "description": "The location of the start request eg westus"
+        "description": "The Azure region where Bulk Actions processes the request."
       },
       "results": {
         "type": {
           "$ref": "#/70"
         },
         "flags": 0,
-        "description": "The results from the start request if no errors exist"
+        "description": "The result for each virtual machine."
       }
     }
   },
