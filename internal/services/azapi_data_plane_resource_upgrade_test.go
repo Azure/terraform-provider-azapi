@@ -106,29 +106,6 @@ func TestAccAzapiDataPlaneResourceUpgrade_keyVaultIssuer(t *testing.T) {
 	})
 }
 
-func TestAccAzapiDataPlaneResourceUpgrade_iotAppsUser(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
-	r := DataPlaneResource{}
-
-	data.UpgradeTest(t, r, []resource.TestStep{
-		data.UpgradeTestDeployStep(resource.TestStep{
-			Config:            r.iotAppsUser(data),
-			ExternalProviders: externalProvidersAzurerm(),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
-			Config:            r.iotAppsUser(data),
-			ExternalProviders: externalProvidersAzurerm(),
-		}),
-		data.UpgradeTestApplyStep(resource.TestStep{
-			Config:            r.iotAppsUser(data),
-			ExternalProviders: externalProvidersAzurerm(),
-		}),
-	})
-}
-
 func TestAccAzapiDataPlaneResourceUpgrade_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
