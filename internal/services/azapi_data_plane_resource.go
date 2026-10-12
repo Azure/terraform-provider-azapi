@@ -323,6 +323,11 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
+	if strings.HasPrefix(strings.ToLower(plan.Type.ValueString()), "microsoft.iotcentral/iotapps/") {
+		response.Diagnostics.AddAttributeWarning(path.Root("type"), "Azure IoT Central retirement",
+			fmt.Sprintf("The resource type %q is affected by Azure IoT Central retirement. Creating new parent applications of type Microsoft.IoTCentral/iotApps is no longer available. You can continue using azapi_data_plane_resource to manage data-plane resources in existing applications through September 20, 2029. After that date, Azure IoT Central applications and their data-plane resources will no longer be available. Migrate your solution and update your Terraform configuration before retirement. For migration guidance, see https://aka.ms/AzureIoTCentralEvolution.", plan.Type.ValueString()))
+	}
+
 	if err := validateDataPlaneResourceName(config); err != nil {
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 		return

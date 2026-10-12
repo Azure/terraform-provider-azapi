@@ -150,19 +150,6 @@ func TestAccDataPlaneResource_keyVaultCertificateContact(t *testing.T) {
 	})
 }
 
-func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
-	r := DataPlaneResource{}
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.iotAppsUser(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
 func TestAccDataPlaneResource_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -910,50 +897,6 @@ resource "azapi_data_plane_resource" "contact" {
   }
 }
 `, r.keyVaultCertificate(data))
-}
-
-func (r DataPlaneResource) iotAppsUser(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name     = "acctest%[2]s"
-  location = "%[1]s"
-}
-
-resource "azapi_resource" "iotApp" {
-  type      = "Microsoft.IoTCentral/iotApps@2021-11-01-preview"
-  parent_id = azapi_resource.resourceGroup.id
-  name      = "acctest%[2]s"
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    sku = {
-      name = "ST2"
-    }
-    properties = {
-      displayName = "acctest%[2]s"
-      subdomain   = "acctest%[2]s"
-    }
-  }
-  response_export_values = ["*"]
-}
-
-resource "azapi_data_plane_resource" "test" {
-  type      = "Microsoft.IoTCentral/IoTApps/users@2022-07-31"
-  parent_id = "${azapi_resource.iotApp.output.properties.subdomain}.azureiotcentral.com"
-  name      = "acctest%[2]s"
-  body = {
-    type = "email"
-    roles = [
-      {
-        role = "ae2c9854-393b-4f97-8c42-479d70ce626e"
-      }
-    ]
-    email = "user5@contoso.com"
-  }
-}
-
-
-`, data.LocationPrimary, data.RandomString)
 }
 
 func (r DataPlaneResource) timeouts(data acceptance.TestData) string {
