@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -43,6 +44,26 @@ func TestAccActionDataSource_providerAction(t *testing.T) {
 		{
 			Config: r.providerAction(),
 			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionDataSource_resourceGraphPaging(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.resourceGraphPaging(data),
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"time": {
+					Source:            "hashicorp/time",
+					VersionConstraint: "0.14.1",
+				},
+			},
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("output.data.#").HasValue("3"),
+			),
 		},
 	})
 }
@@ -124,6 +145,64 @@ data "azapi_resource_action" "test" {
   response_export_values = ["*"]
 }
 `
+}
+
+func (r ActionDataSource) resourceGraphPaging(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test1" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctestRG-%[1]d-1"
+  location = "%[2]s"
+  tags = {
+    acctestGraphPaging = "%[3]s"
+  }
+}
+
+resource "azapi_resource" "test2" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctestRG-%[1]d-2"
+  location = "%[2]s"
+  tags = {
+    acctestGraphPaging = "%[3]s"
+  }
+}
+
+resource "azapi_resource" "test3" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctestRG-%[1]d-3"
+  location = "%[2]s"
+  tags = {
+    acctestGraphPaging = "%[3]s"
+  }
+}
+
+resource "time_sleep" "wait_for_resource_graph_index" {
+  create_duration = "1m"
+
+  depends_on = [
+    azapi_resource.test1,
+    azapi_resource.test2,
+    azapi_resource.test3,
+  ]
+}
+
+data "azapi_resource_action" "test" {
+  type                   = "Microsoft.ResourceGraph@2024-04-01"
+  resource_id            = "/providers/Microsoft.ResourceGraph"
+  action                 = "resources"
+  response_export_values = ["data"]
+
+  body = {
+    query = "resourcecontainers | where tags['acctestGraphPaging'] == '%[3]s' | project id"
+    options = {
+      "$top"       = 1
+      resultFormat = "objectArray"
+    }
+  }
+
+  depends_on = [time_sleep.wait_for_resource_graph_index]
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }
 
 func (r ActionDataSource) headers(data acceptance.TestData) string {
