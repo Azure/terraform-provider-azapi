@@ -42,6 +42,7 @@ func (r *DataPlaneResourceDataSource) Configure(ctx context.Context, request dat
 type DataPlaneResourceDataSourceModel struct {
 	ID                   types.String     `tfsdk:"id"`
 	Name                 types.String     `tfsdk:"name"`
+	EvaluationID         types.String     `tfsdk:"evaluation_id"`
 	ParentID             types.String     `tfsdk:"parent_id"`
 	Type                 types.String     `tfsdk:"type"`
 	Body                 types.Dynamic    `tfsdk:"body"`
@@ -66,7 +67,12 @@ func (r *DataPlaneResourceDataSource) Schema(ctx context.Context, request dataso
 			"name": schema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource.",
+				MarkdownDescription: "Specifies the name (identifier segment) used to look up the data plane resource. For resources with a service-generated identifier, set this to the identifier returned when the resource was created.",
+			},
+			"evaluation_id": schema.StringAttribute{
+				Optional:            true,
+				Computed:            true,
+				MarkdownDescription: "The ID of the evaluation for a Microsoft.Foundry evaluation run.",
 			},
 			"parent_id": schema.StringAttribute{
 				Required:            true,
@@ -108,11 +114,16 @@ func (r *DataPlaneResourceDataSource) ValidateConfig(ctx context.Context, reques
 	if config == nil {
 		return
 	}
-	if err := validateDataPlaneResourceName(&DataPlaneResourceModel{
-		Name:     config.Name,
-		ParentID: config.ParentID,
-		Type:     config.Type,
-	}); err != nil {
+	resourceConfig := &DataPlaneResourceModel{
+		Name:         config.Name,
+		EvaluationID: config.EvaluationID,
+		ParentID:     config.ParentID,
+		Type:         config.Type,
+	}
+	if err := validateDataPlaneResourceLookupName(resourceConfig); err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+	}
+	if err := validateDataPlaneResourceEvaluationID(resourceConfig); err != nil {
 		response.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -132,7 +143,12 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 	ctx, cancel := context.WithTimeout(ctx, readTimeout)
 	defer cancel()
 
-	id, err := parse.NewDataPlaneResourceId(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
+	id, err := parse.NewDataPlaneResourceIdWithEvaluationID(
+		model.Name.ValueString(),
+		model.ParentID.ValueString(),
+		model.EvaluationID.ValueString(),
+		model.Type.ValueString(),
+	)
 	if err != nil {
 		response.Diagnostics.AddError("Error parsing ID", err.Error())
 		return
@@ -177,6 +193,11 @@ func (r *DataPlaneResourceDataSource) Read(ctx context.Context, request datasour
 
 	model.ID = basetypes.NewStringValue(id.ID())
 	model.Name = basetypes.NewStringValue(id.Name)
+	if id.EvaluationId != "" {
+		model.EvaluationID = basetypes.NewStringValue(id.EvaluationId)
+	} else {
+		model.EvaluationID = types.StringNull()
+	}
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
