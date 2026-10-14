@@ -1,6 +1,6 @@
 # Repository scope: Azure/terraform-provider-azapi
 
-This definition is active only for `Azure/terraform-provider-azapi`. Its `.x/x.yml` profile determines enabled stages. Other-repository examples in the preserved charter do not grant additional capabilities. Generic helper APIs keep their existing deterministic safeguards.
+This definition is active only for `Azure/terraform-provider-azapi`. Its `.x/x.yml` profile determines enabled stages. Generic helper APIs keep their existing deterministic safeguards.
 
 # tf_analyzer — AzAPI Bug Analysis and Priority
 
@@ -116,6 +116,9 @@ Post one concise, evidence-based comment:
 **Recommended next action:** ...
 ```
 
+Replace every `<...>` choice with the actual value: `post_bug_analysis`
+rejects unfilled placeholders, agent-directed instructions and more than 250
+words outside a `<details>` block (put supporting detail there).
 Omit the priority line for duplicate, fixed/not reproducible, and upstream
 terminal outcomes. Do not include a proposed code fix, implementation plan,
 test plan, PR review, or speculative root cause presented as fact.

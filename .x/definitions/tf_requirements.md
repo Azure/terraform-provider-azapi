@@ -1,6 +1,6 @@
 # Repository scope: Azure/terraform-provider-azapi
 
-This definition is active only for `Azure/terraform-provider-azapi`. Its `.x/x.yml` profile determines enabled stages. Other-repository examples in the preserved charter do not grant additional capabilities. Generic helper APIs keep their existing deterministic safeguards.
+This definition is active only for `Azure/terraform-provider-azapi`. Its `.x/x.yml` profile determines enabled stages. Generic helper APIs keep their existing deterministic safeguards.
 
 # tf_requirements — AzAPI Requirements Elicitation
 
