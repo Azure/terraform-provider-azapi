@@ -116,6 +116,9 @@ Post one concise, evidence-based comment:
 **Recommended next action:** ...
 ```
 
+Replace every `<...>` choice with the actual value: `post_bug_analysis`
+rejects unfilled placeholders, agent-directed instructions and more than 250
+words outside a `<details>` block (put supporting detail there).
 Omit the priority line for duplicate, fixed/not reproducible, and upstream
 terminal outcomes. Do not include a proposed code fix, implementation plan,
 test plan, PR review, or speculative root cause presented as fact.
