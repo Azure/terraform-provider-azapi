@@ -607,12 +607,18 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		return
 	}
 
-	// if the config identity type and identity ids are not changed, use the state identity
-	if !plan.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
+	// Reuse computed identity IDs unless the system-assigned identity is enabled or disabled.
+	if !plan.Identity.IsNull() && !plan.Identity.IsUnknown() && state != nil && !state.Identity.IsNull() && !state.Identity.IsUnknown() {
 		planIdentity := identity.FromList(plan.Identity)
 		stateIdentity := identity.FromList(state.Identity)
-		if planIdentity.Type.Equal(stateIdentity.Type) && planIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
-			plan.Identity = state.Identity
+		planHasSystemAssigned := strings.Contains(planIdentity.Type.ValueString(), string(identity.SystemAssigned))
+		stateHasSystemAssigned := strings.Contains(stateIdentity.Type.ValueString(), string(identity.SystemAssigned))
+		if !planIdentity.Type.IsNull() && !planIdentity.Type.IsUnknown() &&
+			!stateIdentity.Type.IsNull() && !stateIdentity.Type.IsUnknown() &&
+			planHasSystemAssigned == stateHasSystemAssigned {
+			planIdentity.PrincipalID = stateIdentity.PrincipalID
+			planIdentity.TenantID = stateIdentity.TenantID
+			plan.Identity = identity.ToList(planIdentity)
 		}
 	}
 

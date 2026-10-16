@@ -47,6 +47,8 @@ func (m Model) Value() attr.Value {
 	var identityIDs attr.Value
 	if m.IdentityIDs.IsNull() {
 		identityIDs = basetypes.NewListNull(types.StringType)
+	} else if m.IdentityIDs.IsUnknown() {
+		identityIDs = basetypes.NewListUnknown(types.StringType)
 	} else {
 		identityIDs = basetypes.NewListValueMust(types.StringType, m.IdentityIDs.Elements())
 	}

@@ -18,7 +18,10 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
 type GenericResource struct{}
@@ -204,6 +207,7 @@ func TestAccGenericResource_identity(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
+	identityPath := tfjsonpath.New("identity").AtSliceIndex(0)
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
@@ -222,6 +226,12 @@ func TestAccGenericResource_identity(t *testing.T) {
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.identitySystemAssigned(data),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectUnknownValue(data.ResourceName, identityPath.AtMapKey("principal_id")),
+					plancheck.ExpectUnknownValue(data.ResourceName, identityPath.AtMapKey("tenant_id")),
+				},
+			},
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -229,6 +239,27 @@ func TestAccGenericResource_identity(t *testing.T) {
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.complete(data),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+					plancheck.ExpectKnownValue(data.ResourceName, identityPath.AtMapKey("principal_id"), knownvalue.NotNull()),
+					plancheck.ExpectKnownValue(data.ResourceName, identityPath.AtMapKey("tenant_id"), knownvalue.NotNull()),
+				},
+			},
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
+		{
+			Config: r.identitySystemAssigned(data),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+					plancheck.ExpectKnownValue(data.ResourceName, identityPath.AtMapKey("principal_id"), knownvalue.NotNull()),
+					plancheck.ExpectKnownValue(data.ResourceName, identityPath.AtMapKey("tenant_id"), knownvalue.NotNull()),
+				},
+			},
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
