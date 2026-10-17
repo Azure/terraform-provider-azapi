@@ -30,6 +30,14 @@ type DataPlaneResourceWithCreateResult interface {
 	CreateResultFunc() CreateResultFunc
 }
 
+// DataPlaneResourceWithReplaceTriggers is an optional extension interface for customizations whose
+// API fixes some body properties when the resource is created. Changing the value at any of these
+// body paths forces a new resource. The paths use the same format as replace_triggers_refs.
+type DataPlaneResourceWithReplaceTriggers interface {
+	DataPlaneResource
+	ReplaceTriggersRefs() []string
+}
+
 type ReadFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error)
 type DeleteFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) error
 type CreateFunc = func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) error

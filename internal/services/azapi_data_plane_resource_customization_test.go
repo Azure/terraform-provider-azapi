@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
@@ -25,6 +26,22 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+		{
+			// Key Vault can't change the size of an existing key, so the key must be replaced.
+			Config:             r.keyVaultKeySizeChanged(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PostApplyPreRefresh: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionReplace),
+				},
+			},
 		},
 	})
 }
@@ -81,9 +98,38 @@ resource "azapi_data_plane_resource" "test" {
   body = {
     kty      = "RSA"
     key_size = 2048
-    key_ops  = ["encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"]
+    key_ops  = ["encrypt", "decrypt", "wrapKey", "unwrapKey"]
     attributes = {
       enabled = true
+    }
+    tags = {
+      environment = "test"
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy
+  ]
+}`, r.keyVaultKeyTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultKeySizeChanged(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/keys@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    kty      = "RSA"
+    key_size = 3072
+    key_ops  = ["encrypt", "decrypt", "wrapKey", "unwrapKey"]
+    attributes = {
+      enabled = true
+    }
+    tags = {
+      environment = "test"
     }
   }
 
