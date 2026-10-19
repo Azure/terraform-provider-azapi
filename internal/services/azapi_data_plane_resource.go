@@ -39,6 +39,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	jmes "github.com/jmespath/go-jmespath"
 )
 
 type DataPlaneResourceModel struct {
@@ -393,6 +394,77 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 			response.RequiresReplace.Append(path.Root("body"))
 		}
 	}
+
+	// Check if any body properties that the API only accepts on create have changed
+	if state != nil && plan != nil {
+		if refs := customizedReplaceTriggersRefs(plan.Type.ValueString()); len(refs) != 0 {
+			changed, err := bodyRefsChanged(state.Body, plan.Body, refs)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid body", err.Error())
+				return
+			}
+			if changed {
+				response.RequiresReplace.Append(path.Root("body"))
+			}
+		}
+	}
+}
+
+// customizedReplaceTriggersRefs returns the body paths that the customization of the resource type
+// declares as create-only.
+func customizedReplaceTriggersRefs(resourceType string) []string {
+	customizedResource := customization.GetCustomization(resourceType)
+	if customizedResource == nil {
+		return nil
+	}
+	if v, ok := (*customizedResource).(customization.DataPlaneResourceWithReplaceTriggers); ok {
+		return v.ReplaceTriggersRefs()
+	}
+	return nil
+}
+
+// bodyRefsChanged reports whether the value at any of the refs differs between the state body and the
+// plan body. A ref whose value is null or unknown on either side is skipped: removing a property from
+// the config doesn't change the remote resource, and an imported resource has no body in state yet.
+func bodyRefsChanged(stateBody, planBody types.Dynamic, refs []string) (bool, error) {
+	stateModel, err := knownBodyModel(stateBody)
+	if err != nil {
+		return false, fmt.Errorf("reading state body: %+v", err)
+	}
+	planModel, err := knownBodyModel(planBody)
+	if err != nil {
+		return false, fmt.Errorf("reading plan body: %+v", err)
+	}
+
+	for _, ref := range refs {
+		previous, err := jmes.Search(ref, stateModel)
+		if err != nil {
+			return false, fmt.Errorf("searching %q in state body: %+v", ref, err)
+		}
+		current, err := jmes.Search(ref, planModel)
+		if err != nil {
+			return false, fmt.Errorf("searching %q in plan body: %+v", ref, err)
+		}
+		if previous != nil && current != nil && !reflect.DeepEqual(previous, current) {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// knownBodyModel converts a body to its JSON model, with unknown values converted to null.
+func knownBodyModel(body types.Dynamic) (interface{}, error) {
+	data, err := dynamic.ToJSONWithUnknownValueHandler(body, func(attr.Value) ([]byte, error) {
+		return json.Marshal(nil)
+	})
+	if err != nil {
+		return nil, err
+	}
+	var model interface{}
+	if err := json.Unmarshal(data, &model); err != nil {
+		return nil, err
+	}
+	return model, nil
 }
 
 func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
@@ -466,7 +538,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	client := r.ProviderData.DataPlaneClient
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
-	if isNewResource && !hasCreateResult {
+	if isNewResource && !hasCreateResult && !skipExistenceCheck(customizedResource) {
 		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
@@ -609,6 +681,14 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 	}
 
 	return nil, false
+}
+
+func skipExistenceCheck(customizedResource *customization.DataPlaneResource) bool {
+	if customizedResource == nil {
+		return false
+	}
+	v, ok := (*customizedResource).(customization.DataPlaneResourceWithoutExistenceCheck)
+	return ok && v.SkipExistenceCheck()
 }
 
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {

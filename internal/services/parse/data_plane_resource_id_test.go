@@ -59,6 +59,17 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 			},
 		},
 		{
+			Name:         "",
+			ParentId:     "foo.vault.azure.net/keys/mykey",
+			ResourceType: "Microsoft.KeyVault/vaults/keys/rotationpolicy@7.6",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "foo.vault.azure.net/keys/mykey/rotationpolicy",
+				ApiVersion:        "7.6",
+				AzureResourceType: "Microsoft.KeyVault/vaults/keys/rotationpolicy",
+			},
+		},
+		{
 			Name:         "myindex",
 			ParentId:     "mysearchservice.search.windows.net",
 			ResourceType: "Microsoft.Search/searchServices/indexes@2024-07-01",
@@ -194,6 +205,18 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				ApiVersion:        "v1.1-preview.2",
 				AzureResourceType: "Microsoft.KeyVault/vaults/certificates/contacts",
 				ParentId:          "foo.keyvault.azure.net",
+				Name:              "",
+			},
+		},
+		{
+			ResourceId:   "foo.vault.azure.net/keys/mykey/rotationpolicy",
+			ResourceType: "Microsoft.KeyVault/vaults/keys/rotationpolicy@7.6",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "foo.vault.azure.net/keys/mykey/rotationpolicy",
+				ApiVersion:        "7.6",
+				AzureResourceType: "Microsoft.KeyVault/vaults/keys/rotationpolicy",
+				ParentId:          "foo.vault.azure.net/keys/mykey",
 				Name:              "",
 			},
 		},

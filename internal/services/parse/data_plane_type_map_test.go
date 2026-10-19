@@ -34,6 +34,12 @@ func Test_hasIdentifierSegment(t *testing.T) {
 			Expected:     false,
 		},
 		{
+			Name:         "identifier absent from key rotation policy url format",
+			ResourceType: "Microsoft.KeyVault/vaults/keys/rotationpolicy@7.6",
+			Identifier:   "name",
+			Expected:     false,
+		},
+		{
 			Name:         "default form identifier ({name=default})",
 			ResourceType: "Microsoft.Purview/accounts/Scanning/datasources/scans/triggers@2022-02-01-preview",
 			Identifier:   "name",
