@@ -538,7 +538,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	client := r.ProviderData.DataPlaneClient
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
-	if isNewResource && !hasCreateResult {
+	if isNewResource && !hasCreateResult && !skipExistenceCheck(customizedResource) {
 		// Do not retry an expected 404 even if it matches a user-configured retry expression.
 		requestOptions := clients.RequestOptions{
 			Headers:         common.AsMapOfString(plan.ReadHeaders),
@@ -681,6 +681,14 @@ func getCreateResultFunc(config *DataPlaneResourceModel) (customization.CreateRe
 	}
 
 	return nil, false
+}
+
+func skipExistenceCheck(customizedResource *customization.DataPlaneResource) bool {
+	if customizedResource == nil {
+		return false
+	}
+	v, ok := (*customizedResource).(customization.DataPlaneResourceWithoutExistenceCheck)
+	return ok && v.SkipExistenceCheck()
 }
 
 func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {

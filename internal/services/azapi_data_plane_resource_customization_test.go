@@ -46,6 +46,31 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_keyVaultKeyRotationPolicy(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.keyVaultKeyRotationPolicy(data, "P90D"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.keyVaultKeyRotationPolicy(data, "P60D"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+	})
+}
+
 func TestAccDataPlaneResource_foundryAgent(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test")
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
@@ -139,6 +164,54 @@ resource "azapi_data_plane_resource" "test" {
 }`, r.keyVaultKeyTemplate(data), data.RandomString)
 }
 
+func (r DataPlaneResource) keyVaultKeyRotationPolicy(data acceptance.TestData, timeAfterCreate string) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_data_plane_resource" "key" {
+  type      = "Microsoft.KeyVault/vaults/keys@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    kty      = "RSA"
+    key_size = 2048
+    key_ops  = ["wrapKey", "unwrapKey"]
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy
+  ]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/keys/rotationpolicy@7.4"
+  parent_id = azapi_data_plane_resource.key.id
+  body = {
+    lifetimeActions = [
+      {
+        trigger = {
+          timeAfterCreate = "%[3]s"
+        }
+        action = {
+          type = "Rotate"
+        }
+      },
+      {
+        trigger = {
+          timeBeforeExpiry = "P30D"
+        }
+        action = {
+          type = "Notify"
+        }
+      },
+    ]
+    attributes = {
+      expiryTime = "P1Y"
+    }
+  }
+}`, r.keyVaultKeyTemplate(data), data.RandomString, timeAfterCreate)
+}
+
 func (r DataPlaneResource) keyVaultKeyTemplate(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 data "azapi_client_config" "current" {}
@@ -188,7 +261,8 @@ resource "azapi_resource_action" "add_accesspolicy" {
         permissions = {
           keys = [
             "Get", "Create", "Delete", "List", "Update", "Restore", "Recover",
-            "UnwrapKey", "WrapKey", "Purge", "Encrypt", "Decrypt", "Sign", "Verify"
+            "UnwrapKey", "WrapKey", "Purge", "Encrypt", "Decrypt", "Sign", "Verify",
+            "GetRotationPolicy", "SetRotationPolicy"
           ]
         }
       }]
