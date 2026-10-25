@@ -1,60 +1,14 @@
 [
   {
-    "$type": "StringType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "MCAS"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "WDATP"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "WDATP_UNIFIED_SOLUTION"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Sentinel"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "current"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/1"
-      },
-      {
-        "$ref": "#/2"
-      },
-      {
-        "$ref": "#/3"
-      },
-      {
-        "$ref": "#/4"
-      },
-      {
-        "$ref": "#/5"
-      },
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
+    "$type": "StringType",
+    "pattern": "^current$"
   },
   {
     "$type": "StringLiteralType",
     "value": "Microsoft.Security/defenderForStorageSettings"
+  },
+  {
+    "$type": "StringType"
   },
   {
     "$type": "StringLiteralType",
@@ -66,42 +20,42 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/0"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/1"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/3"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Defender for Storage resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -114,28 +68,28 @@
     "properties": {
       "isEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "Indicates whether Defender for Storage is enabled on this storage account."
       },
       "malwareScanning": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "Properties of Malware Scanning."
       },
       "sensitiveDataDiscovery": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "Properties of Sensitive Data Discovery."
       },
       "overrideSubscriptionLevelSettings": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "Indicates whether the settings defined for this storage account should override the settings defined for the subscription."
@@ -151,35 +105,35 @@
     "properties": {
       "onUpload": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Properties of On Upload malware scanning."
       },
       "scanResultsEventGridTopicResourceId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "Optional. Resource id of an Event Grid Topic to send scan results to."
       },
       "blobScanResultsOptions": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Optional. Write scan result on BlobIndexTags by default."
       },
       "automatedResponse": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Optional. Specifies the automated response action to take when malware is detected."
       },
       "operationStatus": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/19"
         },
         "flags": 2,
         "description": "Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation."
@@ -192,21 +146,21 @@
     "properties": {
       "isEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "Indicates whether On Upload malware scanning should be enabled."
       },
       "capGBPerMonth": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "Defines the max GB to be scanned per Month. Set to -1 if no capping is needed. If not specified, the default value is -1."
       },
       "filters": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "Optional. Determine which blobs get scanned by On Upload malware scanning. An Or operation is performed between each filter type."
@@ -222,21 +176,21 @@
     "properties": {
       "excludeBlobsWithPrefix": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/11"
         },
         "flags": 0,
         "description": "Optional. A list of prefixes to exclude from on-upload malware scanning.\nFormat: `container-name/blob-name` (start with the container name; do not include the storage account name).\nExclude entire containers: Use prefix of container names you want to exclude without a trailing `/`.\nExclude a single container: Add a trailing slash `/` after the container name to avoid excluding other containers with similar prefixes."
       },
       "excludeBlobsWithSuffix": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/12"
         },
         "flags": 0,
         "description": "Optional. A list of suffixes to exclude from on-upload malware scanning. Suffixes match only the end of blob names, and should be used for file extensions or blob name endings only."
       },
       "excludeBlobsLargerThan": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive integer value. Blobs larger than this value will be excluded from scanning."
@@ -246,17 +200,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
-  },
-  {
-    "$type": "AnyType"
   },
   {
     "$type": "StringLiteralType",
@@ -270,13 +221,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/20"
+        "$ref": "#/13"
       },
       {
-        "$ref": "#/21"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -292,13 +243,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/23"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -308,14 +259,14 @@
     "properties": {
       "code": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The operation status code."
       },
       "message": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "Additional information regarding the success/failure of the operation."
@@ -328,14 +279,14 @@
     "properties": {
       "isEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "Indicates whether Sensitive Data Discovery should be enabled."
       },
       "operationStatus": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/19"
         },
         "flags": 2,
         "description": "Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation."
@@ -348,42 +299,42 @@
     "properties": {
       "createdBy": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The identity that created the resource."
       },
       "createdByType": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
       },
       "createdAt": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The timestamp of resource creation (UTC)."
       },
       "lastModifiedBy": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The identity that last modified the resource."
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
       },
       "lastModifiedAt": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The timestamp of resource last modification (UTC)"
@@ -410,19 +361,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/29"
+        "$ref": "#/22"
       },
       {
-        "$ref": "#/30"
+        "$ref": "#/23"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/24"
       },
       {
-        "$ref": "#/32"
+        "$ref": "#/25"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -446,19 +397,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/34"
+        "$ref": "#/27"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/28"
       },
       {
-        "$ref": "#/36"
+        "$ref": "#/29"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -466,7 +417,7 @@
     "$type": "ResourceType",
     "name": "Microsoft.Security/defenderForStorageSettings@2025-09-01-preview",
     "body": {
-      "$ref": "#/10"
+      "$ref": "#/4"
     },
     "readableScopes": 31,
     "writableScopes": 31
@@ -491,56 +442,56 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/33"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/34"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/35"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/37"
         },
         "flags": 1,
         "description": "Properties specific to the private link resource"
       },
       "tags": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Resource tags."
       },
       "location": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -553,21 +504,21 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/44"
         },
         "flags": 2,
         "description": "The current provisioning state of the private link resource. Indicates whether the resource is being created, updated, deleted, or has completed successfully."
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/59"
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with this private link. Each connection represents a private endpoint from a customer's virtual network."
       },
       "privateLinkResources": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/64"
         },
         "flags": 2,
         "description": "List of private link resources available for connection. For Defender services, this typically includes the 'containers' group with 'api' and regional data endpoints."
@@ -602,25 +553,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/41"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/43"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -630,35 +581,35 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/46"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The name of the resource"
       },
       "type": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -671,28 +622,28 @@
     "properties": {
       "groupIds": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/47"
         },
         "flags": 2,
         "description": "The group ids for the private endpoint resource."
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "The private endpoint resource."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/49"
         },
         "flags": 1,
         "description": "A collection of information about the state of the connection between service consumer and provider."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/58"
         },
         "flags": 2,
         "description": "The provisioning state of the private endpoint connection resource."
@@ -702,7 +653,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -711,7 +662,7 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The ARM identifier for private endpoint."
@@ -724,21 +675,21 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
       },
       "description": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The reason for approval/rejection of the connection."
       },
       "actionsRequired": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "A message indicating if changes on the service provider require any updates on the consumer."
@@ -761,16 +712,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/57"
+        "$ref": "#/50"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/51"
       },
       {
-        "$ref": "#/59"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
@@ -794,26 +745,26 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/61"
+        "$ref": "#/54"
       },
       {
-        "$ref": "#/62"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/63"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/64"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/2"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/52"
+      "$ref": "#/45"
     }
   },
   {
@@ -822,35 +773,35 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The name of the resource"
       },
       "type": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -863,21 +814,21 @@
     "properties": {
       "groupId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The private link resource group id."
       },
       "requiredMembers": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/62"
         },
         "flags": 2,
         "description": "The private link resource required member names."
       },
       "requiredZoneNames": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The private link resource private link DNS zone name."
@@ -887,19 +838,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/67"
+      "$ref": "#/60"
     }
   },
   {
@@ -907,14 +858,14 @@
     "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.Security/privateLinks@2025-09-01-preview",
     "body": {
-      "$ref": "#/43"
+      "$ref": "#/36"
     },
     "readableScopes": 8,
     "writableScopes": 8
@@ -933,42 +884,42 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/67"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/68"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/46"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -979,14 +930,18 @@
     "$type": "ResourceType",
     "name": "Microsoft.Security/privateLinks/privateEndpointConnections@2025-09-01-preview",
     "body": {
-      "$ref": "#/76"
+      "$ref": "#/69"
     },
     "readableScopes": 8,
     "writableScopes": 8
   },
   {
+    "$type": "StringType",
+    "pattern": "^(latest|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$"
+  },
+  {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Security/privateLinks/privateLinkResources"
+    "value": "Microsoft.Security/defenderForStorageSettings/malwareScans"
   },
   {
     "$type": "StringLiteralType",
@@ -994,70 +949,49 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Security/privateLinks/privateLinkResources",
+    "name": "Microsoft.Security/defenderForStorageSettings/malwareScans",
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/71"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/72"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/73"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/75"
         },
         "flags": 2,
-        "description": "Resource properties."
+        "description": "The resource-specific properties for this resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Security/privateLinks/privateLinkResources@2025-09-01-preview",
-    "body": {
-      "$ref": "#/80"
-    },
-    "readableScopes": 8,
-    "writableScopes": 0
-  },
-  {
-    "$type": "ObjectType",
-    "name": "MalwareScan",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/83"
-        },
-        "flags": 0
       }
     }
   },
@@ -1067,35 +1001,35 @@
     "properties": {
       "scanId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The identifier of the scan."
       },
       "scanStatus": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "A status code of the scan operation."
       },
       "scanStatusMessage": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "A description of the status of the scan."
       },
       "scanStartTime": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The time at which the scan had been initiated."
       },
       "scanEndTime": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The time at which the scan has ended. Only available for a scan which has terminated."
@@ -1108,6 +1042,63 @@
         "description": "A summary of the scan results."
       }
     }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WaitingForCompletion"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ObjectType",
@@ -1129,7 +1120,7 @@
       },
       "estimatedScanCostUSD": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The estimated cost of the scan. Only available for a scan which has terminated."
@@ -1142,35 +1133,35 @@
     "properties": {
       "totalBlobsScanned": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The total number of blobs that were scanned."
       },
       "maliciousBlobsCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of malicious blobs that were detected during the scan."
       },
       "skippedBlobsCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of blobs that were skipped."
       },
       "failedBlobsCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of failed blob scans."
       },
       "scannedBlobsInGB": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of gigabytes of data that were scanned."
@@ -1183,38 +1174,153 @@
     "properties": {
       "totalFilesScanned": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The total number of files that were scanned."
       },
       "maliciousFilesCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of malicious files that were detected during the scan."
       },
       "skippedFilesCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of files that were skipped."
       },
       "failedFilesCount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of failed file scans."
       },
       "scannedFilesInGB": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "The number of gigabytes of data that were scanned."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/defenderForStorageSettings/malwareScans@2025-09-01-preview",
+    "body": {
+      "$ref": "#/74"
+    },
+    "readableScopes": 31,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/privateLinks/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/privateLinks/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 2,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/privateLinks/privateLinkResources@2025-09-01-preview",
+    "body": {
+      "$ref": "#/90"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MalwareScan",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1224,7 +1330,7 @@
     "resourceType": "Microsoft.Security/defenderForStorageSettings/malwareScans",
     "apiVersion": "2025-09-01-preview",
     "output": {
-      "$ref": "#/82"
+      "$ref": "#/92"
     }
   },
   {
@@ -1233,7 +1339,7 @@
     "resourceType": "Microsoft.Security/defenderForStorageSettings",
     "apiVersion": "2025-09-01-preview",
     "output": {
-      "$ref": "#/82"
+      "$ref": "#/92"
     }
   }
 ]
