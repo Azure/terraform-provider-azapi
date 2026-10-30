@@ -104,6 +104,7 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Retry                         retry.RetryValue    `tfsdk:"retry"`
 				Headers                       map[string]string   `tfsdk:"headers"`
 				QueryParameters               map[string][]string `tfsdk:"query_parameters"`
+				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
 			}
 
 			var oldState OldModel
@@ -147,6 +148,7 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				SensitiveOutput:               types.DynamicNull(),
 				Timeouts:                      oldState.Timeouts,
 				Retry:                         retry.NewRetryValueNull(),
+				ReplaceTriggersExternalValues: types.DynamicNull(),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
@@ -57,6 +58,7 @@ type ActionResourceModel struct {
 	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	Headers                       types.Map        `tfsdk:"headers"`
 	QueryParameters               types.Map        `tfsdk:"query_parameters"`
+	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
 }
 
 type ActionResource struct {
@@ -256,6 +258,14 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				},
 				Optional:            true,
 				MarkdownDescription: "A map of query parameters to include in the request.",
+			},
+
+			"replace_triggers_external_values": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: "Triggers replacement of the action resource when the value changes and neither the previous nor the new value is null.",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
 			},
 		},
 
