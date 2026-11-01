@@ -1,0 +1,1369 @@
+[
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuRequest",
+    "properties": {
+      "model": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 0,
+        "description": "Model identity, sizing inputs, and optional maximum model context length."
+      },
+      "workload": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Inference request concurrency and token shape assumptions."
+      },
+      "deployment": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Deployment scale and Azure virtual machine procurement option."
+      },
+      "optimization": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Ranking preference and optional deployment-wide hourly cost limit."
+      },
+      "targetVmSizes": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The Azure virtual machine candidate set. When supplied, only these virtual machine sizes are ranked. Entries must be non-blank and unique, compared case-insensitively."
+      },
+      "subscriptionOptions": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The subscription-scoped lookups to include in the recommendation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuModel",
+    "properties": {
+      "huggingFaceModelId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Hugging Face model identifier, for example `meta-llama/Llama-3.1-70B-Instruct`."
+      },
+      "parameterCount": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The logical total model parameter count, including all mixture-of-experts experts. May be supplied with or without a model identifier."
+      },
+      "weightPrecision": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The precision the model weights are served at. Matched case-insensitively."
+      },
+      "numLayers": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The model layer count, used for architecture-aware key-value cache sizing. Supply all architecture fields together with a parameter count."
+      },
+      "numKeyValueHeads": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The model key-value head count, used for architecture-aware key-value cache sizing. Supply all architecture fields together with a parameter count."
+      },
+      "headDim": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The attention head dimension, used for architecture-aware key-value cache sizing. Supply all architecture fields together with a parameter count."
+      },
+      "maxContextLength": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The maximum context length the model supports, in tokens. Used only as an upper bound for the sizing context length when Hugging Face metadata provides no usable maximum."
+      }
+    }
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP32"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP16"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BF16"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INT8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INT4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/4"
+      },
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuWorkload",
+    "properties": {
+      "maxConcurrentRequestsPerReplica": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The maximum number of simultaneous inference requests handled by each deployment replica."
+      },
+      "tokenBudget": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The prompt and output token budget used for key-value cache sizing."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuTokenBudget",
+    "properties": {
+      "promptTokens": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The number of prompt, or input, tokens per inference request. Must be supplied together with `maxOutputTokens`, and the two must total from 1 through 131072."
+      },
+      "maxOutputTokens": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The maximum number of generated output tokens per inference request. Must be supplied together with `promptTokens`, and the two must total from 1 through 131072."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 131072
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuDeployment",
+    "properties": {
+      "replicaCount": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 0,
+        "description": "The number of deployment replicas used for cost, quota, and placement calculations."
+      },
+      "procurementOption": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The Azure virtual machine procurement option."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnDemand"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Spot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuOptimization",
+    "properties": {
+      "rankingPreference": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The preference used to rank the recommended options."
+      },
+      "maxDeploymentCostPerHour": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The deployment-wide hourly cost ceiling."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Latency"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuHourlyCost",
+    "properties": {
+      "amount": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The maximum cost per hour for the whole deployment. Must be greater than zero when supplied."
+      },
+      "currencyCode": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The ISO 4217 currency code the amount is expressed in. The recommendation service currently supports `USD`."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z]{3}$"
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 128
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/26"
+    },
+    "minLength": 1,
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuSubscriptionOptions",
+    "properties": {
+      "includeQuota": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Whether to evaluate subscription quota for candidate virtual machine sizes."
+      },
+      "includePlacement": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Whether to query placement scores for candidate virtual machine sizes with available quota."
+      },
+      "includePricing": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Whether to fetch subscription-scoped virtual machine pricing."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuResponse",
+    "properties": {
+      "options": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "The recommended virtual machine size options, ordered from the best to the worst match."
+      },
+      "sizing": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 1,
+        "description": "The resolved workload sizing shared by every option."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuOption",
+    "properties": {
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure virtual machine size name, for example `Standard_NC24ads_A100_v4`."
+      },
+      "recommendationRank": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The rank of this option within the response, where 1 is the best match."
+      },
+      "readiness": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "How ready this option is to deploy."
+      },
+      "topology": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The deployment topology for this option."
+      },
+      "cost": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 1,
+        "description": "The deployment cost for this option."
+      },
+      "quota": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The subscription quota evidence for this option. Returned only when `subscriptionOptions.includeQuota` is set."
+      },
+      "placement": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The capacity placement evidence for this option. Returned only when `subscriptionOptions.includePlacement` is set."
+      },
+      "azureMlRecommended": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Whether the Azure Machine Learning model catalog recommends this virtual machine size for the model."
+      },
+      "benchmark": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The external benchmark evidence selected for this option."
+      },
+      "documentationUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A URL to the Azure documentation page for this virtual machine size."
+      },
+      "performanceEstimate": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The advisory deployment throughput and per-request latency estimate for this option."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuReadiness",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "The current actionability of the recommendation."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A human-readable explanation of the readiness status."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyToAttempt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QuotaIncreaseRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VerificationRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuTopology",
+    "properties": {
+      "estimatedNodeCountPerReplica": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The estimated number of virtual machine nodes required for a single replica."
+      },
+      "estimatedTotalNodeCount": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The estimated total number of virtual machine nodes across all replicas."
+      },
+      "accelerator": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "The accelerator hardware available in each virtual machine."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuAccelerator",
+    "properties": {
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The accelerator model name, for example `A100` or `H100`."
+      },
+      "countPerVm": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The number of accelerator devices in each virtual machine."
+      },
+      "memoryGiBPerAccelerator": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The memory capacity of a single accelerator device, in gibibytes."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuCost",
+    "properties": {
+      "currencyCode": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "The ISO 4217 currency code all amounts in this object are expressed in."
+      },
+      "vmHourly": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The price per hour for a single virtual machine, in the stated currency."
+      },
+      "deploymentHourly": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The price per hour for the whole deployment, in the stated currency."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "The source the price was resolved from."
+      },
+      "priceAsOf": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The date and time the price was observed."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The error that prevented subscription-scoped pricing from being resolved, if any."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureRetail"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSubscription"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StaticPreview"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuStageError",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "The reason the stage did not complete."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A human-readable description of the error."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TimedOut"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Throttled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartitionCapacityExceeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DependencyError"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataUnavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EvaluationBudgetExceeded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuQuota",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "Whether subscription quota is sufficient for the requested deployment."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A human-readable explanation of the quota status."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The error that prevented quota from being evaluated, if any."
+      },
+      "maxAvailableReplicaCount": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The maximum number of replicas that can be deployed with the available quota."
+      },
+      "increase": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The quota increase required before this option can be deployed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuQuotaIncrease",
+    "properties": {
+      "limits": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "The individual quota limits that block the requested deployment."
+      },
+      "portalUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A URL to the Azure portal page for submitting the quota increase."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuQuotaLimit",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the quota to raise."
+      },
+      "currentUsage": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The current usage against the quota."
+      },
+      "currentLimit": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The current quota limit."
+      },
+      "requiredLimit": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The quota limit required to deploy the workload."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuPlacement",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "The outcome of the placement query."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A human-readable explanation of the placement status."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The error that prevented placement from being evaluated, if any."
+      },
+      "recommendedAvailabilityZones": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "The availability zones recommended for the deployment, in preference order."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Evaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuBenchmark",
+    "properties": {
+      "level": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 1,
+        "description": "How closely the benchmark evidence matches the recommended topology."
+      },
+      "modelClass": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The model size class the benchmark covers, for example `70b`."
+      },
+      "scenario": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The benchmark scenario, for example `Server` or `Offline`."
+      },
+      "submitterCount": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The number of submitters that published results for this configuration."
+      },
+      "submissionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identifier of the selected benchmark submission."
+      },
+      "benchmarkModel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The model the benchmark was measured on."
+      },
+      "submitter": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The organization that published the benchmark submission."
+      },
+      "system": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The system the benchmark was measured on."
+      },
+      "throughput": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The throughput observed in the benchmark submission."
+      },
+      "throughputUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unit the observed throughput is expressed in, for example `Tokens/s`."
+      },
+      "software": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The serving software the benchmark was measured with."
+      },
+      "operatingSystem": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The operating system the benchmark was measured on."
+      },
+      "weightDataTypes": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The weight data types used in the benchmark submission."
+      },
+      "p99TtftMs": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The 99th-percentile time to first token observed in the benchmark, in milliseconds."
+      },
+      "p99TpotMs": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The 99th-percentile time per output token observed in the benchmark, in milliseconds."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Benchmarked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TopologyMatched"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuPerformanceEstimate",
+    "properties": {
+      "deploymentOutputTokensPerSecond": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The estimated number of output tokens generated per second across the whole deployment."
+      },
+      "ttftMs": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The estimated time to first token for a single request, in milliseconds."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuSizing",
+    "properties": {
+      "model": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "The resolved model identity and weight precision."
+      },
+      "workload": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 1,
+        "description": "The resolved per-replica workload inputs used for memory sizing."
+      },
+      "memory": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "The memory calculation shared by every returned option."
+      },
+      "basis": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "The sources used for the sizing calculation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuSizingModel",
+    "properties": {
+      "parameterCount": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The logical total model parameter count used for sizing."
+      },
+      "weightPrecision": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "The precision the model weights were sized at."
+      },
+      "huggingFaceModelId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Hugging Face model identifier the sizing metadata was resolved from."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP32"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP16"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BF16"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INT8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INT4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FP4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuSizingWorkload",
+    "properties": {
+      "maxConcurrentRequestsPerReplica": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The maximum number of simultaneous inference requests handled by each replica."
+      },
+      "contextLength": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The context length, in tokens, used to size the key-value cache: the sum of `promptTokens` and `maxOutputTokens` when a token budget is supplied, otherwise the service default."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuMemory",
+    "properties": {
+      "modelWeightsGiB": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The memory required for the model weights, in gibibytes."
+      },
+      "kvCacheGiBPerRequest": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The key-value cache memory required for a single concurrent request, in gibibytes."
+      },
+      "kvCacheGiBTotal": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The key-value cache memory required for all concurrent requests on a replica, in gibibytes."
+      },
+      "modelAndKvCacheGiB": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The combined model-weight and key-value cache memory required per replica, in gibibytes."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RecommendVmSkuSizingBasis",
+    "properties": {
+      "parameterCountSource": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Where the model parameter count was resolved from."
+      },
+      "modelWeightsCalculation": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 1,
+        "description": "How the model weight memory was calculated."
+      },
+      "contextLengthSource": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 1,
+        "description": "Where the context length was resolved from."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Request"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HuggingFace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ArtifactSize"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EstimatedFromParameterCount"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Request"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "recommendVmSku",
+    "resourceType": "Microsoft.AIInfraOptimization/locations",
+    "apiVersion": "2026-06-01-preview",
+    "output": {
+      "$ref": "#/30"
+    },
+    "input": {
+      "$ref": "#/0"
+    }
+  }
+]
