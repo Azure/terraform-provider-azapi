@@ -45,6 +45,7 @@ func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) (err err
 	if err != nil {
 		return err
 	}
+	codeFence := "```"
 
 	// #nosec G302
 	f, err := os.OpenFile("./docs/resources/data_plane_resource.md", os.O_RDWR, 0644)
@@ -134,7 +135,16 @@ resource "azapi_data_plane_resource" "dataset" {
 {{- with .Import }}
 {{ . }}
 {{- end }}
-`, table, examples))),
+
+### Foundry dataset version imports
+
+Foundry dataset versions use the same import format. The resource ID includes
+the dataset name and version, while the resource type includes the API version:
+
+%sshell
+$ terraform import azapi_data_plane_resource.dataset "contoso.services.ai.azure.com/api/projects/example/datasets/training/versions/1|Microsoft.Foundry/datasets/versions@2025-05-01"
+%s
+`, table, examples, codeFence, codeFence))),
 	}
 
 	return gen.RenderResource(ctx, f, "azapi_data_plane_resource", opt)
