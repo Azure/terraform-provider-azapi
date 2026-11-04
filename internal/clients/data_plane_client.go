@@ -186,6 +186,9 @@ func (client *DataPlaneClient) sendRequestThenPoll(ctx context.Context, req *pol
 	}
 
 	if pt, err := runtime.NewPoller[interface{}](resp, pipeline, nil); err == nil {
+		if options.RetryOptions != nil {
+			ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+		}
 		return pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
 		})
