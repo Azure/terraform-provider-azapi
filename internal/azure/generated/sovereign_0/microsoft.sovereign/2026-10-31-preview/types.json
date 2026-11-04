@@ -1,0 +1,3419 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{3,64}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sovereign/sovereignViews"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-31-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Sovereign/sovereignViews",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewResourceProperties",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The scope to apply for configuration."
+      },
+      "policyInitiatives": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The policy initiatives selected for the sovereign view."
+      },
+      "regulatoryDocumentName": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Stable regulatory-document key selected when this Sovereign View was created."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The status of a user-initiated, control-plane operation on the sovereign view resource type."
+      },
+      "dimensionSettings": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Optional per-dimension evaluation settings."
+      },
+      "isWorkload": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Indicates whether the Sovereign View is considered a workload."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewScope",
+    "properties": {
+      "managementGroups": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The management groups in scope."
+      },
+      "subscriptions": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The subscriptions in scope."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewManagementGroupScope",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource identifier of the management group."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The management group name. This is a purely client side label that the service does not validate, normalize, or use for any lookup."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/7"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewSubscriptionScope",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The subscription id."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The subscription name. This is a purely client side label that the service does not validate, normalize, or use for any lookup."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewPolicyInitiativeDetail",
+    "properties": {
+      "policyInitiativeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fully qualified id of the policy initiative."
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "The compliance dimension associated with the policy initiative."
+      },
+      "policyAssignmentIds": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "The resource identifiers of existing policy assignments association with the policy initiative and scopes in the sovereign view."
+      },
+      "policyVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The version of the policy initiative."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SovereignControlBaseline"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDimensionSettings",
+    "properties": {
+      "dataResidency": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Settings for the Data Residency dimension."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDataResidencyDimensionSettings",
+    "properties": {
+      "resourceEvaluationScope": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "The resource scope evaluated for the Data Residency dimension."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "Parameters used by the Data Residency evaluation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Residency360"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDataResidencyParameters",
+    "properties": {
+      "allowedLocations": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "Azure regions in which the resource and its linked resources are allowed to reside."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (either system assigned, or none)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Sovereign/sovereignViews@2026-10-31-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the resource for which availability needs to be checked."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityResponse",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Indicates if the resource name is available."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "The reason why the given name is not available."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Detailed reason why the given name is available."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AlreadyExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.Sovereign/locations",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/57"
+    },
+    "input": {
+      "$ref": "#/56"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsContent",
+    "properties": {
+      "top": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "The maximum number of resources to return. Used for pagination."
+      },
+      "skip": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The resources to skip when the results are returned. Used for pagination."
+      },
+      "complianceDimensions": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The filters for compliance dimensions and their states to apply when querying for compliance details."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The filters to apply when querying for compliance details."
+      },
+      "sort": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "The sorting to apply when querying for compliance details."
+      },
+      "search": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "The search to apply when querying for compliance details."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsDimensionFilter",
+    "properties": {
+      "dimension": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "The compliance dimension to filter on."
+      },
+      "states": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "The compliance states to optionally filter on."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Constrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Others"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/80"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsFilters",
+    "properties": {
+      "field": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 1,
+        "description": "The field to filter on."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "The operator to apply for the filter."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 1,
+        "description": "The values to filter on."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscription"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Region"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ParentResourceName"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/83"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsSort",
+    "properties": {
+      "field": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The field to sort on."
+      },
+      "direction": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 1,
+        "description": "The direction to sort in."
+      },
+      "sortingOrder": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Explicit ordering of policy compliance states to apply when sorting on a compliance-state field. The states are ranked in the order listed. When provided for a compliance-state field, this takes precedence over `direction`, which is ignored for that field."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "asc"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "desc"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Constrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Others"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/112"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/101"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsSearch",
+    "properties": {
+      "field": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The field to search on."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The value to search for in the specified field."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailsResult",
+    "properties": {
+      "reportStatus": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 1,
+        "description": "State indicating whether the data is processed or still being processed."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Error details when dataState is Error."
+      },
+      "lastEvaluated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The time when compliance was last evaluated overall, in RFC3339 format."
+      },
+      "totalResources": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Total number of resources for the sovereign view."
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "The list of compliance detail resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "The current compliance report generation state."
+      },
+      "nextAttempt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The next scheduled evaluation time, in RFC3339 format. May not be available for all report states."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Generating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoDataYet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Retrying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Refreshing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stale"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/126"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetailResource",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource identifier."
+      },
+      "parentResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified Azure Resource Manager ID of the parent resource. When a resource is created as part of another Azure resource's creation and its lifecycle is managed by the platform, this is the ID of that parent resource. For a resource that was created standalone and has no parent resource, this will be empty."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource."
+      },
+      "dimensionDetails": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 1,
+        "description": "The compliance details for the resource across the dimensions."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDimensionDetail",
+    "properties": {
+      "dimension": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 1,
+        "description": "The compliance dimension for the compliance detail."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 1,
+        "description": "The compliance state of the resource for the dimension."
+      },
+      "complianceDetails": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 1,
+        "description": "The compliance details for the given dimension."
+      },
+      "evaluatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The snapshot timestamp stored for this resource and dimension, in RFC3339 format."
+      },
+      "sources": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 1,
+        "description": "Distinct evaluation sources for this resource and dimension in the same snapshot. An empty array means that the state has no underlying evaluation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Constrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Others"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDetail",
+    "properties": {
+      "policyInitiativeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fully qualified id of the policy initiative associated with the compliance detail."
+      },
+      "policyAssignmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The policy assignment for the compliance detail."
+      },
+      "evaluatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time when compliance was last evaluated by Azure Policy, in RFC3339 format."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/148"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Policy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SovereignIntelligence"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/152"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/132"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/131"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "complianceDetails",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/116"
+    },
+    "input": {
+      "$ref": "#/62"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceResourceDetailsContent",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The full Azure Resource Manager resource identifier of the resource for which compliance reasoning is requested."
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 1,
+        "description": "The compliance dimension for which reasoning is requested."
+      },
+      "evaluatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The snapshot timestamp from the compliance-details response. When omitted, the latest completed snapshot is returned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceResourceDetailsResult",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The evaluated resource Azure Resource Manager identifier."
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 1,
+        "description": "The compliance dimension for which reasoning is returned."
+      },
+      "evaluatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The snapshot timestamp from which the response was produced."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "The compliance state for this dimension."
+      },
+      "evaluations": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 1,
+        "description": "The linked and replica resource evaluations for this resource and dimension."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Constrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Others"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDataEvaluation",
+    "properties": {
+      "evaluationSourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The stable identifier of the query that produced this evaluation."
+      },
+      "intent": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 1,
+        "description": "What the query was run to find."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 1,
+        "description": "The source that produced this linked or replica resource evaluation."
+      },
+      "evaluationOutcomes": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 1,
+        "description": "The outcomes produced by the query, one per evaluated linked or replica resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LinkedResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoReplica"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ARG"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogAnalytics"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewDataEvaluationOutcome",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure Resource Manager identifier of the linked or replica resource associated with the outcome."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 1,
+        "description": "The compliance state of the outcome."
+      },
+      "actualValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The actual value observed by the evaluation."
+      },
+      "expectedValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value expected by the evaluation."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for the outcome, in the service default language. Empty when the outcome has no reason. Clients that need a localized reason should resolve reasonCodeId instead."
+      },
+      "reasonCodeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The stable, language-neutral code that identifies the reason. Clients use this code to look up the localized reason string."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Additional remediation or explanatory information, in the service default language. Clients that need localized text should resolve additionalInfoCodeId instead."
+      },
+      "additionalInfoCodeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The stable, language-neutral code that identifies the additional information. Clients use this code to look up the localized additional information string."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEvaluated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Constrained"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Others"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/190"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/181"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "complianceResourceDetails",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/165"
+    },
+    "input": {
+      "$ref": "#/157"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceSummaryResult",
+    "properties": {
+      "reportStatus": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 1,
+        "description": "State indicating whether the data is processed or still being processed."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Error details when dataState is Error."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource identifier of the sovereign view."
+      },
+      "lastEvaluated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The time when compliance was last evaluated, in RFC3339 format."
+      },
+      "overallSummary": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 0,
+        "description": "The overall summary of compliance across all resources in scope."
+      },
+      "dimensionSummaries": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "The list of compliance summaries for the dimensions in scope."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceOverallSummary",
+    "properties": {
+      "totalManagementGroups": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Total number of management groups for the sovereign view."
+      },
+      "totalSubscriptions": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Total number of subscriptions for the sovereign view."
+      },
+      "totalResourceGroups": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Total number of resource groups for the sovereign view."
+      },
+      "totalResources": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Total number of resources for the sovereign view."
+      },
+      "compliantCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in compliant state for the sovereign view."
+      },
+      "nonCompliantCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in non-compliant state for the sovereign view."
+      },
+      "constrainedCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in constrained state for the sovereign view."
+      },
+      "conflictCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in conflict state for the sovereign view."
+      },
+      "notApplicableCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in not applicable state for the sovereign view."
+      },
+      "notEvaluatedCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in not evaluated state for the sovereign view."
+      },
+      "othersCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in other compliance states for the sovereign view."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewComplianceDimensionSummary",
+    "properties": {
+      "dimension": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 1,
+        "description": "The dimension representing this summary."
+      },
+      "totalResources": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Total number of resources for the sovereign view."
+      },
+      "compliantCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in compliant state for the sovereign view."
+      },
+      "nonCompliantCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in non-compliant state for the sovereign view."
+      },
+      "constrainedCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in constrained state for the sovereign view."
+      },
+      "conflictCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in conflict state for the sovereign view."
+      },
+      "notApplicableCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in not applicable state for the sovereign view."
+      },
+      "notEvaluatedCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in not evaluated state for the sovereign view."
+      },
+      "othersCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Number of resources in other compliance states for the sovereign view."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/204"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "complianceSummary",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/202"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewFilterValuesContent",
+    "properties": {
+      "requestedFilter": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 1,
+        "description": "The filter field for which values are requested."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 0,
+        "description": "Optional filters to apply before returning filter values."
+      },
+      "searchTerm": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional search term applied to the requested filter field."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscription"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Region"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ParentResourceName"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/83"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewFilterValuesResult",
+    "properties": {
+      "dataState": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 1,
+        "description": "State indicating whether the data is processed or still being processed."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Error details when dataState is Error."
+      },
+      "requestedFilter": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "The filter field for which values are returned."
+      },
+      "totalCount": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Total number of values available for the requested filter."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "The list of filter values and their counts."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Processing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Processed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscription"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Region"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ParentResourceName"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewFilterValueItem",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The value for the filter."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The display name for the filter value."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "The count of resources that match the filter value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/247"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "filterValues",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/229"
+    },
+    "input": {
+      "$ref": "#/214"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewOperationalStatusContent",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "The level of detail to return in the operational status response. Defaults to Detailed."
+      },
+      "evaluationParameters": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 0,
+        "description": "The evaluation parameters that control which checks are performed when determining operational status."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Summary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PermissionsEvaluation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PolicyAssignmentEvaluation"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/256"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewOperationalStatusResult",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the sovereign view."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 1,
+        "description": "The overall operational status of the sovereign view."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "The detailed operational status information. Returned when the operational status is evaluated in Detailed mode."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewOperationalStatusDetails",
+    "properties": {
+      "reason": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 1,
+        "description": "The reason the sovereign view is unhealthy."
+      },
+      "affectedScopes": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 0,
+        "description": "The scopes affected by the issue."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIMissing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIPermissionMissing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PolicyAssignmentMissing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewAffectedScopes",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the management group or subscription affected."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The identifier of the management group or subscription affected."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 1,
+        "description": "The type of the affected scope."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 1,
+        "description": "The operational status of the affected scope."
+      },
+      "actionRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The action required to remediate the affected scope, such as a role name or a policy initiative id."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagementGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscription"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/268"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "operationalStatus",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/258"
+    },
+    "input": {
+      "$ref": "#/250"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewRemediateContent",
+    "properties": {
+      "dimensionType": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 1,
+        "description": "The remediation dimension being addressed. Only \"DataResidency\" is currently supported for remediation."
+      },
+      "residencyRemediationRequest": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 1,
+        "description": "The residency-specific remediation request, present when dimensionType is \"DataResidency\"."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewResidencyRemediationContent",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 1,
+        "description": "The residency remediation configuration."
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 1,
+        "description": "The resources to remediate."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewResidencyRemediationConfiguration",
+    "properties": {
+      "targetRegion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The target region resources should be remediated into."
+      },
+      "targetResourceGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default resource group the remediated resources should be created in, if different from their source resource group. Can be overridden per-resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewResidencyRemediationResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource Manager resource ID of the resource to remediate."
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 1,
+        "description": "The residency remediation configuration for this resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewResidencyRemediationResourceConfiguration",
+    "properties": {
+      "sourceRegion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The current region of the resource."
+      },
+      "targetResourceGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource group the remediated resource should be created in, if different from the source resource group."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/289"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewRemediateResult",
+    "properties": {
+      "remediationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The identifier used to fetch the remediation result via the remediationResult action."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The error encountered while starting remediation, if any."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "remediate",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/292"
+    },
+    "input": {
+      "$ref": "#/279"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewRemediationResultContent",
+    "properties": {
+      "remediationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The remediation identifier returned by the remediate action."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewRemediationResult",
+    "properties": {
+      "remediationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The remediation identifier this result corresponds to."
+      },
+      "dimensionType": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 1,
+        "description": "The remediation dimension this result corresponds to. Only \"DataResidency\" is currently supported for remediation."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 3,
+        "description": "The status of the remediation, e.g. \"Succeeded\"."
+      },
+      "results": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 0,
+        "description": "The remediation results."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The error encountered while remediating, if any."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time of creation of this remediation result."
+      },
+      "expiresAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time at which this remediation result expires and is no longer retrievable."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataResidency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionAtRest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInTransit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncryptionInUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlledNetworkExposure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BusinessContinuity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/304"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewRemediationResultItem",
+    "properties": {
+      "resourceIds": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 1,
+        "description": "The Azure Resource Manager resource IDs this result item applies to."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 1,
+        "description": "The type of remediation payload returned."
+      },
+      "result": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 1,
+        "description": "The remediation payload."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ArmTemplateBundle"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SovereignViewArmTemplateBundle",
+    "properties": {
+      "template": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource Manager template, serialized as a JSON string."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource Manager template parameters, serialized as a JSON string."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/306"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "remediationResult",
+    "resourceType": "Microsoft.Sovereign/sovereignViews",
+    "apiVersion": "2026-10-31-preview",
+    "output": {
+      "$ref": "#/295"
+    },
+    "input": {
+      "$ref": "#/294"
+    }
+  }
+]

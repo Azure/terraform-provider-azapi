@@ -1,0 +1,6096 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-z0-9](?:[-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource. Omitting the entire identity property from PUT or PATCH preserves all current assignments. When provided, PUT replaces the user-assigned identity set and PATCH merges it; null PATCH dictionary entries remove individual identities. Setting type to None clears all assignments."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterProperties",
+    "properties": {
+      "postgreSqlVersion": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The PostgreSQL major version used by the HorizonDB cluster. API version 2026-10-01-preview supports versions 17 and 18. For ordinary cluster creation, the version is supplied in the request and is immutable after creation. For point-in-time restore, the service obtains the version from the source backup metadata and the request must omit this property. This API version does not support in-place PostgreSQL major-version upgrades."
+      },
+      "creationMode": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The mode used to create the cluster. When this property is omitted while creating a new cluster, the service records Create. PointInTimeRestore creates a new cluster from an available backup; pointInTimeUtc and creationSourceClusterResourceId are then required, postgreSqlVersion must be omitted because it is obtained from the backup metadata, and creationSourceClusterLocation is required when the source and target cluster locations differ. This property is immutable and is returned as creation provenance. On replacement, omission preserves the recorded value, resubmitting the same value is accepted, and changing it is rejected."
+      },
+      "pointInTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The requested point in time, in UTC. This property is required in every PointInTimeRestore request. For a same-location restore, the service restores the latest backup available at or before this value. For a cross-location restore, the service requires but ignores this value and restores the latest available backup; cross-location responses omit this property. This property must be absent for other creation modes or when creationMode is omitted and can only be specified during resource creation."
+      },
+      "creationSourceClusterResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID of the source HorizonDB cluster used by the selected creation mode. This property is required for PointInTimeRestore and other source-based creation modes, and must be absent when creationMode is Create or omitted. A source cluster does not need to have a pool to be restored, provided an available backup exists. This immutable creation-provenance value does not change after creation."
+      },
+      "creationSourceClusterLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure location of the source HorizonDB cluster used for point-in-time restore. This property is optional when the source and target cluster locations are the same. It is required when the source cluster location differs from the target cluster location and must identify the source cluster's location. This property must be absent for creation modes other than PointInTimeRestore or when creationMode is omitted. This immutable creation-provenance value does not change after creation."
+      },
+      "network": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The network configuration for the cluster. When this object is omitted, the service defaults it to publicAccess Disabled."
+      },
+      "backup": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The backup configuration for the cluster."
+      },
+      "dataEncryption": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The data encryption configuration for the cluster. When omitted during initial cluster creation, the service uses SystemManaged encryption. When supplied during initial cluster creation, type is required. For PUT updates of an existing cluster, type may be omitted; if provided, it must match the existing encryption type. The encryption type is selected at cluster creation; switching between SystemManaged and AzureKeyVault after creation is not supported."
+      },
+      "aiModelManagement": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Specifies whether AI Model Management is enabled for the cluster."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 3,
+        "description": "Current state of the cluster."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 3,
+        "description": "The provisioning state of the cluster."
+      },
+      "readWritePool": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 3,
+        "description": "The pool currently designated to host the cluster's read-write node."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Create"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PointInTimeRestore"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Network",
+    "properties": {
+      "publicAccess": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Specifies whether public access is enabled for the cluster. The service defaults to Disabled when this property is omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupProperties",
+    "properties": {
+      "geoRedundancy": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "The geo-redundancy state. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault."
+      },
+      "retentionDays": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The number of days that automatic backups are retained. The service defaults to 7 days when this property is omitted."
+      },
+      "earliestRestorePointUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The earliest point in time, in UTC, to which the cluster can currently be restored."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 35
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HorizonDbClusterDataEncryption",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The type of data encryption used by the cluster. When the data encryption configuration is supplied during initial cluster creation, this property is required. For PUT updates of an existing cluster, this property may be omitted; if provided, it must match the existing encryption type. This value is selected at cluster creation and cannot later be changed from SystemManaged to AzureKeyVault or from AzureKeyVault to SystemManaged."
+      },
+      "primaryKeyUri": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The versionless Azure Key Vault key URI used to encrypt the cluster's primary storage. Key version paths are not supported. During initial cluster creation, this property can be provided together with primaryUserAssignedIdentityId. For updates to an existing cluster through PUT or PATCH, this property and primaryUserAssignedIdentityId cannot both change in the same request; the first update must complete before submitting a separate update for the other property."
+      },
+      "primaryUserAssignedIdentityId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID of the user-assigned managed identity used to access the primary encryption key. The identity must also be assigned to the Cluster through its top-level identity property. During initial cluster creation, this property can be provided together with primaryKeyUri. For updates to an existing cluster through PUT or PATCH, this property and primaryKeyUri cannot both change in the same request; the first update must complete before submitting a separate update for the other property."
+      },
+      "primaryEncryptionKeyStatus": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "The validation status of the primary encryption key. This property is returned for AzureKeyVault encryption and is absent for SystemManaged encryption."
+      },
+      "primaryEncryptionKeyCurrentVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The current version of the primary encryption key used by the cluster. This property is returned for AzureKeyVault encryption and is absent for SystemManaged encryption."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemManaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureKeyVault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^https://[A-Za-z0-9-]+[.]vault([.]azure[.]net|[.]usgovcloudapi[.]net|[.]azure[.]cn)/keys/[A-Za-z0-9-]+/?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Valid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inaccessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReadWritePoolProperties",
+    "properties": {
+      "designatedPoolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Azure resource ID of the pool designated to host the cluster's read-write node. The pool is a child resource of this cluster. When a pool is created while the cluster currently has no pools, the service automatically sets this property to the new pool's resource ID, including when all pools that existed earlier in the cluster's lifetime were deleted. This property is absent when no pool is designated, such as after clearReadWritePool succeeds."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HorizonDbClusterManagedServiceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "The managed identity type assigned to the cluster. Setting this property to None clears all managed identity assignments."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The user-assigned managed identities associated with the cluster. When supplied on PUT, this dictionary replaces the complete set of assignments. When supplied on PATCH, entries are merged with the existing set and a null value removes the corresponding identity. Each dictionary key must be the full Azure resource ID of a Microsoft.ManagedIdentity/userAssignedIdentities resource. Non-null request values can be empty objects; response values contain the service-populated clientId and principalId. Assigning an identity does not grant it access to destination resources; required role assignments must be configured separately."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HorizonDbClusterManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/49"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters@2026-10-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/parameterGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/parameterGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ParameterGroupProperties",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Parameters in the parameter group."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Description of the parameter group. The maximum length is 1024 characters."
+      },
+      "postgreSqlVersion": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "The PostgreSQL major version for the parameter group. This property is required during creation and is immutable thereafter. The service selects the unique location-scoped default parameter group for this version in the resource location. The DefaultParameterGroups APIs return at most one default parameter group for each PostgreSQL version in a location, so this selection is unambiguous."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the parameter group."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ParameterProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the parameter."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The description of the parameter."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the configuration."
+      },
+      "defaultValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The system-defined default value of the parameter, independent of the effective value."
+      },
+      "valueSource": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 2,
+        "description": "The source of the effective parameter value. UserOverride means that the value was explicitly supplied by the user, even when it equals defaultValue."
+      },
+      "dataType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The data type of the parameter."
+      },
+      "allowedValues": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The allowed values for the parameter."
+      },
+      "isDynamic": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 2,
+        "description": "Whether the parameter can be changed dynamically."
+      },
+      "isReadOnly": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 2,
+        "description": "Whether the parameter is read-only. Read-only parameters cannot be overridden."
+      },
+      "documentationLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to parameter documentation."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The unit of measurement for the parameter."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemDefault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserOverride"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 1024
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/parameterGroups@2026-10-01-preview",
+    "body": {
+      "$ref": "#/68"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "microsoftEntra"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/authentications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/authentications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MicrosoftEntraAuthenticationProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 1,
+        "description": "The state of Microsoft Entra authentication."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the Microsoft Entra authentication method."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "passwordMethod"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/authentications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/authentications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PasswordAuthenticationProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 1,
+        "description": "The state of PostgreSQL username-and-password authentication."
+      },
+      "administratorLogin": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 4,
+        "description": "The PostgreSQL administrator login name. This value is not returned in responses. After it is set, renaming is not supported. Setting the login requires password authentication state to be Enabled in the same request."
+      },
+      "administratorLoginPassword": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 4,
+        "description": "The PostgreSQL administrator password. Setting the password requires password authentication state to be Enabled in the same request."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the PostgreSQL username-and-password authentication method."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "minLength": 1,
+    "maxLength": 63
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "minLength": 8,
+    "maxLength": 128
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "microsoft.horizondb/clusters/authentications",
+    "discriminator": "name",
+    "baseProperties": {},
+    "elements": {
+      "microsoftEntra": {
+        "$ref": "#/91"
+      },
+      "passwordMethod": {
+        "$ref": "#/105"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/authentications@2026-10-01-preview",
+    "body": {
+      "$ref": "#/118"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/changeDataCapture"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCapture",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureCapabilityProperties",
+    "properties": {
+      "desiredState": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The requested capability state."
+      },
+      "effectiveState": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 3,
+        "description": "The current effective capability state."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the latest capability mutation."
+      },
+      "autoUpgradeExtension": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Whether HorizonDB may automatically upgrade the service-owned change data capture extension within the supported compatibility policy."
+      },
+      "replicationArchitecture": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 3,
+        "description": "The implementation architecture currently used for change capture."
+      },
+      "extension": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 3,
+        "description": "The installed change data capture extension and its current lifecycle state."
+      },
+      "prerequisites": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 3,
+        "description": "The current readiness of change data capture engine and read-write endpoint prerequisites."
+      },
+      "destinationCount": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The number of change data capture destinations under this cluster."
+      },
+      "configurationCount": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The number of change data capture configurations under this cluster."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 3,
+        "description": "Customer-safe health information for the capability."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ComputeBased"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StorageBased"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hybrid"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureExtensionStatus",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The extension name."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The installed extension version."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 3,
+        "description": "The current extension lifecycle state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotInstalled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Installing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Removing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCapturePrerequisiteStatus",
+    "properties": {
+      "engineConfigurationState": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 3,
+        "description": "The readiness of the required engine configuration."
+      },
+      "readWriteEndpointState": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 3,
+        "description": "The availability of the read-write endpoint required for engine mutations."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotReady"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reconciling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "A stable machine-readable status code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "A localized customer-safe description of the current status."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCapture@2026-10-01-preview",
+    "body": {
+      "$ref": "#/123"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/changeDataCaptureConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureConfigurationProperties",
+    "properties": {
+      "databaseName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The exact PostgreSQL database name enrolled in this logical stream. This value is immutable."
+      },
+      "usageProfile": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 1,
+        "description": "The immutable usage profile. API version 2026-10-01-preview accepts Mirroring only."
+      },
+      "destinationResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The immutable resource ID of an enabled change data capture destination under the same cluster."
+      },
+      "logicalStreamId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "A service-generated identifier for the logical stream, represented as an RFC 4122 GUID. This value remains stable when a writer role moves and the service materializes a replacement ARM resource under the new writer cluster."
+      },
+      "desiredState": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 1,
+        "description": "The requested configuration state."
+      },
+      "effectiveState": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 3,
+        "description": "The current effective configuration state."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the latest configuration mutation."
+      },
+      "extension": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 3,
+        "description": "The change data capture extension state for the enrolled database."
+      },
+      "replication": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 3,
+        "description": "The known status of the destination-owned replication session."
+      },
+      "topology": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 3,
+        "description": "The current writer-topology binding for this logical stream."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 3,
+        "description": "Customer-safe health information for the configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mirroring"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureReplicationStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 3,
+        "description": "The current replication-session state."
+      },
+      "externalArtifactId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "An opaque identifier of a destination-owned artifact, such as a Microsoft Fabric mirrored-database item. HorizonDB does not create, update, or delete the identified artifact."
+      },
+      "lastConnectedAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time, in UTC, when a destination session most recently connected."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotConnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connecting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replicating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reconnecting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureTopologyBindingStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 3,
+        "description": "The configuration's relationship to the current writer topology."
+      },
+      "generation": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "A monotonically increasing topology generation for this logical stream."
+      },
+      "activeClusterResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Azure resource ID of the cluster that currently owns the active configuration projection."
+      },
+      "replacementConfigurationResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The replacement configuration resource ID when this projection has been superseded or requires rebinding."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reconciling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RebindRequired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Superseded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Conflict"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureConfigurations@2026-10-01-preview",
+    "body": {
+      "$ref": "#/167"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureDestinationProperties",
+    "properties": {
+      "destination": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 1,
+        "description": "The immutable Microsoft Fabric destination settings. Resubmitting the same values is accepted; changing them requires deleting and recreating the destination."
+      },
+      "desiredState": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 1,
+        "description": "The requested destination state."
+      },
+      "effectiveState": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 3,
+        "description": "The current effective destination state."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the latest destination mutation."
+      },
+      "activeIdentityAssignmentResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource ID of the currently active identity assignment, if one is active."
+      },
+      "configurationCount": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The number of change data capture configurations that reference this destination."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 3,
+        "description": "Customer-safe health information for the destination."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ChangeDataCaptureDestinationDetails",
+    "discriminator": "destinationType",
+    "baseProperties": {
+      "protocol": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1,
+        "description": "The protocol used to communicate with the destination."
+      }
+    },
+    "elements": {
+      "Fabric": {
+        "$ref": "#/213"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Native"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FabricDestinationDetails",
+    "properties": {
+      "protocol": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 1,
+        "description": "Specifies the Microsoft Fabric native destination protocol."
+      },
+      "workspaceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The opaque identifier of the Microsoft Fabric workspace that owns the destination artifact."
+      },
+      "destinationType": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 1,
+        "description": "The destination family."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Native"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fabric"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WaitingForIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations@2026-10-01-preview",
+    "body": {
+      "$ref": "#/208"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations/identityAssignments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations/identityAssignments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/234"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeDataCaptureIdentityAssignmentProperties",
+    "properties": {
+      "identityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The immutable resource ID of the user-assigned managed identity selected for this destination. The ID must exactly match a key in the parent cluster's top-level identity.userAssignedIdentities dictionary; otherwise creation is rejected. Attaching the identity to the cluster does not grant destination access, so required role assignments must be configured separately. Resubmitting the same value is accepted; changing it requires deleting and recreating the assignment."
+      },
+      "effectiveState": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 3,
+        "description": "The current assignment lifecycle state."
+      },
+      "activationState": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 3,
+        "description": "The current activation state within the parent destination."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Microsoft Entra principal ID resolved from the user-assigned managed identity, represented as an RFC 4122 GUID."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Microsoft Entra tenant ID resolved from the user-assigned managed identity, represented as an RFC 4122 GUID."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the latest identity-assignment mutation."
+      },
+      "validation": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 3,
+        "description": "The latest validation result for this identity assignment."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 3,
+        "description": "Customer-safe health information for the identity assignment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Removing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inactive"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Activating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deactivating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityValidationStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 3,
+        "description": "The current validation state."
+      },
+      "validatedAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time, in UTC, when validation most recently completed."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 2,
+        "description": "The customer-safe validation error when validation failed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/261"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations/identityAssignments@2026-10-01-preview",
+    "body": {
+      "$ref": "#/236"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/microsoftEntraAdministrators"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/microsoftEntraAdministrators",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 1,
+        "description": "The PostgreSQL role and Microsoft Entra principal mapping properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MicrosoftEntraAdministratorPropertiesForAddOrMicrosoftEntraAdministratorProperties",
+    "properties": {
+      "principalName": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 1,
+        "description": "The display name or user principal name of the Microsoft Entra principal to map to the PostgreSQL role. For users, this is typically the user principal name, such as admin@contoso.com. For groups, this is the group display name. For service principals, this is the application display name."
+      },
+      "principalType": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 1,
+        "description": "The type of Microsoft Entra principal to map to the PostgreSQL role."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identifier of the Microsoft Entra tenant containing the principal to map, represented as an RFC 4122 GUID. If omitted, this value defaults to the tenant of the subscription."
+      },
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented as an RFC 4122 GUID. On PUT requests, this value comes from the URI path parameter."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the PostgreSQL role and Microsoft Entra principal mapping."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 256
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Group"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServicePrincipal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/microsoftEntraAdministrators@2026-10-01-preview",
+    "body": {
+      "$ref": "#/270"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/pools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/pools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 2,
+        "description": "Current state of the pool."
+      },
+      "computeModel": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 1,
+        "description": "The required compute model for the HorizonDB pool."
+      },
+      "nodeCount": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 1,
+        "description": "The required number of nodes to allocate and assign to the pool. Allowed values are 1 through 16. To deallocate runtime compute without changing the configured node count, stop the pool."
+      },
+      "highAvailability": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 1,
+        "description": "The required high-availability configuration for the pool. mode must be Disabled when nodeCount is 1, and must be AnyZone or ZoneRedundant when nodeCount is 2 through 16."
+      },
+      "parameterGroup": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 1,
+        "description": "The required parameter group associated with the pool. When creating a new pool in this API version, the caller must supply the corresponding default parameter group; customer-created parameter groups are not accepted during creation. For an existing pool, PUT or PATCH can associate either the corresponding default parameter group or a customer-created parameter group. The create-visible shape intentionally supports both resource ID forms so a future API version can allow customer-created parameter groups during creation without a breaking schema change."
+      },
+      "scheduledMaintenance": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "The scheduled maintenance configuration for the pool. The properties available depend on the selected maintenance management type."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/330"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the pool."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inaccessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restarting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolComputeModel",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 1,
+        "description": "The type of compute model."
+      },
+      "computeProcessor": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 1,
+        "description": "The processor type for the compute model."
+      },
+      "computeGeneration": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 1,
+        "description": "The compute generation for the compute model."
+      },
+      "vCores": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 1,
+        "description": "The number of vCores. Allowed values are 1 through 192."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Intel"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AMD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 2,
+    "maxValue": 192
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 16
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolHighAvailability",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/312"
+        },
+        "flags": 1,
+        "description": "The high-availability mode. Disabled is required when nodeCount is 1. AnyZone or ZoneRedundant is required when nodeCount is 2 through 16."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AnyZone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZoneRedundant"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolParameterGroupReference",
+    "properties": {
+      "parameterGroupResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID of the associated parameter group. Initial pool creation in this API version requires the corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify either the corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource."
+      },
+      "applyMethod": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 1,
+        "description": "Determines when dynamic parameter changes from the associated parameter group become effective. Static parameter changes always require a customer-initiated pool Restart, regardless of this value. Stop followed by Start and scheduled maintenance do not apply pending parameter changes."
+      },
+      "syncStatus": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 2,
+        "description": "The synchronization status between the pool and its parameter group. PendingReboot changes remain pending across Stop, Start, and scheduled maintenance and become effective only after a customer-initiated Restart."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Immediate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingReboot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InSync"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedToApply"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingReboot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/320"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ScheduledMaintenanceProperties",
+    "discriminator": "maintenanceManagementType",
+    "baseProperties": {},
+    "elements": {
+      "System": {
+        "$ref": "#/323"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemScheduledMaintenanceProperties",
+    "properties": {
+      "maintenanceManagementType": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 1,
+        "description": "Specifies whether scheduled maintenance is managed by the system or by the user."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/pools@2026-10-01-preview",
+    "body": {
+      "$ref": "#/287"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 128,
+    "pattern": "^[a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/pools/firewallRules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/pools/firewallRules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/333"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/334"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/335"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/337"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FirewallRuleProperties",
+    "properties": {
+      "startIpAddress": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 1,
+        "description": "The start IPv4 address of the firewall rule in dotted-decimal notation."
+      },
+      "endIpAddress": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 1,
+        "description": "The end IPv4 address of the firewall rule in dotted-decimal notation. This address must be numerically greater than or equal to startIpAddress."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "The description of the HorizonDB firewall rule. The maximum length is 1024 characters."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the firewall rule."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])[.]){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/pools/firewallRules@2026-10-01-preview",
+    "body": {
+      "$ref": "#/336"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/349"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/351"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/352"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/361"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/privateEndpointConnections@2026-10-01-preview",
+    "body": {
+      "$ref": "#/348"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/locations/capabilities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/locations/capabilities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/363"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/367"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the capability catalog entry."
+      },
+      "clusterCapabilities": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 3,
+        "description": "The Cluster capabilities available in the region."
+      },
+      "poolCapabilities": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 3,
+        "description": "The Pool capabilities available in the region, including processor, generation, and compute-model details."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterCapability",
+    "properties": {
+      "recommendedPostgreSqlVersion": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 3,
+        "description": "The PostgreSQL major version recommended for clients to select for HorizonDB Clusters in the region. This recommendation does not describe backend behavior when the PostgreSQL version is omitted from a request."
+      },
+      "supportedPostgreSqlVersions": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 3,
+        "description": "The PostgreSQL major versions supported by Clusters in the region."
+      },
+      "supportedFeatures": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 3,
+        "description": "Additional Cluster features supported in the region."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PostgreSqlVersionCapability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/381"
+        },
+        "flags": 3,
+        "description": "The PostgreSQL major version."
+      },
+      "supportedVersionsToUpgrade": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 3,
+        "description": "The PostgreSQL major versions to which this version can be upgraded in place. API version 2026-10-01-preview does not support in-place PostgreSQL major-version upgrades, so this array is always empty."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/379"
+      },
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/383"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/384"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterFeatureCapability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the Cluster feature."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/387"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolCapability",
+    "properties": {
+      "recommendedComputeProcessor": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 3,
+        "description": "The compute processor recommended for clients to select for HorizonDB Pools in the region. This recommendation does not describe backend behavior when the compute processor is omitted from a request."
+      },
+      "supportedProcessors": {
+        "type": {
+          "$ref": "#/407"
+        },
+        "flags": 3,
+        "description": "The processor families and their compute capabilities supported by Pools in the region."
+      },
+      "supportedFeatures": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 3,
+        "description": "Additional Pool features supported in the region independently of a processor, generation, or compute model."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Intel"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AMD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/391"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComputeProcessorCapability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/396"
+        },
+        "flags": 3,
+        "description": "The name of the processor family."
+      },
+      "supportedGenerations": {
+        "type": {
+          "$ref": "#/406"
+        },
+        "flags": 3,
+        "description": "The compute generations supported by the processor family."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Intel"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AMD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/394"
+      },
+      {
+        "$ref": "#/395"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComputeGenerationCapability",
+    "properties": {
+      "computeGeneration": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The numeric compute generation used when configuring a HorizonDB pool."
+      },
+      "recommendedComputeModelType": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 3,
+        "description": "The compute model type recommended for clients to select for this compute generation. This recommendation does not describe backend behavior when the compute model type is omitted from a request."
+      },
+      "supportedComputeModels": {
+        "type": {
+          "$ref": "#/405"
+        },
+        "flags": 3,
+        "description": "The compute models supported by the compute generation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/398"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ComputeModelCapability",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "Provisioned": {
+        "$ref": "#/401"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProvisionedComputeModelCapability",
+    "properties": {
+      "recommendedVCoreCount": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The provisioned vCore count recommended for clients to select. This recommendation does not describe backend behavior when vCores is omitted from a request."
+      },
+      "supportedComputeSizes": {
+        "type": {
+          "$ref": "#/403"
+        },
+        "flags": 3,
+        "description": "The supported provisioned compute sizes."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 1,
+        "description": "The compute model represented by these capabilities."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComputeSizeCapability",
+    "properties": {
+      "vCores": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The number of vCores in the configuration."
+      },
+      "memoryPerVCoreInMb": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 3,
+        "description": "The memory in megabytes available for each vCore."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/402"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/400"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/397"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/393"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolFeatureCapability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the Pool feature."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/408"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/locations/capabilities@2026-10-01-preview",
+    "body": {
+      "$ref": "#/366"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/locations/parameterGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/locations/parameterGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/412"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/415"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefaultParameterGroupProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/421"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the default parameter group."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/422"
+        },
+        "flags": 1,
+        "description": "Engine-defined parameters in the default parameter group. Service and other non-engine entries are excluded."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of the default parameter group."
+      },
+      "postgreSqlVersion": {
+        "type": {
+          "$ref": "#/425"
+        },
+        "flags": 1,
+        "description": "PostgreSQL version for which this default parameter group is valid."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
+        "$ref": "#/418"
+      },
+      {
+        "$ref": "#/419"
+      },
+      {
+        "$ref": "#/420"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "17"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "18"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/423"
+      },
+      {
+        "$ref": "#/424"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/locations/parameterGroups@2026-10-01-preview",
+    "body": {
+      "$ref": "#/414"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/endpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/endpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/428"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/430"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EndpointProperties",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/433"
+        },
+        "flags": 3,
+        "description": "The scope of the endpoint. Cluster-scoped Endpoints provide the cluster connection, and Pool-scoped Endpoints provide read-only connections to eligible nodes in one pool."
+      },
+      "associatedResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The Azure resource ID of the Endpoint's lifecycle owner. For Cluster scope, this identifies the parent Cluster with which the Endpoint is created and deleted. For Pool scope, this identifies the Pool with which the Endpoint is created and deleted; the Pool must be a child of the Endpoint's parent Cluster."
+      },
+      "fullyQualifiedDomainName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The service-generated fully qualified domain name of the endpoint. A Cluster-scoped Endpoint uses <cluster>.<clusterid>.<region>.horizondb.azure.com. A Pool-scoped Endpoint uses <poolid>.<cluster>.<clusterid>.<region>.horizondb.azure.com."
+      },
+      "role": {
+        "type": {
+          "$ref": "#/436"
+        },
+        "flags": 3,
+        "description": "The routing role of the endpoint. A Cluster-scoped Endpoint normally has the ReadWrite role. Pool-scoped Endpoints have the ReadOnly role and route only to allocated nodes in the associated Pool that are not currently playing the read-write role. A Pool-scoped ReadOnly Endpoint has no routing destination unless at least one such node exists, including when the Pool is Stopped, has zero allocated nodes, or has only one allocated node and that node is playing the read-write role."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cluster"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pool"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/endpoints@2026-10-01-preview",
+    "body": {
+      "$ref": "#/429"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^PostgreSqlServer$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/logCaptureConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/logCaptureConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/438"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/439"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/442"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogCaptureConfigurationProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/445"
+        },
+        "flags": 1,
+        "description": "Specifies whether HorizonDB captures this type of log. Disabling capture stops the production of new log files; existing files remain available until their retention period expires."
+      },
+      "retentionDays": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "The number of days captured log files are retained."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/451"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the log capture configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/443"
+      },
+      {
+        "$ref": "#/444"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/446"
+      },
+      {
+        "$ref": "#/447"
+      },
+      {
+        "$ref": "#/448"
+      },
+      {
+        "$ref": "#/449"
+      },
+      {
+        "$ref": "#/450"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/logCaptureConfigurations@2026-10-01-preview",
+    "body": {
+      "$ref": "#/441"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/logFiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/logFiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/453"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/454"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/457"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogFileProperties",
+    "properties": {
+      "logType": {
+        "type": {
+          "$ref": "#/459"
+        },
+        "flags": 3,
+        "description": "The type of the captured log file."
+      },
+      "createdAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The date and time when the log file was created, in UTC."
+      },
+      "lastModifiedAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The date and time when the log file was last modified, in UTC."
+      },
+      "retentionExpiresAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The date and time when the log file expires according to its retention period, in UTC."
+      },
+      "isMutable": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 3,
+        "description": "Whether the platform can still append to or otherwise modify the log file."
+      },
+      "sizeInKilobytes": {
+        "type": {
+          "$ref": "#/460"
+        },
+        "flags": 3,
+        "description": "The size of the log file in kilobytes, where one kilobyte is 1024 bytes."
+      },
+      "pool": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 3,
+        "description": "The name of the HorizonDB pool that the node generating the log file belongs to."
+      },
+      "node": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The node that generated the log file in the HorizonDB cluster."
+      },
+      "role": {
+        "type": {
+          "$ref": "#/464"
+        },
+        "flags": 3,
+        "description": "The role performed by the node that generated the log file."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PostgreSqlServer"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/458"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unassigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/461"
+      },
+      {
+        "$ref": "#/462"
+      },
+      {
+        "$ref": "#/463"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/logFiles@2026-10-01-preview",
+    "body": {
+      "$ref": "#/456"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 8,
+    "maxLength": 8,
+    "pattern": "^[A-Z0-9]{4}-[A-Z0-9]{3}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/pools/maintenanceEvents"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/pools/maintenanceEvents",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/466"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/467"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/468"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceEventProperties",
+    "properties": {
+      "maintenanceEventId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A service-generated identifier for this maintenance event, assigned by the platform. The format is not contractual, and clients should not attempt to parse or construct this value."
+      },
+      "maintenanceType": {
+        "type": {
+          "$ref": "#/472"
+        },
+        "flags": 3,
+        "description": "The maintenance type."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The human-readable description of the maintenance event."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/478"
+        },
+        "flags": 3,
+        "description": "The customer-facing status of the maintenance event."
+      },
+      "startTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The scheduled start time of the maintenance event in UTC."
+      },
+      "endTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The scheduled end time of the maintenance event in UTC."
+      },
+      "estimatedDowntime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The estimated downtime as an ISO 8601 duration string, for example, 'PT60S' for 60 seconds."
+      },
+      "deferrable": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 3,
+        "description": "Indicates whether the customer can reschedule this maintenance event."
+      },
+      "deferralDeadlineUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The latest date and time to which this maintenance event can be postponed, in UTC. This property is present only when deferrable is true."
+      },
+      "rescheduledFromUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The scheduled start time before the most recent reschedule, in UTC. This property is absent if the event has never been rescheduled."
+      },
+      "lastUpdatedTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time when this maintenance event record was last updated, in UTC."
+      },
+      "originalStartTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The initially scheduled start time before any reschedule, in UTC. This value equals startTimeUtc when the event has never been rescheduled."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PlannedMaintenance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/471"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Planned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rescheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/473"
+      },
+      {
+        "$ref": "#/474"
+      },
+      {
+        "$ref": "#/475"
+      },
+      {
+        "$ref": "#/476"
+      },
+      {
+        "$ref": "#/477"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/pools/maintenanceEvents@2026-10-01-preview",
+    "body": {
+      "$ref": "#/469"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z0-9](?:[-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/pools/nodes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/pools/nodes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/480"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/481"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/482"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/484"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeProperties",
+    "properties": {
+      "role": {
+        "type": {
+          "$ref": "#/488"
+        },
+        "flags": 3,
+        "description": "The current role performed by the node within its pool."
+      },
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The availability zone in which the node is deployed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unassigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/485"
+      },
+      {
+        "$ref": "#/486"
+      },
+      {
+        "$ref": "#/487"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/pools/nodes@2026-10-01-preview",
+    "body": {
+      "$ref": "#/483"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 128,
+    "pattern": "^.*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HorizonDb/clusters/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HorizonDb/clusters/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/490"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/491"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/492"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/494"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResourceProperties",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private link resource group id."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/495"
+        },
+        "flags": 2,
+        "description": "The private link resource required member names."
+      },
+      "requiredZoneNames": {
+        "type": {
+          "$ref": "#/496"
+        },
+        "flags": 0,
+        "description": "The private link resource private link DNS zone name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HorizonDb/clusters/privateLinkResources@2026-10-01-preview",
+    "body": {
+      "$ref": "#/493"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Cluster",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource. Omitting the entire identity property from PUT or PATCH preserves all current assignments. When provided, PUT replaces the user-assigned identity set and PATCH merges it; null PATCH dictionary entries remove individual identities. Setting type to None clears all assignments."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/499"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "failover",
+    "resourceType": "Microsoft.HorizonDb/clusters",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/498"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActivateChangeDataCaptureIdentityRequest",
+    "properties": {
+      "identityAssignmentResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of an inactive, successfully validated identity assignment under the destination receiving the action."
+      },
+      "drainExistingSessions": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Whether existing destination sessions should drain before the identity cutover. The default is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActivateChangeDataCaptureIdentityResult",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/503"
+        },
+        "flags": 3,
+        "description": "The completed activation status."
+      },
+      "targetIdentityAssignmentResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The resource ID of the newly active identity assignment."
+      },
+      "previousIdentityAssignmentResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource ID of the previously active identity assignment, when one existed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "activateIdentity",
+    "resourceType": "Microsoft.HorizonDb/clusters/changeDataCaptureDestinations",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/502"
+    },
+    "input": {
+      "$ref": "#/501"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogFileDownloadUrl",
+    "properties": {
+      "downloadUri": {
+        "type": {
+          "$ref": "#/506"
+        },
+        "flags": 1,
+        "description": "A short-lived signed URL from which the original log file can be downloaded."
+      },
+      "expiresAtUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The date and time when the signed download URL expires, in UTC."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listDownloadUrls",
+    "resourceType": "Microsoft.HorizonDb/clusters/logFiles",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/505"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Pool",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/509"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.HorizonDb/clusters/pools",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/508"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.HorizonDb/clusters/pools",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/508"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.HorizonDb/clusters/pools",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/508"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceEventActionResponse",
+    "properties": {
+      "maintenanceEventId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The maintenance event identifier."
+      },
+      "poolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full Azure resource ID of the HorizonDB pool."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/519"
+        },
+        "flags": 0,
+        "description": "The status of the maintenance event."
+      },
+      "plannedStartTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The planned start time of the maintenance event in UTC."
+      },
+      "plannedEndTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The planned end time of the maintenance event in UTC."
+      },
+      "appliedNow": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Indicates whether the maintenance event was requested to be applied immediately. The value is true for apply-now and false for reschedule."
+      },
+      "lastUpdatedTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time when this maintenance event record was last updated, in UTC."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Planned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rescheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/514"
+      },
+      {
+        "$ref": "#/515"
+      },
+      {
+        "$ref": "#/516"
+      },
+      {
+        "$ref": "#/517"
+      },
+      {
+        "$ref": "#/518"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "applyNow",
+    "resourceType": "Microsoft.HorizonDb/clusters/pools/maintenanceEvents",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/513"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceEventRescheduleRequest",
+    "properties": {
+      "postponeToDateTimeUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The new start time in RFC 3339 format."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reschedule",
+    "resourceType": "Microsoft.HorizonDb/clusters/pools/maintenanceEvents",
+    "apiVersion": "2026-10-01-preview",
+    "output": {
+      "$ref": "#/513"
+    },
+    "input": {
+      "$ref": "#/521"
+    }
+  }
+]
