@@ -87,8 +87,19 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 }
 
 func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
+	return client.action(ctx, resourceID, action, apiVersion, method, body, options, buildRequest)
+}
+
+// ActionWithoutAPIVersion invokes a data-plane action without adding the
+// default api-version query parameter. This is used by APIs whose endpoint
+// version is part of the path, such as Foundry evaluation APIs.
+func (client *DataPlaneClient) ActionWithoutAPIVersion(ctx context.Context, resourceID string, action string, method string, body interface{}, options RequestOptions) (interface{}, error) {
+	return client.action(ctx, resourceID, action, "", method, body, options, buildRequestWithoutAPIVersion)
+}
+
+func (client *DataPlaneClient) action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions, requestBuilder func(context.Context, RequestOptions, string, string, string) (*policy.Request, error)) (interface{}, error) {
 	urlPath := buildURL(resourceID, action)
-	req, err := buildRequest(ctx, options, urlPath, method, apiVersion)
+	req, err := requestBuilder(ctx, options, urlPath, method, apiVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -143,6 +154,14 @@ func buildURL(resourceId string, action string) (urlPath string) {
 }
 
 func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, apiVersion string) (*policy.Request, error) {
+	return buildRequestWithAPIVersion(ctx, options, urlPath, method, apiVersion, true)
+}
+
+func buildRequestWithoutAPIVersion(ctx context.Context, options RequestOptions, urlPath, method, apiVersion string) (*policy.Request, error) {
+	return buildRequestWithAPIVersion(ctx, options, urlPath, method, apiVersion, false)
+}
+
+func buildRequestWithAPIVersion(ctx context.Context, options RequestOptions, urlPath, method, apiVersion string, includeAPIVersion bool) (*policy.Request, error) {
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
@@ -151,7 +170,9 @@ func buildRequest(ctx context.Context, options RequestOptions, urlPath, method, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", apiVersion)
+	if includeAPIVersion {
+		reqQP.Set("api-version", apiVersion)
+	}
 	for key, value := range options.QueryParameters {
 		reqQP.Set(key, value)
 	}
