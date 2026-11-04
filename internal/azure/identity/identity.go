@@ -45,9 +45,12 @@ func (m Model) AttrType() map[string]attr.Type {
 
 func (m Model) Value() attr.Value {
 	var identityIDs attr.Value
-	if m.IdentityIDs.IsNull() {
+	switch {
+	case m.IdentityIDs.IsNull():
 		identityIDs = basetypes.NewListNull(types.StringType)
-	} else {
+	case m.IdentityIDs.IsUnknown():
+		identityIDs = basetypes.NewListUnknown(types.StringType)
+	default:
 		identityIDs = basetypes.NewListValueMust(types.StringType, m.IdentityIDs.Elements())
 	}
 
