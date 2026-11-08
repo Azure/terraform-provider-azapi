@@ -86,7 +86,7 @@ resource "azapi_resource" "budget" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Consumption/budgets@api-version`. The available api-versions for this resource are: [`2017-12-30-preview`, `2018-01-31`, `2018-03-31`, `2018-06-30`, `2018-08-31`, `2018-10-01`, `2019-01-01`, `2019-04-01-preview`, `2019-05-01`, `2019-05-01-preview`, `2019-06-01`, `2019-10-01`, `2019-11-01`, `2021-05-01`, `2021-10-01`, `2022-09-01`, `2023-03-01`, `2023-05-01`, `2023-11-01`, `2024-08-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Consumption/budgets@api-version`. The available api-versions for this resource are: [`2017-12-30-preview`, `2018-01-31`, `2018-03-31`, `2018-06-30`, `2018-08-31`, `2018-10-01`, `2019-01-01`, `2019-04-01-preview`, `2019-05-01`, `2019-05-01-preview`, `2019-06-01`, `2019-10-01`, `2019-11-01`, `2021-05-01`, `2021-10-01`, `2022-09-01`, `2023-03-01`, `2023-05-01`, `2023-11-01`, `2024-08-01`, `2026-06-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}`
@@ -104,5 +104,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Consumption/budgets/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Consumption/budgets/{resourceName}?api-version=2024-08-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/providers/Microsoft.Consumption/budgets/{resourceName}?api-version=2026-06-01
  ```

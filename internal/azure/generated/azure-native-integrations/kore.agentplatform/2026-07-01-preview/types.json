@@ -1,0 +1,1553 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 50,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{0,48}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kore.AgentPlatform/organizations"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Kore.AgentPlatform/organizations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OrganizationProperties",
+    "properties": {
+      "partnerProperties": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Partner-specific (Kore) Organization properties."
+      },
+      "user": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "Azure customer profile metadata used by the partner for JIT provisioning."
+      },
+      "companyDetails": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Organization-tier company metadata."
+      },
+      "singleSignOn": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Single sign-on metadata returned by the partner after Organization creation."
+      },
+      "defaultWorkspaceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Partner-issued identifier of the default Workspace for this Organization."
+      },
+      "workspaceCount": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Total count of Workspaces under this Organization."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OrganizationPartnerProperties",
+    "properties": {
+      "organizationName": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Display name of the Organization on the partner side."
+      },
+      "billingEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Billing contact email address for the Organization."
+      },
+      "ownerEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Initial owner email for the Organization. JIT-provisioned by the partner if the user does not already exist."
+      },
+      "defaultWorkspace": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 1,
+        "description": "Default Workspace created atomically with the Organization.\nRequired at create time and immutable thereafter.\nAfter create, manage workspaces (including this default) via the standard\nWorkspace child resource operations."
+      },
+      "partnerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Partner-issued Organization identifier (e.g., \"org_01...\")."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 100
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefaultWorkspaceProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Display name of the default Workspace."
+      },
+      "product": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Marketplace product selected for this Workspace."
+      },
+      "marketplaceDetails": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "Azure Marketplace SaaS subscriptions linked to this Workspace.\nAt least one entry is required. Mutable to support Marketplace-driven\nplan changes."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforwork"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforservice"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseMarketplaceDetails",
+    "properties": {
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure subscription id for the the marketplace offer is purchased from"
+      },
+      "subscriptionStatus": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Marketplace subscription status"
+      },
+      "saasResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Marketplace SaaS Resource Id"
+      },
+      "offerDetails": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "Offer details for the marketplace that is selected by the user"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingFulfillmentStart"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscribed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsubscribed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseOfferDetails",
+    "properties": {
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher Id for the marketplace offer"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Offer Id for the marketplace offer"
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Id for the marketplace offer"
+      },
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Name for the marketplace offer"
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Display Name for the marketplace offer"
+      },
+      "termId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Display Name for the marketplace offer"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/13"
+    },
+    "minLength": 1,
+    "maxLength": 20
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserDetails",
+    "properties": {
+      "firstName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "First name of the user"
+      },
+      "lastName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Last name of the user"
+      },
+      "emailAddress": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Email address of the user"
+      },
+      "upn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's principal name"
+      },
+      "phoneNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's phone number"
+      },
+      "alternateEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Alternate email address of the user."
+      },
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Mailing or office address."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CompanyDetails",
+    "properties": {
+      "companyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Company name."
+      },
+      "officeAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Office address of the company."
+      },
+      "country": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Country or region of the company."
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Primary domain of the company."
+      },
+      "businessType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Industry or line of business."
+      },
+      "numberOfEmployees": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Approximate number of employees."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingleSignOnProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "Type of Single Sign-On mechanism being used"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "State of the Single Sign On for the resource"
+      },
+      "enterpriseAppId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AAD enterprise application Id used to setup SSO"
+      },
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL for SSO to be used by the partner to redirect the user to their system"
+      },
+      "aadDomains": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "List of AAD domains fetched from Microsoft Graph for user."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saml"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OpenId"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Kore.AgentPlatform/organizations@2026-07-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 100,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{0,98}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kore.AgentPlatform/organizations/workspaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Kore.AgentPlatform/organizations/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceProperties",
+    "properties": {
+      "product": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Marketplace product selected for this Workspace."
+      },
+      "marketplaceDetails": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "Azure Marketplace SaaS subscriptions linked to this Workspace.\nAt least one entry is required. Mutable to support Marketplace-driven\nplan changes."
+      },
+      "partnerProperties": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "Partner-specific (Kore) Workspace properties."
+      },
+      "isDefault": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 2,
+        "description": "Indicates whether this is the default Workspace created with the Organization."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Lifecycle status of the Workspace as reported by the Kore partner."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforwork"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforservice"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/13"
+    },
+    "minLength": 1,
+    "maxLength": 20
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspacePartnerProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Display name of the Workspace on the partner side."
+      },
+      "ownerEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Email address of the Workspace owner."
+      },
+      "partnerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Partner-issued Workspace identifier (e.g., \"ws_01...\")."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "archived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Kore.AgentPlatform/organizations/workspaces@2026-07-01-preview",
+    "body": {
+      "$ref": "#/53"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListWorkspacesResponse",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "Workspaces returned by Kore, including Liftr-managed and partner-managed Workspaces."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredWorkspace",
+    "properties": {
+      "partnerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner-issued Workspace identifier."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display name of the Workspace on the partner side."
+      },
+      "ownerEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Email address of the Workspace owner."
+      },
+      "isDefault": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "Indicates whether this is the default Workspace created with the Organization."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Lifecycle status of the Workspace as reported by the Kore partner."
+      },
+      "product": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "Marketplace product selected for this Workspace."
+      },
+      "marketplaceDetails": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Azure Marketplace SaaS subscriptions linked to this Workspace."
+      },
+      "isManagedByLiftr": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Indicates whether the Workspace is managed as an ARM resource through Liftr."
+      },
+      "armResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM resource ID when the Workspace is managed through Liftr."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "archived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforwork"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "aiforservice"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/13"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/71"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listWorkspaces",
+    "resourceType": "Kore.AgentPlatform/organizations",
+    "apiVersion": "2026-07-01-preview",
+    "output": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceDetail",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner-issued Workspace identifier."
+      },
+      "azureResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Full Azure resource ID of the Workspace."
+      },
+      "organizationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner-issued identifier of the parent Organization."
+      },
+      "partnerProperties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "Partner-specific fields returned by the Workspace details action."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 1,
+        "description": "Lifecycle status of the Workspace."
+      },
+      "projects": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 1,
+        "description": "Projects under the Workspace."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Time when the partner Workspace was created, as reported by Kore. This is distinct from ARM-managed `systemData.createdAt`."
+      },
+      "updatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Time when the partner Workspace was last updated, as reported by Kore. This is distinct from ARM-managed `systemData.lastModifiedAt`."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceDetailPartnerProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Workspace display name."
+      },
+      "ownerEmail": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Email address of the Workspace owner."
+      },
+      "retentionDays": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 1,
+        "description": "Conversation retention period in days. Valid values are 1 through 365."
+      },
+      "default": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Indicates whether this is the Organization's default Workspace."
+      },
+      "marketplaceDetails": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 1,
+        "description": "Marketplace SaaS subscriptions owned by the Workspace."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 365
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceMarketplaceDetails",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Marketplace SaaS resource."
+      },
+      "mpId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Globally unique Marketplace SaaS identifier used for billing."
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Plan identifier within the Marketplace offer."
+      },
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable plan display name."
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Marketplace offer identifier."
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Publisher identifier from Partner Center."
+      },
+      "termId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Marketplace subscription term identifier."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Azure Marketplace fulfillment subscription status."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingFulfillmentStart"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscribed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsubscribed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/85"
+    },
+    "maxLength": 20
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "archived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceProject",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner-issued Project identifier."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Project display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Project description."
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Email address of the user who created the Project."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 1,
+        "description": "Lifecycle status of the Project."
+      },
+      "agentCount": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "Number of agents in the Project."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Time when the Project was created."
+      },
+      "updatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Time when the Project was last updated."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "in-development"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deployed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "archived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/96"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getWorkspaceDetails",
+    "resourceType": "Kore.AgentPlatform/organizations/workspaces",
+    "apiVersion": "2026-07-01-preview",
+    "output": {
+      "$ref": "#/82"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceSaaSData",
+    "properties": {
+      "saaSResourceIds": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 1,
+        "description": "ARM resource IDs of the Microsoft.SaaS marketplace resources to link to this Workspace."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "linkSaaS",
+    "resourceType": "Kore.AgentPlatform/organizations/workspaces",
+    "apiVersion": "2026-07-01-preview",
+    "input": {
+      "$ref": "#/104"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceLinkedSaaSListResponse",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 1,
+        "description": "List of SaaS resources linked to this Workspace."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceLinkedSaaSItem",
+    "properties": {
+      "saaSResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARM resource ID of the Microsoft.SaaS marketplace resource linked to this Workspace."
+      },
+      "isHiddenSaaS": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "Flag indicating if the SaaS resource is hidden."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listLinkedSaaS",
+    "resourceType": "Kore.AgentPlatform/organizations/workspaces",
+    "apiVersion": "2026-07-01-preview",
+    "output": {
+      "$ref": "#/107"
+    }
+  }
+]
