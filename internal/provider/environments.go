@@ -10,6 +10,7 @@ const (
 	IoTCentral       cloud.ServiceName = "IoTCentral"
 	KeyVault         cloud.ServiceName = "KeyVault"
 	Purview          cloud.ServiceName = "Purview"
+	Storage          cloud.ServiceName = "Storage"
 	Synapse          cloud.ServiceName = "Synapse"
 	Search           cloud.ServiceName = "Search"
 )
@@ -47,6 +48,18 @@ func init() {
 		Audience: "https://purview.azure.net",
 		Endpoint: "https://purview.azure.com",
 	}
+	cloud.AzurePublic.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.windows.net",
+	}
+	cloud.AzureGovernment.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.usgovcloudapi.net",
+	}
+	cloud.AzureChina.Services[Storage] = cloud.ServiceConfiguration{
+		Audience: "https://storage.azure.com",
+		Endpoint: "https://core.chinacloudapi.cn",
+	}
 	cloud.AzurePublic.Services[Synapse] = cloud.ServiceConfiguration{
 		Audience: "https://dev.azuresynapse.net",
 		Endpoint: "https://dev.azuresynapse.net",
@@ -55,5 +68,4 @@ func init() {
 		Audience: "https://search.azure.com",
 		Endpoint: "https://search.windows.net",
 	}
-
 }
