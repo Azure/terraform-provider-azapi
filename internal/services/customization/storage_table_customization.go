@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 )
@@ -22,7 +23,10 @@ func (c StorageTableCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, storageTableCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
+
+		ctx = storageTablePollingContext(ctx, options.Headers)
+
+		_, err = client.DataPlaneClient.Action(ctx, storageTableCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
 		return err
 	}
 }
@@ -68,6 +72,19 @@ func buildStorageTableCreateBody(id parse.DataPlaneResourceId, body interface{})
 
 	payload["TableName"] = id.Name
 	return payload, nil
+}
+
+// storageTablePollingContext propagates x-ms-version and Accept to SDK-generated polling requests.
+// Without them, Table Storage rejects the polling GET with 403 (missing version) or 415 (Atom format not supported).
+func storageTablePollingContext(ctx context.Context, headers map[string]string) context.Context {
+	pollingHeaders := make(http.Header)
+	pollingHeaders.Set("Accept", "application/json")
+	for key, value := range headers {
+		if strings.EqualFold(key, "x-ms-version") || strings.EqualFold(key, "Accept") {
+			pollingHeaders.Set(key, value)
+		}
+	}
+	return policy.WithHTTPHeader(ctx, pollingHeaders)
 }
 
 var _ DataPlaneResource = &StorageTableCustomization{}

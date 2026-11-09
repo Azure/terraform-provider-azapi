@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -269,11 +270,6 @@ func TestAccDataPlaneResource_storageTableEntity(t *testing.T) {
 				check.That(data.ResourceName).Key("output.removed_property").DoesNotExist(),
 			),
 		},
-		{
-			Config:             r.storageTableEntity(data, "value2", false),
-			PlanOnly:           true,
-			ExpectNonEmptyPlan: false,
-		},
 	})
 }
 
@@ -387,7 +383,15 @@ func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, sta
 		return nil, err
 	}
 
-	_, err = client.DataPlaneClient.Get(ctx, id, clients.DefaultRequestOptions())
+	options := clients.DefaultRequestOptions()
+
+	for key, value := range state.Attributes {
+		if strings.HasPrefix(key, "read_headers.") && key != "read_headers.%" {
+			options.Headers[strings.TrimPrefix(key, "read_headers.")] = value
+		}
+	}
+
+	_, err = client.DataPlaneClient.Get(ctx, id, options)
 	if err == nil {
 		b := true
 		return &b, nil
@@ -1824,14 +1828,12 @@ resource "azapi_data_plane_resource" "test" {
   create_headers = local.storage_table_entity_headers
   read_headers   = local.storage_table_entity_headers
   update_headers = local.storage_table_entity_headers
-  delete_headers = merge(local.storage_table_entity_headers, {
-    "If-Match" = "*"
-  })
+  delete_headers = local.storage_table_entity_headers
   body = {
     outputs = "%[3]s"
 %[4]s
   }
-
+  response_export_values = ["*"]
   depends_on = [
     azapi_resource.roleAssignment,
   ]

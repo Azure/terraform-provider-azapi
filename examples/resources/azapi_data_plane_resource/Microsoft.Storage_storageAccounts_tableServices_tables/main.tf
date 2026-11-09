@@ -72,6 +72,7 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
+# Import is not currently supported: the post-import read cannot send the required x-ms-version header.
 resource "azapi_data_plane_resource" "example" {
   type           = "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"
   parent_id      = "${azapi_resource.storageAccount.name}.table.core.windows.net"

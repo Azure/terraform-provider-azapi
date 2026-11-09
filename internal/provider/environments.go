@@ -48,9 +48,6 @@ func init() {
 		Audience: "https://purview.azure.net",
 		Endpoint: "https://purview.azure.com",
 	}
-	// Storage covers all Azure Storage service types (Blob, Table, Queue, File)
-	// which share the audience https://storage.azure.com. The endpoint suffix
-	// .core.windows.net matches <account>.<service>.core.windows.net hostnames.
 	cloud.AzurePublic.Services[Storage] = cloud.ServiceConfiguration{
 		Audience: "https://storage.azure.com",
 		Endpoint: "https://core.windows.net",
@@ -71,5 +68,4 @@ func init() {
 		Audience: "https://search.azure.com",
 		Endpoint: "https://search.windows.net",
 	}
-
 }

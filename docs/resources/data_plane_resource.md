@@ -1424,6 +1424,7 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
+# Import is not currently supported: the post-import read cannot send the required x-ms-version header.
 resource "azapi_data_plane_resource" "example" {
   type           = "Microsoft.Storage/storageAccounts/tableServices/tables@2026-04-06"
   parent_id      = "${azapi_resource.storageAccount.name}.table.core.windows.net"
@@ -1546,22 +1547,17 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
-# Create uses the Insert Entity operation, which fails if an entity with the same
-# PartitionKey/RowKey already exists. Update uses Insert-Or-Replace, so each update request
-# must include the complete desired entity content: properties omitted from an update,
-# including properties added outside Terraform, are removed by that write.
-#
-# With sensitive_body_version, unchanged sensitive properties are omitted from update
-# requests and can therefore be removed by this replacement operation.
+# Create fails if the entity already exists. Update replaces an existing entity,
+# removing omitted properties, including unchanged sensitive_body_version fields.
+# Update and delete default If-Match to "*"; supply an ETag for concurrency checks.
+# Import is not currently supported: the post-import read cannot send the required x-ms-version header.
 resource "azapi_data_plane_resource" "entity" {
   type           = "Microsoft.Storage/storageAccounts/tableServices/tables/entities@2026-04-06"
   parent_id      = "${azapi_resource.storageAccount.name}.table.core.windows.net/${azapi_data_plane_resource.table.name}(PartitionKey='example',RowKey='state')"
   create_headers = local.storage_table_entity_headers
   read_headers   = local.storage_table_entity_headers
   update_headers = local.storage_table_entity_headers
-  delete_headers = merge(local.storage_table_entity_headers, {
-    "If-Match" = "*"
-  })
+  delete_headers = local.storage_table_entity_headers
   body = {
     outputs = jsonencode({
       status = "ok"

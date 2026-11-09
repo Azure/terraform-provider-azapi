@@ -23,9 +23,12 @@ func (c StorageTableEntityCustomization) CreateFunc() CreateFunc {
 		if err != nil {
 			return err
 		}
+
+		ctx = storageTablePollingContext(ctx, options.Headers)
+
 		// Insert Entity (POST to the table) returns a conflict if the entity already exists,
 		// unlike Insert-Or-Replace, so create never overwrites existing data.
-		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, storageTableEntityCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
+		_, err = client.DataPlaneClient.Action(ctx, storageTableEntityCollectionID(id), "", id.ApiVersion, http.MethodPost, payload, options)
 		return err
 	}
 }
@@ -42,13 +45,19 @@ func (c StorageTableEntityCustomization) UpdateFunc() UpdateFunc {
 		if err != nil {
 			return err
 		}
-		_, err = client.DataPlaneClient.ActionWithoutPolling(ctx, id.AzureResourceId, "", id.ApiVersion, http.MethodPut, payload, options)
+
+		// Default If-Match to "*" so PUT performs Replace (fails if missing) rather than Insert-Or-Replace.
+		options.Headers = storageTableEntityHeadersWithDefaultIfMatch(options.Headers)
+
+		_, err = client.DataPlaneClient.Action(ctx, id.AzureResourceId, "", id.ApiVersion, http.MethodPut, payload, options)
 		return err
 	}
 }
 
 func (c StorageTableEntityCustomization) DeleteFunc() DeleteFunc {
 	return func(ctx context.Context, client clients.Client, id parse.DataPlaneResourceId, options clients.RequestOptions) error {
+		// Table Storage requires If-Match on entity DELETE; default to "*" unless an ETag is supplied.
+		options.Headers = storageTableEntityHeadersWithDefaultIfMatch(options.Headers)
 		_, err := client.DataPlaneClient.DeleteThenPoll(ctx, id, options)
 		return err
 	}
@@ -97,6 +106,23 @@ func buildStorageTableEntityBody(id parse.DataPlaneResourceId, body interface{})
 	payload["PartitionKey"] = partitionKey
 	payload["RowKey"] = rowKey
 	return payload, nil
+}
+
+// storageTableEntityHeadersWithDefaultIfMatch returns a copy of headers with If-Match defaulted
+// to "*", preserving any caller-supplied ETag.
+func storageTableEntityHeadersWithDefaultIfMatch(headers map[string]string) map[string]string {
+	result := make(map[string]string, len(headers)+1)
+	hasIfMatch := false
+	for key, value := range headers {
+		result[key] = value
+		if strings.EqualFold(key, "If-Match") {
+			hasIfMatch = true
+		}
+	}
+	if !hasIfMatch {
+		result["If-Match"] = "*"
+	}
+	return result
 }
 
 var _ DataPlaneResource = &StorageTableEntityCustomization{}
