@@ -939,7 +939,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 				diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 				return
 			}
-			body, err = overrideBodyWithPaths(body, existing, ignoreBodyChanges)
+			body, err = overrideBodyWithExistingPaths(body, existing, ignoreBodyChanges)
 			if err != nil {
 				diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: %s`, err))
 				return
