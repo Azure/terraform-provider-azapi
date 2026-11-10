@@ -169,7 +169,7 @@ resource "azurerm_resource_group_policy_assignment" "test" {
 }
 
 resource "time_sleep" "wait_for_policy_assignment" {
-  create_duration = "1m"
+  create_duration = "5m"
 
   depends_on = [azurerm_resource_group_policy_assignment.test]
 }
