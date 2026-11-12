@@ -68,4 +68,8 @@ func init() {
 		Audience: "https://search.azure.com",
 		Endpoint: "https://search.windows.net",
 	}
+	cloud.AzureGovernment.Services[Search] = cloud.ServiceConfiguration{
+		Audience: "https://search.azure.us",
+		Endpoint: "https://search.azure.us",
+	}
 }
