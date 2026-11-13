@@ -1,0 +1,1456 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z]([-A-Za-z0-9]{0,30}[A-Za-z0-9])$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/agents"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/agents",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the Agent"
+      },
+      "agentEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The endpoint of the Agent"
+      },
+      "outboundIpAddresses": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Outbound IP addresses reported for the Agent's provisioned networking resources."
+      },
+      "runningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The running state of the Agent"
+      },
+      "powerState": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The power state of the Agent"
+      },
+      "knowledgeGraphConfiguration": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Knowledge graph configuration for agent"
+      },
+      "actionConfiguration": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Configuration for action"
+      },
+      "logConfiguration": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Log configurations"
+      },
+      "incidentManagementConfiguration": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Incident management configurations"
+      },
+      "upgradeChannel": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The upgrade channel of the agent"
+      },
+      "agentIdentity": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Agent identity configuration for accessing resources"
+      },
+      "defaultModel": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Default AI model configuration for the agent"
+      },
+      "vnetConfiguration": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Desired virtual network configuration. A subnet and AzureVNet egress mode must be configured together.\nUse PATCH for selective updates. Omitting networking settings from PUT can clear them or fail validation."
+      },
+      "sandboxConfiguration": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Desired sandbox configuration. PUT represents the complete desired configuration and does not preserve an existing\nvalue when this property is omitted.\nUse PATCH to preserve the stored configuration while updating other properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KnowledgeGraphConfiguration",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity used to access the knowledge graph"
+      },
+      "managedResources": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The list of resources managed by agent"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionConfiguration",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity used by the action"
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The mode of the action"
+      },
+      "accessLevel": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The access level of the action"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Autonomous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Review"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogConfiguration",
+    "properties": {
+      "applicationInsightsConfiguration": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Application Insights Configuration"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationInsightsConfiguration",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Application ID for the Application Insights resource"
+      },
+      "connectionString": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 4,
+        "description": "The connection string supplied when creating or updating the Application Insights configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IncidentManagementConfiguration",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The type of incident management system"
+      },
+      "connectionName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the connection"
+      },
+      "connectionUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL of the connection"
+      },
+      "connectionKey": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 4,
+        "description": "The key supplied when creating or updating the connection."
+      },
+      "oboUser": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user for the connection"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preview"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentIdentity",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Indicates whether the agent identity is enabled"
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Client ID (GUID) for the agent identity"
+      },
+      "initialSponsorGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Initial sponsor group ID (required for agent identity)"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefaultModel",
+    "properties": {
+      "provider": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AI provider name (e.g., MicrosoftFoundry, Anthropic)"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Model name (e.g., gpt-5, claude-opus-4-5, claude-sonnet-4-5)"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VnetConfiguration",
+    "properties": {
+      "subnetResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the subnet used with AzureVNet egress mode.\nIn PATCH, omission preserves the subnet and JSON merge-patch null clears it.\nSetting or replacing a subnet requires the resulting egress mode to be AzureVNet.\nWhen clearing the subnet, also update sandbox egress in the same PATCH request so the resulting mode is not AzureVNet.\nThe detach example explicitly selects Limited."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SandboxConfiguration",
+    "properties": {
+      "egress": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Sandbox egress configuration. In PATCH, omission preserves egress and JSON merge-patch null clears it.\nClearing egress is invalid while a subnet remains configured."
+      },
+      "packages": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Packages to preinstall in the sandbox. In PATCH, omission preserves the package list.\nA supplied array replaces the entire list; JSON merge-patch null clears it. An empty array selects no packages.\nEach supplied package must include its name and package manager."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SandboxEgressConfiguration",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Sandbox egress mode. AzureVNet requires a subnet, and a configured subnet requires AzureVNet.\nIn PATCH, omission preserves the mode and JSON merge-patch null clears it.\nClearing the mode is invalid while a subnet remains configured.\nNo unconditional default applies."
+      },
+      "allowHttpMcpServerNetworkAccess": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Whether remote HTTP MCP servers can use the managed network path.\nIn PATCH, omission preserves the setting and JSON merge-patch null clears it."
+      },
+      "allowedHosts": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Additional hostnames allowed on the managed network path.\nEntries are DNS hostnames or leading wildcard patterns such as '*.example.com'; a bare '*' is invalid.\nEach entry has at most 253 characters and each DNS label at most 63 characters.\nWildcard patterns must contain at least two labels after '*.'.\nIn PATCH, omission preserves the list, a supplied array replaces it, and JSON merge-patch null clears it."
+      },
+      "allowedRegistries": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Package registry identifiers allowed on the managed network path. Values are matched without regard to case.\nKnown values are 'pypi', 'npmjs', 'nuget-org' and 'ubuntu'. The service validates the values.\nIn PATCH, omission preserves the list, a supplied array replaces it, and JSON merge-patch null clears it."
+      },
+      "allowedCodeRepositories": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Code repository provider identifiers allowed on the managed network path. Values are matched case-sensitively.\nKnown values are 'Github', 'GithubEnterprise', 'AzureDevOps' and 'GitLab'. The service validates the values.\nIn PATCH, omission preserves the list, a supplied array replaces it, and JSON merge-patch null clears it."
+      },
+      "httpProxy": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Forward-proxy configuration for sandbox outbound requests.\nUsed only when forward-proxy support is enabled for the Agent and the egress mode is AzureVNet.\nSupplying this configuration does not enable forward-proxy support.\nIn PATCH, omission preserves the configuration, JSON merge-patch null clears it, and a supplied object merges its members.\nThe resulting proxy configuration must include httpsUrl."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unrestricted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Limited"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureVNet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 253,
+    "pattern": "^(\\*\\.(?=[^.]+\\.))?[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    },
+    "maxLength": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SandboxHttpProxyConfiguration",
+    "properties": {
+      "httpUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional proxy endpoint used for HTTP destinations. When set, it must be the same proxy origin as httpsUrl;\ndifferent HTTP and HTTPS proxies are not supported.\nThe value must be an absolute http:// origin with a host. Credentials, paths other than '/', query strings,\nfragments, and ports 0, 80, and 443 are not supported.\nIn PATCH, omission preserves the endpoint and JSON merge-patch null clears it."
+      },
+      "httpsUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Proxy endpoint used for HTTPS destinations and CONNECT tunneling. Required whenever a proxy configuration is stored.\nThe proxy URL itself must use http:// for CONNECT tunneling and must be an origin with a host.\nCredentials, paths other than '/', query strings, fragments, and ports 0, 80, and 443 are not supported.\nIn PATCH, omission preserves the endpoint."
+      },
+      "noProxy": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "Additional destinations that bypass the forward proxy.\nEntries can be DNS hostnames, leading-dot or '*.' suffix patterns, or exact IPv4 addresses.\nCIDR blocks, IPv6 addresses, ports, empty entries, and a bare '*' are invalid.\nIn PATCH, omission preserves the list, a supplied array replaces it, and JSON merge-patch null clears it."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SandboxPackageSpec",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 1,
+        "description": "Package name, optionally including a scope or namespace prefix."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Optional package version or version constraint. Omit it to leave the version unspecified."
+      },
+      "packageManager": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "Package manager used to install the package. Values are case-sensitive."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 214,
+    "pattern": "^@?[A-Za-z0-9][A-Za-z0-9._-]*(/[A-Za-z0-9][A-Za-z0-9._-]*)?$"
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64,
+    "pattern": "^[A-Za-z0-9._+\\-~^<>=,*\\[\\]()]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pip"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "npm"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nuget"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    },
+    "maxLength": 200
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/agents@2026-07-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/agents/connectors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/agents/connectors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorProperties",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Endpoint of the connector"
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 4,
+        "description": "Data source connection string or endpoint supplied when creating or updating a connector."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identity used to access the data source"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the connector"
+      },
+      "deploymentError": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Deployment error message if provisioning failed"
+      },
+      "extendedProperties": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Additional properties for the data connector which can be used to store custom key-value pairs"
+      },
+      "dataConnectorType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The type of the data connector"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorPropertiesExtendedProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/90"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/agents/connectors@2026-07-01",
+    "body": {
+      "$ref": "#/82"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Agent",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.App/agents",
+    "apiVersion": "2026-07-01",
+    "output": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.App/agents",
+    "apiVersion": "2026-07-01",
+    "output": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorWithSecretsCollection",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 1,
+        "description": "The AgentConnectorWithSecrets items on this page"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The link to the next page of items"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorWithSecrets",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorPropertiesWithSecrets",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Endpoint of the connector"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identity used to access the data source"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the connector"
+      },
+      "deploymentError": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Deployment error message if provisioning failed"
+      },
+      "extendedProperties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Additional properties for the data connector which can be used to store custom key-value pairs"
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Data source connection string or endpoint."
+      },
+      "dataConnectorType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The type of the data connector."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentConnectorPropertiesWithSecretsExtendedProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/90"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/98"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listConnectorsWithSecrets",
+    "resourceType": "Microsoft.App/agents",
+    "apiVersion": "2026-07-01",
+    "output": {
+      "$ref": "#/97"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.App/agents/connectors",
+    "apiVersion": "2026-07-01",
+    "output": {
+      "$ref": "#/98"
+    }
+  }
+]

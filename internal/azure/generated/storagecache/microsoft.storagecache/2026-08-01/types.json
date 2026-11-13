@@ -1,0 +1,4771 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 80,
+    "pattern": "^[0-9a-zA-Z][-0-9a-zA-Z_]{0,78}[0-9a-zA-Z]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Properties of the AML file system."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The managed identity used by the AML file system, if configured."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "SKU for the resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The availability zones."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemProperties",
+    "properties": {
+      "storageCapacityTiB": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The size of the AML file system, in TiB. This might be rounded up."
+      },
+      "currentStorageCapacityTiB": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The current storage capacity of the AML file system, in TiB. This reflects the actual capacity including any expansions."
+      },
+      "clusterUuid": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The unique identifier of the AML file system cluster."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "Health of the AML file system."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state."
+      },
+      "filesystemSubnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least a /24 subnet mask within the VNET's address space."
+      },
+      "clientInfo": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Client information for the AML file system."
+      },
+      "throughputProvisionedMBps": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Throughput provisioned in MB per sec, calculated as storageCapacityTiB * per-unit storage throughput"
+      },
+      "encryptionSettings": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies encryption settings of the AML file system."
+      },
+      "maintenanceWindow": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 1,
+        "description": "Start time of a 30-minute weekly maintenance window."
+      },
+      "hsm": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Hydration and archive settings and status"
+      },
+      "rootSquashSettings": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "Specifies root squash settings of the AML file system."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemHealth",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "List of AML file system health states."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Server-defined error code for the AML file system health"
+      },
+      "statusDescription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Describes the health state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Transitioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Maintenance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expanding"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemClientInfo",
+    "properties": {
+      "mgsAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The IPv4 address used by clients to mount the AML file system's Lustre Management Service (MGS)."
+      },
+      "mountCommand": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommended command to mount the AML file system"
+      },
+      "lustreVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of Lustre running in the AML file system"
+      },
+      "containerStorageInterface": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Container Storage Interface information for the AML file system."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemContainerStorageInterface",
+    "properties": {
+      "persistentVolumeClaim": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommended AKS Persistent Volume Claim for the CSI driver, in Base64 encoded YAML"
+      },
+      "persistentVolume": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommended AKS Persistent Volume for the CSI driver, in Base64 encoded YAML"
+      },
+      "storageClass": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommended AKS Storage Class for the CSI driver, in Base64 encoded YAML"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemEncryptionSettings",
+    "properties": {
+      "keyEncryptionKey": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the encryption key in Key Vault."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultKeyReference",
+    "properties": {
+      "keyUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URL referencing a key encryption key in key vault."
+      },
+      "sourceVault": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "Describes a resource Id to source key vault."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultKeyReferenceSourceVault",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource Id."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemPropertiesMaintenanceWindow",
+    "properties": {
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Day of the week on which the maintenance window will occur."
+      },
+      "timeOfDayUTC": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The time of day (in UTC) to start the maintenance window."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemPropertiesHsm",
+    "properties": {
+      "settings": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Specifies HSM settings of the AML file system."
+      },
+      "archiveStatus": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 2,
+        "description": "Archive status"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemHsmSettings",
+    "properties": {
+      "container": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource ID of storage container used for hydrating the namespace and archiving from the namespace. The resource provider must have permission to create SAS tokens on the storage account."
+      },
+      "loggingContainer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource ID of storage container used for logging events and errors.  Must be a separate container in the same storage account as the hydration and archive container. The resource provider must have permission to create SAS tokens on the storage account."
+      },
+      "importPrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Only blobs in the non-logging container that start with this path/prefix get imported into the cluster namespace. This is only used during initial creation of the AML file system. It automatically creates an import job resource that can be deleted."
+      },
+      "importPrefixesInitial": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Only blobs in the non-logging container that start with one of the paths/prefixes in this array get imported into the cluster namespace. This is only used during initial creation of the AML file system and has '/' as the default value. It automatically creates an import job resource that can be deleted."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemArchive",
+    "properties": {
+      "filesystemPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The status of the archive"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemArchiveStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The state of the archive operation"
+      },
+      "lastCompletionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time of the last completed archive operation"
+      },
+      "lastStartedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the latest archive operation started"
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The completion percentage of the archive operation"
+      },
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined error code for the archive operation"
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined error message for the archive operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotConfigured"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Idle"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FSScanInProgress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/41"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemRootSquashSettings",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to the provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and Group IDs is performed for any users on any systems."
+      },
+      "noSquashNidLists": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Semicolon separated NID IP Address list(s) to be added to the TrustedSystems."
+      },
+      "squashUID": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "User ID to squash to."
+      },
+      "squashGID": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Group ID to squash to."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "AML file system squash status."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RootOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID for the user-assigned identity of the resource."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID associated with the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the resource."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty dictionary."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesValue",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of the user-assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client ID of the user-assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/62"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SkuName",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SKU name for this resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems@2026-08-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[-0-9a-zA-Z_]{1,80}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/caches"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/caches",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "Properties of the cache."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Region name string."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "The identity of the cache, if configured."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "SKU for the cache."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheProperties",
+    "properties": {
+      "cacheSizeGB": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The size of this Cache, in GB."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "Health of the cache."
+      },
+      "mountAddresses": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 2,
+        "description": "Array of IPv4 addresses that can be used by clients mounting this cache."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property"
+      },
+      "subnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Subnet used for the cache."
+      },
+      "upgradeStatus": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 2,
+        "description": "Upgrade status of the cache."
+      },
+      "upgradeSettings": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Upgrade settings of the cache."
+      },
+      "networkSettings": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "Specifies network settings of the cache."
+      },
+      "encryptionSettings": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 0,
+        "description": "Specifies encryption settings of the cache."
+      },
+      "securitySettings": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Specifies security settings of the cache."
+      },
+      "directoryServicesSettings": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "Specifies Directory Services settings of the cache."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Availability zones for resources. This field should only contain a single element in the array."
+      },
+      "primingJobs": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "Specifies the priming jobs defined in the cache."
+      },
+      "spaceAllocation": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 2,
+        "description": "Specifies the space allocation percentage for each storage target in the cache."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheHealth",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "List of cache health states. Down is when the cluster is not responding.  Degraded is when its functioning but has some alerts. Transitioning when it is creating or deleting. Unknown will be returned in old api versions when a new value is added in future versions. WaitingForKey is when the create is waiting for the system assigned identity to be given access to the encryption key in the encryption settings."
+      },
+      "statusDescription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Describes explanation of state."
+      },
+      "conditions": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 2,
+        "description": "Outstanding conditions that need to be investigated and resolved."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Down"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Transitioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flushing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WaitingForKey"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpgradeFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Condition",
+    "properties": {
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time when the condition was raised."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The issue requiring attention."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/98"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheUpgradeStatus",
+    "properties": {
+      "currentFirmwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Version string of the firmware currently installed on this cache."
+      },
+      "firmwareUpdateStatus": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 2,
+        "description": "True if there is a firmware update ready to install on this cache. The firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation."
+      },
+      "firmwareUpdateDeadline": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time at which the pending firmware update will automatically be installed on the cache."
+      },
+      "lastFirmwareUpdate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time of the last successful firmware update."
+      },
+      "pendingFirmwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "When firmwareUpdateAvailable is true, this field holds the version string for the update."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unavailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheUpgradeSettings",
+    "properties": {
+      "upgradeScheduleEnabled": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation."
+      },
+      "scheduledTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the firmware update will automatically be installed on the cache."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheNetworkSettings",
+    "properties": {
+      "mtu": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "The IPv4 maximum transmission unit configured for the subnet."
+      },
+      "utilityAddresses": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 2,
+        "description": "Array of additional IP addresses used by this cache."
+      },
+      "dnsServers": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "DNS servers for the cache to use.  It will be set from the network configuration if no value is provided."
+      },
+      "dnsSearchDomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "DNS search domain"
+      },
+      "ntpServer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "NTP server IP Address or FQDN for the cache to use. The default is time.windows.com."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 576,
+    "maxValue": 1500
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheEncryptionSettings",
+    "properties": {
+      "keyEncryptionKey": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the key encryption key in key vault."
+      },
+      "rotationToLatestKeyVersionEnabled": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Specifies whether the service will automatically rotate to the newest version of the key in the key vault."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheSecuritySettings",
+    "properties": {
+      "accessPolicies": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "NFS access policies defined for this cache."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NfsAccessPolicy",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name identifying this policy. Access Policy names are not case sensitive."
+      },
+      "accessRules": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 1,
+        "description": "The set of rules describing client accesses allowed under this policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NfsAccessRule",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "Scope for this rule. The scope and filter determine which clients match the rule."
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all clients and has no filter value. 'network' scope takes a filter in CIDR format (for example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not match any filter rule and there is no default rule, access is denied."
+      },
+      "access": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 1,
+        "description": "Access allowed by this rule."
+      },
+      "suid": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Allow SUID semantics."
+      },
+      "submountAccess": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like '/a/b'."
+      },
+      "rootSquash": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Map root accesses to anonymousUID and anonymousGID."
+      },
+      "anonymousUID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UID value that replaces 0 when rootSquash is true. 65534 will be used if not provided."
+      },
+      "anonymousGID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GID value that replaces 0 when rootSquash is true. This will use the value of anonymousUID if not provided."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "network"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "host"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "no"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ro"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rw"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/121"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/120"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheDirectorySettings",
+    "properties": {
+      "activeDirectory": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "Specifies settings for joining the HPC Cache to an Active Directory domain."
+      },
+      "usernameDownload": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "Specifies settings for Extended Groups. Extended Groups allows users to be members of more than 16 groups."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheActiveDirectorySettings",
+    "properties": {
+      "primaryDnsIpAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Primary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name."
+      },
+      "secondaryDnsIpAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secondary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name."
+      },
+      "domainName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fully qualified domain name of the Active Directory domain controller."
+      },
+      "domainNetBiosName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Active Directory domain's NetBIOS name."
+      },
+      "cacheNetBiosName": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z]."
+      },
+      "domainJoined": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 2,
+        "description": "True if the HPC Cache is joined to the Active Directory domain."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "Active Directory admin credentials used to join the HPC Cache to a domain."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[-0-9a-zA-Z]{1,15}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheActiveDirectorySettingsCredentials",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Username of the Active Directory domain administrator. This value is stored encrypted and not returned on response."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned on response."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheUsernameDownloadSettings",
+    "properties": {
+      "extendedGroups": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Whether or not Extended Groups is enabled."
+      },
+      "usernameSource": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "This setting determines how the cache gets username and group names for clients."
+      },
+      "groupFileURI": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URI of the file containing group information (in /etc/group file format). This field must be populated when 'usernameSource' is set to 'File'."
+      },
+      "userFileURI": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URI of the file containing user information (in /etc/passwd file format). This field must be populated when 'usernameSource' is set to 'File'."
+      },
+      "ldapServer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified domain name or IP address of the LDAP server to use."
+      },
+      "ldapBaseDN": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The base distinguished name for the LDAP domain."
+      },
+      "encryptLdapConnection": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Whether or not the LDAP connection should be encrypted."
+      },
+      "requireValidCertificate": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Determines if the certificates must be validated by a certificate authority. When true, caCertificateURI must be provided."
+      },
+      "autoDownloadCertificate": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if 'requireValidCertificate' is true."
+      },
+      "caCertificateURI": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when 'requireValidCertificate' is set to true."
+      },
+      "usernameDownloaded": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 2,
+        "description": "Indicates whether or not the HPC Cache has performed the username download successfully."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "When present, these are the credentials for the secure LDAP connection."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LDAP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "File"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheUsernameDownloadSettingsCredentials",
+    "properties": {
+      "bindDn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Bind Distinguished Name identity to be used in the secure LDAP connection. This value is stored encrypted and not returned on response."
+      },
+      "bindPassword": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The Bind password to be used in the secure LDAP connection. This value is stored encrypted and not returned on response."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrimingJob",
+    "properties": {
+      "primingJobName": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "The priming job name."
+      },
+      "primingManifestUrl": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 5,
+        "description": "The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the blob."
+      },
+      "primingJobId": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "The unique identifier of the priming job."
+      },
+      "primingJobState": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 2,
+        "description": "The state of the priming operation."
+      },
+      "primingJobStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status code of the priming job."
+      },
+      "primingJobDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The job details or error information if any."
+      },
+      "primingJobPercentComplete": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 2,
+        "description": "The current progress of the priming job, as a percentage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageTargetSpaceAllocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Name of the storage target."
+      },
+      "allocationPercentage": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "The percentage of cache space allocated for this storage target"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/161"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID for the system-assigned identity of the cache."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID associated with the cache."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the cache"
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty dictionary."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/62"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SKU name for this cache."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/caches@2026-08-01",
+    "body": {
+      "$ref": "#/82"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems/autoExportJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems/autoExportJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Properties of the auto export job."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoExportJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state."
+      },
+      "adminStatus": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 0,
+        "description": "The administrative status of the auto export job. Possible values: 'Enable', 'Disable'. Passing in a value of 'Disable' will disable the current active auto export job. By default it is set to 'Enable'."
+      },
+      "autoExportPrefixes": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 0,
+        "description": "An array of blob paths/prefixes that get auto exported to the cluster namespace. It has '/' as the default value. Number of maximum allowed paths for now is 1."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 2,
+        "description": "The status of the auto export"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoExportJobPropertiesStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "The operational state of auto export. InProgress indicates the export is running.  Disabling indicates the user has requested to disable the export but the disabling is still in progress. Disabled indicates auto export has been disabled.  DisableFailed indicates the disabling has failed.  Failed means the export was unable to continue, due to a fatal error."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status code for auto export job."
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status message for auto export job."
+      },
+      "totalFilesExported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total files exported since the start of the export. This is accumulative, some files may be counted repeatedly."
+      },
+      "totalMiBExported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total data (in MiB) exported since the start of the export. This is accumulative, some files may be counted repeatedly."
+      },
+      "totalFilesFailed": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total files failed to be export since the last successfully completed iteration. This is accumulative, some files may be counted repeatedly."
+      },
+      "exportIterationCount": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of iterations completed since the start of the export."
+      },
+      "lastSuccessfulIterationCompletionTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time (in UTC) of the last successfully completed export iteration. Look at logging container for details."
+      },
+      "currentIterationFilesDiscovered": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Files discovered for export in current iteration. It may increase while more export items are found."
+      },
+      "currentIterationMiBDiscovered": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Data (in MiB) discovered for export in current iteration. It may increase while more export items are found."
+      },
+      "currentIterationFilesExported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Files that have been exported in current iteration."
+      },
+      "currentIterationMiBExported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Data (in MiB) that have been exported in current iteration."
+      },
+      "currentIterationFilesFailed": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Files failed to export in current iteration."
+      },
+      "lastStartedTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) the latest auto export job started."
+      },
+      "lastCompletionTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) of the last completed auto export job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DisableFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems/autoExportJobs@2026-08-01",
+    "body": {
+      "$ref": "#/176"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems/autoImportJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems/autoImportJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "Properties of the auto import job."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoImportJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state."
+      },
+      "adminStatus": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "The administrative status of the auto import job. Possible values: 'Enable', 'Disable'. Passing in a value of 'Disable' will disable the current active auto import job. By default it is set to 'Enable'."
+      },
+      "autoImportPrefixes": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "An array of blob paths/prefixes that get auto imported to the cluster namespace. It has '/' as the default value. Number of maximum allowed paths is 100."
+      },
+      "conflictResolutionMode": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "How the auto import job will handle conflicts. For example, if the auto import job is trying to bring in a directory, but a file is at that path, how it handles it. Fail indicates that the auto import job should stop immediately and not do anything with the conflict. Skip indicates that it should pass over the conflict. OverwriteIfDirty causes the auto import job to delete and re-import the file or directory if it is a conflicting type, is dirty, or is currently released. OverwriteAlways extends OverwriteIfDirty to include releasing files that had been restored but were not dirty. Please reference https://learn.microsoft.com/en-us/azure/azure-managed-lustre/blob-integration#conflict-resolution-mode for a thorough explanation of these resolution modes."
+      },
+      "enableDeletions": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Whether or not to enable deletions during auto import. This only affects overwrite-dirty."
+      },
+      "maximumErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Total non-conflict-oriented errors (e.g., OS errors) Import will tolerate before exiting with failure. -1 means infinite. 0 means exit immediately on any error."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 2,
+        "description": "The status of the auto import job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fail"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skip"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OverwriteIfDirty"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OverwriteAlways"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoImportJobPropertiesStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 2,
+        "description": "The state of the auto import operation."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status code for auto import job."
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status message for auto import job."
+      },
+      "scanStartTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date and time of when the currently running full scan began."
+      },
+      "scanEndTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date and time of when the full scan ended."
+      },
+      "totalBlobsWalked": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of blobs walked during full scan."
+      },
+      "rateOfBlobWalk": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Rate of blobs walked during full scan."
+      },
+      "totalBlobsImported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of blobs imported during full scan."
+      },
+      "rateOfBlobImport": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Rate of blob import during full scan."
+      },
+      "importedFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of files imported during full scan."
+      },
+      "importedDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of directories imported during full scan."
+      },
+      "importedSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of symlinks imported during full scan."
+      },
+      "preexistingFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting files during full scan."
+      },
+      "preexistingDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting directories during full scan."
+      },
+      "preexistingSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting symlinks during full scan."
+      },
+      "totalErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total errors encountered during full scan."
+      },
+      "totalConflicts": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total conflicts encountered during full scan."
+      },
+      "blobSyncEvents": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 2,
+        "description": "The storage account blob change feed status of the auto import job."
+      },
+      "lastStartedTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) the latest auto import job started."
+      },
+      "lastCompletionTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) of the last completed auto import job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoImportJobPropertiesStatusBlobSyncEvents",
+    "properties": {
+      "importedFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of files imported during auto import."
+      },
+      "importedDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of directories imported during auto import."
+      },
+      "importedSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of symlinks imported during auto import."
+      },
+      "preexistingFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting files during auto import."
+      },
+      "preexistingDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting directories during auto import."
+      },
+      "preexistingSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of preexisting symlinks during auto import."
+      },
+      "totalBlobsImported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of blobs imported during auto import."
+      },
+      "rateOfBlobImport": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Rate of blob import per second during auto import."
+      },
+      "totalErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total errors encountered during auto import."
+      },
+      "totalConflicts": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total conflicts encountered during auto import."
+      },
+      "deletions": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of deletions during auto import."
+      },
+      "lastChangeFeedEventConsumedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date and time of the last Change Feed event consumed."
+      },
+      "lastTimeFullySynchronized": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date and time when last fully synchronized."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems/autoImportJobs@2026-08-01",
+    "body": {
+      "$ref": "#/200"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems/expansionJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems/expansionJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "Properties of the expansion job."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpansionJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property"
+      },
+      "newStorageCapacityTiB": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The new storage capacity in TiB for the AML file system after expansion. This must be a multiple of the Sku step size, and greater than the current storage capacity of the AML file system."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 2,
+        "description": "The status of the expansion job."
+      },
+      "runRebalanceJob": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "When true, expansion creates a RebalanceJob after completing. Optional, defaults to true."
+      },
+      "rebalanceJobId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified ARM resource ID of the child rebalance job created by this expansion. Populated after RebalanceJob is created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpansionJobPropertiesStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 2,
+        "description": "The operational state of the expansion job. InProgress indicates the expansion is still running. Completed indicates expansion finished successfully. Failed means the expansion was unable to complete due to a fatal error. Deleting indicates the expansion is being rolled back."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status code for expansion job."
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status message for expansion job."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 2,
+        "description": "The percentage of expansion job completion."
+      },
+      "startTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) the expansion job started."
+      },
+      "completionTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) when the expansion job completed. Only populated when job reaches a terminal state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RollingBack"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems/expansionJobs@2026-08-01",
+    "body": {
+      "$ref": "#/229"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems/importJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems/importJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 0,
+        "description": "Properties of the import job."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImportJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state."
+      },
+      "adminStatus": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 0,
+        "description": "The administrative status of the import job. Possible values: 'Active', 'Cancel'. Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'."
+      },
+      "importPrefixes": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 0,
+        "description": "An array of blob paths/prefixes that get imported into the cluster namespace. It has '/' as the default value."
+      },
+      "conflictResolutionMode": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 0,
+        "description": "How the import job will handle conflicts. For example, if the import job is trying to bring in a directory, but a file is at that path, how it handles it. Fail indicates that the import job should stop immediately and not do anything with the conflict. Skip indicates that it should pass over the conflict. OverwriteIfDirty causes the import job to delete and re-import the file or directory if it is a conflicting type, is dirty, or was not previously imported. OverwriteAlways extends OverwriteIfDirty to include releasing files that had been restored but were not dirty. Please reference https://learn.microsoft.com/en-us/azure/azure-managed-lustre/ for a thorough explanation of these resolution modes."
+      },
+      "maximumErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Total non-conflict oriented errors the import job will tolerate before exiting with failure. -1 means infinite. 0 means exit immediately and is the default."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 2,
+        "description": "The status of the import"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancel"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fail"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skip"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OverwriteIfDirty"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OverwriteAlways"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImportJobPropertiesStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 2,
+        "description": "The operational state of the import job. InProgress indicates the import is still running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed means the import was unable to complete due to a fatal error."
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status message of the import job."
+      },
+      "totalBlobsWalked": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The total blob objects walked."
+      },
+      "blobsWalkedPerSecond": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "A recent and frequently updated rate of blobs walked per second."
+      },
+      "totalBlobsImported": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The total blobs that have been imported since import began."
+      },
+      "importedFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "New or modified files that have been imported into the filesystem."
+      },
+      "importedDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "New or modified directories that have been imported into the filesystem."
+      },
+      "importedSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Newly added symbolic links into the filesystem."
+      },
+      "preexistingFiles": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Files that already exist in the filesystem and have not been modified."
+      },
+      "preexistingDirectories": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Directories that already exist in the filesystem and have not been modified."
+      },
+      "preexistingSymlinks": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Symbolic links that already exist in the filesystem and have not been modified."
+      },
+      "blobsImportedPerSecond": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "A recent and frequently updated rate of total files, directories, and symlinks imported per second."
+      },
+      "lastCompletionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) of the last completed import job."
+      },
+      "lastStartedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) the latest import job started."
+      },
+      "totalErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of errors in the import job."
+      },
+      "totalConflicts": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Number of conflicts in the import job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompletedPartial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems/importJobs@2026-08-01",
+    "body": {
+      "$ref": "#/249"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/caches/storageTargets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/caches/storageTargets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 0,
+        "description": "StorageTarget properties"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Region name string."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageTargetProperties",
+    "properties": {
+      "junctions": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 0,
+        "description": "List of cache namespace junctions to target for namespace associations."
+      },
+      "targetType": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 1,
+        "description": "Type of the Storage Target."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Storage target operational state."
+      },
+      "nfs3": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Properties when targetType is nfs3."
+      },
+      "clfs": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "Properties when targetType is clfs."
+      },
+      "unknown": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "Properties when targetType is unknown."
+      },
+      "blobNfs": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Properties when targetType is blobNfs."
+      },
+      "allocationPercentage": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 2,
+        "description": "The percentage of cache space allocated for this storage target"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceJunction",
+    "properties": {
+      "namespacePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Namespace path on a cache for a Storage Target."
+      },
+      "targetPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path in Storage Target to which namespacePath points."
+      },
+      "nfsExport": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "NFS export where targetPath exists."
+      },
+      "nfsAccessPolicy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the access policy applied to this junction."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/281"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nfs3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clfs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "blobNfs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Busy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flushing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Nfs3Target",
+    "properties": {
+      "target": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "IP address or host name of an NFSv3 host (e.g., 10.0.44.44)."
+      },
+      "usageModel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifies the StorageCache usage model to be used for this storage target."
+      },
+      "verificationTimer": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates."
+      },
+      "writeBackTimer": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[-.,0-9a-zA-Z]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClfsTarget",
+    "properties": {
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID of storage container."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UnknownTarget",
+    "properties": {
+      "attributes": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 0,
+        "description": "Dictionary of string->string pairs containing information about the Storage Target."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UnknownTargetAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobNfsTarget",
+    "properties": {
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID of the storage container."
+      },
+      "usageModel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifies the StorageCache usage model to be used for this storage target."
+      },
+      "verificationTimer": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates."
+      },
+      "writeBackTimer": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/caches/storageTargets@2026-08-01",
+    "body": {
+      "$ref": "#/279"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StorageCache/amlFilesystems/rebalanceJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StorageCache/amlFilesystems/rebalanceJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 2,
+        "description": "Properties of the rebalance job."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RebalanceJobProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 2,
+        "description": "ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property"
+      },
+      "adminStatus": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 2,
+        "description": "The current administrative status of the rebalance job. 'Active' indicates the job is running normally; 'Cancel' indicates cancellation has been requested."
+      },
+      "expansionJobId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified ARM resource ID of the parent expansion job that initiated this rebalance. Populated when the rebalance was created as part of an expansion."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 2,
+        "description": "The status of the rebalance job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancel"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RebalanceJobPropertiesStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/329"
+        },
+        "flags": 2,
+        "description": "The operational state of the rebalance job. InProgress indicates the rebalance is running on the cluster. Cancelling indicates a cancel has been requested. Canceled indicates the rebalance was cancelled. Completed indicates the rebalance finished successfully. Failed indicates the rebalance was unable to complete due to a fatal error. Deleting indicates the job is being cleaned up during deletion. RollingBack indicates the orchestrator is rolling back provisioned resources after a failure."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status code for rebalance job."
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server-defined status message for rebalance job."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 2,
+        "description": "The percentage of rebalance job completion."
+      },
+      "balancePercent": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 2,
+        "description": "The balance percentage (0-100). Represents cumulative progress since the rebalance started. Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "estimatedRemainingSeconds": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Estimated remaining time in seconds. Omitted during initial assessment before the rebalancer has enough data to estimate."
+      },
+      "filesMigrated": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of files migrated since the rebalance started. Counts OST-phase (data) work items. Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "dirsMigrated": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of directories migrated since the rebalance started. Counts MDT-phase (metadata) work items, reported separately from filesMigrated (OST-phase data migrations). Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "bytesMoved": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total number of bytes moved since the rebalance started. Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "filesMovedPerSecond": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Average files moved per second over the most recent reporting interval."
+      },
+      "throughputMiBps": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Average throughput in mebibytes per second (1024x1024 bytes per second) over the most recent reporting interval."
+      },
+      "totalErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total cumulative non-skip errors since the rebalance started. Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "totalSkipped": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Total cumulative benign skips since the rebalance started: files intentionally not migrated (for example, a lost migration lease or a stale layout), as distinct from the hard failures counted in totalErrors. Reported in periodic rebalance status updates. Resets to 0 if the rebalancer node restarts."
+      },
+      "startTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) the rebalance job started."
+      },
+      "completionTimeUTC": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time (in UTC) when the rebalance job completed. Only populated when the job reaches a terminal state (Completed, Failed, or Canceled)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RollingBack"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/322"
+      },
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/324"
+      },
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StorageCache/amlFilesystems/rebalanceJobs@2026-08-01",
+    "body": {
+      "$ref": "#/309"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmlFilesystemArchiveInfo",
+    "properties": {
+      "filesystemPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "archive",
+    "resourceType": "Microsoft.StorageCache/amlFilesystems",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/331"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancelArchive",
+    "resourceType": "Microsoft.StorageCache/amlFilesystems",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "debugInfo",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "flush",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrimingJobIdParameter",
+    "properties": {
+      "primingJobId": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "The unique identifier of the priming job."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "pausePrimingJob",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/336"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resumePrimingJob",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/336"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/161"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "spaceAllocation",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/339"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startPrimingJob",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stopPrimingJob",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01",
+    "input": {
+      "$ref": "#/336"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "upgrade",
+    "resourceType": "Microsoft.StorageCache/caches",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "dnsRefresh",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restoreDefaults",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "flush",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "invalidate",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resume",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "suspend",
+    "resourceType": "Microsoft.StorageCache/caches/storageTargets",
+    "apiVersion": "2026-08-01"
+  }
+]

@@ -1,0 +1,1585 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^(?![.-])[A-Za-z0-9_.-]{1,64}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/workloadSpaces"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/workloadSpaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadSpaceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the workload space."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The readiness of the composed runtime environment."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "Aggregate status across children and dependencies."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingConfiguration"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AggregateOperationStatus",
+    "properties": {
+      "kubernetesBinding": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The summarized status of Kubernetes runtime bindings."
+      },
+      "serverlessBinding": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The summarized status of serverless container runtime bindings."
+      },
+      "runtimeLink": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The summarized status of runtime links."
+      },
+      "capabilities": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Dependency status for each capability, identified by its resource name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DependencyStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 3,
+        "description": "The current dependency state."
+      },
+      "providerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The provider resource realizing the dependency."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actionable detail when the dependency is not ready."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityDependencyStatus",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The capability resource name."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 3,
+        "description": "The current dependency state."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actionable detail when the dependency is not ready."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/27"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (either system assigned, or none)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/workloadSpaces@2026-11-01-preview",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/workloadSpaces/capabilities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/workloadSpaces/capabilities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "The resource-specific properties for this resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "The capability to enable, fixed when the capability is created."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityProperties",
+    "properties": {
+      "versionPolicy": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The version selection policy for the capability."
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "Capability-specific configuration entries. AKS core capabilities require this collection to be empty or omitted."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the capability."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 2,
+        "description": "Capability readiness, independent of the most recent write operation."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actionable detail when the capability is not ready."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceManaged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilitySetting",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the capability-specific setting."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The string value of the capability-specific setting."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AgentSandbox"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PodSnapshotRestore"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/workloadSpaces/capabilities@2026-11-01-preview",
+    "body": {
+      "$ref": "#/55"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/workloadSpaces/runtimeBindings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/workloadSpaces/runtimeBindings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "The resource-specific properties for this resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 1,
+        "description": "The runtime technology, fixed when the binding is created."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RuntimeBindingProperties",
+    "discriminator": "provisioningMode",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the runtime binding."
+      },
+      "providerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The provider resource created or referenced by the binding."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 2,
+        "description": "Runtime readiness, independent of the most recent write operation."
+      },
+      "ownership": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 2,
+        "description": "The ownership of the provider resource."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actionable detail when the binding is not ready."
+      },
+      "identityProfile": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The runtime identity configuration for a managed runtime."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The runtime network configuration for a managed runtime."
+      }
+    },
+    "elements": {
+      "Managed": {
+        "$ref": "#/109"
+      },
+      "Referenced": {
+        "$ref": "#/112"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Referenced"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeIdentityProfile",
+    "properties": {
+      "executionIdentity": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "The identity made available to the execution runtime."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ExecutionIdentity",
+    "discriminator": "provisioningMode",
+    "baseProperties": {
+      "scope": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 1,
+        "description": "The execution boundary across which the identity is shared."
+      }
+    },
+    "elements": {
+      "Referenced": {
+        "$ref": "#/101"
+      },
+      "ServiceManaged": {
+        "$ref": "#/103"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SandboxGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReferencedExecutionIdentity",
+    "properties": {
+      "userAssignedIdentityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The customer-provided user-assigned identity."
+      },
+      "provisioningMode": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 1,
+        "description": "Indicates whether the identity is managed by the service or supplied by the customer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Referenced"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceManagedExecutionIdentity",
+    "properties": {
+      "userAssignedIdentityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The service-created user-assigned identity."
+      },
+      "provisioningMode": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 1,
+        "description": "Indicates whether the identity is managed by the service or supplied by the customer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceManaged"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeNetworkProfile",
+    "properties": {
+      "subnetResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The customer-provided subnet used by the runtime."
+      },
+      "egressMode": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "Indicates who manages runtime egress."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceManaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManaged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuntimeBindingProperties",
+    "properties": {
+      "managedProfile": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 1,
+        "description": "The limited service-managed runtime configuration."
+      },
+      "provisioningMode": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 1,
+        "description": "Indicates whether Workload Manager owns or references the runtime."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuntimeProfile",
+    "properties": {
+      "offering": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The required product offering when the runtime binding kind is Kubernetes."
+      },
+      "provider": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The required provider when the runtime binding kind is ServerlessContainers."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managed"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReferencedRuntimeBindingProperties",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The existing customer-owned runtime resource."
+      },
+      "provisioningMode": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 1,
+        "description": "Indicates whether Workload Manager owns or references the runtime."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Referenced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kubernetes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerlessContainers"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/workloadSpaces/runtimeBindings@2026-11-01-preview",
+    "body": {
+      "$ref": "#/79"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/workloadSpaces/runtimeLinks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/workloadSpaces/runtimeLinks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 1,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeLinkProperties",
+    "properties": {
+      "orchestratorBindingResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The sibling runtime binding that provides orchestration."
+      },
+      "executionBindingResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The optional sibling runtime binding that provides execution."
+      },
+      "subnetResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The dedicated managed virtual node pool subnet in the bindings' shared virtual network. Required for customer networks; otherwise uses the space-owned subnet. Immutable after creation."
+      },
+      "integrationProfile": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "The provider integration identity configuration."
+      },
+      "capacityProfile": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Accepted capacity intent only."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the runtime link."
+      },
+      "providerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The provider resource that realizes the runtime composition."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 2,
+        "description": "Runtime-link readiness, independent of provisioning success."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actionable detail when the link is not ready."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeLinkIntegrationProfile",
+    "properties": {
+      "managedIdentityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user-assigned identity used by the provider integration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapacityProfile",
+    "properties": {
+      "minimumNodes": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 1,
+        "description": "The minimum number of execution nodes."
+      },
+      "maximumNodes": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 1,
+        "description": "The maximum number of execution nodes."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/workloadSpaces/runtimeLinks@2026-11-01-preview",
+    "body": {
+      "$ref": "#/120"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  }
+]
