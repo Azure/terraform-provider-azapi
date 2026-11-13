@@ -40,19 +40,6 @@ variable "location" {
 
 data "azapi_client_config" "current" {}
 
-data "azapi_resource_list" "supportedModels" {
-  type                   = "Microsoft.App/locations/supportedAgentModels@2026-07-01"
-  parent_id              = "${data.azapi_client_config.current.subscription_resource_id}/providers/Microsoft.App/locations/${var.location}"
-  response_export_values = ["value"]
-
-  lifecycle {
-    postcondition {
-      condition     = length([for model in self.output.value : model if model.properties.default]) > 0
-      error_message = "The selected region must expose a default SRE Agent model for this subscription."
-    }
-  }
-}
-
 data "azapi_resource_list" "roleDefinitions" {
   type                   = "Microsoft.Authorization/roleDefinitions@2022-04-01"
   parent_id              = data.azapi_client_config.current.subscription_resource_id
@@ -169,13 +156,6 @@ resource "azapi_resource" "subnet" {
   }
 }
 
-locals {
-  default_model = [
-    for model in data.azapi_resource_list.supportedModels.output.value :
-    model.properties if model.properties.default
-  ][0]
-}
-
 resource "azapi_resource" "agent" {
   type                      = "Microsoft.App/agents@2026-07-01"
   name                      = var.resource_name
@@ -200,8 +180,8 @@ resource "azapi_resource" "agent" {
         mode        = "Autonomous"
       }
       defaultModel = {
-        name     = local.default_model.modelName
-        provider = local.default_model.providerName
+        name     = "Automatic"
+        provider = "MicrosoftFoundry"
       }
       incidentManagementConfiguration = {
         type           = "AzMonitor"

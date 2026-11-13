@@ -20,23 +20,6 @@ variable "location" {
   default = "eastus2"
 }
 
-data "azapi_client_config" "current" {}
-
-data "azapi_resource_list" "supportedModels" {
-  type      = "Microsoft.App/locations/supportedAgentModels@2026-07-01"
-  parent_id = "${data.azapi_client_config.current.subscription_resource_id}/providers/Microsoft.App/locations/${var.location}"
-  response_export_values = {
-    default_model = "value[?properties.default == `true`].properties | [0]"
-  }
-
-  lifecycle {
-    postcondition {
-      condition     = self.output.default_model != null
-      error_message = "The selected subscription and region must expose a default supported SRE Agent model."
-    }
-  }
-}
-
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -106,8 +89,8 @@ resource "azapi_resource" "agent" {
         mode        = "Autonomous"
       }
       defaultModel = {
-        name     = data.azapi_resource_list.supportedModels.output.default_model.modelName
-        provider = data.azapi_resource_list.supportedModels.output.default_model.providerName
+        name     = "Automatic"
+        provider = "MicrosoftFoundry"
       }
       logConfiguration = {
         applicationInsightsConfiguration = {
