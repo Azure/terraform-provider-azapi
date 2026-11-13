@@ -1837,3 +1837,83 @@ func Test_UpdateObject_CompositeKeyIdentifier(t *testing.T) {
 		})
 	}
 }
+
+// When updating, the request body is the configured body with the ignored paths
+// taken from the resource as it exists in Azure. A path the configuration omits
+// or sets to null still has to be carried over, or the PUT silently removes a
+// value that was added outside Terraform (GH-1270).
+func Test_OverrideWithPathsAddMissing(t *testing.T) {
+	testcases := []struct {
+		Name          string
+		OldJson       string
+		NewJson       string
+		ExpectJson    string
+		IgnoreChanges []string
+	}{
+		{
+			Name:          "ignored path omitted from the body",
+			OldJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"]}}`,
+			NewJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"], "routeTable": {"id": "rt"}, "provisioningState": "Succeeded"}}`,
+			ExpectJson:    `{"properties": {"addressPrefixes": ["10.0.0.0/26"], "routeTable": {"id": "rt"}}}`,
+			IgnoreChanges: []string{"properties.routeTable"},
+		},
+		{
+			Name:          "ignored path set to null in the body",
+			OldJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"], "routeTable": null}}`,
+			NewJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"], "routeTable": {"id": "rt"}}}`,
+			ExpectJson:    `{"properties": {"addressPrefixes": ["10.0.0.0/26"], "routeTable": {"id": "rt"}}}`,
+			IgnoreChanges: []string{"properties.routeTable"},
+		},
+		{
+			Name:          "parent of the ignored path omitted from the body",
+			OldJson:       `{"location": "westeurope"}`,
+			NewJson:       `{"location": "westeurope", "properties": {"routeTable": {"id": "rt"}, "provisioningState": "Succeeded"}}`,
+			ExpectJson:    `{"location": "westeurope", "properties": {"routeTable": {"id": "rt"}}}`,
+			IgnoreChanges: []string{"properties.routeTable"},
+		},
+		{
+			Name:          "ignored path absent from both",
+			OldJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"]}}`,
+			NewJson:       `{"properties": {"addressPrefixes": ["10.0.0.0/26"]}}`,
+			ExpectJson:    `{"properties": {"addressPrefixes": ["10.0.0.0/26"]}}`,
+			IgnoreChanges: []string{"properties.routeTable"},
+		},
+		{
+			Name:          "ignored path present in the body",
+			OldJson:       `{"properties": {"provisioningState": "Foo"}}`,
+			NewJson:       `{"properties": {"provisioningState": "Bar"}}`,
+			ExpectJson:    `{"properties": {"provisioningState": "Bar"}}`,
+			IgnoreChanges: []string{"properties.provisioningState"},
+		},
+		{
+			Name:          "non-ignored null stays null",
+			OldJson:       `{"properties": {"natGateway": null}}`,
+			NewJson:       `{"properties": {"natGateway": {"id": "nat"}, "routeTable": {"id": "rt"}}}`,
+			ExpectJson:    `{"properties": {"natGateway": null, "routeTable": {"id": "rt"}}}`,
+			IgnoreChanges: []string{"properties.routeTable"},
+		},
+	}
+
+	for _, testcase := range testcases {
+		t.Run(testcase.Name, func(t *testing.T) {
+			var new, old, expected interface{}
+			_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+			_ = json.Unmarshal([]byte(testcase.NewJson), &new)
+			_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+			pathSet := make(map[string]bool)
+			for _, path := range testcase.IgnoreChanges {
+				pathSet[path] = true
+			}
+			result, err := utils.OverrideWithPathsAddMissing(old, new, "", pathSet)
+			if err != nil {
+				t.Fatalf("Expected no error but got %s", err)
+			}
+			if !reflect.DeepEqual(result, expected) {
+				expectedJson, _ := json.Marshal(expected)
+				resultJson, _ := json.Marshal(result)
+				t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+			}
+		})
+	}
+}

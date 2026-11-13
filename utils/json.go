@@ -321,8 +321,36 @@ func ExtractObjectJMES(old interface{}, pathKey, path string) interface{} {
 
 // OverrideWithPaths is used to override old object with new object for specific paths
 func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet map[string]bool) (interface{}, error) {
-	if len(pathSet) == 0 || old == nil {
+	return overrideWithPaths(old, new, path, pathSet, false)
+}
+
+// OverrideWithPathsAddMissing is OverrideWithPaths, except that a path in
+// pathSet which old omits or sets to null is still taken from new.
+//
+// It is meant for building an update request from the configured body and the
+// resource as it exists: a PUT replaces the resource, so an ignored property
+// the configuration leaves out would otherwise be removed, e.g. a route table
+// attached to a subnet outside Terraform (GH-1270).
+func OverrideWithPathsAddMissing(old interface{}, new interface{}, path string, pathSet map[string]bool) (interface{}, error) {
+	return overrideWithPaths(old, new, path, pathSet, true)
+}
+
+func overrideWithPaths(old interface{}, new interface{}, path string, pathSet map[string]bool, addMissing bool) (interface{}, error) {
+	if len(pathSet) == 0 {
 		return old, nil
+	}
+	if old == nil {
+		if !addMissing {
+			return old, nil
+		}
+		if _, ok := pathSet[path]; ok {
+			return new, nil
+		}
+		// Build out the parents of an ignored path, but nothing else.
+		if _, ok := new.(map[string]interface{}); !ok || !hasPathBelow(pathSet, path) {
+			return old, nil
+		}
+		old = map[string]interface{}{}
 	}
 	if _, ok := pathSet[path]; ok {
 		return new, nil
@@ -334,13 +362,31 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 			for key, value := range oldValue {
 				if newValue, ok := newMap[key]; ok {
 					nestedPath := strings.TrimPrefix(path+"."+key, ".")
-					out, err := OverrideWithPaths(value, newValue, nestedPath, pathSet)
+					out, err := overrideWithPaths(value, newValue, nestedPath, pathSet, addMissing)
 					if err != nil {
 						return nil, err
 					}
 					outMap[key] = out
 				} else {
 					outMap[key] = value
+				}
+			}
+			if addMissing {
+				for key, newValue := range newMap {
+					if _, ok := oldValue[key]; ok {
+						continue
+					}
+					nestedPath := strings.TrimPrefix(path+"."+key, ".")
+					if !pathSet[nestedPath] && !hasPathBelow(pathSet, nestedPath) {
+						continue
+					}
+					out, err := overrideWithPaths(nil, newValue, nestedPath, pathSet, addMissing)
+					if err != nil {
+						return nil, err
+					}
+					if out != nil {
+						outMap[key] = out
+					}
 				}
 			}
 			return outMap, nil
@@ -359,6 +405,20 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 	}
 
 	return old, nil
+}
+
+// hasPathBelow reports whether pathSet holds a path nested under path.
+func hasPathBelow(pathSet map[string]bool, path string) bool {
+	prefix := path + "."
+	if path == "" {
+		prefix = ""
+	}
+	for p := range pathSet {
+		if p != path && strings.HasPrefix(p, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 // mergeArray is used to merge two array, if overlaps, use old value. `name` is used as key to compare
