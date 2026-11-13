@@ -169,6 +169,8 @@ type sequenceResponse struct {
 	method     string
 	statusCode int
 	body       string
+	// path is the expected request URL path. It's not checked when empty.
+	path string
 }
 
 type sequenceTransport struct {
@@ -190,6 +192,9 @@ func (t *sequenceTransport) Do(request *http.Request) (*http.Response, error) {
 	t.responses = t.responses[1:]
 	if request.Method != response.method {
 		return nil, fmt.Errorf("expected %s request, got %s", response.method, request.Method)
+	}
+	if response.path != "" && request.URL.Path != response.path {
+		return nil, fmt.Errorf("expected %s request to %s, got %s", response.method, response.path, request.URL.Path)
 	}
 
 	return &http.Response{
