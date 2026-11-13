@@ -170,7 +170,7 @@ resource "azapi_resource" "nginxDeployment" {
         }
       }
       userProfile = {
-        preferredEmail = "test@test.com"
+        preferredEmail = "test@example.com"
       }
     }
     sku = {

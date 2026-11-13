@@ -100,7 +100,7 @@ resource "azapi_resource" "qumuloFileSystem" {
       }
       storageSku = "Cold_LRS"
       userDetails = {
-        email = "test@test.com"
+        email = "test@example.com"
       }
     }
   }
