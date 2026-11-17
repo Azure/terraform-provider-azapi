@@ -1,0 +1,4829 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The SKU (Stock Keeping Unit) assigned to this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "frontend": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Frontend configuration of the AI Gateway."
+      },
+      "backend": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Backend networking configuration."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Whether public network access is allowed for the AI Gateway."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Private endpoint connections associated with the AI Gateway."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayFrontend",
+    "properties": {
+      "defaultHostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Default hostname used to invoke the AI Gateway."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayBackend",
+    "properties": {
+      "subnet": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Subnet through which the AI Gateway reaches backends."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewaySubnet",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource identifier of the subnet. The subnet must be delegated to Microsoft.App/environments and be in the same region as the AI Gateway."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/49"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. E.g. P3. It is typically a letter+number code"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If the service has different generations of hardware, for the same SKU, then that can be captured here."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways@2026-11-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/apiKeys"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/apiKeys",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayApiKeyProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the key."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Subscription state."
+      },
+      "createdDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Creation time."
+      },
+      "expirationDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional expiration time."
+      },
+      "primaryKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "Primary key value. Omitted from ordinary read responses."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "Secondary key value. Omitted from ordinary read responses."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/apiKeys@2026-11-01",
+    "body": {
+      "$ref": "#/63"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/privateEndpointConnections@2026-11-01",
+    "body": {
+      "$ref": "#/73"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9_.-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces/aliases"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/aliases",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAliasProperties",
+    "properties": {
+      "aliasName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client-facing routing name sent in the request model field."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Description of the alias."
+      },
+      "backendModels": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "Ordered target models used for routing."
+      },
+      "selectionOrder": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Ordered routing stages."
+      },
+      "sessionBackendPreference": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Stateless backend preference using an existing caller session key."
+      },
+      "autoModelSelection": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Automatic model selection settings used with the autoModelSelection stage."
+      },
+      "failures": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Ordered failure rules; only the first matching rule is applied."
+      },
+      "maxRetryAttempts": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Maximum additional backend attempts after the first request."
+      },
+      "supportedEndpoints": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 2,
+        "description": "Native endpoints common to every target model; translated endpoints are excluded."
+      },
+      "gatewayEndpoints": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 2,
+        "description": "Invocation endpoints, when endpoint metadata is enabled for this gateway."
+      },
+      "policies": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "Inline policies applied to requests routed through the alias."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 1024
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAliasTarget",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource identifier of the target model in the default workspace."
+      },
+      "selectorModelName": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Unversioned canonical model name grouping equivalent serving deployments."
+      },
+      "when": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional Boolean CEL expression wrapped in @cel(...) controlling eligibility for new backend selections."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "Routing priority. Lower values are preferred; the effective default is zero."
+      },
+      "weight": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Relative selection weight within a priority group. The effective default is one."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/81"
+    },
+    "minLength": 1,
+    "maxLength": 30
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "priority"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "autoModelSelection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sessionBackendPreference"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewaySessionBackendPreference",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CEL expression returning the caller session key."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelSelection",
+    "properties": {
+      "objective": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 1,
+        "description": "Configured quality/cost objective."
+      },
+      "allowedRequestOverrides": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Allowed per-request behaviors. Omitting the property or sending an empty array denies overrides and disables function-tool compatibility filtering."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Balanced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Quality"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "model"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "objective"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "filterModelsForToolCompatibility"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/100"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAliasFailureRule",
+    "properties": {
+      "when": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Boolean @cel(...) expression evaluated against the current routing failure."
+      },
+      "retryAttempts": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Maximum additional attempts on the same backend; defaults to zero."
+      },
+      "excludeFor": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional ISO 8601 duration or duration-valued @cel(...) expression for excluding the failed backend."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayEndpoint",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Complete HTTPS invocation URL."
+      },
+      "baseUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "HTTPS base URL for SDKs that construct operation paths, when metadata is enabled."
+      },
+      "api": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "API identifier relative to the provider prefix, when metadata is enabled."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayPolicy",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 1,
+        "description": "Policy type."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "Policy scope. Workspace counter policies use workspace; other policies use resource. Agent hooks require an explicit resource scope."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stable identifier, required for costLimit and agentHooks policies."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "Token or request count allowed during a tokenLimit or requestRateLimit period."
+      },
+      "period": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Counter period. Token limits support minute/hour/day; request rate limits support minute/hour/day or whole-second ISO 8601 durations (e.g., PT37S); cost limits support hour/day/week/month/year."
+      },
+      "counterKey": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "Unique public dimensions used to partition a token, cost, or request counter."
+      },
+      "amount": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Cost budget in US dollars."
+      },
+      "overrides": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Ordered cost-budget overrides; supported only for counterKey [identity]. The first match wins."
+      },
+      "preInvocation": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Whether to check tool requests for threats."
+      },
+      "postInvocation": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Whether to check tool responses for threats."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "Default failure mode for agent hooks."
+      },
+      "endpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Default destination URL for agent hooks."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "Default outbound authentication for agent hooks."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "Literal non-secret default HTTP headers for agent hooks."
+      },
+      "hooks": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Lifecycle hooks; requires agent-hook authoring to be enabled on the gateway."
+      },
+      "hateSeverity": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "Hate-content severity threshold."
+      },
+      "violenceSeverity": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "Violence-content severity threshold."
+      },
+      "sexualSeverity": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "Sexual-content severity threshold."
+      },
+      "selfHarmSeverity": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "Self-harm-content severity threshold."
+      },
+      "threshold": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Consecutive failure count that opens a fallback circuit."
+      },
+      "tripDurationSeconds": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Duration for which the fallback circuit remains open."
+      },
+      "fallbackTargets": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Ordered fallback model targets."
+      },
+      "action": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 0,
+        "description": "IP filtering action."
+      },
+      "cidrRanges": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "CIDR ranges to allow or deny."
+      },
+      "allowedOrigins": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Origins allowed by a CORS policy."
+      },
+      "allowedMethods": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "HTTP methods allowed by a CORS policy."
+      },
+      "allowedHeaders": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 0,
+        "description": "HTTP headers allowed by a CORS policy."
+      },
+      "exposeHeaders": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
+        "description": "Response headers exposed to the browser."
+      },
+      "allowCredentials": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Whether browsers may send credentials."
+      },
+      "terminateUnmatchedRequest": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Whether unmatched CORS requests are terminated."
+      },
+      "preflightResultMaxAge": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Browser preflight cache duration in seconds."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tokenLimit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "contentSafety"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fallback"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ipFilter"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "requestRateLimit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "costLimit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "toolThreatProtection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "agentHooks"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "resource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "workspace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "minute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hour"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "day"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "week"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "month"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "year"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "identity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ipAddress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/132"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayCostLimitOverride",
+    "properties": {
+      "claims": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "Authenticated token claims that must all match; claim names are case-sensitive."
+      },
+      "apiKeyResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource identifier of the API key selecting this override."
+      },
+      "amount": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "Override budget in US dollars."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayNameValuePair",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Entry name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Entry value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/135"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/134"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failOpen"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failClosed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayDestinationEndpoint",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Destination HTTPS or HTTP URL."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAgentHookAuthentication",
+    "properties": {
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "Managed identity configuration for the hook endpoint."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "Secret HTTP headers injected when calling the hook endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayManagedIdentityAuthentication",
+    "properties": {
+      "resource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Target Entra resource or audience URI requested for managed identity authentication."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client ID of a user-assigned managed identity; omit for system-assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewaySecretHeader",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "HTTP header name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "Secret HTTP header value. Omitted from ordinary read responses."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/135"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAgentHooks",
+    "properties": {
+      "preToolCall": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Hook invoked before calling a tool."
+      },
+      "postToolCall": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Hook invoked after calling a tool."
+      },
+      "preModelCall": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Hook invoked before calling a model."
+      },
+      "postModelCall": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Hook invoked after calling a model."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayAgentHook",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Failure mode when the hook call fails."
+      },
+      "endpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Hook destination URL."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "Hook authentication settings."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Literal, non-secret HTTP headers, returned by read operations."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failOpen"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failClosed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/135"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayFallbackTarget",
+    "properties": {
+      "modelId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource identifier of a model in the same workspace."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/174"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/aliases@2026-11-01",
+    "body": {
+      "$ref": "#/78"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProviderProperties",
+    "properties": {
+      "modelProviderType": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 1,
+        "description": "Model provider type. This value cannot be changed after creation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display name of the model provider."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of the model provider."
+      },
+      "foundry": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 0,
+        "description": "Foundry configuration. Required when modelProviderType is Foundry."
+      },
+      "custom": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "Custom provider configuration. Required when modelProviderType is Custom."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "Outbound authentication configuration."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Foundry"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GitHub"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayFoundryProviderConfiguration",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Foundry endpoint."
+      },
+      "resourceIds": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 1,
+        "description": "Cognitive Services account resource identifiers available to this provider."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayCustomProviderConfiguration",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 1,
+        "description": "Provider base endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProviderAuthentication",
+    "properties": {
+      "githubApp": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 0,
+        "description": "GitHub App credentials when modelProviderType is GitHub."
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "Managed identity configuration when modelProviderType is Foundry."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 0,
+        "description": "Secret HTTP headers injected when calling the model provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayGitHubAppAuthentication",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GitHub App identifier."
+      },
+      "installationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GitHub App installation identifier."
+      },
+      "privateKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "GitHub App private key. Omitted from ordinary read responses."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders@2026-11-01",
+    "body": {
+      "$ref": "#/192"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders/models"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders/models",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display name of the model."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of the model."
+      },
+      "providerKind": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 2,
+        "description": "Parent model provider type."
+      },
+      "deployment": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 1,
+        "description": "Provider deployment details."
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 0,
+        "description": "API-to-backend-path mappings served by this model."
+      },
+      "supportedEndpoints": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 0,
+        "description": "Runtime endpoints supported by this model."
+      },
+      "policies": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "Inline policies applied to this model."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Foundry"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GitHub"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelDeployment",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM resource identifier of the provider deployment."
+      },
+      "modelName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Provider-side model name."
+      },
+      "modelVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Provider-side model version."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelEndpoint",
+    "properties": {
+      "api": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Canonical AI Gateway API identifier (for example, v1/chat/completions, v1/responses, v1/messages, or v1/embeddings)."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Backend path relative to the model provider's base endpoint, starting with '/'."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/219"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders/models@2026-11-01",
+    "body": {
+      "$ref": "#/212"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9_-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces/telemetryExporters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/telemetryExporters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryExporterProperties",
+    "properties": {
+      "telemetryExporterType": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 1,
+        "description": "Exporter type, which cannot change after creation."
+      },
+      "payloadCapture": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Capture prompts, completions, and tool input/output; no built-in PII redaction is applied."
+      },
+      "applicationInsights": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 0,
+        "description": "Configuration required for the ApplicationInsights exporter type."
+      },
+      "openTelemetry": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "Configuration required for the OpenTelemetry exporter type. At least one signal endpoint is required."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Outbound authentication for OpenTelemetry export requests."
+      },
+      "telemetry": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Optional observed-claim mappings, supported on native AI Gateway OpenTelemetry exporters."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplicationInsights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OpenTelemetry"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayApplicationInsightsConfiguration",
+    "properties": {
+      "connectionString": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "Application Insights connection string. Required when creating this exporter kind."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource identifier of the Application Insights component."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayOpenTelemetryConfiguration",
+    "properties": {
+      "metricsEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Full OTLP metrics endpoint URL, used without appending a signal path."
+      },
+      "logsEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Full OTLP logs endpoint URL, used without appending a signal path."
+      },
+      "tracesEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Full OTLP traces endpoint URL, used without appending a signal path."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryAuthentication",
+    "properties": {
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 0,
+        "description": "Managed identity authentication for export requests."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "Secret HTTP headers sent with export requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryManagedIdentity",
+    "properties": {
+      "resource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Token audience requested for the managed identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User-assigned managed identity client ID; omit for the system-assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryConfiguration",
+    "properties": {
+      "attributes": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 0,
+        "description": "Observed-claim mappings; an empty array removes existing mappings."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryAttributeMapping",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 1,
+        "description": "Claim source. Source claim names must be unique across mappings."
+      },
+      "signals": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "Distinct signals to enrich. Omit to select all configured signals."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayTelemetryAttributeSource",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 1,
+        "description": "Source kind. Only claims is currently supported."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 1,
+        "description": "Nonempty, case-sensitive claim name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "claims"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "logs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "traces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "metrics"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/248"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/242"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/telemetryExporters@2026-11-01",
+    "body": {
+      "$ref": "#/231"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces/toolServers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/toolServers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the tool server."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of the tool server."
+      },
+      "accessState": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "Whether the tool server is available to callers."
+      },
+      "toolServerType": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 1,
+        "description": "Tool server type."
+      },
+      "versions": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 0,
+        "description": "Runtime API versions exposed by this tool server."
+      },
+      "allowList": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 0,
+        "description": "Tool names or patterns explicitly allowed."
+      },
+      "blockList": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "Tool names or patterns explicitly blocked."
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Endpoint configurations exposed by this tool server."
+      },
+      "policies": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 0,
+        "description": "Inline policies applied to this tool server."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Runtime path for the tool server."
+      },
+      "subscriptionRequired": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Whether a subscription is required to invoke the tool server."
+      },
+      "gatewayEndpoints": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 2,
+        "description": "Read-only invocation URLs, with optional SDK metadata when endpoint enrichment is enabled."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "blocked"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "mcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "openApi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "connector"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stable endpoint identifier. Up to 64 alphanumeric characters or hyphens, starting and ending with an alphanumeric character. Generated when omitted."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional namespace used to prefix tool names."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 1,
+        "description": "Endpoint type."
+      },
+      "mcp": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 0,
+        "description": "Backend MCP configuration. Required when kind is mcp."
+      },
+      "openApi": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "OpenAPI configuration. Required when kind is openApi."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 0,
+        "description": "Backend authentication configuration."
+      },
+      "tools": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "Upstream tool names or glob patterns to expose."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 0,
+        "description": "Failure mode when the endpoint fails. Defaults to failOpen."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "mcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "openApi"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayMcpUrlConfiguration",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 1,
+        "description": "Backend MCP server endpoint."
+      },
+      "transport": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 0,
+        "description": "MCP transport."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "streamableHttp"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayOpenApiConfiguration",
+    "properties": {
+      "specSource": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 1,
+        "description": "OpenAPI document source."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayOpenApiSpecSource",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 1,
+        "description": "Source type."
+      },
+      "contentBase64": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "Base64-encoded OpenAPI document. Required when type is inline."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL of the OpenAPI document. Required when type is url."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "url"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerAuthentication",
+    "properties": {
+      "headers": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 0,
+        "description": "Static headers injected when calling the endpoint."
+      },
+      "oauth2": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 0,
+        "description": "OAuth 2.0 configuration."
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Managed identity configuration."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerOauth2Authentication",
+    "properties": {
+      "issuer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Expected OAuth authorization-server issuer for remote MCP discovery."
+      },
+      "authorizationEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "OAuth authorization endpoint."
+      },
+      "tokenEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "OAuth token endpoint."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "OAuth client identifier."
+      },
+      "clientSecret": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 4,
+        "description": "OAuth client secret."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 0,
+        "description": "OAuth scopes to request."
+      },
+      "grantType": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 0,
+        "description": "OAuth grant type."
+      },
+      "tokenExchange": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Chained token-exchange configuration."
+      },
+      "authorizationParameters": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 0,
+        "description": "Additional authorization endpoint parameters."
+      },
+      "tokenParameters": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Additional token endpoint parameters."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Current OAuth connection status."
+      },
+      "loginLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Login link used to complete interactive authorization."
+      },
+      "statusUpdatedUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "UTC timestamp of the last OAuth connection-status transition."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientCredentials"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "authorizationCode"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerTokenExchange",
+    "properties": {
+      "profile": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 1,
+        "description": "Token-exchange profile."
+      },
+      "federatedClientApplication": {
+        "type": {
+          "$ref": "#/292"
+        },
+        "flags": 0,
+        "description": "Customer-owned federated client application identity."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 0,
+        "description": "Delegated scopes requested from the target tool server resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "entraOnBehalfOf"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerFederation",
+    "properties": {
+      "applicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Application (client) ID of the customer-owned federation application."
+      },
+      "appCredential": {
+        "type": {
+          "$ref": "#/293"
+        },
+        "flags": 0,
+        "description": "Credential used to authenticate the federation application."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerFederationAppCredential",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 1,
+        "description": "Federation application credential type."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client ID of a user-assigned managed identity available to this AI Gateway."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAssignedManagedIdentity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerOauth2Parameter",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "OAuth parameter name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "OAuth parameter value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/297"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/297"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerManagedIdentityAuthentication",
+    "properties": {
+      "resource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Token audience for managed identity authentication."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client ID of a user-assigned managed identity."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failOpen"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failClosed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/270"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces/toolServers@2026-11-01",
+    "body": {
+      "$ref": "#/258"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 2,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResourceProperties",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private link resource group id."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 2,
+        "description": "The private link resource required member names."
+      },
+      "requiredZoneNames": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "The private link resource private link DNS zone name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/privateLinkResources@2026-11-01",
+    "body": {
+      "$ref": "#/316"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^default$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways/workspaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayWorkspaceProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Display name of the workspace."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Description of the workspace."
+      },
+      "policies": {
+        "type": {
+          "$ref": "#/326"
+        },
+        "flags": 0,
+        "description": "Inline governance policies for the default workspace."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/330"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiManagement/aigateways/workspaces@2026-11-01",
+    "body": {
+      "$ref": "#/324"
+    },
+    "readableScopes": 8,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayCheckNameAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/333"
+        },
+        "flags": 1,
+        "description": "Name to validate and check for availability."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/334"
+        },
+        "flags": 1,
+        "description": "Resource type to check."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 24,
+    "pattern": "^[a-z0-9][a-z0-9-]{1,22}[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiManagement/aigateways"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayCheckNameAvailabilityResponse",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 1,
+        "description": "Whether the name is valid and available."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 0,
+        "description": "Reason for the availability result."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Additional information about the availability result."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AlreadyExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.ApiManagement/locations",
+    "apiVersion": "2026-11-01",
+    "output": {
+      "$ref": "#/335"
+    },
+    "input": {
+      "$ref": "#/332"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayApiKeyValues",
+    "properties": {
+      "primaryKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Primary API key value."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Secondary API key value."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.ApiManagement/aigateways/apiKeys",
+    "apiVersion": "2026-11-01",
+    "output": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regeneratePrimaryKey",
+    "resourceType": "Microsoft.ApiManagement/aigateways/apiKeys",
+    "apiVersion": "2026-11-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regenerateSecondaryKey",
+    "resourceType": "Microsoft.ApiManagement/aigateways/apiKeys",
+    "apiVersion": "2026-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProviderSecrets",
+    "properties": {
+      "authentication": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 0,
+        "description": "Outbound authentication configuration including secret values."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProviderSecretAuthentication",
+    "properties": {
+      "githubApp": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 0,
+        "description": "GitHub App credentials when modelProviderType is GitHub."
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "Managed identity configuration when modelProviderType is Foundry."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 0,
+        "description": "Secret HTTP headers injected when calling the model provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayModelProviderSecretGitHubAppAuthentication",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GitHub App identifier."
+      },
+      "installationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GitHub App installation identifier."
+      },
+      "privateKey": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "GitHub App private key."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewaySecretHeaderValue",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "HTTP header name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Secret HTTP header value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/347"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.ApiManagement/aigateways/workspaces/modelProviders",
+    "apiVersion": "2026-11-01",
+    "output": {
+      "$ref": "#/344"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerLoginLinksRequest",
+    "properties": {
+      "endpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier of the endpoint configured on the tool server."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerOauth2LoginLinks",
+    "properties": {
+      "loginLink": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Gateway URL to open to begin consent; includes an expiring signed capability."
+      },
+      "redirectUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gateway callback URI to register with the identity provider."
+      },
+      "expiresUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "UTC expiry of the signed start capability."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getOauth2LoginLinks",
+    "resourceType": "Microsoft.ApiManagement/aigateways/workspaces/toolServers",
+    "apiVersion": "2026-11-01",
+    "output": {
+      "$ref": "#/351"
+    },
+    "input": {
+      "$ref": "#/350"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecrets",
+    "properties": {
+      "endpoints": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 1,
+        "description": "Endpoint secret values."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecret",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Stable endpoint identifier."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/355"
+        },
+        "flags": 0,
+        "description": "Endpoint authentication including secret values."
+      },
+      "openApi": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 0,
+        "description": "OpenAPI configuration including inline content."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecretAuthentication",
+    "properties": {
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Managed identity configuration."
+      },
+      "headers": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 0,
+        "description": "Static headers injected when calling the endpoint."
+      },
+      "oauth2": {
+        "type": {
+          "$ref": "#/357"
+        },
+        "flags": 0,
+        "description": "OAuth 2.0 configuration."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/347"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecretOauth2Authentication",
+    "properties": {
+      "issuer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Expected OAuth authorization-server issuer for remote MCP discovery."
+      },
+      "authorizationEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "OAuth authorization endpoint."
+      },
+      "tokenEndpoint": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "OAuth token endpoint."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "OAuth client identifier."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/358"
+        },
+        "flags": 0,
+        "description": "OAuth scopes to request."
+      },
+      "grantType": {
+        "type": {
+          "$ref": "#/361"
+        },
+        "flags": 0,
+        "description": "OAuth grant type."
+      },
+      "tokenExchange": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Chained token-exchange configuration."
+      },
+      "authorizationParameters": {
+        "type": {
+          "$ref": "#/362"
+        },
+        "flags": 0,
+        "description": "Additional authorization endpoint parameters."
+      },
+      "tokenParameters": {
+        "type": {
+          "$ref": "#/363"
+        },
+        "flags": 0,
+        "description": "Additional token endpoint parameters."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Current OAuth connection status."
+      },
+      "loginLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Login link used to complete interactive authorization."
+      },
+      "statusUpdatedUtc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "UTC timestamp of the last OAuth connection-status transition."
+      },
+      "clientSecret": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "OAuth client secret."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientCredentials"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "authorizationCode"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/297"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/297"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecretOpenApiConfiguration",
+    "properties": {
+      "specSource": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 1,
+        "description": "OpenAPI document source."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AiGatewayToolServerSecretOpenApiSpecSource",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/368"
+        },
+        "flags": 1,
+        "description": "Source type."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL of the OpenAPI document. Required when type is url."
+      },
+      "contentBase64": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Base64-encoded OpenAPI document. Required when type is inline."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "url"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/354"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.ApiManagement/aigateways/workspaces/toolServers",
+    "apiVersion": "2026-11-01",
+    "output": {
+      "$ref": "#/353"
+    }
+  }
+]

@@ -125,7 +125,7 @@ resource "azapi_resource" "account" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.VideoIndexer/accounts@api-version`. The available api-versions for this resource are: [`2021-10-18-preview`, `2021-10-27-preview`, `2021-11-10-preview`, `2022-04-13-preview`, `2022-07-20-preview`, `2022-08-01`, `2024-01-01`, `2024-04-01-preview`, `2024-06-01-preview`, `2024-09-23-preview`, `2025-01-01`, `2025-04-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.VideoIndexer/accounts@api-version`. The available api-versions for this resource are: [`2021-10-18-preview`, `2021-10-27-preview`, `2021-11-10-preview`, `2022-04-13-preview`, `2022-07-20-preview`, `2022-08-01`, `2024-01-01`, `2024-04-01-preview`, `2024-06-01-preview`, `2024-09-23-preview`, `2025-01-01`, `2025-03-01`, `2025-04-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
