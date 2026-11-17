@@ -1,3 +1,12 @@
+## v2.14.0
+
+ENHANCEMENTS:
+
+- Add examples for Azure SRE agents and connectors (GH-1274).
+- `azapi_data_plane_resource`: Support Azure AI Search endpoints and authentication audiences in Azure Government and Azure China (GH-1278).
+- `azapi_data_plane_resource`: Support Azure Table Storage tables and entities (GH-1141).
+- `azapi_data_plane_resource`: Add a warning when managing Azure IoT Central data-plane resources ahead of the service's retirement on September 20, 2029 (GH-1260).
+
 ## v2.13.0
 
 ENHANCEMENTS:
