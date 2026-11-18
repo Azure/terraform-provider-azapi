@@ -103,6 +103,28 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 			},
 		},
 		{
+			Name:         "myknowledgebase",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.Search/searchServices/knowledgebases@2025-11-01-preview",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/knowledgebases/myknowledgebase",
+				ApiVersion:        "2025-11-01-preview",
+				AzureResourceType: "Microsoft.Search/searchServices/knowledgebases",
+			},
+		},
+		{
+			Name:         "myknowledgesource",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.Search/searchServices/knowledgesources@2025-11-01-preview",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/knowledgesources/myknowledgesource",
+				ApiVersion:        "2025-11-01-preview",
+				AzureResourceType: "Microsoft.Search/searchServices/knowledgesources",
+			},
+		},
+		{
 			Name:         "mysynonymmap",
 			ParentId:     "mysearchservice.search.windows.net",
 			ResourceType: "Microsoft.Search/searchServices/synonymmaps@2024-07-01",
@@ -277,6 +299,30 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				AzureResourceType: "Microsoft.Search/searchServices/skillsets",
 				ParentId:          "mysearchservice.search.windows.net",
 				Name:              "myskillset",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/knowledgebases/myknowledgebase",
+			ResourceType: "Microsoft.Search/searchServices/knowledgebases@2025-11-01-preview",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/knowledgebases/myknowledgebase",
+				ApiVersion:        "2025-11-01-preview",
+				AzureResourceType: "Microsoft.Search/searchServices/knowledgebases",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "myknowledgebase",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/knowledgesources/myknowledgesource",
+			ResourceType: "Microsoft.Search/searchServices/knowledgesources@2025-11-01-preview",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/knowledgesources/myknowledgesource",
+				ApiVersion:        "2025-11-01-preview",
+				AzureResourceType: "Microsoft.Search/searchServices/knowledgesources",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "myknowledgesource",
 			},
 		},
 		{
