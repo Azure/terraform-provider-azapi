@@ -149,11 +149,27 @@ func canResourceHaveProperty(resourceDef *aztypes.ResourceType, property string)
 }
 
 func overrideBodyWithPaths(old, new interface{}, paths []string) (map[string]interface{}, error) {
+	return overrideBodyWith(utils.OverrideWithPaths, old, new, paths)
+}
+
+// overrideBodyWithExistingPaths builds an update request body: body with every
+// ignored path taken from the existing resource, including paths body omits or
+// sets to null. The PUT replaces the resource, so leaving such a path out would
+// remove a value that was set outside Terraform.
+func overrideBodyWithExistingPaths(body, existing interface{}, paths []string) (map[string]interface{}, error) {
+	return overrideBodyWith(utils.OverrideWithPathsAddMissing, body, existing, paths)
+}
+
+func overrideBodyWith(
+	override func(old, new interface{}, path string, pathSet map[string]bool) (interface{}, error),
+	old, new interface{},
+	paths []string,
+) (map[string]interface{}, error) {
 	pathSet := make(map[string]bool, len(paths))
 	for _, path := range paths {
 		pathSet[path] = true
 	}
-	out, err := utils.OverrideWithPaths(old, new, "", pathSet)
+	out, err := override(old, new, "", pathSet)
 	if err != nil {
 		return nil, err
 	}
