@@ -59,11 +59,11 @@ resource "azapi_resource" "scheduledAction" {
         message = ""
         subject = "Cost Management Report for Terraform Testing on Azure with TTL = 2 Day"
         to = [
-          "test@test.com",
-          "hashicorp@test.com",
+          "test@example.com",
+          "hashicorp@example.com",
         ]
       }
-      notificationEmail = "test@test.com"
+      notificationEmail = "test@example.com"
       schedule = {
         dayOfMonth   = 0
         daysOfWeek   = null
