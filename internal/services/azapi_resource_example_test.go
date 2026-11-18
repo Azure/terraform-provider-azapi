@@ -30,6 +30,10 @@ func knownExternalProvidersAzurerm() map[string]resource.ExternalProvider {
 			VersionConstraint: "0.13.0",
 			Source:            "hashicorp/time",
 		},
+		"tls": {
+			VersionConstraint: "4.1.0",
+			Source:            "hashicorp/tls",
+		},
 		"azuread": {
 			VersionConstraint: "3.8.0",
 			Source:            "hashicorp/azuread",
