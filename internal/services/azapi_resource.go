@@ -911,7 +911,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		return
 	}
 	if sensitiveBody != nil {
-		mergeOption := utils.UpdateJsonOption{}
+		mergeOption := utils.UpdateJsonOption{
+			IgnoreCasing: plan.IgnoreCasing.ValueBool(),
+		}
 		if v := common.AsMapOfString(plan.ListUniqueIdProperty); len(v) != 0 {
 			mergeOption.ListUniqueIdProperty = v
 		}

@@ -484,7 +484,9 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	}
 
 	if requestBody != nil {
-		mergeOption := utils.UpdateJsonOption{}
+		mergeOption := utils.UpdateJsonOption{
+			IgnoreCasing: model.IgnoreCasing.ValueBool(),
+		}
 		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
 			mergeOption.ListUniqueIdProperty = v
 		}
@@ -503,7 +505,9 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 	if sensitiveBody != nil {
-		mergeOption := utils.UpdateJsonOption{}
+		mergeOption := utils.UpdateJsonOption{
+			IgnoreCasing: model.IgnoreCasing.ValueBool(),
+		}
 		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
 			mergeOption.ListUniqueIdProperty = v
 		}
