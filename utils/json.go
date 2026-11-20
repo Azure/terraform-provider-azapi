@@ -85,7 +85,7 @@ func mergeObjectAtPath(old interface{}, new interface{}, option UpdateJsonOption
 			for _, oldItem := range oldValue {
 				found := false
 				for index, newItem := range newArr {
-					if areSameArrayItemsByKey(oldItem, newItem, identifierKey) && !used[index] {
+					if areSameArrayItemsByKey(oldItem, newItem, identifierKey, option.IgnoreCasing) && !used[index] {
 						res = append(res, mergeObjectAtPath(oldItem, newItem, option, path))
 						used[index] = true
 						found = true
@@ -114,8 +114,8 @@ type UpdateJsonOption struct {
 	IgnoreMissingProperty bool
 	IgnoreNullProperty    bool
 
-	// ListUniqueIdProperty defines per-list paths to a unique ID field name for list item matching.
-	// The path format uses dot-separated object keys, e.g. "properties.serviceEndpoints".
+	// ListUniqueIdProperty maps dot-separated list paths to string identifier paths within each item.
+	// Identifier paths can be nested (e.g. "subnet.id") or comma-separated for composite keys.
 	ListUniqueIdProperty map[string]string
 
 	// IgnoreOtherItemsInList defines list paths where items that exist only in the new/remote value
@@ -185,7 +185,7 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 					continue
 				}
 				for index, newItem := range newArr {
-					if areSameArrayItemsByKey(oldItem, newItem, identifierKey) && !used[index] {
+					if areSameArrayItemsByKey(oldItem, newItem, identifierKey, option.IgnoreCasing) && !used[index] {
 						res = append(res, updateObjectAtPath(oldItem, newItem, option, path))
 						used[index] = true
 						break
@@ -216,16 +216,19 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 	return new
 }
 
-func areSameArrayItemsByKey(a, b interface{}, key string) bool {
+func areSameArrayItemsByKey(a, b interface{}, key string, ignoreCasing bool) bool {
 	aId := identifierOfArrayItemByKey(a, key)
 	bId := identifierOfArrayItemByKey(b, key)
 	if aId == "" || bId == "" {
 		return false
 	}
+	if ignoreCasing {
+		return strings.EqualFold(aId, bId)
+	}
 	return aId == bId
 }
 
-// identifierOfArrayItemByKey extracts an identifier from an array item using key (e.g. "name").
+// identifierOfArrayItemByKey extracts a string identifier using a field name or nested path (e.g. "subnet.id").
 // Supports composite keys via comma separation (e.g. "category, categoryGroup"), joined with underscore.
 func identifierOfArrayItemByKey(input interface{}, key string) string {
 	if key == "" {
@@ -247,12 +250,7 @@ func identifierOfArrayItemByKey(input interface{}, key string) string {
 			continue
 		}
 
-		value := ""
-		if v, exists := inputMap[k]; exists && v != nil {
-			if strVal, ok := v.(string); ok {
-				value = strVal
-			}
-		}
+		value := stringIdentifierAtPath(inputMap, k)
 
 		if value != "" {
 			hasNonEmpty = true
@@ -265,6 +263,24 @@ func identifierOfArrayItemByKey(input interface{}, key string) string {
 	}
 
 	return strings.Join(values, "_")
+}
+
+func stringIdentifierAtPath(input map[string]interface{}, path string) string {
+	if value, exists := input[path]; exists {
+		identifier, _ := value.(string)
+		return identifier
+	}
+
+	var value interface{} = input
+	for _, key := range strings.Split(path, ".") {
+		object, ok := value.(map[string]interface{})
+		if !ok {
+			return ""
+		}
+		value = object[key]
+	}
+	identifier, _ := value.(string)
+	return identifier
 }
 
 func listIdentifierKeyForPath(path string, option UpdateJsonOption) string {
