@@ -118,6 +118,26 @@ func TestAccGenericUpdateResource_listUniqueIdProperty(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_listUniqueIdPropertyNested(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.listUniqueIdPropertyNested(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.listUniqueIdPropertyNestedReordered(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_timeouts(t *testing.T) {
 	acceptance.SkipIfCoreAcctestsOnly(t, "Acctest subscription has no quota to run this test (Automation accounts quota exceeded)")
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
@@ -1105,6 +1125,154 @@ resource "azapi_update_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) templateEventHub(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-vnet-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = ["10.0.0.0/16"]
+      }
+      subnets = [
+        {
+          name = "subnet-0"
+          properties = {
+            addressPrefix = "10.0.0.0/24"
+            serviceEndpoints = [{
+              service = "Microsoft.EventHub"
+            }]
+          }
+        },
+        {
+          name = "subnet-1"
+          properties = {
+            addressPrefix = "10.0.1.0/24"
+            serviceEndpoints = [{
+              service = "Microsoft.EventHub"
+            }]
+          }
+        },
+        {
+          name = "subnet-2"
+          properties = {
+            addressPrefix = "10.0.2.0/24"
+            serviceEndpoints = [{
+              service = "Microsoft.EventHub"
+            }]
+          }
+        }
+      ]
+    }
+  }
+}
+
+resource "azapi_resource" "namespace" {
+  type      = "Microsoft.EventHub/namespaces@2024-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-eh-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name     = "Standard"
+      tier     = "Standard"
+      capacity = 1
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) listUniqueIdPropertyNested(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+# Default network ruleset is created as part of namespace creation
+resource "azapi_update_resource" "test" {
+  type          = "Microsoft.EventHub/namespaces/networkRuleSets@2024-01-01"
+  resource_id   = "${azapi_resource.namespace.id}/networkRuleSets/default"
+  ignore_casing = true
+  body = {
+    properties = {
+      defaultAction       = "Deny"
+      publicNetworkAccess = "Enabled"
+      virtualNetworkRules = [
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-2"
+          }
+        },
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-1"
+          }
+        },
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-0"
+          }
+        }
+      ]
+    }
+  }
+
+  list_unique_id_property = {
+    "properties.virtualNetworkRules" = "subnet.id"
+  }
+}
+`, r.templateEventHub(data))
+}
+
+func (r GenericUpdateResource) listUniqueIdPropertyNestedReordered(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type          = "Microsoft.EventHub/namespaces/networkRuleSets@2024-01-01"
+  resource_id   = "${azapi_resource.namespace.id}/networkRuleSets/default"
+  ignore_casing = true
+  body = {
+    properties = {
+      defaultAction       = "Deny"
+      publicNetworkAccess = "Enabled"
+      virtualNetworkRules = [
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-1"
+          }
+        },
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-2"
+          }
+        },
+        {
+          ignoreMissingVnetServiceEndpoint = false
+          subnet = {
+            id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-0"
+          }
+        }
+      ]
+    }
+  }
+
+  list_unique_id_property = {
+    "properties.virtualNetworkRules" = "subnet.id"
+  }
+}
+`, r.templateEventHub(data))
 }
 
 func (r GenericUpdateResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
