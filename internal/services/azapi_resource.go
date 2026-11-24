@@ -320,6 +320,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				ElementType:         types.StringType,
 				Optional:            true,
 				MarkdownDescription: docstrings.ListUniqueIdProperty(),
+				DeprecationMessage:  docstrings.ListUniqueIdPropertyDeprecationMessage(),
 			},
 
 			"ignore_other_items_in_list": schema.ListAttribute{
@@ -329,6 +330,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
 				MarkdownDescription: docstrings.IgnoreOtherItemsInList(),
+				DeprecationMessage:  docstrings.IgnoreOtherItemsInListDeprecationMessage(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{

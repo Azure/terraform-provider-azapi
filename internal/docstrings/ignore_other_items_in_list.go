@@ -7,3 +7,7 @@ const (
 func IgnoreOtherItemsInList() string {
 	return addBackquotes(ignoreOtherItemsInListStr)
 }
+
+func IgnoreOtherItemsInListDeprecationMessage() string {
+	return `ignore_other_items_in_list is deprecated. Configuration should be updated to manage the complete collection. It is against AzAPI design principles to workaround ARM API bug / design deficiencies.`
+}
