@@ -117,8 +117,7 @@ resource "azapi_data_plane_resource" "dataset" {
 			Format:    "<resource_id>|<resource_type>",
 			ExampleId: "exampleappconf.azconfig.io/kv/mykey|Microsoft.AppConfiguration/configurationStores/keyValues@1.0",
 		},
-		Template: template.Must(template.New("dataplane").Parse(fmt.Sprintf(`
-{{ .Header }}
+		Template: template.Must(template.New("dataplane").Parse(fmt.Sprintf(`{{ .Header }}
 {{ .Description }}
 {{- with .Example }}
 {{ . }}
