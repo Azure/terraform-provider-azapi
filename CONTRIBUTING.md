@@ -137,7 +137,7 @@ The `examples/resources` and `examples/data-sources` directory contains examples
 ## Raising PR
 
 1. Provide a clear summary of the problem in the PR description.
-1. Keep scope small, for example: a single bug fix, behaviour update of a single property. Split multiple problems into separate PRs using [stacked PR feature](https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests) if necessary. Do not raise a PR that changes multiple resources / data sources, or updates the behaviour of multiple unrelated properties.
+1. Keep scope small, for example: a single bug fix, behaviour update of a single property. Split multiple problems into separate PRs using [stacked PR feature](https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests) if necessary (require write permission). Do not raise a PR that changes multiple resources / data sources, or updates the behaviour of multiple unrelated properties.
 1. After feedbacks are addressed, explicitly request a review again to indicate readiness.
 
 ---
@@ -178,4 +178,4 @@ The following operations are supported:
 
 ## Additional topics
 
-Refer to [contributing/README.md](contributing/README.md) for additional contribution topics.
+Refer to [contributing/README.md](contributing/README.md) for design principles, test coverage and additional contribution topics.

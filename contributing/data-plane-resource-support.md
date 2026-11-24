@@ -11,6 +11,10 @@ Data-plane resources are Azure resources that are managed through data-plane API
 - Azure Purview collections
 - Azure IoT Central applications
 
+## Design Principles
+
+Each `azapi_data_plane_resource` should correspond to CRUD of a single domain model. Avoid chaining multiple HTTP calls across domains (for example: creating a blob store and then uploading file into it), instead prefer users to configure multiple resources.
+
 ## Architecture
 
 The data-plane resource support in AzAPI consists of three main components:
