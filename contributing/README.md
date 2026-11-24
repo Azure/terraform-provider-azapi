@@ -1,6 +1,4 @@
-# Additional contribution topics
-
-This folder contains specific contribution topics. Please refer to [CONTRIBUTING.md](../CONTRIBUTING.md) for general contribution guidelines.
+# AzAPI Contribution Guidelines
 
 - [Design Principles](design-principles.md)
 - [Test Coverage](test-coverage.md)

@@ -178,4 +178,4 @@ The following operations are supported:
 
 ## Additional topics
 
-Refer to [contributing/README.md](contributing/README.md) for additional contribution topics.
+Refer to [contributing/README.md](contributing/README.md) for design principles, test coverage and additional contribution topics.
