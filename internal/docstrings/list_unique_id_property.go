@@ -7,3 +7,7 @@ const (
 func ListUniqueIdProperty() string {
 	return addBackquotes(listUniqueIdPropertyStr)
 }
+
+func ListUniqueIdPropertyDeprecationMessage() string {
+	return `list_unique_id_property is deprecated. To ignore ordering differences when managing a complete collection, use Terraform's [toset()](https://developer.hashicorp.com/terraform/language/functions/toset) function. toset() does not replace matching or merging list items by custom identifiers. Configuration that manages only part of the collection should be updated to manage the complete collection. It is against AzAPI design principles to workaround ARM API bug / design deficiencies.`
+}

@@ -107,7 +107,11 @@ resource "azapi_update_resource" "example" {
 - `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
 
 	-> Element value must satisfy all validations: string length must be at least 1.
+
+	!> ignore_other_items_in_list is deprecated. Configuration should be updated to manage the complete collection. It is against AzAPI design principles to workaround ARM API bug / design deficiencies.
 - `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+
+	!> list_unique_id_property is deprecated. To ignore ordering differences when managing a complete collection, use Terraform's [toset()](https://developer.hashicorp.com/terraform/language/functions/toset) function. toset() does not replace matching or merging list items by custom identifiers. Configuration that manages only part of the collection should be updated to manage the complete collection. It is against AzAPI design principles to workaround ARM API bug / design deficiencies.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
