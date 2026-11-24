@@ -1203,7 +1203,7 @@ resource "azapi_update_resource" "test" {
     properties = {
       defaultAction       = "Deny"
       publicNetworkAccess = "Enabled"
-      virtualNetworkRules = [
+      virtualNetworkRules = toset([
         {
           ignoreMissingVnetServiceEndpoint = false
           subnet = {
@@ -1222,13 +1222,10 @@ resource "azapi_update_resource" "test" {
             id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-0"
           }
         }
-      ]
+      ])
     }
   }
 
-  list_unique_id_property = {
-    "properties.virtualNetworkRules" = "subnet.id"
-  }
 }
 `, r.templateEventHub(data))
 }
@@ -1245,7 +1242,7 @@ resource "azapi_update_resource" "test" {
     properties = {
       defaultAction       = "Deny"
       publicNetworkAccess = "Enabled"
-      virtualNetworkRules = [
+      virtualNetworkRules = toset([
         {
           ignoreMissingVnetServiceEndpoint = false
           subnet = {
@@ -1264,12 +1261,8 @@ resource "azapi_update_resource" "test" {
             id = "${azapi_resource.virtualNetwork.id}/subnets/subnet-0"
           }
         }
-      ]
+      ])
     }
-  }
-
-  list_unique_id_property = {
-    "properties.virtualNetworkRules" = "subnet.id"
   }
 }
 `, r.templateEventHub(data))
