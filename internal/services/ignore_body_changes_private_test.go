@@ -90,3 +90,46 @@ func TestOverrideBodyWithPaths(t *testing.T) {
 		},
 	}, actual)
 }
+
+// The update request keeps an ignored property the configuration leaves out or
+// sets to null, so a route table attached outside Terraform survives an
+// unrelated update (GH-1270). The plan and read paths keep using
+// overrideBodyWithPaths, which only touches paths present in the body.
+func TestOverrideBodyWithExistingPaths(t *testing.T) {
+	existing := map[string]interface{}{
+		"properties": map[string]interface{}{
+			"addressPrefixes":   []interface{}{"10.250.1.128/26"},
+			"routeTable":        map[string]interface{}{"id": "rt"},
+			"provisioningState": "Succeeded",
+		},
+	}
+	expected := map[string]interface{}{
+		"properties": map[string]interface{}{
+			"addressPrefixes":  []interface{}{"10.250.1.128/26"},
+			"routeTable":       map[string]interface{}{"id": "rt"},
+			"serviceEndpoints": []interface{}{map[string]interface{}{"service": "Microsoft.KeyVault"}},
+		},
+	}
+
+	for name, routeTable := range map[string]bool{"omitted": false, "null": true} {
+		t.Run(name, func(t *testing.T) {
+			properties := map[string]interface{}{
+				"addressPrefixes":  []interface{}{"10.250.1.128/26"},
+				"serviceEndpoints": []interface{}{map[string]interface{}{"service": "Microsoft.KeyVault"}},
+			}
+			if routeTable {
+				properties["routeTable"] = nil
+			}
+			body := map[string]interface{}{"properties": properties}
+
+			actual, err := overrideBodyWithExistingPaths(body, existing, []string{"properties.routeTable"})
+			require.NoError(t, err)
+			require.Equal(t, expected, actual)
+
+			// The plan/read helper still leaves a path the body does not set alone.
+			unchanged, err := overrideBodyWithPaths(body, existing, []string{"properties.routeTable"})
+			require.NoError(t, err)
+			require.Equal(t, body, unchanged)
+		})
+	}
+}
