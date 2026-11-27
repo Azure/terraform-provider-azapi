@@ -222,6 +222,21 @@ func TestAccDataPlaneResource_searchServiceSynonymMap(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_searchServiceKnowledgeBase(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.searchServiceKnowledgeBase(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That("azapi_data_plane_resource.knowledgeSource").ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_storageTable(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -1601,6 +1616,147 @@ resource "azapi_data_plane_resource" "test" {
   depends_on = [
     azapi_resource.roleAssignment,
   ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) searchServiceKnowledgeBase(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "standard"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchServiceContributorRoleId   = "value[?properties.roleName == 'Search Service Contributor'].id | [0]"
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "serviceRoleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchServiceContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "dataRoleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "index" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myindex"
+  body = {
+    fields = [
+      {
+        name       = "id"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "content"
+        type       = "Edm.String"
+        searchable = true
+      },
+    ]
+    semantic = {
+      defaultConfiguration = "default"
+      configurations = [
+        {
+          name = "default"
+          prioritizedFields = {
+            prioritizedContentFields = [
+              { fieldName = "content" }
+            ]
+          }
+        }
+      ]
+    }
+  }
+
+  depends_on = [
+    azapi_resource.serviceRoleAssignment,
+    azapi_resource.dataRoleAssignment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "knowledgeSource" {
+  type      = "Microsoft.Search/searchServices/knowledgesources@2025-11-01-preview"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myknowledgesource"
+  body = {
+    name        = "myknowledgesource"
+    kind        = "searchIndex"
+    description = "Knowledge source backed by an existing search index"
+    searchIndexParameters = {
+      searchIndexName = azapi_data_plane_resource.index.name
+      searchFields = [
+        { name = "content" }
+      ]
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Search/searchServices/knowledgebases@2025-11-01-preview"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myknowledgebase"
+  body = {
+    name = "myknowledgebase"
+    knowledgeSources = [
+      { name = azapi_data_plane_resource.knowledgeSource.name }
+    ]
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
