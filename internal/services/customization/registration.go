@@ -8,6 +8,9 @@ func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
 
+	var keyVaultKeyRotationPolicyCustomization DataPlaneResource = KeyVaultKeyRotationPolicyCustomization{}
+	customizations[strings.ToLower(keyVaultKeyRotationPolicyCustomization.GetResourceType())] = keyVaultKeyRotationPolicyCustomization
+
 	var keyVaultCertificateCustomization DataPlaneResource = KeyVaultCertificateCustomization{}
 	customizations[strings.ToLower(keyVaultCertificateCustomization.GetResourceType())] = keyVaultCertificateCustomization
 
